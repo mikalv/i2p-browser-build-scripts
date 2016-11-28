@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+rootdir=$(pwd)
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+mkdir -p /var/tmp/dist
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf nsis-[% c('version') %].tar.bz2
+cd /var/tmp/build/nsis-[% c('version') %]-src
+tar -xf $rootdir/[% c('input_files_by_name/debian') %]
+rm -f debian/patches/nsis_system_zlib.patch
+rm -f debian/patches/parallel_build.patch
+patch -p1 < $rootdir/nsis-missing-unistd-include.patch
+for patch in $(grep '\.patch$' debian/patches/series)
+do
+    [ -f debian/patches/$patch ] && patch -p1 < debian/patches/$patch
+done
+[% SET scons_args = 'APPEND_CCFLAGS="-fgnu89-inline" VERSION=' _ c("version") 
+        _ " SKIPUTILS='NSIS Menu' XGCC_W32_PREFIX=i686-w64-mingw32-"
+        _ ' PREFIX=/var/tmp/dist/nsis' -%]
+scons [% scons_args %]
+scons [% scons_args %] install
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+        }) %]
