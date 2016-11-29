@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 filename: '[% sha256(c("pre")).substr(0, 12) %]'
 remote_docker: 1
-docker_image_prefix: 'tor-messenger_[% GET ENV.RBM_BUILDNAME ? ENV.RBM_BUILDNAME : ENV.USER ? ENV.USER : c("uid") %]'
+docker_image_prefix: '[% GET c("var/project_name") ? c("var/project_name") : "rbm-build" %]_[% GET ENV.RBM_BUILDNAME ? ENV.RBM_BUILDNAME : ENV.USER ? ENV.USER : c("uid") %]'
 docker_save_image: '[% c("docker_image_prefix") %]:[% c("filename") %]'
 pkg_type: build
 
