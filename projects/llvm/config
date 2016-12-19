@@ -1,0 +1,17 @@
+# vim: filetype=yaml sw=2
+version: 8f188e0ea735ac9383a65a0d1c846eb790c2ec74
+git_url: https://github.com/llvm-mirror/llvm
+git_hash: '[% c("version") %]'
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+var:
+  deps:
+    - build-essential
+    - python
+
+input_files:
+  - project: docker-image
+  - project: cmake
+    name: cmake
+  - project: clang
+    name: clang

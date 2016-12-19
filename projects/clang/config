@@ -1,0 +1,5 @@
+# vim: filetype=yaml sw=2
+version: r247539
+git_url: https://github.com/llvm-mirror/clang
+git_hash: 592b43b609b42cffd1531a700c140e10766bf049
+filename: '[% project %]-src-[% c("version") %]-[% c("var/build_id") %].tar.gz'

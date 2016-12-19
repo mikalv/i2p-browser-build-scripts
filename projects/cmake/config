@@ -1,0 +1,14 @@
+# vim: filetype=yaml sw=2
+version: 2.8.12.2
+git_url: https://cmake.org/cmake.git
+git_hash: 'v[% c("version") %]'
+tag_gpg_id: 1
+gpg_keyring: cmake.gpg
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+var:
+  deps:
+    - build-essential
+
+input_files:
+  - project: docker-image

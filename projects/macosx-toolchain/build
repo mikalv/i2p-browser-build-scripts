@@ -5,8 +5,12 @@ distdir="$rootdir/dist/[% project %]"
 mkdir -p "$distdir"
 tar xzf [% c('input_files_by_name/SDK') %]
 mv MacOSX10.7.sdk "$distdir/SDK"
-tar xf [% c('input_files_by_name/clang') %]
-mv x-tools "$distdir"
+tar xf [% c('input_files_by_name/llvm') %]
+mv llvm "$distdir/clang"
+tar -C $distdir -xf [% c('input_files_by_name/cctools') %]
+cd $distdir/cctools/bin
+ln -s ../../clang/bin/clang x86_64-apple-darwin10-clang
+ln -s ../../clang/bin/clang++ x86_64-apple-darwin10-clang++
 cd "$rootdir/dist"
 [% c('tar', {
    tar_src => [ project ],
