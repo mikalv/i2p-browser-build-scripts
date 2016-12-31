@@ -56,6 +56,11 @@ mkdir -p $distdir/gcclibs
 cp i686-w64-mingw32/libssp/.libs/libssp-0.dll $distdir/gcclibs
 cp i686-w64-mingw32/libgcc/shlib/libgcc_s_sjlj-1.dll $distdir/gcclibs
 
+mkdir -p $distdir/helpers
+mv $rootdir/i686-w64-mingw32-g++ $rootdir/i686-w64-mingw32-gcc \
+    $rootdir/i686-w64-mingw32-ld $distdir/helpers/
+chmod +x $distdir/helpers/*
+
 cd /var/tmp/dist
 [% c('tar', {
         tar_src => [ project ],

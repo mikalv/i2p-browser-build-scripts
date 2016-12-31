@@ -1,0 +1,4 @@
+#!/bin/sh
+# Hardened mingw gcc wrapper
+
+/var/tmp/dist/mingw-w64/bin/i686-w64-mingw32-ld --dynamicbase --nxcompat --enable-reloc-section -lssp -L$gcclibs "$@"
