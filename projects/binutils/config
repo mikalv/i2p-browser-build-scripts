@@ -9,6 +9,16 @@ var:
   configure_opt: '--disable-multilib --enable-gold --enable-deterministic-archives'
 
 targets:
+  linux-x86_64:
+    var:
+      arch_deps:
+        - hardening-wrapper
+
+  linux-i686:
+    var:
+      arch_deps:
+        - hardening-wrapper
+
   windows-i686:
     var:
       configure_opt: '--target=i686-w64-mingw32 --disable-multilib --enable-deterministic-archives'
