@@ -10,6 +10,9 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 # patch the Configure script to use clang and add the -isysroot arg
 sed -i "s|cc:-arch|clang:-isysroot $sysrootdir -arch|" Configure
 [% END -%]
+[% IF c("var/osname") == "linux-i686" -%]
+export CC='gcc -m32'
+[% END %]
 ./Configure --prefix=$distdir [% c('var/configure_opts') %]
 make
 make install
