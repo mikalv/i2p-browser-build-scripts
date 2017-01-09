@@ -1,0 +1,91 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+export TZ=UTC
+export LC_ALL=C
+umask 0022
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/build
+
+[% IF c("var/linux") || c("var/windows") %]
+mkdir -p "$distdir/Data/Tor"
+mkdir -p "$distdir/Tor"
+[% END %]
+
+tar -C /var/tmp/build -xf [% c('input_files_by_name/openssl') %]
+tar -C /var/tmp/build -xf [% c('input_files_by_name/libevent') %]
+tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+libeventdir=/var/tmp/build/libevent
+openssldir=/var/tmp/build/openssl
+
+[% IF c("var/windows") %]
+tar -C /var/tmp/build -xf [% c('input_files_by_name/zlib') %]
+zlibdir=/var/tmp/build/zlib
+cp $zlibdir/lib/*.dll $openssldir/bin/*.dll $libeventdir/bin/*.dll \
+    $gcclibs/*.dll $distdir/Tor/
+[% END %]
+
+
+[% IF c("var/linux") %]
+mkdir -p "$distdir/Debug/Tor"
+cp $openssldir/lib/libssl.so.1.0.0 "$distdir/Tor/"
+cp $openssldir/lib/libcrypto.so.1.0.0 "$distdir/Tor/"
+cp $libeventdir/lib/libevent-2.0.so.5 "$distdir/Tor/"
+# We need to copy the libstdc++.so.6 for Tor Browser on older Linux distros.
+# Copying it into /Browser, which feels more natural, and amending
+# LD_LIBRARY_PATH breaks updates from a Tor Browser with the old
+# LD_LIBRARY_PATH value to the Tor Browser with the newer one. Thus, we copy
+# the libstdc++ into the directory with the libs tor depends on, too. See bug
+# 13359 for further details.
+cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/"
+chmod 700 "$distdir"/Tor/*.so*
+# This is needed to make RPATH unavailable. See bug 9150.
+export LD_LIBRARY_PATH="$distdir/Tor/"
+[% END %]
+
+cd /var/tmp/build/[% project %]-[% c('version') %]
+./autogen.sh
+./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
+    [% IF c("var/windows") %]--with-zlib-dir="$zlibdir"[% END %] \
+    --prefix="$distdir" [% c("var/configure_opt") %]
+make -j4
+make install
+cp $distdir/share/tor/geoip $distdir/Data/Tor/
+cp $distdir/share/tor/geoip6 $distdir/Data/Tor/
+
+
+cd $distdir
+[% IF c("var/windows") %]
+install -s $distdir/bin/tor.exe $distdir/Tor/
+[% IF c("var/expert_bundle") %]
+install -s $distdir/bin/tor-gencert.exe $distdir/Tor/
+[% END %]
+[% END %]
+
+[% IF c("var/linux") %]
+# Strip and generate debuginfo for libs
+objcopy --only-keep-debug $distdir/bin/tor $distdir/Debug/Tor/tor
+install -s $distdir/bin/tor $distdir/Tor/
+objcopy --add-gnu-debuglink=./Debug/Tor/tor $distdir/Tor/tor
+for i in $distdir/Tor/*so*
+do
+    LIB=`basename $i`
+    objcopy --only-keep-debug $distdir/Tor/$LIB $distdir/Debug/Tor/$LIB
+    strip $distdir/Tor/$LIB
+    objcopy --add-gnu-debuglink=./Debug/Tor/$LIB $distdir/Tor/$LIB
+done
+[% END %]
+
+mkdir -p [% dest_dir _ '/' _ c('filename') %]
+[% c('tar', {
+        tar_src => [ 'Data', 'Tor', ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor.tar.gz',
+    }) %]
+
+[% IF c("var/linux") %]
+[% c('tar', {
+        tar_src => [ 'Debug' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor-debug.tar.gz',
+    }) %]
+[% END %]

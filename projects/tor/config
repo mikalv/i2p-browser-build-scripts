@@ -1,0 +1,49 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
+version: 0.2.9.6-rc
+git_hash: 'tor-[% c("version") %]'
+git_url: https://git.torproject.org/tor.git
+gpg_keyring: tor.gpg
+tag_gpg_id: 1
+remote_docker: 1
+
+var:
+  deps:
+    - build-essential
+    - automake
+    - zip
+    - unzip
+
+targets:
+  linux-i686:
+    var:
+      libdir: lib32
+      sort_deps: 0
+      arch_deps:
+        - libc6-dev-i386
+        - libtool
+        - zlib1g-dev:i386
+        - hardening-wrapper
+  linux-x86_64:
+    var:
+      libdir: lib64
+      arch_deps:
+        - libtool
+        - zlib1g-dev
+        - hardening-wrapper
+  expert-bundle:
+    var:
+      expert_bundle: 1
+      flag_mwindows: ''
+
+input_files:
+  - name: openssl
+    project: openssl
+  - name: libevent
+    project: libevent
+  - name: zlib
+    project: zlib
+    enable: '[% c("var/windows") %]'
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - project: docker-image
