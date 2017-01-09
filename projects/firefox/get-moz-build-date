@@ -1,0 +1,23 @@
+#!/usr/bin/perl -w
+# Generate a MOZ_BUILD_DATE based on firefox version number
+
+use strict;
+
+my ($year) = split('-', `git show -s --format='%ci'`);
+if ($? != 0) {
+    print STDERR "Failed to get year from the git commit\n";
+    print "exit 1\n";
+    exit 1;
+}
+
+die "missing argument" unless @ARGV;
+my $version = $ARGV[0];
+$version =~ s/\D+$//;
+my @v = split(/[\.ab]/, $version);
+push @v, '0' if @v < 4;
+push @v, '0' if @v < 4;
+my $day_of_month = int(($v[0] - 45) / 5);
+my $date = 101010101 + $year * 10000000000 + $day_of_month * 1000000
+           + $v[1] * 10000 + $v[2] * 100 + $v[3];
+$date += 100000000 unless $version =~ m/[ab]/;
+print "export MOZ_BUILD_DATE=$date\n";
