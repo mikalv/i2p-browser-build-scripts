@@ -10,11 +10,14 @@ targets:
   linux-x86_64:
     var:
       configure_opts: -shared enable-ec_nistp_64_gcc_128 linux-generic64
+      arch_deps:
+        - hardening-wrapper
   linux-i686:
     var:
       configure_opts: -shared linux-generic32
       arch_deps:
         - libc6-dev-i386
+        - hardening-wrapper
   windows-i686:
     var:
       configure_opts: '-shared --cross-compile-prefix=i686-w64-mingw32- mingw "-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs"'

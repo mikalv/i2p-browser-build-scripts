@@ -13,10 +13,15 @@ var:
     - libtool
 
 targets:
+  linux-x86_64:
+    var:
+      arch_deps:
+        - hardening-wrapper
   linux-i686:
     var:
       arch_deps:
         - libc6-dev-i386
+        - hardening-wrapper
 
 input_files:
   - project: docker-image
