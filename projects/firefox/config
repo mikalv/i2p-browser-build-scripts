@@ -10,6 +10,7 @@ remote_docker: 1
 var:
   firefox_version: 45.6.0esr
   torbrowser_update_channel: alpha
+  copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'
   deps:
     - build-essential
     - unzip
@@ -70,6 +71,7 @@ input_files:
   - project: docker-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
+  - filename: get-moz-build-date
   - filename: 'mozconfig-[% c("var/osname") %]'
     name: mozconfig
   - project: binutils

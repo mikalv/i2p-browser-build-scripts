@@ -32,7 +32,12 @@ mkdir -p $distdir/Debug/Browser/browser/components
 cd /var/tmp/build/[% project %]-[% c("version") %]
 mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
 
-# TODO: run get-moz-build-date
+eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] $(cat browser/config/version.txt))
+if [ -z $MOZ_BUILD_DATE ]
+then
+    echo "MOZ_BUILD_DATE is not set"
+    exit 1
+fi
 
 [% IF c("var/windows") %]
 # FIXME
@@ -75,7 +80,7 @@ rm -f $distdir/TorBrowser.app/Contents/MacOS/firefox-bin
 # Adjust the Info.plist file
 INFO_PLIST=$distdir/TorBrowser.app/Contents/Info.plist
 mv $INFO_PLIST tmp.plist
-python $rootdir/fix-info-plist.py '[% c("var/torbrowser_version") %]' '[% exec("git show -s --format=%ci").remove("-.*") %]' < tmp.plist > $INFO_PLIST
+python $rootdir/fix-info-plist.py '[% c("var/torbrowser_version") %]' '[% c("var/copyright_year") %]' < tmp.plist > $INFO_PLIST
 rm -f tmp.plist
 [% END %]
 

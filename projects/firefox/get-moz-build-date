@@ -3,15 +3,8 @@
 
 use strict;
 
-my ($year) = split('-', `git show -s --format='%ci'`);
-if ($? != 0) {
-    print STDERR "Failed to get year from the git commit\n";
-    print "exit 1\n";
-    exit 1;
-}
-
-die "missing argument" unless @ARGV;
-my $version = $ARGV[0];
+die "wrong number of arguments" unless @ARGV == 2;
+my ($year, $version) = @ARGV;
 $version =~ s/\D+$//;
 my @v = split(/[\.ab]/, $version);
 push @v, '0' if @v < 4;
