@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+export TZ=UTC
+export LC_ALL=C
+umask 0022
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+cd /var/tmp/build/[% project %]-[% c('version') %]
+export CFLAGS="[% c("var/CFLAGS") %]"
+export LDFLAGS="[% c("var/LDFLAGS") %]"
+make BINARY_PATH=$distdir/lib INCLUDE_PATH=$distdir/include LIBRARY_PATH=$distdir/lib -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- -j4 SHARED_MODE=1 LOC="-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs"
+make BINARY_PATH=$distdir/lib INCLUDE_PATH=$distdir/include LIBRARY_PATH=$distdir/lib -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- -j4 SHARED_MODE=1 LOC="-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs" install
+
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]
