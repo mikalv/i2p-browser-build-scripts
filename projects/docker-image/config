@@ -29,12 +29,15 @@ pre: |
   [%
      deps = [];
      IF pc(c('origin_project'), 'var/deps');
-       CALL deps.import(pc(c('origin_project'), 'var/deps').sort);
+       CALL deps.import(pc(c('origin_project'), 'var/deps'));
      END;
      IF pc(c('origin_project'), 'var/arch_deps');
-       CALL deps.import(pc(c('origin_project'), 'var/arch_deps').sort);
+       CALL deps.import(pc(c('origin_project'), 'var/arch_deps'));
      END;
      IF deps.size;
+       IF pc(c('origin_project'), 'var/sort_deps');
+         deps = deps.sort;
+       END;
        FOREACH pkg IN deps;
          SET p = tmpl(pkg);
          IF p;
