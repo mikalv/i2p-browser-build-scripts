@@ -9,8 +9,18 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 
 [% IF c("var/linux") || c("var/windows") %]
-mkdir -p "$distdir/Data/Tor"
+TORCONFIGDIR="$distdir/Data/Tor"
+mkdir -p $TORCONFIGDIR
 mkdir -p "$distdir/Tor"
+[% END %]
+
+[% IF c("var/osx") %]
+TBDIR="$distdir/TorBrowserBundle.app"
+TORBINDIR="$TBDIR/Contents/MacOS/Tor"
+TORCONFIGDIR="$TBDIR/Contents/Resources/TorBrowser/Tor"
+mkdir -p $distdir/bin
+mkdir -p $TORBINDIR
+mkdir -p $TORCONFIGDIR
 [% END %]
 
 tar -C /var/tmp/build -xf [% c('input_files_by_name/openssl') %]
@@ -51,9 +61,16 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
     --prefix="$distdir" [% c("var/configure_opt") %]
 make -j4
 make install
-cp $distdir/share/tor/geoip $distdir/Data/Tor/
-cp $distdir/share/tor/geoip6 $distdir/Data/Tor/
+cp $distdir/share/tor/geoip $TORCONFIGDIR
+cp $distdir/share/tor/geoip6 $TORCONFIGDIR
 
+[% IF c("var/osx") %]
+LIBEVENT_FILE=`basename $libeventdir/lib/libevent-*.dylib`
+cd $distdir
+cp bin/tor $TORBINDIR/
+cd $TORBINDIR/
+x86_64-apple-darwin10-install_name_tool -change $libeventdir/lib/$LIBEVENT_FILE @executable_path/$LIBEVENT_FILE tor
+[% END %]
 
 cd $distdir
 [% IF c("var/windows") %]
@@ -78,8 +95,14 @@ done
 [% END %]
 
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
-[% c('tar', {
-        tar_src => [ 'Data', 'Tor', ],
+[%
+   IF c("var/osx");
+     SET tarsrcdir = [ 'TorBrowserBundle.app' ];
+   ELSE;
+     SET tarsrcdir = [ 'Data', 'Tor', ];
+   END;
+   c('tar', {
+        tar_src => tarsrcdir,
         tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor.tar.gz',
     }) %]
 
