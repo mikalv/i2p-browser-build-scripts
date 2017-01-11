@@ -6,10 +6,6 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
-[% IF c("var/osx") -%]
-# patch the Configure script to use clang and add the -isysroot arg
-sed -i "s|cc:-arch|clang:-isysroot $sysrootdir -arch|" Configure
-[% END -%]
 [% IF c("var/osname") == "linux-i686" -%]
 export CC='gcc -m32'
 [% END %]

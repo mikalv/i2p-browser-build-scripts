@@ -23,7 +23,12 @@ targets:
       configure_opts: '-shared --cross-compile-prefix=i686-w64-mingw32- mingw "-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs"'
   osx-x86_64:
     var:
-      configure_opts: --cross-compile-prefix=x86_64-apple-darwin10- darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
+      configure_opts: --cross-compile-prefix=i686-apple-darwin11- $CFLAGS darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
+      arch_deps:
+        - libc6-i386
+        - libstdc++6:i386
+      pre_pkginst: dpkg --add-architecture i386
+      compiler: macosx-toolchain-gcc
 
 input_files:
   - project: docker-image
