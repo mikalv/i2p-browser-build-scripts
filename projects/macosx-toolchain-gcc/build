@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+destdir='[% dest_dir _ '/' _ c('filename') %]'
+mkdir -p "$destdir"
+mv -f [% c('input_files_by_name/SDK') %] "$destdir"/apple-uni-sdk.deb
+mv -f [% c('input_files_by_name/toolchain') %] "$destdir"/toolchain.tar.xz

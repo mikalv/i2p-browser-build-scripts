@@ -1,0 +1,29 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %]'
+version: 1
+remote_docker: 1
+var:
+  setup: |
+    macosx_toolchain_gcc_dir=/var/tmp/dist/macosx-toolchain-gcc
+    mkdir -p $macosx_toolchain_gcc_dir
+    dpkg-deb -x [% c("compiler_tarfile") %]/apple-uni-sdk.deb $macosx_toolchain_gcc_dir
+    tar -C $macosx_toolchain_gcc_dir -xf [% c("compiler_tarfile") %]/toolchain.tar.xz
+    export PATH="$macosx_toolchain_gcc_dir/apple-osx/bin:$PATH"
+    # For OpenSSL
+    ln -s $macosx_toolchain_gcc_dir/apple-osx/bin/apple-osx-gcc $macosx_toolchain_gcc_dir/apple-osx/bin/i686-apple-darwin11-cc
+    #For gmp, need to trick it so it knows we're doing a 64 bit build
+    for i in $macosx_toolchain_gcc_dir/apple-osx/bin/i686-apple-darwin11-*; do j=`echo $i | sed 's/i686/x86_64/'`; ln -s $i $j; done;
+
+    # XXX Clean up these flags?
+    export CFLAGS="-m64 -I$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/include/ -I$macosx_toolchain_gcc_dir/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/ -I.  -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/ -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/system/ -mmacosx-version-min=10.5"
+    export CXXFLAGS="-m64 -I$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/include/ -I$macosx_toolchain_gcc_dir/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/ -I.  -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/ -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/system/ -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/i686-apple-darwin10/4.2.1 -mmacosx-version-min=10.5"
+    export LDFLAGS="-L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/ -L$macosx_toolchain_gcc_dir/usr/lib/apple/SDKs/MacOSX10.6.sdk/usr/lib/system/ -mmacosx-version-min=10.5"
+
+input_files:
+  - name: SDK
+    URL: https://launchpad.net/~flosoft/+archive/cross-apple/+files/apple-uni-sdk-10.6_20110407-0.flosoft1_i386.deb
+    sha256sum: 6602d8d5ddb371fbc02e2a5967d9bd0cd7358d46f9417753c8234b923f2ea6fc
+  - name: toolchain
+    URL: https://people.torproject.org/~mikeperry/mirrors/sources/multiarch-darwin11-cctools127.2-gcc42-5666.3-llvmgcc42-2336.1-Linux-120724.tar.xz
+    sha256sum: 65c1b2d302358a6b95a26c6828a66908a199276193bb0b268f2dcc1a997731e9
+  - project: docker-image
