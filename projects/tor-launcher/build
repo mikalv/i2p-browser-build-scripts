@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+tar xvf [% project %]-[% c('version') %].tar.gz
+cd [% project %]-[% c('version') %]
+make package
+mkdir pkg/tmp
+cd pkg/tmp
+unzip ../*.xpi
+[% c('zip', {
+        zip_src => [ '.' ],
+        zip_args => dest_dir _ '/' _ c('filename'),
+    }) %]

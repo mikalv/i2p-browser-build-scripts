@@ -1,0 +1,10 @@
+# vim: filetype=yaml sw=2
+version: 0.2.10.2
+git_url: https://git.torproject.org/tor-launcher.git
+git_hash: '[% c("version") %]'
+gpg_keyring: torbutton.gpg
+tag_gpg_id: 1
+filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"
+remote_docker: 1
+input_files:
+  - project: docker-image
