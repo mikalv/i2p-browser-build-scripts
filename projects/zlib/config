@@ -7,13 +7,6 @@ gpg_keyring: zlib.gpg
 tag_gpg_id: 1
 remote_docker: 1
 
-var:
-  deps:
-    - build-essential
-    - automake
-    - zip
-    - unzip
-
 input_files:
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
