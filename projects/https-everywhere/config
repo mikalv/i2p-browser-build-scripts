@@ -1,0 +1,23 @@
+# vim: filetype=yaml sw=2
+version: 5.2.8
+git_url: https://git.torproject.org/https-everywhere.git
+git_hash: '[% c("version") %]'
+git_submodule: 1
+gpg_keyring: https-everywhere.gpg
+tag_gpg_id: 1
+filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"
+remote_docker: 1
+distribution: Debian-7.11
+var:
+  deps:
+    - git
+    - python
+    - python-lxml
+    - libxslt1.1
+    - libxml2-utils
+    - sqlite3
+    - rsync
+    - zip
+    - unzip
+input_files:
+  - project: docker-image
