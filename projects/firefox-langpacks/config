@@ -1,0 +1,45 @@
+# vim: filetype=yaml sw=2
+version: '[% c("var/ff_version") %]-[% c("var/ff_build") %]'
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
+
+var:
+  ff_version: '[% pc("firefox", "var/firefox_version") %]'
+  ff_build: build1
+  ff_arch: linux-i686
+  input_filename: 'dl-langpack-[% c("var/ff_arch") %]-[% c("version") %]'
+
+targets:
+  windows-i686:
+    var:
+      ff_arch: win32
+  osx-x86_64:
+    var:
+      ff_arch: mac
+
+input_files:
+  - URL: 'https://ftp.mozilla.org/pub/firefox/candidates/[% c("var/ff_version") %]-candidates/[% c("var/ff_build") %]/SHA512SUMS'
+    filename: 'SHA512SUMS-[% c("version") %]'
+    gpg_keyring: firefox.gpg
+    sig_ext: asc
+    file_gpg_id: 1
+
+  - filename: '[% c("var/input_filename") %]'
+    refresh_input: 1
+    exec: |
+      #!/bin/bash
+      set -e
+      [% SET outdir = c("var/input_filename") %]
+      mkdir -p [% dest_dir %]/[% outdir %]
+      [% FOREACH lang = c('var/locales') %]
+      [% SET lang = tmpl(lang) %]
+      [% SET ffver = c("var/ff_version");
+         SET ffbuild = c("var/ff_build");
+         SET ffarch = c("var/ff_arch");
+         SET URL = "https://ftp.mozilla.org/pub/mozilla.org/firefox/candidates/" _ ffver _ '-candidates/' _ ffbuild _ '/' _ ffarch _ '/xpi/' _ lang _ '.xpi';
+         SET filename = outdir _ '/' _ lang _ '.xpi'; %]
+      test -f [% dest_dir %]/[% filename %] || \
+         [% GET c("urlget", { filename => filename _ '-tmp', URL => URL }); %]
+      test -f [% dest_dir %]/[% filename %] || \
+         mv -f [% dest_dir %]/[% filename %]-tmp [% dest_dir %]/[% filename %]
+      [% END %]
+
