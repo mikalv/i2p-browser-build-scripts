@@ -1,0 +1,106 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://github.com/googlei18n/noto-fonts.git
+git_hash: 720e34851382ee3c1ef024d8dffb68ffbfb234c2
+filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].tar.gz"
+remote_docker: 1
+var:
+  noto_fonts_hinted:
+    - Arimo-Regular.ttf
+    - Arimo-Bold.ttf
+    - Arimo-Italic.ttf
+    - Arimo-BoldItalic.ttf
+    - Cousine-Regular.ttf
+    - Tinos-Regular.ttf
+    - Tinos-Bold.ttf
+    - Tinos-Italic.ttf
+    - Tinos-BoldItalic.ttf
+    - NotoNaskhArabic-Regular.ttf
+    - NotoSansArmenian-Regular.ttf
+    - NotoSansBengali-Regular.ttf
+    - NotoSansDevanagari-Regular.ttf
+    - NotoSansEthiopic-Regular.ttf
+    - NotoSansGeorgian-Regular.ttf
+    - NotoSansGujarati-Regular.ttf
+    - NotoSansGurmukhi-Regular.ttf
+    - NotoSansHebrew-Regular.ttf
+    - NotoSansKannada-Regular.ttf
+    - NotoSansKhmer-Regular.ttf
+    - NotoSansLao-Regular.ttf
+    - NotoSansMalayalam-Regular.ttf
+    - NotoSansMyanmar-Regular.ttf
+    - NotoSansOriya-Regular.ttf
+    - NotoSansSinhala-Regular.ttf
+    - NotoSansTamil-Regular.ttf
+    - NotoSansTelugu-Regular.ttf
+    - NotoSansThaana-Regular.ttf
+    - NotoSansThai-Regular.ttf
+    - NotoSansTibetan-Regular.ttf
+    - NotoSerifArmenian-Regular.ttf
+    - NotoSerifKhmer-Regular.ttf
+    - NotoSerifLao-Regular.ttf
+    - NotoSerifThai-Regular.ttf
+  noto_fonts_unhinted:
+    - NotoSansCanadianAboriginal-Regular.ttf
+    - NotoSansBuginese-Regular.ttf
+    - NotoSansCherokee-Regular.ttf
+    - NotoSansMongolian-Regular.ttf
+    - NotoSansYi-Regular.ttf
+
+targets:
+  osx-x86_64:
+    var:
+      noto_fonts_hinted:
+        - NotoSansArmenian-Regular.ttf
+        - NotoSansBengali-Regular.ttf
+        - NotoSansDevanagari-Regular.ttf
+        - NotoSansEthiopic-Regular.ttf
+        - NotoSansGujarati-Regular.ttf
+        - NotoSansGurmukhi-Regular.ttf
+        - NotoSansKannada-Regular.ttf
+        - NotoSansKhmer-Regular.ttf
+        - NotoSansLao-Regular.ttf
+        - NotoSansMalayalam-Regular.ttf
+        - NotoSansMyanmar-Regular.ttf
+        - NotoSansOriya-Regular.ttf
+        - NotoSansSinhala-Regular.ttf
+        - NotoSansTamil-Regular.ttf
+        - NotoSansTelugu-Regular.ttf
+        - NotoSansThaana-Regular.ttf
+        - NotoSansTibetan-Regular.ttf
+      noto_fonts_unhinted:
+        - NotoSansCanadianAboriginal-Regular.ttf
+        - NotoSansBuginese-Regular.ttf
+        - NotoSansCherokee-Regular.ttf
+        - NotoSansMongolian-Regular.ttf
+        - NotoSansYi-Regular.ttf
+  windows-i686:
+    var:
+      noto_fonts_hinted:
+        - NotoSansKhmer-Regular.ttf
+        - NotoSansLao-Regular.ttf
+        - NotoSansMyanmar-Regular.ttf
+      noto_fonts_unhinted:
+        - NotoSansBuginese-Regular.ttf
+        - NotoSansYi-Regular.ttf
+
+input_files:
+  - project: docker-image
+  - URL: https://github.com/googlei18n/noto-emoji/raw/2f1ffdd6fbbd05d6f382138a3d3adcd89c5ce800/fonts/NotoEmoji-Regular.ttf
+    sha256sum: 415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5
+    enable: '[% c("var/linux") %]'
+  - URL: https://github.com/googlei18n/noto-cjk/raw/f36eda03dfa5582a6d49abbfb5c83d0209584158/NotoSansJP-Regular.otf
+    sha256sum: 3e8146c4ce0945f255cb9dbc12b392380af80bd117e0a60eae555c99c7e618da
+    enable: '[% c("var/linux") %]'
+  - URL: https://github.com/googlei18n/noto-cjk/raw/f36eda03dfa5582a6d49abbfb5c83d0209584158/NotoSansKR-Regular.otf
+    sha256sum: b21817200abcb37a8ee865befce588d65babd1c35c2c4d32d3cd3f5b4780a7a3
+    enable: '[% c("var/linux") %]'
+  - URL: https://github.com/googlei18n/noto-cjk/raw/f36eda03dfa5582a6d49abbfb5c83d0209584158/NotoSansSC-Regular.otf
+    sha256sum: 8c37936063c7c8ab747a939e13833894f9edc80dd41b98874ca8f3938a33c32f
+    enable: '[% c("var/linux") %]'
+  - URL: https://github.com/googlei18n/noto-cjk/raw/f36eda03dfa5582a6d49abbfb5c83d0209584158/NotoSansTC-Regular.otf
+    sha256sum: e6b82f7d3dab605c428161124ceb5e169cde93de632d800297b167cdd88e7baa
+    enable: '[% c("var/linux") %]'
+  - URL: http://downloads.sourceforge.net/stixfonts/STIXv1.1.1-latex.zip
+    sha256sum: e3b0f712e2644438eee2d0dcd2b10b2d54f1b972039de95b2f8e800bae1adbd8
+    enable: '[% c("var/linux") || c("var/osx") %]'

@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+distdir=/var/tmp/dist/fonts
+mkdir -p $distdir
+tar xf [% project %]-[% c("version") %].tar.gz
+ln -s [% project %]-[% c("version") %] noto-fonts
+mkdir -p $distdir
+[% FOREACH fontfile = c("var/noto_fonts_hinted");
+     GET 'cp "noto-fonts/hinted/' _ fontfile _ '" $distdir' _ "\n";
+   END; %]
+[% FOREACH fontfile = c("var/noto_fonts_unhinted");
+     GET 'cp "noto-fonts/unhinted/' _ fontfile _ '" $distdir' _ "\n";
+   END; %]
+
+[% IF c("var/linux") || c("var/osx") %]
+unzip -o STIXv1.1.1-latex.zip -d STIX
+cp "STIX/Fonts/fonts/opentype/public/stix/STIXMath-Regular.otf" $distdir/
+[% END %]
+[% IF c("var/linux") %]
+cp NotoEmoji-Regular.ttf $distdir/
+cp {NotoSansJP-Regular.otf,NotoSansKR-Regular.otf,NotoSansSC-Regular.otf,NotoSansTC-Regular.otf} $distdir/
+[% END %]
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ 'fonts' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]
