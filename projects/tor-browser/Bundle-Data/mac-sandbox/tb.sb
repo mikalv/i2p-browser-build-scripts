@@ -28,6 +28,7 @@
 
 (allow file-read*
        (path "/Library/Preferences/com.apple.HIToolbox.plist")
+       (path "/Library/Preferences/com.apple.ViewBridge.plist")
        (path "/Library/Preferences/.GlobalPreferences.plist")
        (path "/dev/random")
        (path "/dev/urandom")
@@ -41,6 +42,7 @@
        (subpath "/Library/Fonts")
        (subpath "/System")
        (subpath "/private/var/folders")
+       (subpath "/usr/lib")
        (subpath "/usr/share")
        (home-subpath "/Downloads")
        (home-subpath "/Library/Input Methods")
@@ -66,7 +68,6 @@
        (path "/private/var/db/.AppleSetupDone")
        (path "/tmp")
        (path "/var")
-       (subpath "/usr/lib")
        (torbrowser-data-dir-path "/Tor/control.socket")
        (torbrowser-data-dir-path "/Tor/socks.socket")
        (path-regex "/private/tmp/Tor[-0-9]*/control.socket")
@@ -84,11 +85,6 @@
        (subpath "/private/var/folders")
        (path-regex (string-append "^" (param "HOME_DIR") "/Library/Preferences/org.mozilla.tor"))
        (path "/Library/Preferences/.GlobalPreferences.plist")
-)
-
-; Disallow writes to the profiles ini file.
-(deny file-write*
-       (torbrowser-data-dir-subpath "/Browser/profiles.ini")
 )
 
 (allow iokit-open)
