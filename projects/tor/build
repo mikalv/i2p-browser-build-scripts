@@ -15,9 +15,8 @@ mkdir -p "$distdir/Tor"
 [% END %]
 
 [% IF c("var/osx") %]
-TBDIR="$distdir/TorBrowserBundle.app"
-TORBINDIR="$TBDIR/Contents/MacOS/Tor"
-TORCONFIGDIR="$TBDIR/Contents/Resources/TorBrowser/Tor"
+TORBINDIR="$distdir/Contents/MacOS/Tor"
+TORCONFIGDIR="$distdir/Contents/Resources/TorBrowser/Tor"
 mkdir -p $distdir/bin
 mkdir -p $TORBINDIR
 mkdir -p $TORCONFIGDIR
@@ -97,7 +96,7 @@ done
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
 [%
    IF c("var/osx");
-     SET tarsrcdir = [ 'TorBrowserBundle.app' ];
+     SET tarsrcdir = [ 'Contents' ];
    ELSE;
      SET tarsrcdir = [ 'Data', 'Tor', ];
    END;
