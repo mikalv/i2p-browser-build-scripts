@@ -3,7 +3,6 @@ version: '[% c("var/torbrowser_version") %]'
 output_dir: 'release/unsigned'
 
 var:
-  release: 1
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
 
 targets:
