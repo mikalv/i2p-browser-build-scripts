@@ -15,6 +15,11 @@ var:
     - unzip
 
 targets:
+  nightly:
+    version: master
+    git_hash: master
+    tag_gpg_id: 0
+
   linux-i686:
     var:
       libdir: lib32

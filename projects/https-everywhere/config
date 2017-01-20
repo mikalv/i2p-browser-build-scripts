@@ -21,3 +21,8 @@ var:
     - unzip
 input_files:
   - project: docker-image
+
+targets:
+  nightly:
+    version: master
+    tag_gpg_id: 0

@@ -8,3 +8,8 @@ filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"
 remote_docker: 1
 input_files:
   - project: docker-image
+
+targets:
+  nightly:
+    version: master
+    tag_gpg_id: 0
