@@ -1,0 +1,179 @@
+# vim: filetype=yaml sw=2
+version: '[% c("var/torbrowser_version") %]'
+output_dir: 'release/unsigned'
+
+var:
+  release: 1
+  today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
+
+targets:
+  torbrowser-all:
+    - torbrowser-linux-x86_64
+    - torbrowser-linux-i686
+    - torbrowser-windows-i686
+    - torbrowser-osx-x86_64
+  torbrowser-linux-x86_64:
+    var:
+      torbrowser-linux-x86_64: 1
+  torbrowser-linux-i686:
+    var:
+      torbrowser-linux-i686: 1
+  torbrowser-windows-i686:
+    var:
+      torbrowser-windows-i686: 1
+  torbrowser-osx-x86_64:
+    var:
+      torbrowser-osx-x86_64: 1
+
+  notarget:
+    - release
+    - torbrowser-all
+
+  release:
+    var:
+      release: 1
+
+  nightly:
+    output_dir: 'nightly'
+    version: '[% c("var/today") %]'
+    var:
+      nightly: 1
+
+  alpha_nightly:
+    output_dir: 'alpha_nightly'
+    version: '[% c("var/today") %]'
+    var:
+      alpha_nightly: 1
+      alpha: 1
+
+  alpha:
+    output_dir: 'alpha/unsigned'
+    var:
+      alpha: 1
+
+  hardened_nightly:
+    output_dir: 'hardened_nightl'
+    version: '[% c("var/today") %]'
+    var:
+      hardened_nightly:
+      hardened: 1
+
+  hardened:
+    output_dir: 'hardened'
+    var:
+      hardened: 1
+
+input_files:
+
+# Release
+ - name: linux-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-x86_64") && c("var/release") %]'
+   target:
+     - torbrowser-linux-x86_64
+
+ - name: linux-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-i686") && c("var/release") %]'
+   target:
+     - torbrowser-linux-i686
+
+ - name: windows-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-windows-i686") && c("var/release") %]'
+   target:
+     - torbrowser-windows-i686
+
+ - name: osx-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-osx-x86_64") && c("var/release") %]'
+   target:
+     - torbrowser-osx-x86_64
+
+# Nightly
+ - name: linux-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-x86_64") && c("var/nightly") %]'
+   target:
+     - nightly
+     - torbrowser-linux-x86_64
+
+ - name: linux-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-i686") && c("var/nightly") %]'
+   target:
+     - nightly
+     - torbrowser-linux-i686
+
+ - name: windows-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-windows-i686") && c("var/nightly") %]'
+   target:
+     - nightly
+     - torbrowser-windows-i686
+
+ - name: osx-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-osx-x86_64") && c("var/nightly") %]'
+   target:
+     - nightly
+     - torbrowser-osx-x86_64
+
+# Alpha
+ - name: linux-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-x86_64") && c("var/alpha") %]'
+   target:
+     - alpha
+     - torbrowser-linux-x86_64
+
+ - name: linux-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-i686") && c("var/alpha") %]'
+   target:
+     - alpha
+     - torbrowser-linux-i686
+
+ - name: windows-i686
+   project: tor-browser
+   enable: '[% c("var/torbrowser-windows-i686") && c("var/alpha") %]'
+   target:
+     - alpha
+     - torbrowser-windows-i686
+
+ - name: osx-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-osx-x86_64") && c("var/alpha") %]'
+   target:
+     - alpha
+     - torbrowser-osx-x86_64
+
+# Hardened
+ - name: linux-x86_64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-linux-x86_64") && c("var/hardened") %]'
+   target:
+     - hardened
+     - torbrowser-linux-x86_64
+
+build: |
+  #!/bin/sh
+  set -e
+  export LC_ALL=C
+  destdir="[% dest_dir _ '/' _ c("version") %]"
+  mkdir -p "$destdir"
+  [% IF c("var/torbrowser-windows-i686") -%]
+    mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
+  [% END -%]
+  [% IF c("var/torbrowser-osx-x86_64") -%]
+    mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
+  [% END -%]
+  [% IF c("var/torbrowser-linux-i686") -%]
+    mv [% c('input_files_by_name/linux-i686') %]/* "$destdir"/
+  [% END -%]
+  [% IF c("var/torbrowser-linux-x86_64") -%]
+    mv [% c('input_files_by_name/linux-x86_64') %]/* "$destdir"/
+  [% END -%]
+  cd "$destdir"
+  sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
+  cat sha256sums-unsigned-build.txt
