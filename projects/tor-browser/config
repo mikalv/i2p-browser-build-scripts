@@ -1,0 +1,69 @@
+# vim: filetype=yaml sw=2
+version: '[% c("var/torbrowser_version") %]'
+filename: 'tor-browser-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
+remote_docker: 1
+
+var:
+  ddmg: '[% INCLUDE ddmg.sh %]'
+
+targets:
+  linux-i686:
+    var:
+      mar_osname: linux32
+  linux-x86_64:
+    var:
+      mar_osname: linux64
+  osx-x86_64:
+    var:
+      mar_osname: osx64
+      deps:
+        - genisoimage
+        - zip
+        - unzip
+        - python
+        - bzip2
+  windows-i686:
+    var:
+      mar_osname: win32
+
+input_files:
+  - project: docker-image
+  - project: firefox
+    name: firefox
+  - project: tor
+    name: tor
+  - project: firefox-langpacks
+    name: firefox-langpacks
+  - project: tor-launcher
+    name: tor-launcher
+  - project: torbutton
+    name: torbutton
+  - project: https-everywhere
+    name: https-everywhere
+  - project: fonts
+    name: fonts
+  - filename: Bundle-Data
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-2.9.5.2-fx+sm.xpi
+    name: noscript
+    sha256sum: ed71ca922790e81bc5e8c6a87bb81f394a38676ac37d1fba518a6a428d128dd5
+  - filename: RelativeLink
+    enable: '[% c("var/linux") %]'
+  - project: libdmg-hfsplus
+    name: libdmg
+    enable: '[% c("var/osx") %]'
+  - project: nsis
+    name: nsis
+    enable: '[% c("var/windows") %]'
+  - name: tbb-windows-installer
+    project: tbb-windows-installer
+    enable: '[% c("var/windows") %]'
+  - filename: pe_checksum_fix.py
+    enable: '[% c("var/windows") %]'
+  - name: python-future
+    URL: https://pypi.python.org/packages/00/2b/8d082ddfed935f3608cc61140df6dcbf0edea1bc3ab52fb6c29ae3e81e85/future-0.16.0.tar.gz
+    sha256sum: e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb
+    enable: '[% c("var/windows") %]'
+  - name: python-pefile
+    URL: https://pypi.python.org/packages/92/c0/8589ce9734ffdba258bd3e5acd4afb2e3586c121fe73402f686288b684b0/pefile-2016.3.28.tar.gz
+    sha256sum: f24021085b5c3ef7b0898bb1f1d93eecd3839e03512769e22b0c5a10d9095f7b
+    enable: '[% c("var/windows") %]'

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# TODO: assumes not in /Applications
+# TODO: assumes app is in TorBrowser.app
+
+BASEDIR="`dirname \"$0\"`"
+BASEDIR="`(cd \"$BASEDIR\" && pwd)`"
+TORBROWSER_APP_DIR="$BASEDIR/TorBrowser.app"
+TORBROWSER_DATA_DIR="$BASEDIR/TorBrowser-Data"
+TOR_DATA_DIR="$TORBROWSER_DATA_DIR/Tor"
+SOCKETDIR="/tmp/Tor"
+
+export TOR_SKIP_LAUNCH=1
+export TOR_CONTROL_IPC_PATH="$SOCKETDIR/control.socket"
+export TOR_SOCKS_IPC_PATH="$SOCKETDIR/socks.socket"
+export TOR_CONTROL_COOKIE_AUTH_FILE="$TOR_DATA_DIR/control_auth_cookie"
+SB_PROFILE="`pwd`/tb.sb"
+cd "$TORBROWSER_APP_DIR"
+sandbox-exec -f "$SB_PROFILE"							\
+	-D "HOME_DIR=$HOME"									\
+	-D "CURRENT_DIR=$BASEDIR"							\
+	-D "TORBROWSER_APP_DIR=$TORBROWSER_APP_DIR"			\
+	-D "TORBROWSER_DATA_DIR=$TORBROWSER_DATA_DIR"		\
+	"./Contents/MacOS/firefox"

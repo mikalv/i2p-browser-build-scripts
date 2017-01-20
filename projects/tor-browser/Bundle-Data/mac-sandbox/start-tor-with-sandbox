@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# TODO: assumes not in /Applications
+# TODO: assumes /tmp/Tor is not used by anyone else.
+# TODO: assumes app is in TorBrowser.app
+
+set -e
+
+BASEDIR="`dirname \"$0\"`"
+BASEDIR="`(cd \"$BASEDIR\" && pwd)`"
+TOR_DATA_DIR="$BASEDIR/TorBrowser-Data/Tor"
+TOR_STATIC_DATA_DIR="$BASEDIR/TorBrowser.app/Contents/Resources/TorBrowser/Tor"
+TOR_BIN_DIR="$BASEDIR/TorBrowser.app/Contents/MacOS/Tor"
+TORRC="$TOR_DATA_DIR/torrc"
+SOCKETDIR="/tmp/Tor"
+
+# Compiled Python modules require a compatible Python, which means 32-bit 2.6.
+export VERSIONER_PYTHON_VERSION=2.6
+export DYLD_LIBRARY_PATH=.:$DYLD_LIBRARY_PATH
+
+mkdir -p "$TOR_DATA_DIR"
+if [ ! -e "$TORRC" ]; then
+	touch "$TORRC"
+fi
+
+if [ ! -e "$SOCKETDIR" ]; then
+	mkdir -p "$SOCKETDIR"
+	chmod 700 "$SOCKETDIR"
+fi
+
+TOR="$TOR_BIN_DIR/tor.real"
+sandbox-exec -f tor.sb -D "TOR_DATA_DIR=$TOR_DATA_DIR" \
+	-D "TOR_STATIC_DATA_DIR=$TOR_STATIC_DATA_DIR" \
+	-D "TOR_BIN_DIR=$TOR_BIN_DIR" "$TOR" \
+	--defaults-torrc "$TOR_STATIC_DATA_DIR/torrc-defaults" \
+	-f "$TORRC" \
+	CookieAuthentication 1 \
+	DataDirectory "$TOR_DATA_DIR" \
+	GeoIPFile "$TOR_STATIC_DATA_DIR/geoip" \
+	GeoIPv6File "$TOR_STATIC_DATA_DIR/geoip6" \
+	ControlPort "unix:$SOCKETDIR/control.socket" \
+	SocksPort "unix:$SOCKETDIR/socks.socket"

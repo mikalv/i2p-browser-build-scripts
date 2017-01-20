@@ -1,0 +1,8 @@
+## fteproxy configuration
+ClientTransportPlugin fte exec TorBrowser\Tor\PluggableTransports\fteproxy --managed
+
+## obfs4proxy configuration
+ClientTransportPlugin obfs2,obfs3,obfs4,scramblesuit exec TorBrowser\Tor\PluggableTransports\obfs4proxy
+
+## meek configuration
+ClientTransportPlugin meek exec TorBrowser\Tor\PluggableTransports\terminateprocess-buffer TorBrowser\Tor\PluggableTransports\meek-client-torbrowser -- TorBrowser\Tor\PluggableTransports\meek-client
