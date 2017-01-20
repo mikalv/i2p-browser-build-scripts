@@ -4,10 +4,7 @@ version: 5.1.3
 remote_docker: 1
 
 targets:
-  linux-x86_64:
-    var:
-      configure_opt_gmp: --enable-fat
-  linux-i686:
+  linux:
     var:
       configure_opt_gmp: --enable-fat
   osx-x86_64:
