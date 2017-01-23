@@ -4,6 +4,7 @@ output_dir: 'release/unsigned'
 
 var:
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
+  publish_dir: '[% c("version") %]'
 
 targets:
   torbrowser-all:
@@ -27,6 +28,10 @@ targets:
   notarget:
     - release
     - torbrowser-all
+
+  noversiondir:
+    var:
+      publish_dir: ''
 
   release:
     var:
@@ -96,7 +101,7 @@ build: |
   #!/bin/sh
   set -e
   export LC_ALL=C
-  destdir="[% dest_dir _ '/' _ c("version") %]"
+  destdir="[% dest_dir _ '/' _ c("var/publish_dir") %]"
   mkdir -p "$destdir"
   [% IF c("var/torbrowser-windows-i686") -%]
     mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
