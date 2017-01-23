@@ -46,7 +46,7 @@ Starting a build
 
 To start a build, run one of the following commands, depending on the
 channel you want to build:
-  
+
   $ make release
   $ make alpha
   $ make nightly
