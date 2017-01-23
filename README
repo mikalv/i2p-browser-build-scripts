@@ -1,0 +1,157 @@
+Tor Browser Build
+=================
+
+Installing build dependencies
+-----------------------------
+
+To build Tor Browser, you need a Linux distribution that has support
+for Docker (such as Debian jessie, Ubuntu 14.04, Fedora 20, etc ...).
+The Docker package is usually named docker.io or docker-io.
+On Debian jessie, the docker.io package is available in backports.
+
+Your user account should have access to the docker command without using
+sudo, so it should be in the docker group. The docker daemon should
+also be running.
+
+The sources are downloaded using git which needs to be installed.
+
+You also need a few perl modules installed:
+- YAML::XS
+- File::Basename
+- Getopt::Long
+- Template
+- IO::Handle
+- IO::CaptureOutput
+- File::Temp
+- File::Slurp
+- File::Path
+- String::ShellQuote
+- Sort::Versions
+- Digest::SHA
+- Data::UUID
+- Data::Dump
+
+If you are running Debian or Ubuntu, you can install them with:
+
+# apt-get install libyaml-libyaml-perl libtemplate-perl \
+                  libio-handle-util-perl libio-all-perl \
+                  libio-captureoutput-perl libfile-slurp-perl \
+                  libstring-shellquote-perl libsort-versions-perl \
+                  libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
+                  git
+
+
+Starting a build
+----------------
+
+To start a build, run one of the following commands, depending on the
+channel you want to build:
+  
+  $ make release
+  $ make alpha
+  $ make nightly
+  $ make alpha_nightly
+
+You can find the build result in the directory release/unsigned/$version
+or alpha/unsigned/$version for release or alpha builds. The result of
+nightly or alpha_nightly can be found in the nightly/$date or
+alpha_nightly/$date directory.
+
+The alpha and alpha_nightly make target will build the same thing. The
+only difference is the output directory. The alpha_nightly target can be
+useful if you want to do a test build without polluting your alpha
+directory.
+
+If you want to build for a specific platform only, append the platform
+name to the makefile target:
+
+  $ make nightly-linux-x86_64
+  $ make nightly-linux-i686
+  $ make nightly-windows-i686
+  $ make nightly-osx-x86_64
+
+
+Updating git sources
+--------------------
+
+You can run "make fetch" to fetch the latest sources from git for all
+components included in Tor Browser. You should run this if you want to
+make a nightly build with the latest commits.
+
+
+Automated builds
+----------------
+
+If the build fails, a shell will automatically open in the build
+container to help you debug the problem. You probably want to disable
+this if you want to do automated builds. To disable this, set
+the RBM_NO_DEBUG environment variable to 1:
+
+   export RBM_NO_DEBUG=1
+
+If you want to select the output directory, you can use rbm's --output-dir
+option. You can look at the Makefile to find the rbm command for what
+you want to build, and add the --output-dir option. For example if you
+want to build Tor Browser nightly for linux-x86_64:
+
+   ./rbm/rbm build release --output-dir=/var/builds/nightly/2017-01-23 \
+                        --target nightly --target torbrowser-linux-x86_64
+
+The files will be put in the directory selected by --output-dir in a
+subdirectory named as the version number (or current date for nightly).
+To remove this version subdirectory, add the noversiondir target:
+
+   ./rbm/rbm build release --output-dir=/var/builds/nightly/2017-01-23 \
+                        --target nightly --target torbrowser-linux-x86_64 \
+                        --target noversiondir
+
+
+Automated builds using tbb-testsuite
+------------------------------------
+
+The Tor Browser testsuite scripts can also be used to do nightly builds
+and publish the build logs.
+
+If you want to do that, start by cloning the git repository:
+
+   $ git clone https://git.torproject.org/boklm/tor-browser-bundle-testsuite.git
+
+Install some dependencies:
+
+   # apt-get install -y libdata-dump-perl libfile-slurp-perl \
+               libio-captureoutput-perl perlmagick libjson-perl \
+               libwww-perl liblwp-protocol-https-perl libtemplate-perl \
+               libyaml-syck-perl libdatetime-perl \
+               libemail-sender-perl libemail-simple-perl libfile-type-perl \
+               libipc-run-perl libxml-libxml-perl
+
+Copy the config/tor-browser_build-boklm file and edit it:
+
+   $ cd tor-browser-bundle-testsuite
+   $ cp config/tor-browser_build-boklm config/tor-browser_build-$user
+   $ vim config/tor-browser_build-$user
+
+Change the publish_dir and publish_url options. The publish_dir option is
+the local directory where the builds will be stored. The publish_url
+option is the public URL where the builds will be available.
+
+Copy the tools/tor-browser-builds-boklm file and edit it to change the
+--config= option:
+
+   $ cp tools/tor-browser-builds-boklm tools/tor-browser-builds-$user
+   $ vim tools/tor-browser-builds-$user
+
+You can now run ./tools/tor-browser-builds-$user to start the build, and
+add it to you crontab.
+
+The html build reports will be available in the reports/ directory, and
+the build files in the tor-browser-builds/ directory (unless you changed
+the publish_dir option).
+
+
+Cleaning obsolete files and containers images
+---------------------------------------------
+
+There will be a script to clean old build files and containers that are
+no longer used, but it has not been added yet.
+
