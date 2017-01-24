@@ -11,15 +11,6 @@ var:
     export cctoolsdir=/var/tmp/dist/[% project %]/cctools/bin
     export PATH="$clangdir/helpers:$clangdir/bin:$cctoolsdir:$PATH"
     export LD_LIBRARY_PATH=/var/tmp/dist/[% project %]/clang/lib
-    CFLAGS="-target x86_64-apple-darwin10 -mlinker-version=136 -B $cctoolsdir -isysroot $sysrootdir"
-    CXXFLAGS="$CFLAGS"
-    CC="$clangdir/helpers/clang $CFLAGS"
-    CXX="$clangdir/helpers/clang++ $CXXFLAGS"
-    RANLIB=$cctoolsdir/x86_64-apple-darwin10-ranlib
-    AR=$cctoolsdir/x86_64-apple-darwin10-ar
-    AS=$cctoolsdir/x86_64-apple-darwin10-as
-    LD=$cctoolsdir/x86_64-apple-darwin10-ld
-    STRIP=$cctoolsdir/x86_64-apple-darwin10-strip
 
 input_files:
   - name: llvm
