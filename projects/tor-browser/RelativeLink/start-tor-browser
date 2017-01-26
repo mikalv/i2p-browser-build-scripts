@@ -3,7 +3,7 @@
 # GNU/Linux does not really require something like RelativeLink.c
 # However, we do want to have the same look and feel with similar features.
 #
-# Copyright 2015 The Tor Project.  See LICENSE for licensing information.
+# Copyright 2017 The Tor Project.  See LICENSE for licensing information.
 
 complain_dialog_title="Tor Browser"
 
@@ -316,17 +316,13 @@ EOF
 # torrc):
 #
 # SETTING NAME                            VALUE
-# extensions.torbutton.banned_ports       [...],<SocksPort>,<ControlPort>
-# extensions.torbutton.block_disk         false
-# extensions.torbutton.custom.socks_host  127.0.0.1
-# extensions.torbutton.custom.socks_port  <SocksPort>
+# network.security.ports.banned           [...],<SocksPort>,<ControlPort>
+# network.proxy.socks                     127.0.0.1
+# network.proxy.socks_port                <SocksPort>
 # extensions.torbutton.inserted_button    true
 # extensions.torbutton.launch_warning     false
 # extensions.torbutton.loglevel           2
 # extensions.torbutton.logmethod          0
-# extensions.torbutton.settings_method    custom
-# extensions.torbutton.socks_port         <SocksPort>
-# extensions.torbutton.use_privoxy        false
 # extensions.torlauncher.control_port      <ControlPort>
 # extensions.torlauncher.loglevel          2
 # extensions.torlauncher.logmethod         0
