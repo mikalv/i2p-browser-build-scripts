@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2015, The Tor Project, Inc.
+# Copyright (c) 2015-2017, The Tor Project, Inc.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -37,7 +37,7 @@ SHA256 mismatch if one tries to check that the binary we offer is actually the
 the one we got from our reproducible builds.
 
 This small Python snippet does both things: It pads the .exe if necessary and it
-recalculates the PE-file checksum. Details of the discussion can be foun in bug
+recalculates the PE-file checksum. Details of the discussion can be found in bug
 15339: https://bugs.torproject.org/15539.
 
 Thanks to a cypherpunk for this workaround idea.
