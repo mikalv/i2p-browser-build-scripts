@@ -1,6 +1,21 @@
 #!/bin/sh
 set -e
+rootdir=$(pwd)
 distdir=/var/tmp/dist/binutils
+[% IF c("var/linux") %]
+  # Config options for hardening-wrapper
+  export DEB_BUILD_HARDENING=1
+  export DEB_BUILD_HARDENING_STACKPROTECTOR=1
+  export DEB_BUILD_HARDENING_FORTIFY=1
+  export DEB_BUILD_HARDENING_FORMAT=1
+  export DEB_BUILD_HARDENING_PIE=1
+
+  # The libstdc++ shipped by default is non-PIC which breaks the binutils build
+  # if we build with DEB_BUILD_HARDENING_PIE=1. We need to install a PIC one AND
+  # make sure it gets used before the non-PIC one would.
+  ln -s /usr/lib/gcc/x86_64-linux-gnu/4.7/libstdc++_pic.a libstdc++.a
+  export LDFLAGS="-L$rootdir -lstdc++"
+[% END %]
 tar xf [% project %]-[% c("version") %].tar.bz2
 cd [% project %]-[% c("version") %]
 [% IF c('var/windows') -%]
