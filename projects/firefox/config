@@ -21,6 +21,12 @@ var:
     - python
 
 targets:
+  nightly:
+    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1'
+    tag_gpg_id: 0
+    var:
+      torbrowser_update_channel: default
+
   linux-x86_64:
     var:
       martools_filename: mar-tools-linux64.zip
