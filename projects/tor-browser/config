@@ -43,9 +43,9 @@ input_files:
   - project: fonts
     name: fonts
   - filename: Bundle-Data
-  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-2.9.5.2-fx+sm.xpi
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-2.9.5.3-fx+sm.xpi
     name: noscript
-    sha256sum: ed71ca922790e81bc5e8c6a87bb81f394a38676ac37d1fba518a6a428d128dd5
+    sha256sum: ce9779a3a5a2574b958f8e4d079a99d43a8f84193bef52c587c704ed81c2fbbd
   - filename: RelativeLink
     enable: '[% c("var/linux") %]'
   - project: libdmg-hfsplus
