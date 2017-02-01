@@ -1,0 +1,24 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://go.googlesource.com/crypto
+git_hash: 4ed45ec682102c643324fae5dff8dab085b6c300
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+build: '[% c("projects/go/var/build_go_lib") %]'
+
+var:
+  go_lib: golang.org/x/crypto
+  go_lib_install:
+    - golang.org/x/crypto/curve25519
+    - golang.org/x/crypto/hkdf
+    - golang.org/x/crypto/nacl/secretbox
+
+targets:
+  nightly:
+    git_hash: master
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go

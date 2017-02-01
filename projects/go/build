@@ -1,0 +1,74 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/dist
+
+[% IF c("var/linux") %]
+  # Config options for hardening-wrapper
+  export DEB_BUILD_HARDENING=1
+  export DEB_BUILD_HARDENING_STACKPROTECTOR=1
+  export DEB_BUILD_HARDENING_FORTIFY=1
+  export DEB_BUILD_HARDENING_FORMAT=1
+  export DEB_BUILD_HARDENING_PIE=1
+[% END %]
+
+mkdir -p /var/tmp/build
+
+# Building go 1.4.x
+# This is needed to bootstrap the go that we actually use
+# https://golang.org/doc/install/source#go14
+tar -C /var/tmp/build --transform='s,^go\>,go1.4,' -xf $rootdir/[% c('input_files_by_name/go14') %]
+cd /var/tmp/build/go1.4/src
+# Disable cgo to avoid conflicts with newer GCC. cgo is not needed for the bootstrap go.
+# https://github.com/golang/go/issues/13114#issuecomment-186922245
+# Disable CC etc. that are set up for cross builds.
+CGO_ENABLED=0 CC= CFLAGS= LDFLAGS= ./make.bash
+export GOROOT_BOOTSTRAP="/var/tmp/build/go1.4"
+
+cd $rootdir
+[% IF ! c("var/linux") %]
+  [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+[% END %]
+
+# Building go
+# http://golang.org/doc/install/source#environment
+tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/go') %]
+export GOROOT="$distdir"
+cd /var/tmp/dist/go/src
+[% IF c("var/linux") -%]
+  ./make.bash
+[% ELSIF c("var/osx") -%]
+  # Create a cc-for-target script that closes over CC, CFLAGS, and LDFLAGS.
+  # Go's CC_FOR_TARGET only allows a command name, not a command with arguments.
+  # https://github.com/golang/go/issues/15457
+  CC_FOR_TARGET="$(pwd)/cc-for-target"
+  echo "#!/bin/sh" > "$CC_FOR_TARGET"
+  echo "exec $CC $CFLAGS $LDFLAGS -std=gnu99 \"\$@\"" >> "$CC_FOR_TARGET"
+  chmod +x "$CC_FOR_TARGET"
+  # http://golang.org/doc/install/source#environment
+  export GOOS=darwin
+  export GOARCH=386
+  # Remove a preprocessor directive that causes problems when building with the 10.7 SDK.
+  # https://github.com/golang/go/issues/17732
+  sed -i -e '/^#cgo CFLAGS:/s/-D__MAC_OS_X_VERSION_MAX_ALLOWED=1060//' crypto/x509/root_cgo_darwin.go
+  CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= ./make.bash
+[% ELSIF c("var/windows") -%]
+  # Create a cc-for-target script that closes over CC, CFLAGS, and LDFLAGS.
+  # Go's CC_FOR_TARGET only allows a command name, not a command with arguments.
+  # https://github.com/golang/go/issues/15457
+  CC_FOR_TARGET="$(pwd)/cc-for-target"
+  echo "#!/bin/sh" > "$CC_FOR_TARGET"
+  echo "exec i686-w64-mingw32-gcc [% c("var/CFLAGS") %] [% c("var/LDFLAGS") %] \"\$@\"" >> "$CC_FOR_TARGET"
+  chmod +x "$CC_FOR_TARGET"
+  # http://golang.org/doc/install/source#environment
+  export GOOS=windows
+  export GOARCH=386
+  CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= ./make.bash
+[% END -%]
+
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

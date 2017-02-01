@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+[% pc('go', 'var/setup', { go_tarfile => c('input_files_by_name/go') }) %]
+distdir=/var/tmp/dist/[% project %]
+[% IF c("var/osx") %]
+  PTDIR="$distdir/Contents/MacOS/Tor/PluggableTransports"
+[% ELSE %]
+  PTDIR="$distdir/TorBrowser/Tor/PluggableTransports"
+[% END %]
+mkdir -p $PTDIR
+
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goptlib') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/ed25519') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/siphash') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/uniuri') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxcrypto') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxnet') %]
+
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+cd /var/tmp/build/[% project %]-[% c('version') %]
+
+mkdir -p "$GOPATH/src/git.torproject.org/pluggable-transports"
+ln -sf "$PWD" "$GOPATH/src/git.torproject.org/pluggable-transports/obfs4.git"
+cd obfs4proxy
+go build -ldflags '-s'
+cp -a obfs4proxy[% IF c("var/windows") %].exe[% END %] $PTDIR
+
+cd $distdir
+[% c('tar', {
+        tar_src => [ '.' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

@@ -1,0 +1,15 @@
+# vim: filetype=yaml sw=2
+version: 0.25
+git_url: https://git.torproject.org/pluggable-transports/meek.git
+git_hash: '[% c("version") %]'
+tag_gpg_id: 1
+gpg_keyring: meek.gpg
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go
+  - name: goptlib
+    project: goptlib

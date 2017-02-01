@@ -52,7 +52,9 @@ mv [% c('input_files_by_name/torbutton') %] $TBDIR/$EXTSPATH/torbutton@torprojec
 mv [% c('input_files_by_name/https-everywhere') %] $TBDIR/$EXTSPATH/https-everywhere-eff@eff.org.xpi
 mv [% c('input_files_by_name/noscript') %] $TBDIR/$EXTSPATH/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi
 
-# TODO: add meek xpi
+tar -C $TBDIR -xf [% c('input_files_by_name/obfs4') %]
+tar -C $TBDIR -xf [% c('input_files_by_name/meek') %]
+mv $TBDIR/meek-http-helper@bamsoftware.com.xpi $TBDIR/$MEEKPROFILEPATH/extensions/
 
 tar -C $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %] -xf [% c('input_files_by_name/fonts') %]
 
@@ -105,7 +107,18 @@ tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_b
 cp -a Bundle-Data/Docs $TBDIR/$DOCSPATH
 tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -x
 
-# TODO: install pluggable transports here
+cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TBDIR/$TORCONFIGPATH/torrc-defaults
+cat Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> $TBDIR/$MEEKPROFILEPATH/user.js
+
+[% IF c("var/osx") %]
+  pushd $TBDIR
+  # Create the meek-template-sha256sum.txt file by generating a list
+  # of hashes (one for each file within the meek-http-helper profile) and
+  # and then generating one final hash from the contents of the list.
+  sha256sum `find $MEEKPROFILEPATH -type f | sort` | sha256sum | sed -e 's/ *-$//' > $MEEKPROFILEPATH/meek-template-sha256sum.txt
+  popd
+[% END %]
 
 [% IF c("var/multi_lingual") %]
   echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> $TBDIR/$EXTOVERRIDESPATH

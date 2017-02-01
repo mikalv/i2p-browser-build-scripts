@@ -1,0 +1,18 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://github.com/agl/ed25519.git
+git_hash: c4161f4c7483313562781c61b9a20aba73daf9de
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+build: '[% c("projects/go/var/build_go_lib") %]'
+
+var:
+  go_lib: github.com/agl/ed25519
+  go_lib_install:
+    - github.com/agl/ed25519/extra25519
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go

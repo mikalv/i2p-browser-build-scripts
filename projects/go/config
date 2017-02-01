@@ -1,0 +1,80 @@
+# vim: filetype=yaml sw=2
+version: 1.7.4
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+var:
+  go14_version: 1.4.3
+
+  setup: |
+    mkdir -p /var/tmp/dist
+    tar -C /var/tmp/dist -xf $rootdir/[% c("go_tarfile") %]
+    export GOOS=[% c("var/GOOS") %]
+    export GOARCH=[% c("var/GOARCH") %]
+    export GOPATH=/var/tmp/dist/gopath
+    export PATH=/var/tmp/dist/go/bin:"$PATH"
+
+  # Template build script for building a go library.
+  # This can be called as projects/go/var/build_go_lib.
+  # You need to define /var/go_lib, and optionaly var/go_lib_install as
+  # a list of install targets.
+  build_go_lib: |
+    #!/bin/bash
+    set -e
+    rootdir=$(pwd)
+    [% pc('go', 'var/setup', { go_tarfile => c('input_files_by_name/go') }) %]
+    distdir=/var/tmp/dist/[% project %]
+    mkdir -p /var/tmp/build
+    tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+    mkdir -p $(dirname "$GOPATH/src/[% c("var/go_lib") %]")
+    mv /var/tmp/build/[% project %]-[% c('version') %] "$GOPATH/src/[% c("var/go_lib") %]"
+    cd "$GOPATH/src/[% c("var/go_lib") %]"
+    [% IF c("var/go_lib_install") -%]
+      [% FOREACH inst IN c("var/go_lib_install") %]
+        go install [% inst %]
+      [% END %]
+    [% ELSE %]
+      go install [% c("var/go_lib") %]
+    [% END %]
+    cd /var/tmp/dist
+    [% c('tar', {
+            tar_src => [ 'gopath' ],
+            tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+        }) %]
+
+targets:
+  windows-i686:
+    var:
+      GOOS: windows
+      GOARCH: 386
+  osx-x86_64:
+    var:
+      arch_deps:
+        - libc6-i386
+        - libstdc++6:i386
+      pre_pkginst: dpkg --add-architecture i386
+      compiler: macosx-toolchain-gcc
+      10_7_SDK: 1
+      GOOS: darwin
+      GOARCH: 386
+  linux:
+    var:
+      GOOS: linux
+  linux-x86_64:
+    var:
+      GOARCH: amd64
+  linux-i686:
+    var:
+      GOARCH: 386
+
+input_files:
+  - project: docker-image
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") || c("var/osx") %]'
+  - URL: 'https://golang.org/dl/go[% c("version") %].src.tar.gz'
+    name: go
+    sha256sum: 4c189111e9ba651a2bb3ee868aa881fab36b2f2da3409e80885ca758a6b614cc
+  - URL: 'https://golang.org/dl/go[% c("var/go14_version") %].src.tar.gz'
+    name: go14
+    sha256sum: 9947fc705b0b841b5938c48b22dc33e9647ec0752bae66e50278df4f23f64959

@@ -42,6 +42,10 @@ input_files:
     name: https-everywhere
   - project: fonts
     name: fonts
+  - project: meek
+    name: meek
+  - project: obfs4
+    name: obfs4
   - filename: Bundle-Data
   - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-2.9.5.3-fx+sm.xpi
     name: noscript

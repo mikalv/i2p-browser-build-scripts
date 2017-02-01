@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+[% pc('go', 'var/setup', { go_tarfile => c('input_files_by_name/go') }) %]
+distdir=/var/tmp/dist/[% project %]
+[% IF c("var/osx") %]
+  PTDIR="$distdir/Contents/MacOS/Tor/PluggableTransports"
+  DOCSDIR="$distdir/Contents/Resources/TorBrowser/Docs/meek"
+[% ELSE %]
+  PTDIR="$distdir/TorBrowser/Tor/PluggableTransports"
+  DOCSDIR="$distdir/TorBrowser/Docs/meek"
+[% END %]
+mkdir -p $PTDIR $DOCSDIR
+
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goptlib') %]
+
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+cd /var/tmp/build/[% project %]-[% c('version') %]
+
+cd meek-client
+go build -ldflags '-s'
+cp -a meek-client[% IF c("var/windows") %].exe[% END %] $PTDIR
+
+cd ../meek-client-torbrowser
+go build -ldflags '-s'
+cp -a meek-client-torbrowser[% IF c("var/windows") %].exe[% END %] $PTDIR
+
+
+[% IF c("var/windows") %]
+  cd ../terminateprocess-buffer
+  go build -ldflags '-s'
+  cp -a terminateprocess-buffer.exe $PTDIR
+[% END %]
+
+cd ..
+cp -a README doc/* $DOCSDIR
+
+cd firefox
+[% c('zip', {
+     zip_src => [ '.' ],
+     zip_args => '$distdir/meek-http-helper@bamsoftware.com.xpi',
+   }) %]
+
+cd $distdir
+[% c('tar', {
+        tar_src => [ '.' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]
