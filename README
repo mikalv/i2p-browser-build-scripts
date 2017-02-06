@@ -149,6 +149,15 @@ the build files in the tor-browser-builds/ directory (unless you changed
 the publish_dir option).
 
 
+Signing builds
+--------------
+
+If the environment variable RBM_SIGN_BUILD is set to 1, the
+sha256sums-unsigned-build.txt file will be signed with gpg.
+You can use the RBM_GPG_OPTS environment variable to add some options
+to the gpg command used to sign the file.
+
+
 Cleaning obsolete files and containers images
 ---------------------------------------------
 
