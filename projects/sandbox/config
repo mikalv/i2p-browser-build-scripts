@@ -1,0 +1,29 @@
+# vim: filetype=yaml sw=2
+version: 0.0.3
+git_url: https://git.schwanenlied.me/yawning/sandboxed-tor-browser
+git_hash: 'sandboxed-tor-browser-[% c("version") %]'
+tag_gpg_id: 1
+gpg_keyring: obfs4.gpg
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+distribution: Debian-8.7
+
+var:
+  deps:
+    - libx11-dev
+    - pkg-config
+    - libgtk-3-dev
+    - libnotify-dev
+    - zip
+
+targets:
+  nightly:
+    git_hash: master
+    tag_gpg_id: 0
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go
+  - name: gogb
+    project: gogb

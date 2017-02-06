@@ -75,6 +75,13 @@ input_files:
      - '[% c("var/build_target") %]'
      - torbrowser-linux-x86_64
 
+ - name: sandbox-linux-x86_64
+   project: sandbox
+   enable: '[% c("var/torbrowser-linux-x86_64") %]'
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-linux-x86_64
+
  - name: linux-i686
    project: tor-browser
    enable: '[% c("var/torbrowser-linux-i686") %]'
@@ -114,6 +121,7 @@ build: |
   [% END -%]
   [% IF c("var/torbrowser-linux-x86_64") -%]
     mv [% c('input_files_by_name/linux-x86_64') %]/* "$destdir"/
+    mv [% c('input_files_by_name/sandbox-linux-x86_64') %] "$destdir"/sandbox-[% pc('sandbox', 'version') %]-linux64.zip
   [% END -%]
   cd "$destdir"
   sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt

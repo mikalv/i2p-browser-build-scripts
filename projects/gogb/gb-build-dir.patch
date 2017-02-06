@@ -1,0 +1,31 @@
+From a7b198e3a32509197150d7c2767262a7319ff339 Mon Sep 17 00:00:00 2001
+From: Georg Koppen <gk@torproject.org>
+Date: Tue, 6 Dec 2016 21:34:16 +0000
+Subject: [PATCH] Make the gb build directory deterministic
+
+
+diff --git a/context.go b/context.go
+index 53c00da..d040082 100644
+--- a/context.go
++++ b/context.go
+@@ -3,7 +3,6 @@ package gb
+ import (
+ 	"fmt"
+ 	"io"
+-	"io/ioutil"
+ 	"os"
+ 	"os/exec"
+ 	"path/filepath"
+@@ -136,7 +135,8 @@ func NewContext(p Project, opts ...func(*Context) error) (*Context, error) {
+ 		},
+ 		GcToolchain(),
+ 	}
+-	workdir, err := ioutil.TempDir("", "gb")
++	workdir := filepath.Join(os.TempDir(), "gb")
++	err := os.Mkdir(workdir, 0777)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-- 
+2.10.2
+
