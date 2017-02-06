@@ -124,5 +124,5 @@ build: |
     mv [% c('input_files_by_name/sandbox-linux-x86_64') %] "$destdir"/sandbox-[% pc('sandbox', 'version') %]-linux64.zip
   [% END -%]
   cd "$destdir"
-  sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
+  sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar *.zip | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
   cat sha256sums-unsigned-build.txt
