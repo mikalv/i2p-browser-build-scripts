@@ -164,3 +164,10 @@ Cleaning obsolete files and containers images
 There will be a script to clean old build files and containers that are
 no longer used, but it has not been added yet.
 
+
+Common Build Errors
+-------------------
+
+You can look at the README.BUILD_ERRORS file for a list of common build
+errors and their solutions.
+

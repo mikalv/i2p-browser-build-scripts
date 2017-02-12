@@ -1,0 +1,44 @@
+This file lists some common build errors and their solutions.
+
+
+Error starting remote
+---------------------
+
+If you have an error like this:
+
+----
+Error: Error starting remote:
+/bin/sh: 1: adduser: not found
+Segmentation fault (core dumped)
+----
+
+You might be having this issue:
+https://github.com/docker/docker/issues/28705
+
+When the kernel is configured with CONFIG_LEGACY_VSYSCALL_NONE, running
+Debian Wheezy containers fails with a segfault. This should be fixed by
+adding "vsyscall=emulate"to the kernel cmdline.
+
+If you are building inside Qubes, you can change the kernel cmdline for
+the VM you are using with something like this in dom0:
+
+----
+$ qvm-pref --get [vmname] kernelopts
+nopat
+$ qvm-pref --set [vmname] kernelopts 'nopat vsyscall=emulate'
+----
+
+
+tmp partition is full
+---------------------
+
+If your /tmp partition is small, you will get a 'No space left on device'
+error during the build. To select an other directory with more space
+available to store temporary files, you can define the TMPDIR environment
+variable:
+
+----
+$ mkdir /home/user/tmp
+$ export TMPDIR=/home/user/tmp
+----
+
