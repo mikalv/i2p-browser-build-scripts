@@ -89,6 +89,8 @@ the RBM_NO_DEBUG environment variable to 1:
 
    export RBM_NO_DEBUG=1
 
+Or set the debug option to 0 in the rbm.local.conf file.
+
 If you want to select the output directory, you can use rbm's --output-dir
 option. You can look at the Makefile to find the rbm command for what
 you want to build, and add the --output-dir option. For example if you

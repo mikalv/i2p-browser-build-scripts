@@ -42,3 +42,5 @@ $ mkdir /home/user/tmp
 $ export TMPDIR=/home/user/tmp
 ----
 
+You can also define the tmp_dir option in the rbm.local.conf file.
+

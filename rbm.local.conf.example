@@ -1,0 +1,22 @@
+---
+### This file is used to override options from rbm.conf to adapt them
+### to your local setup.
+###
+### Copy this file as rbm.local.conf to enable it, and uncomment the
+### options you want to modify.
+
+
+### The tmp_dir option defines where temporary files are stored.
+### You should modify this if your /tmp partition is small.
+#tmp_dir: /tmp
+
+### The debug option defines whether a debugging shell should be opened
+### automatically in the build directory/container in case of build
+### failure. If you are doing automated builds, you might want to disable
+### this.
+#debug: 0
+
+var:
+  local_conf: 1
+
+# vim: filetype=yaml sw=2
