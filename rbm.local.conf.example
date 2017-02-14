@@ -19,4 +19,13 @@
 var:
   local_conf: 1
 
+  ### The var/sign_build option defines if you want to sign the
+  ### sha256sums-unsigned-build.txt file with gpg.
+  #sign_build: 1
+
+  ### The var/sign_build_gpg_opts option can be used to define some gpg
+  ### options to select the key to use to sign the sha256sums-unsigned-build.txt
+  ### file.
+  #sign_build_gpg_opts: '--local-user XXXXXXXX'
+
 # vim: filetype=yaml sw=2

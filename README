@@ -157,7 +157,9 @@ Signing builds
 If the environment variable RBM_SIGN_BUILD is set to 1, the
 sha256sums-unsigned-build.txt file will be signed with gpg.
 You can use the RBM_GPG_OPTS environment variable to add some options
-to the gpg command used to sign the file.
+to the gpg command used to sign the file. You can also set the
+var/sign_build and var/sign_build_gpg_opts options in the rbm.local.conf
+file.
 
 
 Cleaning obsolete files and containers images
