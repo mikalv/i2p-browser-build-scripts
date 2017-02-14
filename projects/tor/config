@@ -36,6 +36,10 @@ targets:
         - libtool
         - zlib1g-dev
         - hardening-wrapper
+  osx-x86_64:
+    var:
+      arch_deps:
+        - faketime
   expert-bundle:
     var:
       expert_bundle: 1

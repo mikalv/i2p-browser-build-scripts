@@ -58,8 +58,15 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 ./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
     [% IF c("var/windows") %]--with-zlib-dir="$zlibdir"[% END %] \
     --prefix="$distdir" [% c("var/configure_opt") %]
+[% IF c("var/osx") -%]
+  export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
+  export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
+[% END -%]
 make -j4
 make install
+[% IF c("var/osx") -%]
+  unset LD_PRELOAD
+[% END -%]
 cp $distdir/share/tor/geoip $TORCONFIGDIR
 cp $distdir/share/tor/geoip6 $TORCONFIGDIR
 
