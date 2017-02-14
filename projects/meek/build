@@ -34,7 +34,7 @@ cp -a meek-client-torbrowser[% IF c("var/windows") %].exe[% END %] $PTDIR
 [% END %]
 
 cd ..
-cp -a README doc/* $DOCSDIR
+cp -a README doc/*.1 $DOCSDIR
 
 cd firefox
 [% c('zip', {
