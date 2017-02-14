@@ -169,6 +169,18 @@ There will be a script to clean old build files and containers that are
 no longer used, but it has not been added yet.
 
 
+Multiple build directories on the same host
+-------------------------------------------
+
+You can do multiple builds of Tor Browser in different directories on
+the same host. However the docker images namespace is global, so you
+may have some conflicts with the same image names used by the
+different builds. By default, the docker images are prefixed with
+tor-browser_$USER. You can change this prefix by defining the
+docker_image_prefix option in rbm.local.conf, using a different prefix
+for each of your build directories.
+
+
 Common Build Errors
 -------------------
 
