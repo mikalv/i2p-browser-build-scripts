@@ -105,7 +105,8 @@ tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_b
   tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
 [% END %]
 
-cp -a Bundle-Data/Docs $TBDIR/$DOCSPATH
+mkdir -p $TBDIR/$DOCSPATH
+cp -a Bundle-Data/Docs/* $TBDIR/$DOCSPATH
 tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -x
 
 cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TBDIR/$TORCONFIGPATH/torrc-defaults
