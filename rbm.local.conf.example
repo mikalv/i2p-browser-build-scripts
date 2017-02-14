@@ -22,6 +22,11 @@
 ### use the same docker image names.
 #docker_image_prefix: tor-browser_XXXXX
 
+### The build_log option defines in which file the build logs of each
+### component are stored. If you set it to '-' the logs are output on
+### stdout and stderr.
+#build_log: '-'
+
 var:
   local_conf: 1
 
