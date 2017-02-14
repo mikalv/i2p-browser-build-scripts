@@ -34,6 +34,7 @@ TB_STAGE_DIR=$distdir/tor-browser-stage
 
   DOCSPATH=TorBrowser/Docs
   EXTSPATH=TorBrowser/Data/Browser/profile.default/extensions
+  TORCONFIGPATH=TorBrowser/Data/Tor
   EXTOVERRIDESPATH=TorBrowser/Data/Browser/profile.default/preferences/extension-overrides.js
   MEEKPROFILEPATH=TorBrowser/Data/Browser/profile.meek-http-helper
 
