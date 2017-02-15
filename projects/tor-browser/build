@@ -251,7 +251,7 @@ MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OU
 [% ELSIF c("var/osx") %]
   [% c('var/ddmg', {
         dmg_src => '"$PKG_DIR"',
-        dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_' _ '_${PKG_LOCALE}.dmg',
+        dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_${PKG_LOCALE}.dmg',
     }) %]
 [% ELSIF c("var/windows") %]
   pushd "${TB_STAGE_DIR}"
@@ -318,7 +318,7 @@ rm -rf $distdir/${PKG_DIR}
       [% ELSIF c("var/osx") %]
         [% c('var/ddmg', {
           dmg_src => tbdir,
-          dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_' _ '_' _ lang _ '.dmg',
+          dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_' _ lang _ '.dmg',
         }) %]
       [% ELSIF c("var/windows") %]
         pushd "[% tbdir %]"
