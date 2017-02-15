@@ -22,11 +22,11 @@ mkdir -p $TORBINDIR
 mkdir -p $TORCONFIGDIR
 [% END %]
 
-tar -C /var/tmp/build -xf [% c('input_files_by_name/openssl') %]
-tar -C /var/tmp/build -xf [% c('input_files_by_name/libevent') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/openssl') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/libevent') %]
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
-libeventdir=/var/tmp/build/libevent
-openssldir=/var/tmp/build/openssl
+libeventdir=/var/tmp/dist/libevent
+openssldir=/var/tmp/dist/openssl
 
 [% IF c("var/windows") %]
 tar -C /var/tmp/build -xf [% c('input_files_by_name/zlib') %]
