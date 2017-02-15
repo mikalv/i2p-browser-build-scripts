@@ -53,6 +53,10 @@ chmod 700 "$distdir"/Tor/*.so*
 export LD_LIBRARY_PATH="$distdir/Tor/"
 [% END %]
 
+[% IF c("var/osx") %]
+cp $libeventdir/lib/libevent-*.dylib $TORBINDIR/
+[% END %]
+
 cd /var/tmp/build/[% project %]-[% c('version') %]
 ./autogen.sh
 find -type f -print0 | xargs -0 [% c("var/touch") %]
