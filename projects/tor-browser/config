@@ -22,6 +22,7 @@ targets:
         - unzip
         - python
         - bzip2
+        - faketime
   windows-i686:
     var:
       mar_osname: win32
