@@ -24,6 +24,7 @@ targets:
         - bzip2
         - faketime
   windows-i686:
+    distribution: Ubuntu-14.10
     var:
       mar_osname: win32
 

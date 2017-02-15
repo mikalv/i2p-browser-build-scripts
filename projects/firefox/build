@@ -1,6 +1,18 @@
 #!/bin/bash
 set -e
 rootdir=$(pwd)
+[% IF c("var/windows") -%]
+  mkdir -p /var/tmp/dist
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/gcc') %]
+  hgccdir=/var/tmp/dist/gcc
+  # We need a link to our GCC, otherwise the system cc gets used which points to
+  # /usr/bin/gcc.
+  ln -s gcc $hgccdir/bin/cc
+  # Make sure our GCC (as host compiler) get used. We do that before
+  # compiler setup so that mingw is first in the PATH.
+  export LD_LIBRARY_PATH=$hgccdir/lib64
+  export PATH=$hgccdir/bin:$PATH
+[% END -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
