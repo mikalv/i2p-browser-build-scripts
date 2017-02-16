@@ -108,15 +108,23 @@ done
 
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
 [%
-   IF c("var/osx");
-     SET tarsrcdir = [ 'Contents' ];
+   IF c("var/expert_bundle");
+     c('zip', {
+        zip_src => [ 'Data', 'Tor', ],
+        zip_args => dest_dir _ '/' _ c('filename') _ '/tor-win32-' _ c("version") _ '.zip',
+      });
    ELSE;
-     SET tarsrcdir = [ 'Data', 'Tor', ];
+     IF c("var/osx");
+       SET tarsrcdir = [ 'Contents' ];
+     ELSE;
+       SET tarsrcdir = [ 'Data', 'Tor', ];
+     END;
+     c('tar', {
+          tar_src => tarsrcdir,
+          tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor.tar.gz',
+      });
    END;
-   c('tar', {
-        tar_src => tarsrcdir,
-        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor.tar.gz',
-    }) %]
+%]
 
 [% IF c("var/linux") %]
 [% c('tar', {

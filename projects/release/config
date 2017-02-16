@@ -103,6 +103,13 @@ input_files:
      - '[% c("var/build_target") %]'
      - torbrowser-osx-x86_64
 
+ - name: windows-expert-bundle
+   project: tor
+   enable: '[% c("var/torbrowser-windows-i686") %]'
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-windows-i686
+     - expert-bundle
 
 build: |
   #!/bin/sh
@@ -112,6 +119,7 @@ build: |
   mkdir -p "$destdir"
   [% IF c("var/torbrowser-windows-i686") -%]
     mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
+    mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/
   [% END -%]
   [% IF c("var/torbrowser-osx-x86_64") -%]
     mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
