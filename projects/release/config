@@ -54,6 +54,12 @@ targets:
     var:
       build_target: alpha
 
+  testbuild:
+    output_dir: 'testbuild'
+    version: '.'
+    var:
+      build_target: torbrowser-testbuild
+
   hardened_nightly:
     output_dir: 'hardened_nightly'
     version: '[% c("var/today") %]'

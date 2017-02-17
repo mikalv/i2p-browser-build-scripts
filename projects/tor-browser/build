@@ -240,9 +240,13 @@ python $MARTOOLS/createprecomplete.py
 popd
 
 cd $distdir
-# Create full MAR file and compressed package.
-MAR_FILE=tor-browser-[% c("var/mar_osname") %]-[% c("var/torbrowser_version") %]_${PKG_LOCALE}.mar
-MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/$MAR_FILE "$TBDIR"
+
+[% IF c("var/build_mar") -%]
+  # Create full MAR file and compressed package.
+  MAR_FILE=tor-browser-[% c("var/mar_osname") %]-[% c("var/torbrowser_version") %]_${PKG_LOCALE}.mar
+  MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/$MAR_FILE "$TBDIR"
+[% END -%]
+
 [% IF c("var/linux") %]
   [% c('tar', {
         tar_src => [ '$PKG_DIR' ],

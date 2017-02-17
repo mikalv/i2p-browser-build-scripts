@@ -39,4 +39,19 @@ var:
   ### file.
   #sign_build_gpg_opts: '--local-user XXXXXXXX'
 
+targets:
+
+  ### testbuild is based on alpha by default. Uncomment this if you want it
+  ### to be based on nightly.
+  #torbrowser-testbuild:
+  #  - testbuild
+  #  - nightly
+
+  testbuild:
+    var:
+      testbuild: 1
+
+      ### Uncomment this if you want to create mar files in your test build.
+      #build_mar: 1
+
 # vim: filetype=yaml sw=2

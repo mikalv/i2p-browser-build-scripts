@@ -6,5 +6,6 @@ alpha
 alpha_nightly
 nightly
 hardened
+testbuild
 rbm.local.conf
 logs

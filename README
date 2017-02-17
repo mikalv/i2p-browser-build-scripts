@@ -70,6 +70,12 @@ name to the makefile target:
   $ make nightly-windows-i686
   $ make nightly-osx-x86_64
 
+When you want to quickly do a build to test a change, you can use the
+testbuild makefile target, and find the build in the testbuild directory.
+The build will be the same as regular alpha builds, except that in order
+to make the build faster, only the en-US locale will be built, and no
+mar file will be created.
+
 
 Updating git sources
 --------------------

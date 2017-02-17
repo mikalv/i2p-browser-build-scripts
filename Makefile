@@ -62,6 +62,21 @@ alpha_nightly-windows-i686: submodule-update
 alpha_nightly-osx-x86_64: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-osx-x86_64
 
+testbuild: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-all
+
+testbuild-linux-x86_64: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64
+
+testbuild-linux-i686: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-linux-i686
+
+testbuild-windows-i686: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-windows-i686
+
+testbuild-osx-x86_64: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-osx-x86_64
+
 hardened-linux-x86_64: submodule-update
 	$(rbm) build release --target hardened --target torbrowser-linux-x86_64
 
