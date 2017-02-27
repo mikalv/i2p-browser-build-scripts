@@ -146,10 +146,19 @@ do
 done
 [% END %]
 
-# TODO:
-#  ~/build/re-dzip.sh Browser/omni.ja
-#  ~/build/re-dzip.sh Browser/webapprt/omni.ja
-#  ~/build/re-dzip.sh Browser/browser/omni.ja
+# Re-zipping the omni.ja files is not needed to make them reproductible,
+# however if we don't re-zip them, the files become corrupt when we
+# update them using 'zip' and firefox will silently fail to load some
+# parts.
+[% IF c("var/windows") || c("var/linux") %]
+  [% c("var/rezip", { rezip_file => 'Browser/omni.ja' }) %]
+  [% c("var/rezip", { rezip_file => 'Browser/browser/omni.ja' }) %]
+  [% IF c("var/linux") %][% c("var/rezip", { rezip_file => 'Browser/webapprt/omni.ja' }) %][% END %]
+[% ELSIF c("var/osx") %]
+  [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/omni.ja' }) %]
+  [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/webapprt/omni.ja' }) %]
+  [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/browser/omni.ja' }) %]
+[% END %]
 
 [% IF c("var/windows") %]
 cp $rootdir/msvcr100.dll Browser/
