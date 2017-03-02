@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 version: 0.0.3
-git_url: https://git.schwanenlied.me/yawning/sandboxed-tor-browser
+git_url: https://git.torproject.org/tor-browser/sandboxed-tor-browser
 git_hash: 'sandboxed-tor-browser-[% c("version") %]'
 tag_gpg_id: 1
 gpg_keyring: obfs4.gpg
