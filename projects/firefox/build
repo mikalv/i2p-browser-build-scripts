@@ -17,7 +17,8 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 
 [% IF c("var/linux") %]
-tar xf $rootdir/[% c('input_files_by_name/binutils') %]
+mkdir -p /var/tmp/dist
+tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
 export PATH="/var/tmp/dist/binutils/bin:$PATH"
 [% END -%]
 
