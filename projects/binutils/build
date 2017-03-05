@@ -1,6 +1,5 @@
-#!/bin/sh
-set -e
-rootdir=$(pwd)
+#!/bin/bash
+[% c("var/set_default_env") -%]
 distdir=/var/tmp/dist/binutils
 [% IF c("var/linux") %]
   # Config options for hardening-wrapper

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+[% c("var/set_default_env") -%]
 
 [% FOREACH lang = c('var/locales') %]
 [% SET lang = tmpl(lang) %]

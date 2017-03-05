@@ -1,5 +1,5 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+[% c("var/set_default_env") -%]
 distdir=$(pwd)/dist
 mkdir -p $distdir/[% project %]
 tar xf [% project %]-[% c('version') %].tar.gz

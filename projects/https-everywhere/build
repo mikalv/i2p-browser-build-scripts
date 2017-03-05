@@ -1,5 +1,5 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+[% c("var/set_default_env") -%]
 tar xf [% project %]-[% c('version') %].tar.gz
 cd [% project %]-[% c('version') %]
 # patch makexpi.sh because we don't have a git repository

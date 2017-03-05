@@ -1,6 +1,5 @@
 #!/bin/bash
-set -e
-rootdir=$(pwd)
+[% c("var/set_default_env") -%]
 [% pc('go', 'var/setup', { go_tarfile => c('input_files_by_name/go') }) %]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p $distdir

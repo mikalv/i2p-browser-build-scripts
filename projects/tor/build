@@ -1,9 +1,5 @@
 #!/bin/bash
-set -e
-rootdir=$(pwd)
-export TZ=UTC
-export LC_ALL=C
-umask 0022
+[% c("var/set_default_env") -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build

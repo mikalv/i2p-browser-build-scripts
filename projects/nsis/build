@@ -1,6 +1,5 @@
-#!/bin/sh
-set -e
-rootdir=$(pwd)
+#!/bin/bash
+[% c("var/set_default_env") -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 # remove hardening wrappers
 rm -Rf /var/tmp/dist/mingw-w64/helpers
