@@ -3,7 +3,7 @@ version: 2.24
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 var:
-  configure_opt: '--disable-multilib --enable-gold --enable-deterministic-archives'
+  configure_opt: '--disable-multilib --enable-gold --enable-deterministic-archives --enable-plugins'
 
 targets:
   windows-i686:
