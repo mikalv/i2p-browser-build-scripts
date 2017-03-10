@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 1.0.2j
+version: 1.0.2k
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 
@@ -24,15 +24,9 @@ targets:
       pre_pkginst: dpkg --add-architecture i386
       compiler: macosx-toolchain-gcc
 
-  nightly:
-    version: 1.0.2k
-
 input_files:
   - project: docker-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
   - URL: 'https://www.openssl.org/source/openssl-[% c("version") %].tar.gz'
-    sha256sum: e7aff292be21c259c6af26469c7a9b3ba26e9abaaffd325e3dccc9785256c431
-    targets:
-      nightly:
-        sha256sum: 6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0
+    sha256sum: 6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0
