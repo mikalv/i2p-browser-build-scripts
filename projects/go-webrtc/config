@@ -1,0 +1,53 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://github.com/keroserene/go-webrtc.git
+git_hash: 69c5ca70533142494d145b43ef2f46ca94715557
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+build: '[% c("projects/go/var/build_go_lib") %]'
+
+var:
+  go_lib: github.com/keroserene/go-webrtc
+  build_go_lib_pre: |
+    [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+    [% IF c("var/linux") %]
+      tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
+      export PATH="/var/tmp/dist/binutils/bin:$PATH"
+    [% END -%]
+    tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/webrtc') %]
+    # Replace the prebuilt webrtc library with our own one.
+    rm -rf include/ lib/
+    cp -a /var/tmp/dist/webrtc/{include,lib} .
+    # The go-webrtc package sets _GLIBCXX_USE_CXX11_ABI=0 for compatibility with
+    # the prebuilt libwebrtc-magic.a libraries. Since we build our own
+    # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
+    # using CGO_CXXFLAGS.
+    export CGO_CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=1
+
+targets:
+  master:
+    git_hash: master
+  linux-x86_64:
+    var:
+      arch_deps:
+        - pkg-config
+        - libx11-dev
+  linux-i686:
+    var:
+      arch_deps:
+        - pkg-config:i386
+        - libx11-dev:i386
+        - lib32stdc++6
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go
+  - name: webrtc
+    project: webrtc
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - name: binutils
+    project: binutils
+    enable: '[% c("var/linux") %]'

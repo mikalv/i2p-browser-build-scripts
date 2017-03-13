@@ -1,0 +1,115 @@
+# vim: filetype=yaml sw=2
+version: '[% c("var/webrtc_tag") %]'
+remote_docker: 1
+filename: 'webrtc-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  webrtc_tag: f33698296719f956497d2dbff81b5080864a8804
+
+input_files:
+  - project: docker-image
+  - project: webrtc
+    pkg_type: fetch_sources
+  - project: depot_tools
+    name: depot_tools
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - project: binutils
+    name: binutils
+    enable: '[% c("var/linux") %]'
+
+targets:
+  linux:
+    var:
+      webrtc:
+        os: linux
+  linux-i686:
+    var:
+      dockerbuild: "[% pc('docker-image', 'pre') %]"
+      sort_deps: 0
+      arch_deps:
+        - default-jre-headless
+        - default-jdk
+        - lib32asound2-dev
+        - lib64expat1
+        - libexpat1-dev:i386
+        - libudev-dev:i386
+        - libx11-dev:i386
+        - libxext-dev:i386
+        - libxrandr-dev:i386
+        - lib32stdc++6
+        - hardening-wrapper
+      webrtc:
+        arch: ia32
+        lib_arch: 386
+        lib_path: lib/libwebrtc-linux-386-magic.a
+  linux-x86_64:
+    var:
+      arch_deps:
+        - default-jre-headless
+        - default-jdk
+        - libasound2-dev
+        - libexpat1-dev
+        - libudev-dev
+        - libx11-dev
+        - libxext-dev
+        - libxrandr-dev
+      webrtc:
+        arch: x64
+        lib_arch: amd64
+        lib_path: lib/libwebrtc-linux-amd64-magic.a
+
+steps:
+  fetch_sources:
+    remote_docker: 0
+    filename: 'webrtc-sources-[% c("var/webrtc_tag") %].tar.gz'
+    fetch_sources: |
+      #!/bin/bash
+      [% c("var/set_default_env") -%]
+      # WebRTC is special, having its own build system that brings in lots of Chromium dependencies.
+      # https://webrtc.org/native-code/development/
+      tar xf [% c('input_files_by_name/depot_tools') %]
+      export PATH="$rootdir/depot_tools:$PATH"
+      # GYP_CROSSCOMPILE=1 and GYP_DEFINES="use_x11=0" prevent probing for certain dependencies.
+      # Use --no-history because the whole checkout with history is about 12 GB.
+      export GYP_CROSSCOMPILE=1
+      export GYP_DEFINES="use_x11=0"
+      # JAVA_HOME is needed in a hook for libjingle. The readlink line tries to find the current JRE.
+      # default-java comes from the package default-jdk-headless.
+      export JAVA_HOME=/usr/lib/jvm/default-java
+      clone_dir='[% c("basedir") %]/gclient/webrtc'
+      mkdir -p "$clone_dir"
+      cd "$clone_dir"
+      if [ ! -d "src" ];
+      then
+        # "fetch" is part of depot_tools.
+        #fetch --nohooks --no-history webrtc
+        # FIXME: To avoid the unconditional `gclient sync` in the call to fetch,
+        # we inline the result of a `fetch --dry-run`
+        gclient root
+        gclient config --spec 'solutions = [
+          {
+            "managed": False,
+            "name": "src",
+            "url": "https://chromium.googlesource.com/external/webrtc.git",
+            "custom_deps": {},
+            "deps_file": "DEPS",
+            "safesync_url": "",
+          },
+        ]
+        '
+        gclient sync --nohooks --no-history --with_branch_heads -r [% c("var/webrtc_tag") %]
+        cd src
+        git submodule foreach 'git config -f $toplevel/.git/config submodule.$name.ignore all'
+        git config --add remote.origin.fetch '+refs/tags/*:refs/tags/*'
+        git config diff.ignoreSubmodules all
+        cd ..
+      fi
+      # "gclient" is part of depot_tools. This download takes a long time the first time.
+      gclient sync --no-history --with_branch_heads -r [% c("var/webrtc_tag") %]
+      cd ..
+      tar --exclude .git -czf [% dest_dir _ '/' _ c('filename') %] webrtc
+    input_files:
+      - project: depot_tools
+        name: depot_tools
+        pkg_type: build

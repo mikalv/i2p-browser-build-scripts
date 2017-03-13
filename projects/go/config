@@ -35,6 +35,7 @@ var:
     do
       patch -p1 < $p
     done
+    [% IF c("var/build_go_lib_pre"); GET c("var/build_go_lib_pre"); END; -%]
     [% IF c("var/go_lib_install") -%]
       [% FOREACH inst IN c("var/go_lib_install") %]
         go install [% inst %]

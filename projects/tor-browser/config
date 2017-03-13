@@ -48,6 +48,9 @@ input_files:
     name: meek
   - project: obfs4
     name: obfs4
+  - project: snowflake
+    name: snowflake
+    enable: '[% c("var/snowflake") %]'
   - filename: Bundle-Data
   - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-2.9.5.3-fx+sm.xpi
     name: noscript

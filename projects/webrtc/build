@@ -1,0 +1,80 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+distdir=/var/tmp/dist/[% project %]
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+
+mkdir -p /var/tmp/dist
+
+[% IF c("var/linux") %]
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
+  export PATH="/var/tmp/dist/binutils/bin:$PATH"
+[% END -%]
+
+# Setting up depot_tools
+# https://dev.chromium.org/developers/how-tos/install-depot-tools
+tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/depot_tools') %]
+export PATH="$PATH:/var/tmp/dist/depot_tools"
+# Disable automatic updating.
+export DEPOT_TOOLS_UPDATE=0
+
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf webrtc-sources-[% c('version') %].tar.gz
+
+builddir=/var/tmp/build/[% project %]/src
+cd $builddir
+export GYP_CROSSCOMPILE=1
+export GYP_DEFINES="OS=[% c("var/webrtc/os") %] target_arch=[% c("var/webrtc/arch") %]"
+# Do not use bundled utilities.
+GYP_DEFINES+=" clang=0 host_clang=0 use_sysroot=0"
+GYP_DEFINES+=" linux_use_bundled_gold=0 linux_use_gold_flags=0 linux_use_bundled_binutils=0"
+# Avoid some dependencies. Some of these don't seem to work fully; for
+# example even with use_alsa=0 we need libasound2-dev.
+GYP_DEFINES+=" use_x11=0 use_gtk=0 use_gconf=0 use_alsa=0 use_pulseaudio=0 use_libpci=0 include_internal_audio_device=0 enabled_libjingle_device_manager=0"
+# examples and tests also bring in dependencies.
+GYP_DEFINES+=" include_examples=0 include_tests=0"
+# embedded=1 is supposed to turn of various features; see
+# https://bugs.chromium.org/p/chromium/issues/detail?id=318413.
+GYP_DEFINES+=" embedded=1"
+GYP_DEFINES+=" werror="
+[% IF c("var/linux") -%]
+  export CC=gcc
+  export CXX=g++
+[% END -%]
+[% IF c("var/linux-i686") -%]
+  GYP_DEFINES+=" target_arch=ia32"
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export CFLAGS=-m32
+  export CXXFLAGS=-m32
+  export LDFLAGS=-m32
+[% END -%]
+JAVA_HOME=/usr/lib/jvm/default-java webrtc/build/gyp_webrtc.py
+ninja -C out/Release
+# Run ninja once more, without include_tests=0, in order to build just the
+# FakeAudioCaptureModule that go-webrtc uses.
+GYP_DEFINES="$(echo "$GYP_DEFINES" | sed -e 's/include_tests=0//g')"
+JAVA_HOME=/usr/lib/jvm/default-java webrtc/build/gyp_webrtc.py
+ninja -C out/Release obj/webrtc/api/test/peerconnection_unittests.fakeaudiocapturemodule.o
+# https://github.com/keroserene/go-webrtc/issues/23#issuecomment-175312648
+# dump_syms_regtest.o is actually an executable, not an object file. If not
+# excluded, it results in the error:
+# libwebrtc-linux-386-magic.a(dump_syms_regtest.o): unsupported ELF file type 2
+ar crs libwebrtc-magic.a $(find . -name '*.o' -not -name '*.main.o' -not -name 'dump_syms_regtest.o' | sort)
+
+mkdir -p $distdir
+cd $distdir
+mkdir -p include lib
+cp -f $builddir/libwebrtc-magic.a [% c("var/webrtc/lib_path") %]
+INCLUDE_DIR="$PWD/include"
+cd $builddir
+for h in $(find talk/ webrtc/ -type f -name '*.h');
+do
+  mkdir -p "$INCLUDE_DIR/$(dirname $h)"
+  cp -f "$h" "$INCLUDE_DIR/$h"
+done
+
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+        }) %]

@@ -1,0 +1,35 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://git.torproject.org/pluggable-transports/snowflake.git
+git_hash: 6cecd31fd896eb26e64ad8bab8a9ea510ec3b21d
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+remote_docker: 1
+
+targets:
+  linux-i686:
+    var:
+      arch_deps:
+        - pkg-config
+        - libx11-dev:i386
+        - lib32stdc++6
+  linux-x86_64:
+    var:
+      arch_deps:
+        - pkg-config
+        - libx11-dev
+
+input_files:
+  - project: docker-image
+  - name: go
+    project: go
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - name: binutils
+    project: binutils
+    enable: '[% c("var/linux") %]'
+  - name: go-webrtc
+    project: go-webrtc
+  - name: uniuri
+    project: uniuri
+  - name: goptlib
+    project: goptlib

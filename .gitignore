@@ -1,5 +1,6 @@
 git_clones
 hg_clones
+gclient
 out
 release
 alpha

@@ -52,6 +52,9 @@ mv [% c('input_files_by_name/noscript') %] $TBDIR/$EXTSPATH/{73a6fe31-595d-460b-
 tar -C $TBDIR -xf [% c('input_files_by_name/obfs4') %]
 tar -C $TBDIR -xf [% c('input_files_by_name/meek') %]
 mv $TBDIR/meek-http-helper@bamsoftware.com.xpi $TBDIR/$MEEKPROFILEPATH/extensions/
+[% IF c("var/snowflake") %]
+  tar -C $TBDIR -xf [% c('input_files_by_name/snowflake') -%]
+[% END -%]
 
 tar -C $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %] -xf [% c('input_files_by_name/fonts') %]
 
