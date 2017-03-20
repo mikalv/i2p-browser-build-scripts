@@ -39,6 +39,34 @@ var:
   ### file.
   #sign_build_gpg_opts: '--local-user XXXXXXXX'
 
+  ### The clean configuration is used by the cleaning script to find the
+  ### branches and build targets you are using, to compute the list of
+  ### files that should be kept.
+  ###
+  ### If you only do alpha builds for all platforms, you can use the
+  ### following configuration:
+  #clean:
+  #  HEAD:
+  #    - project: release
+  #      target:
+  #        - alpha
+  #        - torbrowser-all
+  #
+  ### If you are doing 'release' builds in the maint-7.0 branch and
+  ### 'alpha' builds in the master branch, you can use the following
+  ### configuration:
+  #clean:
+  #  master:
+  #    - project: release
+  #      target:
+  #        - alpha
+  #        - torbrowser-all
+  #  maint-7.0:
+  #    - project: release
+  #      target:
+  #        - release
+  #        - torbrowser-all
+
 targets:
 
   ### testbuild is based on alpha by default. Uncomment this if you want it

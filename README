@@ -171,8 +171,14 @@ file.
 Cleaning obsolete files and containers images
 ---------------------------------------------
 
-There will be a script to clean old build files and containers that are
-no longer used, but it has not been added yet.
+You can run 'make clean' to clean old build files and containers that
+are no longer used in current builds. Before doing that, you need to
+configure the branches and build targets you are using in the
+rbm.local.conf file. The cleaning script will checkout all the configured
+branches to create a list of used build files, and delete the files
+from the 'out' directory that are not used. If you want to see the list
+of files and containers that would be removed without doing it, you can
+use 'make clean-dry-run'.
 
 
 Multiple build directories on the same host

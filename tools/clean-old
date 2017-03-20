@@ -1,0 +1,114 @@
+#!/usr/bin/perl -w
+use strict;
+use IO::CaptureOutput qw(capture_exec);
+use FindBin;
+use lib "$FindBin::Bin/../rbm/lib";
+use RBM;
+use File::Slurp qw(read_dir write_file read_file);
+use Getopt::Long;
+
+my %options;
+my @options_list = qw(dry-run! list-used-files=s project=s target=s@);
+Getopt::Long::GetOptionsFromArray(\@ARGV, \%options, @options_list) || exit 1;
+
+sub clean_file {
+    my ($file, $used_files) = @_;
+    return if $used_files->{$file};
+    if (-d $file) {
+        my @l = read_dir($file);
+        foreach my $subfile (@l) {
+            clean_file("$file/$subfile", $used_files);
+        }
+        @l = read_dir($file);
+        rmdir $file unless @l;
+    } else {
+        print "Removing file $file\n";
+        unlink $file unless $options{'dry-run'};
+    }
+}
+
+sub clean_docker_images {
+    my ($dockerdir, $used_files) = @_;
+    my $imgprefix = RBM::project_config('docker-image', 'docker_image_prefix');
+    my @imgs = read_dir($dockerdir);
+    foreach my $dockerimage (@imgs) {
+        next if $used_files->{"$dockerdir/$dockerimage"};
+        my $img = "$imgprefix:$dockerimage";
+        print "Cleaning docker image $img\n";
+        next if $options{'dry-run'};
+        my ($out, $err, $success) = capture_exec('docker', 'rmi', '-f', $img);
+        if (!$success) {
+            print STDERR "Error removing docker image $img:\n$err\n";
+            exit 1;
+        }
+        unlink "$dockerdir/$dockerimage";
+    }
+}
+
+sub get_project_input_files {
+    my ($project, @targets) = @_;
+    print "Getting input files for $project ", join(' ', @targets), "\n";
+    $RBM::config->{run}{target} = \@targets;
+    my $res = RBM::project_config($project, 'input_files_paths',
+                                        {error_if_undef => 1});
+    return ref $res eq 'ARRAY' ? @$res : ();
+}
+
+sub get_input_files {
+    my ($c) = @_;
+    my @files;
+    foreach my $p (@$c) {
+        my $tmp = File::Temp->new();
+        my @args = ("$FindBin::Bin/$FindBin::Script", '--list-used-files', $tmp,
+                    '--project', $p->{project});
+        foreach my $target (@{$p->{target}}) {
+            push @args, ('--target', $target);
+        }
+        RBM::exit_error 'Error getting used files' unless system(@args) == 0;
+        push @files, map { chomp; $_ } read_file($tmp);
+    }
+    return @files;
+}
+
+RBM::load_config;
+RBM::load_system_config;
+RBM::load_local_config;
+RBM::set_default_env;
+
+if ($options{'list-used-files'}) {
+    if (!$options{project} || !$options{target}) {
+        RBM::exit_error 'Missing option project or target';
+    }
+    my @files = get_project_input_files($options{project}, @{$options{target}});
+    write_file($options{'list-used-files'}, join("\n", @files));
+    exit 0;
+}
+
+my $clean = RBM::project_config('clean', 'var/clean');
+if (!$clean) {
+    print STDERR "Clean configuration is missing. ",
+                 "You should add it to rbm.local.conf.\n";
+    exit 1;
+}
+
+my @files = get_input_files($clean->{HEAD}) if $clean->{HEAD};
+
+foreach my $branch (keys %$clean) {
+    next if $branch eq 'HEAD';
+    print "Checking out $branch branch\n";
+    RBM::exit_error("Error checking out $branch branch")
+        unless system('git', 'checkout', $branch) == 0;
+    RBM::exit_error("Error running git submodule update --init")
+        unless system('git', 'submodule', 'update', '--init') == 0;
+    push @files, get_input_files($clean->{$branch});
+    RBM::exit_error('Error checking out @{-1}')
+        unless system('git', 'checkout', '@{-1}') == 0;
+    RBM::exit_error("Error running git submodule update --init")
+        unless system('git', 'submodule', 'update', '--init') == 0;
+}
+my %used_files = map { $_ => 1 } @files;
+my $outdir = $RBM::config->{basedir} . '/out';
+# Don't clean docker-image files yet
+$used_files{"$outdir/docker-image"} = 1;
+clean_file($outdir, \%used_files);
+clean_docker_images("$outdir/docker-image", \%used_files);

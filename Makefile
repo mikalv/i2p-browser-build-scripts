@@ -86,6 +86,9 @@ submodule-update:
 fetch: submodule-update
 	$(rbm) fetch
 
-clean-old: submodule-update
+clean: submodule-update
 	./tools/clean-old
+
+clean-dry-run: submodule-update
+	./tools/clean-old --dry-run
 
