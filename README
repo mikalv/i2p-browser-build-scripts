@@ -13,7 +13,9 @@ Your user account should have access to the docker command without using
 sudo, so it should be in the docker group. The docker daemon should
 also be running.
 
-The sources are downloaded using git which needs to be installed.
+The sources of most components are downloaded using git, which needs to
+be installed. The sources of webrtc are downloaded using gclient, which
+requires GTK+ 2.0 development files to be installed.
 
 You also need a few perl modules installed:
 - YAML::XS
@@ -38,7 +40,7 @@ If you are running Debian or Ubuntu, you can install them with:
                   libio-captureoutput-perl libfile-slurp-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
-                  git
+                  git libgtk2.0-dev
 
 
 Starting a build
