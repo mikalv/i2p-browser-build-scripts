@@ -15,7 +15,7 @@ also be running.
 
 The sources of most components are downloaded using git, which needs to
 be installed. The sources of webrtc are downloaded using gclient, which
-requires GTK+ 2.0 development files to be installed.
+requires GTK+ 2.0 development files and curl to be installed.
 
 You also need a few perl modules installed:
 - YAML::XS
@@ -27,6 +27,7 @@ You also need a few perl modules installed:
 - File::Temp
 - File::Slurp
 - File::Path
+- File::Copy::Recursive
 - String::ShellQuote
 - Sort::Versions
 - Digest::SHA
@@ -40,7 +41,7 @@ If you are running Debian or Ubuntu, you can install them with:
                   libio-captureoutput-perl libfile-slurp-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
-                  git libgtk2.0-dev
+                  libfile-copy-recursive-perl git libgtk2.0-dev curl
 
 
 Starting a build
