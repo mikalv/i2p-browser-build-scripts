@@ -5,10 +5,19 @@ mkdir -p /var/tmp/dist
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
 export PATH="/var/tmp/dist/cmake/bin:$PATH"
 mkdir -p /var/tmp/build
-tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
-cd /var/tmp/build/[% project %]-[% c("version") %]
+cd /var/tmp/build
+tar -xf $rootdir/[% c('input_files_by_name/llvm') %]
+tar -xf $rootdir/[% c('input_files_by_name/cfe') %]
+tar -xf $rootdir/[% c('input_files_by_name/libcxx') %]
+tar -xf $rootdir/[% c('input_files_by_name/libcxxabi') %]
+mv cfe-* clang
+mv libcxx-* libcxx
+mv libcxxabi-* libcxxabi
+mv clang llvm-*/tools
+mv libcxx llvm-*/projects
+mv libcxxabi llvm-*/projects
+cd llvm-*
 export LLVM_HOME=$(pwd)
-tar -C $LLVM_HOME/tools -xf $rootdir/[% c('input_files_by_name/clang') %]
 mkdir build
 cd build
 cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$distdir -DCMAKE_BUILD_TYPE:STRING=Release $LLVM_HOME

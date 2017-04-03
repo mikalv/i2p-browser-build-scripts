@@ -1,7 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 8f188e0ea735ac9383a65a0d1c846eb790c2ec74
-git_url: https://github.com/llvm-mirror/llvm
-git_hash: '[% c("version") %]'
+version: 3.8.0
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 
@@ -9,5 +7,27 @@ input_files:
   - project: docker-image
   - project: cmake
     name: cmake
-  - project: clang
-    name: clang
+  - URL: 'http://releases.llvm.org/[% c("version") %]/llvm-[% c("version") %].src.tar.xz'
+    # no proper HTTPS
+    name: llvm
+    sig_ext: sig
+    file_gpg_id: 1
+    gpg_keyring: llvm.gpg
+  - URL: 'http://releases.llvm.org/[% c("version") %]/cfe-[% c("version") %].src.tar.xz'
+    # no proper HTTPS
+    name: cfe
+    sig_ext: sig
+    file_gpg_id: 1
+    gpg_keyring: llvm.gpg
+  - URL: 'http://releases.llvm.org/[% c("version") %]/libcxx-[% c("version") %].src.tar.xz'
+    # no proper HTTPS
+    name: libcxx
+    sig_ext: sig
+    file_gpg_id: 1
+    gpg_keyring: llvm.gpg
+  - URL: 'http://releases.llvm.org/[% c("version") %]/libcxxabi-[% c("version") %].src.tar.xz'
+    # no proper HTTPS
+    name: libcxxabi
+    sig_ext: sig
+    file_gpg_id: 1
+    gpg_keyring: llvm.gpg
