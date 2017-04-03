@@ -11,6 +11,8 @@ var:
     export cctoolsdir=/var/tmp/dist/[% project %]/cctools/bin
     export PATH="$clangdir/helpers:$clangdir/bin:$cctoolsdir:$PATH"
     export LD_LIBRARY_PATH=/var/tmp/dist/[% project %]/clang/lib
+    export CC="$clangdir/helpers/clang [% c('var/FLAGS') %]"
+    export LDFLAGS="[% c('var/LDFLAGS') %]"
 
 input_files:
   - name: llvm
