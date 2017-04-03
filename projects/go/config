@@ -56,14 +56,8 @@ targets:
       GOARCH: 386
   osx-x86_64:
     var:
-      arch_deps:
-        - libc6-i386
-        - libstdc++6:i386
-      pre_pkginst: dpkg --add-architecture i386
-      compiler: macosx-toolchain-gcc
-      10_7_SDK: 1
       GOOS: darwin
-      GOARCH: 386
+      GOARCH: amd64
   linux:
     var:
       GOOS: linux

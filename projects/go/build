@@ -38,16 +38,19 @@ cd /var/tmp/dist/go/src
 [% IF c("var/linux") -%]
   ./make.bash
 [% ELSIF c("var/osx") -%]
+  unset LDFLAGS
+  rm -Rf $clangdir/helpers
+  export CC="$clangdir/bin/clang [% c("var/FLAGS") %]"
   # Create a cc-for-target script that closes over CC, CFLAGS, and LDFLAGS.
   # Go's CC_FOR_TARGET only allows a command name, not a command with arguments.
   # https://github.com/golang/go/issues/15457
   CC_FOR_TARGET="$(pwd)/cc-for-target"
   echo "#!/bin/sh" > "$CC_FOR_TARGET"
-  echo "exec $CC $CFLAGS $LDFLAGS -std=gnu99 \"\$@\"" >> "$CC_FOR_TARGET"
+  echo "exec $CC $CFLAGS $LDFLAGS \"\$@\"" >> "$CC_FOR_TARGET"
   chmod +x "$CC_FOR_TARGET"
   # http://golang.org/doc/install/source#environment
   export GOOS=darwin
-  export GOARCH=386
+  export GOARCH=amd64
   # Remove a preprocessor directive that causes problems when building with the 10.7 SDK.
   # https://github.com/golang/go/issues/17732
   sed -i -e '/^#cgo CFLAGS:/s/-D__MAC_OS_X_VERSION_MAX_ALLOWED=1060//' crypto/x509/root_cgo_darwin.go
