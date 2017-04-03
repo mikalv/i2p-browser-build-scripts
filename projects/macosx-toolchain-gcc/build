@@ -1,7 +1,0 @@
-#!/bin/bash
-[% c("var/set_default_env") -%]
-destdir='[% dest_dir _ '/' _ c('filename') %]'
-mkdir -p "$destdir"
-mv -f [% c('input_files_by_name/SDK') %] "$destdir"/apple-uni-sdk.deb
-mv -f [% c('input_files_by_name/SDK_10_7') %] "$destdir"/MacOSX10.7.sdk.tar.gz
-mv -f [% c('input_files_by_name/toolchain') %] "$destdir"/toolchain.tar.xz
