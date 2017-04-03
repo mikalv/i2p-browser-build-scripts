@@ -7,14 +7,6 @@ targets:
   linux:
     var:
       configure_opt_gmp: --enable-fat
-  osx-x86_64:
-    var:
-      arch_deps:
-        - libc6-i386
-        - libstdc++6:i386
-      pre_pkginst: dpkg --add-architecture i386
-      compiler: macosx-toolchain-gcc
-      configure_opt: --host=x86_64-apple-darwin11
 
 input_files:
   - name: gmp
