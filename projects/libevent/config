@@ -7,16 +7,6 @@ gpg_keyring: libevent.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 
-targets:
-  osx-x86_64:
-    var:
-      arch_deps:
-        - libc6-i386
-        - libstdc++6:i386
-      pre_pkginst: dpkg --add-architecture i386
-      compiler: macosx-toolchain-gcc
-      configure_opt: --host=i686-apple-darwin11
-
 input_files:
   - project: docker-image
   - name: '[% c("var/compiler") %]'
