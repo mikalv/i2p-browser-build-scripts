@@ -40,6 +40,10 @@ targets:
     var:
       arch_deps:
         - faketime
+  windows-i686:
+    var:
+      arch_deps:
+        - faketime
   expert-bundle:
     var:
       expert_bundle: 1

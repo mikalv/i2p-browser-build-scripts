@@ -60,8 +60,8 @@ find -type f -print0 | xargs -0 [% c("var/touch") %]
     [% IF c("var/windows") %]--with-zlib-dir="$zlibdir"[% END %] \
     [% IF c("var/osx") %]--enable-static-openssl[% END %] \
     --prefix="$distdir" [% c("var/configure_opt") %]
-[% IF c("var/osx") -%]
-  export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
+[% IF c("var/osx") || c("var/windows") -%]
+  export LD_PRELOAD=[% c("var/faketime_path") %]
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
 [% END -%]
 make -j4
