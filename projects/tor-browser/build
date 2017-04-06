@@ -257,6 +257,7 @@ cd $distdir
         dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_${PKG_LOCALE}.dmg',
     }) %]
 [% ELSIF c("var/windows") %]
+  find "${TB_STAGE_DIR}" -exec [% c("var/touch") %] {} \;
   pushd "${TB_STAGE_DIR}"
   makensis torbrowser.nsi
   # Working around NSIS braindamage
@@ -324,6 +325,7 @@ rm -rf $distdir/${PKG_DIR}
           dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_' _ lang _ '.dmg',
         }) %]
       [% ELSIF c("var/windows") %]
+        find "[% tbdir %]" -exec [% c("var/touch") %] {} \;
         pushd "[% tbdir %]"
         makensis torbrowser.nsi
         # Working around NSIS braindamage
