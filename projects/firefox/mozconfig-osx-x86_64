@@ -18,7 +18,7 @@ export AR=${TOOLCHAIN_PREFIX}ar
 export RANLIB=${TOOLCHAIN_PREFIX}ranlib
 export STRIP=${TOOLCHAIN_PREFIX}strip
 export OTOOL=${TOOLCHAIN_PREFIX}otool
-export DSYMUTIL=$topsrcdir/clang/bin/llvm-dsymutil
+export DSYMUTIL="$TOOLCHAIN_DIR/clang/bin/llvm-dsymutil"
 
 export HOST_CC="$TOOLCHAIN_DIR/clang/helpers/clang"
 export HOST_CXX="$TOOLCHAIN_DIR/clang/helpers/clang++"
@@ -43,7 +43,6 @@ ac_add_options --disable-debug
 
 ac_add_options --enable-tor-browser-data-outside-app-dir
 ac_add_options --enable-tor-browser-update
-ac_add_options --enable-update-packaging
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
@@ -55,4 +54,3 @@ ac_add_options --disable-tests
 # (Apart from that there is no Adobe CRM module for OS X right now)
 ac_add_options --disable-eme
 # ac_add_options --disable-ctypes
-ac_add_options --disable-loop

@@ -2,6 +2,7 @@ CROSS_COMPILE=1
 
 ac_add_options --enable-application=browser
 ac_add_options --target=i686-w64-mingw32
+ac_add_options --with-toolchain-prefix=i686-w64-mingw32-
 ac_add_options --enable-default-toolkit=cairo-windows
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-mingw
 mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
@@ -14,7 +15,6 @@ ac_add_options --enable-strip
 ac_add_options --enable-official-branding
 
 ac_add_options --enable-tor-browser-update
-ac_add_options --enable-update-packaging
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
@@ -27,6 +27,3 @@ ac_add_options --disable-crashreporter
 ac_add_options --disable-maintenance-service
 ac_add_options --disable-webrtc
 ac_add_options --disable-tests
-
-#ac_add_options --disable-ctypes
-ac_add_options --disable-loop
