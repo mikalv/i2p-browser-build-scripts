@@ -33,14 +33,14 @@ targets:
       arch_deps:
         - libgtk2.0-dev
         - libdbus-glib-1-dev
-        - libasound2-dev
-        - libgstreamer-plugins-base0.10-dev
         - libxt-dev
         - hardening-wrapper
         # To pass configure since ESR 31.
         - libpulse-dev
         # To pass configure since ESR 45.
         - libgconf2-dev
+        # To pass configure since ESR 52
+        - libx11-xcb-dev
         # We built GCC but not the libmpc2, thus we need to install it
         - libmpc2
 
@@ -52,14 +52,13 @@ targets:
         - libc6-dev-i386
         - libgtk2.0-dev:i386
         - libdbus-glib-1-dev:i386
-        - lib32asound2-dev
-        - libasound2-dev:i386
-        - libgstreamer-plugins-base0.10-dev:i386
         - libxt-dev:i386
         # To pass configure since ESR 31.
         - libpulse-dev:i386
         # To pass configure since ESR 45.
         - libgconf2-dev:i386
+        # To pass configure since ESR 52
+        - libx11-xcb-dev:i386
         # We built GCC but not the libmpc2, thus we need to install it
         - libmpc2
         - hardening-wrapper
