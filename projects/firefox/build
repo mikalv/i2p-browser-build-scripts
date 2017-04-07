@@ -152,7 +152,6 @@ done
   [% c("var/rezip", { rezip_file => 'Browser/browser/omni.ja' }) %]
 [% ELSIF c("var/osx") %]
   [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/omni.ja' }) %]
-  [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/webapprt/omni.ja' }) %]
   [% c("var/rezip", { rezip_file => 'TorBrowser.app/Contents/Resources/browser/omni.ja' }) %]
 [% END %]
 
