@@ -11,6 +11,10 @@
   # compiler setup so that mingw is first in the PATH.
   export LD_LIBRARY_PATH=$hgccdir/lib64
   export PATH=$hgccdir/bin:$PATH
+
+  # Firefox ESR52 needs Yasm >= 1.2.0 which Ubuntu Precise does not ship.
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/yasm') %]
+  export PATH="/var/tmp/dist/yasm/bin:$PATH"
 [% END -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
