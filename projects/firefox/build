@@ -66,6 +66,9 @@ fi
   # Our flags don't get passed to NSS. We need to do that manually using an
   # obscure one.
   export DLLFLAGS="-specs=/var/tmp/dist/mingw-w64/msvcr100.spec"
+
+  # Make sure widl is not inserting random timestamps, see #21837.
+  export WIDL_TIME_OVERRIDE="0"
 [% END %]
 
 [% IF c("var/osname") == "linux-i686" -%]
