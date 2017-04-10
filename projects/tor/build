@@ -5,17 +5,17 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 
 [% IF c("var/linux") || c("var/windows") %]
-TORCONFIGDIR="$distdir/Data/Tor"
-mkdir -p $TORCONFIGDIR
-mkdir -p "$distdir/Tor"
+  TORCONFIGDIR="$distdir/Data/Tor"
+  mkdir -p $TORCONFIGDIR
+  mkdir -p "$distdir/Tor"
 [% END %]
 
 [% IF c("var/osx") %]
-TORBINDIR="$distdir/Contents/MacOS/Tor"
-TORCONFIGDIR="$distdir/Contents/Resources/TorBrowser/Tor"
-mkdir -p $distdir/bin
-mkdir -p $TORBINDIR
-mkdir -p $TORCONFIGDIR
+  TORBINDIR="$distdir/Contents/MacOS/Tor"
+  TORCONFIGDIR="$distdir/Contents/Resources/TorBrowser/Tor"
+  mkdir -p $distdir/bin
+  mkdir -p $TORBINDIR
+  mkdir -p $TORCONFIGDIR
 [% END %]
 
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/openssl') %]
@@ -25,32 +25,32 @@ libeventdir=/var/tmp/dist/libevent
 openssldir=/var/tmp/dist/openssl
 
 [% IF c("var/windows") %]
-tar -C /var/tmp/build -xf [% c('input_files_by_name/zlib') %]
-zlibdir=/var/tmp/build/zlib
-cp $zlibdir/lib/*.dll $openssldir/bin/*.dll $libeventdir/bin/*.dll \
-    $gcclibs/*.dll $distdir/Tor/
+  tar -C /var/tmp/build -xf [% c('input_files_by_name/zlib') %]
+  zlibdir=/var/tmp/build/zlib
+  cp $zlibdir/lib/*.dll $openssldir/bin/*.dll $libeventdir/bin/*.dll \
+      $gcclibs/*.dll $distdir/Tor/
 [% END %]
 
 
 [% IF c("var/linux") %]
-mkdir -p "$distdir/Debug/Tor"
-cp $openssldir/lib/libssl.so.1.0.0 "$distdir/Tor/"
-cp $openssldir/lib/libcrypto.so.1.0.0 "$distdir/Tor/"
-cp $libeventdir/lib/libevent-2.0.so.5 "$distdir/Tor/"
-# We need to copy the libstdc++.so.6 for Tor Browser on older Linux distros.
-# Copying it into /Browser, which feels more natural, and amending
-# LD_LIBRARY_PATH breaks updates from a Tor Browser with the old
-# LD_LIBRARY_PATH value to the Tor Browser with the newer one. Thus, we copy
-# the libstdc++ into the directory with the libs tor depends on, too. See bug
-# 13359 for further details.
-cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/"
-chmod 700 "$distdir"/Tor/*.so*
-# This is needed to make RPATH unavailable. See bug 9150.
-export LD_LIBRARY_PATH="$distdir/Tor/"
+  mkdir -p "$distdir/Debug/Tor"
+  cp $openssldir/lib/libssl.so.1.0.0 "$distdir/Tor/"
+  cp $openssldir/lib/libcrypto.so.1.0.0 "$distdir/Tor/"
+  cp $libeventdir/lib/libevent-2.0.so.5 "$distdir/Tor/"
+  # We need to copy the libstdc++.so.6 for Tor Browser on older Linux distros.
+  # Copying it into /Browser, which feels more natural, and amending
+  # LD_LIBRARY_PATH breaks updates from a Tor Browser with the old
+  # LD_LIBRARY_PATH value to the Tor Browser with the newer one. Thus, we copy
+  # the libstdc++ into the directory with the libs tor depends on, too. See bug
+  # 13359 for further details.
+  cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/"
+  chmod 700 "$distdir"/Tor/*.so*
+  # This is needed to make RPATH unavailable. See bug 9150.
+  export LD_LIBRARY_PATH="$distdir/Tor/"
 [% END %]
 
 [% IF c("var/osx") %]
-cp $libeventdir/lib/libevent-*.dylib $TORBINDIR/
+  cp $libeventdir/lib/libevent-*.dylib $TORBINDIR/
 [% END %]
 
 cd /var/tmp/build/[% project %]-[% c('version') %]
@@ -73,33 +73,33 @@ cp $distdir/share/tor/geoip $TORCONFIGDIR
 cp $distdir/share/tor/geoip6 $TORCONFIGDIR
 
 [% IF c("var/osx") %]
-LIBEVENT_FILE=`basename $libeventdir/lib/libevent-*.dylib`
-cd $distdir
-cp bin/tor $TORBINDIR/
-cd $TORBINDIR/
-x86_64-apple-darwin10-install_name_tool -change $libeventdir/lib/$LIBEVENT_FILE @executable_path/$LIBEVENT_FILE tor
+  LIBEVENT_FILE=`basename $libeventdir/lib/libevent-*.dylib`
+  cd $distdir
+  cp bin/tor $TORBINDIR/
+  cd $TORBINDIR/
+  x86_64-apple-darwin10-install_name_tool -change $libeventdir/lib/$LIBEVENT_FILE @executable_path/$LIBEVENT_FILE tor
 [% END %]
 
 cd $distdir
 [% IF c("var/windows") %]
-install -s $distdir/bin/tor.exe $distdir/Tor/
+  install -s $distdir/bin/tor.exe $distdir/Tor/
 [% IF c("var/expert_bundle") %]
-install -s $distdir/bin/tor-gencert.exe $distdir/Tor/
+  install -s $distdir/bin/tor-gencert.exe $distdir/Tor/
 [% END %]
 [% END %]
 
 [% IF c("var/linux") %]
-# Strip and generate debuginfo for libs
-objcopy --only-keep-debug $distdir/bin/tor $distdir/Debug/Tor/tor
-install -s $distdir/bin/tor $distdir/Tor/
-objcopy --add-gnu-debuglink=./Debug/Tor/tor $distdir/Tor/tor
-for i in $distdir/Tor/*so*
-do
-    LIB=`basename $i`
-    objcopy --only-keep-debug $distdir/Tor/$LIB $distdir/Debug/Tor/$LIB
-    strip $distdir/Tor/$LIB
-    objcopy --add-gnu-debuglink=./Debug/Tor/$LIB $distdir/Tor/$LIB
-done
+  # Strip and generate debuginfo for libs
+  objcopy --only-keep-debug $distdir/bin/tor $distdir/Debug/Tor/tor
+  install -s $distdir/bin/tor $distdir/Tor/
+  objcopy --add-gnu-debuglink=./Debug/Tor/tor $distdir/Tor/tor
+  for i in $distdir/Tor/*so*
+  do
+      LIB=`basename $i`
+      objcopy --only-keep-debug $distdir/Tor/$LIB $distdir/Debug/Tor/$LIB
+      strip $distdir/Tor/$LIB
+      objcopy --add-gnu-debuglink=./Debug/Tor/$LIB $distdir/Tor/$LIB
+  done
 [% END %]
 
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
