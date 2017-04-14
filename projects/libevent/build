@@ -7,6 +7,10 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 ./autogen.sh
 ./configure --disable-static [% c("var/configure_opt") %] --prefix=$distdir
+[% IF c("var/osx") -%]
+  export LD_PRELOAD=[% c("var/faketime_path") %]
+  export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
+[% END -%]
 make -j4
 make install
 cd /var/tmp/dist

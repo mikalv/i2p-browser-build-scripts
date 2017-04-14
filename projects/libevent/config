@@ -7,6 +7,12 @@ gpg_keyring: libevent.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 
+targets:
+  osx-x86_64:
+    var:
+      arch_deps:
+        - faketime
+
 input_files:
   - project: docker-image
   - name: '[% c("var/compiler") %]'
