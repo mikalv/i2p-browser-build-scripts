@@ -1,16 +1,14 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 filename: 'firefox-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
-## There is no signed tag yet, so we use a fixed commit
-git_hash: 4c6219dc621d139cd39e8aaca578dd69b9c063d0
-#git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build1'
-#tag_gpg_id: 1
+git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build2'
+tag_gpg_id: 1
 git_url: https://git.torproject.org/tor-browser.git
 gpg_keyring: torbutton.gpg
 remote_docker: 1
 
 var:
-  firefox_version: 52.0.2esr
+  firefox_version: 52.1.0esr
   torbrowser_branch: 7.0
   torbrowser_update_channel: alpha
   copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'
