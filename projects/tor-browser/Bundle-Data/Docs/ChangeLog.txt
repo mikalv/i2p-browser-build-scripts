@@ -1,3 +1,294 @@
+Tor Browser 7.0a3 -- April 20 2017
+ * All Platforms
+   * Update Firefox to 52.1.0esr
+   * Tor to 0.3.0.5-rc
+   * Update Torbutton to 1.9.7.2
+     * Bug 21865: Update our JIT preferences in the security slider
+     * Bug 21747: Make 'New Tor Circuit for this Site' work in ESR52
+     * Bug 21745: Fix handling of catch-all circuit
+     * Bug 21547: Fix circuit display under e10s
+     * Bug 21268: e10s compatibility for New Identity
+     * Bug 21267: Remove window resize implementation for now
+     * Bug 21201: Make Torbutton multiprocess compatible
+     * Translations update
+   * Update Tor Launcher to 0.2.12
+     * Bug 21920: Don't show locale selection dialog
+     * Bug 21546: Mark Tor Launcher as multiprocess compatible
+     * Bug 21264: Add a README file
+     * Translations update
+   * Update HTTPS-Everywhere to 5.2.14
+   * Update NoScript to 5.0.2
+   * Update sandboxed-tor-browser to 0.0.5
+     * Bug 21764: Use bubblewrap's `--die-with-parent` when supported
+     * Fix e10s Web Content crash on systems with grsec kernels
+     * Bug 21928: Force a reinstall if an existing hardened bundle is present
+     * Bug 21929: Remove hardened/ASAN related code
+     * Bug 21927: Remove the ability to install/update the hardened bundle
+     * Bug 21244: Update the MAR signing key for 7.0
+     * Bug 21536: Remove asn's scramblesuit bridge from Tor Browser
+     * Add `prlimit64` to the firefox system call whitelist
+     * Fix compilation with Go 1.8
+     * Use Config.Clone() to clone TLS configs when available
+   * Update Go to 1.7.5 (bug 21709)
+   * Bug 21555+16450: Don't remove Authorization header on subdomains (e.g. Twitter)
+   * Bug 21887: Fix broken error pages on higher security levels
+   * Bug 21876: Enable e10s by default on all supported platforms
+   * Bug 21876: Always use esr policies for e10s
+   * Bug 20905: Fix resizing issues after moving to a direct Firefox patch
+   * Bug 21875: Modal dialogs are maximized in ESR52 nightly builds
+   * Bug 21885: SVG is not disabled in Tor Browser based on ESR52
+   * Bug 17334: Hide Referer when leaving a .onion domain (improved patch)
+   * Bug 3246: Double-key cookies
+   * Bug 8842: Fix XML parsing error
+   * Bug 16886: 16886: "Add-on compatibility check dialog" contains Firefox logo
+   * Bug 19192: Untrust Blue Coat CA
+   * Bug 19955: Avoid confusing warning that favicon load request got cancelled
+   * Bug 20005: Backport fixes for memory leaks investigation
+   * Bug 20755: ltn.com.tw is broken in Tor Browser
+   * Bug 21896: Commenting on website is broken due to CAPTCHA not being displayed
+   * Bug 20680: Rebase Tor Browser patches to 52 ESR
+   * Bug 21917: Add new obfs4 bridges
+   * Bug 21918: Move meek-amazon to d2cly7j4zqgua7.cloudfront.net backend
+ * Windows
+   * Bug 21795: Fix Tor Browser crashing on github.com
+   * Bug 12426: Make use of HeapEnableTerminationOnCorruption
+   * Bug 19316: Make sure our Windows updates can deal with the SSE2 requirement
+   * Bug 21868: Fix build bustage with FIREFOX_52_0_2esr_RELEASE for Windows
+ * OS X
+   * Bug 21723: Fix inconsistent generation of MOZ_MACBUNDLE_ID
+   * Bug 21724: Make Firefox and Tor Browser distinct macOS apps
+   * Bug 21931: Backport OSX SetupMacCommandLine updater fixes
+   * Bug 15910: Don't download GMPs via the local fallback
+ * Linux
+   * Bug 21907: Fix runtime error on CentOS 6
+   * Bug 21748: Fix broken Snowflake build and update bridge details
+   * Bug 21954: Snowflake breaks the 7.0a3 build
+   * Bug 15910: Don't download GMPs via the local fallback
+ * Build system
+   * Windows
+     * Bug 21837: Fix reproducibility of accessibility code for Windows
+     * Bug 21240: Create patches to fix mingw-w64 compilation of Firefox ESR 52
+     * Bug 21904: Bump mingw-w64 commit to help with sandbox compilation
+     * Bug 18831: Use own Yasm for Firefox cross-compilation
+   * OS X
+     * Bug 21328: Updating to clang 3.8.0
+     * Bug 21754: Remove old GCC toolchain and macOS SDK
+     * Bug 19783: Remove unused macOS helper scripts
+     * Bug 10369: Don't use old GCC toolchain anymore for utils
+     * Bug 21753: Replace our old GCC toolchain in PT descriptor
+     * Bug 18530: ESR52 based Tor Browser only runs on macOS 10.9+
+   * Linux
+     * Bug 21930: NSS libraries are missing from mar-tools archive
+     * Bug 21239: Adapt Linux Firefox descriptor to ESR52 (use GTK2)
+     * Bug 21960: Linux bundles based on ESR 52 are not reproducible anymore
+     * Bug 21629: Fix broken ASan builds when switching to ESR 52
+
+Tor Browser 7.0a2-hardened -- March 7 2017
+ * All Platforms
+   * Update Firefox to 45.8.0esr
+   * Tor to 0.3.0.4-rc
+   * OpenSSL to 1.0.2k
+   * Update Torbutton to 1.9.7.1
+     * Bug 21396: Allow leaking of resource/chrome URIs (off by default)
+     * Bug 21574: Add link for zh manual and create manual links dynamically
+     * Bug 21330: Non-usable scrollbar appears in tor browser security settings
+     * Bug 21324: Don't update NoScript button with timer update
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.11
+   * Bug 21514: Restore W^X JIT implementation removed from ESR45
+   * Bug 21536: Remove scramblesuit bridge
+   * Bug 21342: Move meek-azure to the meek.azureedge.net backend and cymrubridge02 bridge
+   * Bug 21326: Update the "Using a system-installed Tor" section in start script
+ * Build system
+   * Bug 17034: Use our built binutils and GCC for building tor
+   * Code clean-up
+
+Tor Browser 7.0a2 -- March 7 2017
+ * All Platforms
+   * Update Firefox to 45.8.0esr
+   * Tor to 0.3.0.4-rc
+   * OpenSSL to 1.0.2k
+   * Update Torbutton to 1.9.7.1
+     * Bug 21396: Allow leaking of resource/chrome URIs (off by default)
+     * Bug 21574: Add link for zh manual and create manual links dynamically
+     * Bug 21330: Non-usable scrollbar appears in tor browser security settings
+     * Bug 21324: Don't update NoScript button with timer update
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.11
+   * Bug 21514: Restore W^X JIT implementation removed from ESR45
+   * Bug 21536: Remove scramblesuit bridge
+   * Bug 21342: Move meek-azure to the meek.azureedge.net backend and cymrubridge02 bridge
+   * Bug 21348: Make snowflake only available on Linux for now
+ * Linux
+   * Bug 21326: Update the "Using a system-installed Tor" section in start script
+ * Build system
+   * OS X
+     * Bug 21343: Remove unused FTE related parts for macOS
+   * Linux
+     * Bug 17034: Use our built binutils and GCC for building tor
+     * Clean-up
+
+Tor Browser 6.5.1 -- March 7 2017
+ * All Platforms
+   * Update Firefox to 45.8.0esr
+   * Tor to 0.2.9.10
+   * OpenSSL to 1.0.2k
+   * Update Torbutton to 1.9.6.14
+     * Bug 21396: Allow leaking of resource/chrome URIs (off by default)
+     * Bug 21574: Add link for zh manual and create manual links dynamically
+     * Bug 21330: Non-usable scrollbar appears in tor browser security settings
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.11
+   * Bug 21514: Restore W^X JIT implementation removed from ESR45
+   * Bug 21536: Remove scramblesuit bridge
+   * Bug 21342: Move meek-azure to the meek.azureedge.net backend and cymrubridge02 bridge
+ * Linux
+   * Bug 21326: Update the "Using a system-installed Tor" section in start script
+
+Tor Browser 7.0a1-hardened -- January 25 2017
+ * All Platforms
+   * Update Firefox to 45.7.0esr
+   * Tor to 0.3.0.2-alpha
+   * Update Torbutton to 1.9.7
+     * Bug 19898: Use DuckDuckGo on about:tor
+     * Bug 21091: Hide the update check menu entry when running under the sandbox
+     * Bug 21243: Add links to es, fr, and pt Tor Browser manual
+     * Bug 21194: Show snowflake in the circuit display
+     * Bug 21131: Remove 2016 donation banner
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.9
+   * Update NoScript to 2.9.5.3
+   * Bug 20471: Allow javascript: links from HTTPS first party pages
+   * Bug 20651: DuckDuckGo does not work with JavaScript disabled
+   * Bug 20589: Add new MAR signing key
+   * Bug 20735: Add snowflake pluggable transport to alpha Linux builds
+ * Build system
+   * All platforms
+     * Bug 20927: Upgrade Go to 1.7.4
+
+Tor Browser 7.0a1 -- January 25 2017
+ * All Platforms
+   * Update Firefox to 45.7.0esr
+   * Tor to 0.3.0.2-alpha
+   * Update Torbutton to 1.9.7
+     * Bug 19898: Use DuckDuckGo on about:tor
+     * Bug 21091: Hide the update check menu entry when running under the sandbox
+     * Bug 21243: Add links to es, fr, and pt Tor Browser manual
+     * Bug 21194: Show snowflake in the circuit display
+     * Bug 21131: Remove 2016 donation banner
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.9
+   * Update NoScript to 2.9.5.3
+   * Bug 20471: Allow javascript: links from HTTPS first party pages
+   * Bug 20651: DuckDuckGo does not work with JavaScript disabled
+   * Bug 20589: Add new MAR signing key
+ * Windows
+   * Bug 20981: On Windows, check TZ for timezone first
+ * OS X
+   * Bug 20989: Browser sandbox profile is too restrictive on OSX 10.12.2
+ * Linux
+   * Update sandboxed-tor-browser to 0.0.3
+   * Bug 20735: Add snowflake pluggable transport to alpha Linux builds
+ * Build system
+   * All platforms
+     * Bug 20927: Upgrade Go to 1.7.4
+   * Linux
+     * Bug 21103: Update descriptors for sandboxed-tor-browser 0.0.3
+
+Tor Browser 6.5 -- January 24 2017
+ * All Platforms
+   * Update Firefox to 45.7.0esr
+   * Tor to 0.2.9.9
+   * OpenSSL to 1.0.2j
+   * Update Torbutton to 1.9.6.12
+     * Bug 16622: Timezone spoofing moved to tor-browser.git
+     * Bug 17334: Move referrer spoofing for .onion domains into tor-browser.git
+     * Bug 8725: Block addon resource and url fingerprinting with nsIContentPolicy
+     * Bug 20701: Allow the directory listing stylesheet in the content policy
+     * Bug 19837: Whitelist internal URLs that Firefox requires for media
+     * Bug 19206: Avoid SOCKS auth and NEWNYM collisions when sharing a tor client
+     * Bug 19273: Improve external app launch handling and associated warnings
+     * Bug 15852: Remove/synchronize Torbutton SOCKS pref logic
+     * Bug 19733: GETINFO response parser doesn't handle AF_UNIX entries + IPv6
+     * Bug 17767: Make "JavaScript disabled" more visible in Security Slider
+     * Bug 20556: Use pt-BR strings from now on
+     * Bug 20614: Add links to Tor Browser User Manual
+     * Bug 20414: Fix non-rendering arrow on OS X
+     * Bug 20728: Fix bad preferences.xul dimensions
+     * Bug 19898: Use DuckDuckGo on about:tor
+     * Bug 21091: Hide the update check menu entry when running under the sandbox
+     * Bug 19459: Move resizing code to tor-browser.git
+     * Bug 20264: Change security slider to 3 options
+     * Bug 20347: Enhance security slider's custom mode
+     * Bug 20123: Disable remote jar on all security levels
+     * Bug 20244: Move privacy checkboxes to about:preferences#privacy
+     * Bug 17546: Add tooltips to explain our privacy checkboxes
+     * Bug 17904: Allow security settings dialog to resize
+     * Bug 18093: Remove 'Restore Defaults' button
+     * Bug 20373: Prevent redundant dialogs opening
+     * Bug 20318: Remove helpdesk link from about:tor
+     * Bug 21243: Add links for pt, es, and fr Tor Browser manuals
+     * Bug 20753: Remove obsolete StartPage locale strings
+     * Bug 21131: Remove 2016 donation banner
+     * Bug 18980: Remove obsolete toolbar button code
+     * Bug 18238: Remove unused Torbutton code and strings
+     * Bug 20388+20399+20394: Code clean-up
+     * Translation updates
+   * Update Tor Launcher to 0.2.10.3
+     * Bug 19568: Set CurProcD for Thunderbird/Instantbird
+     * Bug 19432: Remove special handling for Instantbird/Thunderbird
+     * Translation updates
+   * Update HTTPS-Everywhere to 5.2.9
+   * Update NoScript to 2.9.5.3
+   * Bug 16622: Spoof timezone with Firefox patch
+   * Bug 17334: Spoof referrer when leaving a .onion domain
+   * Bug 19273: Write C++ patch for external app launch handling
+   * Bug 19459: Size new windows to 1000x1000 or nearest 200x100 (Firefox patch)
+   * Bug 12523: Mark JIT pages as non-writable
+   * Bug 20123: Always block remote jar files
+   * Bug 19193: Reduce timing precision for AudioContext, HTMLMediaElement, and MediaStream
+   * Bug 19164: Remove support for SHA-1 HPKP pins
+   * Bug 19186: KeyboardEvents are only rounding to 100ms
+   * Bug 16998: Isolate preconnect requests to URL bar domain
+   * Bug 19478: Prevent millisecond resolution leaks in File API
+   * Bug 20471: Allow javascript: links from HTTPS first party pages
+   * Bug 20244: Move privacy checkboxes to about:preferences#privacy
+   * Bug 20707: Fix broken preferences tab in non-en-US alpha bundles
+   * Bug 20709: Fix wrong update URL in alpha bundles
+   * Bug 19481: Point the update URL to aus1.torproject.org
+   * Bug 20556: Start using pt-BR instead of pt-PT for Portuguese
+   * Bug 20442: Backport fix for local path disclosure after drag and drop
+   * Bug 20160: Backport fix for broken MP3-playback
+   * Bug 20043: Isolate SharedWorker script requests to first party
+   * Bug 18923: Add script to run all Tor Browser regression tests
+   * Bug 20651: DuckDuckGo does not work with JavaScript disabled
+   * Bug 19336+19835: Enhance about:tbupdate page
+   * Bug 20399+15852: Code clean-up
+ * Windows
+   * Bug 20981: On Windows, check TZ for timezone first
+   * Bug 18175: Maximizing window and restarting leads to non-rounded window size
+   * Bug 13437: Rounded inner window accidentally grows to non-rounded size
+ * OS X
+   * Bug 20590: Badly resized window due to security slider notification bar on OS X
+   * Bug 20439: Make the build PIE on OSX
+ * Linux
+   * Bug 20691: Updater breaks if unix domain sockets are used
+   * Bug 15953: Weird resizing dance on Tor Browser startup
+ * Build system
+   * All platforms
+     * Bug 20927: Upgrade Go to 1.7.4
+     * Bug 20583: Make the downloads.json file reproducible
+     * Bug 20133: Don't apply OpenSSL patch anymore
+     * Bug 19528: Set MOZ_BUILD_DATE based on Firefox version
+     * Bug 18291: Remove some uses of libfaketime
+     * Bug 18845: Make zip and tar helpers generate reproducible archives
+   * OS X
+     * Bug 20258: Make OS X Tor archive reproducible again
+     * Bug 20184: Make OS X builds reproducible (use clang for compiling tor)
+     * Bug 19856: Make OS X builds reproducible (getting libfaketime back)
+     * Bug 19410: Fix incremental updates by taking signatures into account
+     * Bug 20210: In dmg2mar, extract old mar file to copy permissions to the new one
+
 Tor Browser 6.5a6-hardened -- December 14 2016
  * All Platforms
    * Update Firefox to 45.6.0esr
