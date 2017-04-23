@@ -22,20 +22,17 @@ tar -C /var/tmp/build -xf webrtc-sources-[% c('version') %].tar.gz
 
 builddir=/var/tmp/build/[% project %]/src
 cd $builddir
-export GYP_CROSSCOMPILE=1
-export GYP_DEFINES="OS=[% c("var/webrtc/os") %] target_arch=[% c("var/webrtc/arch") %]"
-# Do not use bundled utilities.
-GYP_DEFINES+=" clang=0 host_clang=0 use_sysroot=0"
-GYP_DEFINES+=" linux_use_bundled_gold=0 linux_use_gold_flags=0 linux_use_bundled_binutils=0"
-# Avoid some dependencies. Some of these don't seem to work fully; for
-# example even with use_alsa=0 we need libasound2-dev.
-GYP_DEFINES+=" use_x11=0 use_gtk=0 use_gconf=0 use_alsa=0 use_pulseaudio=0 use_libpci=0 include_internal_audio_device=0 enabled_libjingle_device_manager=0"
-# examples and tests also bring in dependencies.
-GYP_DEFINES+=" include_examples=0 include_tests=0"
-# embedded=1 is supposed to turn of various features; see
-# https://bugs.chromium.org/p/chromium/issues/detail?id=318413.
-GYP_DEFINES+=" embedded=1"
-GYP_DEFINES+=" werror="
+
+patch -p1 < $rootdir/webrtc-linux.patch
+
+# First, build a copy of GN, rather than use the prebuilt copy in buildtools/linux64.
+cd tools/gn
+# __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
+CXXFLAGS=-D__STDC_FORMAT_MACROS=1 LDFLAGS=-latomic ./bootstrap/bootstrap.py --no-rebuild --no-clean
+cd ../..
+# This is where bootstrap.py stashes the built gn.
+GN="$PWD/out_bootstrap/gn"
+
 [% IF c("var/linux") -%]
   export CC=gcc
   export CXX=g++
@@ -48,16 +45,31 @@ GYP_DEFINES+=" werror="
   export CXXFLAGS=-m32
   export LDFLAGS=-m32
 [% END -%]
-JAVA_HOME=/usr/lib/jvm/default-java webrtc/build/gyp_webrtc.py
-ninja -C out/Release
-# Run ninja once more, without include_tests=0, in order to build just the
-# FakeAudioCaptureModule that go-webrtc uses.
-GYP_DEFINES="$(echo "$GYP_DEFINES" | sed -e 's/include_tests=0//g')"
-JAVA_HOME=/usr/lib/jvm/default-java webrtc/build/gyp_webrtc.py
-ninja -C out/Release obj/webrtc/api/test/peerconnection_unittests.fakeaudiocapturemodule.o
+
+export GN_ARGS=""
+# For a list of all possible GN args, do "gn gen out/Release; gn args --list out/Release".
+# https://chromium.googlesource.com/chromium/src/+/master/tools/gn/docs/cross_compiles.md
+GN_ARGS+=" target_os=\"linux\" target_cpu=\"[% IF c("var/linux-i686") %]x86[% ELSE %]x64[% END %]\""
+# Not debug.
+GN_ARGS+=" is_debug=false"
+# There are warnings from unused returns.
+GN_ARGS+=" treat_warnings_as_errors=false"
+# Build static libraries.
+GN_ARGS+=" is_component_build=false"
+# Do not use bundled utilities.
+GN_ARGS+=" is_clang=false use_sysroot=false"
+GN_ARGS+=" gold_path=\"$INSTDIR/binutils/bin\""
+# Make extra sure we don't use bundled binutils.
+rm -rf third_party/binutils/Linux_*
+# Avoid some dependencies.
+GN_ARGS+=" use_ozone=true use_gconf=false"
+GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_audio_device=false rtc_include_pulse_audio=false"
+# Included for "field_trial" below.  Maybe "fieldtrial_testing_like_official_build" could help here?
+#GN_ARGS+=" rtc_include_tests=false"
+rm -rf out/Release
+"$GN" gen out/Release --args="$GN_ARGS"
+ninja -C out/Release webrtc field_trial metrics_default pc_test_utils
 # https://github.com/keroserene/go-webrtc/issues/23#issuecomment-175312648
-# dump_syms_regtest.o is actually an executable, not an object file. If not
-# excluded, it results in the error:
 # libwebrtc-linux-386-magic.a(dump_syms_regtest.o): unsupported ELF file type 2
 ar crs libwebrtc-magic.a $(find . -name '*.o' -not -name '*.main.o' -not -name 'dump_syms_regtest.o' | sort)
 

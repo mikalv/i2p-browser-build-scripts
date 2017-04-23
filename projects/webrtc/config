@@ -4,7 +4,7 @@ remote_docker: 1
 filename: 'webrtc-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 var:
-  webrtc_tag: f33698296719f956497d2dbff81b5080864a8804
+  webrtc_tag: c279861207c5b15fc51069e96595782350e0ac12
 
 input_files:
   - project: docker-image
@@ -17,6 +17,8 @@ input_files:
   - project: binutils
     name: binutils
     enable: '[% c("var/linux") %]'
+  - filename: webrtc-linux.patch
+    enable: '[% c("var/linux") %]'
 
 targets:
   linux:
@@ -28,16 +30,17 @@ targets:
       dockerbuild: "[% pc('docker-image', 'pre') %]"
       sort_deps: 0
       arch_deps:
-        - default-jre-headless
-        - default-jdk
         - lib32asound2-dev
         - lib64expat1
         - libexpat1-dev:i386
+        - libglib2.0-dev:i386
+        - libgtk2.0-dev:i386
         - libudev-dev:i386
         - libx11-dev:i386
         - libxext-dev:i386
         - libxrandr-dev:i386
         - lib32stdc++6
+        - pkg-config
         - hardening-wrapper
       webrtc:
         arch: ia32
@@ -46,14 +49,15 @@ targets:
   linux-x86_64:
     var:
       arch_deps:
-        - default-jre-headless
-        - default-jdk
         - libasound2-dev
         - libexpat1-dev
+        - libglib2.0-dev
+        - libgtk2.0-dev
         - libudev-dev
         - libx11-dev
         - libxext-dev
         - libxrandr-dev
+        - pkg-config
       webrtc:
         arch: x64
         lib_arch: amd64
@@ -70,10 +74,7 @@ steps:
       # https://webrtc.org/native-code/development/
       tar xf [% c('input_files_by_name/depot_tools') %]
       export PATH="$rootdir/depot_tools:$PATH"
-      # GYP_CROSSCOMPILE=1 and GYP_DEFINES="use_x11=0" prevent probing for certain dependencies.
       # Use --no-history because the whole checkout with history is about 12 GB.
-      export GYP_CROSSCOMPILE=1
-      export GYP_DEFINES="use_x11=0"
       # JAVA_HOME is needed in a hook for libjingle. The readlink line tries to find the current JRE.
       # default-java comes from the package default-jdk-headless.
       export JAVA_HOME=/usr/lib/jvm/default-java

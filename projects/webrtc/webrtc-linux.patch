@@ -1,0 +1,25 @@
+From ebc1773a92884bec7d93274b2d729ccf76050197 Mon Sep 17 00:00:00 2001
+From: David Fifield <fifield@eecs.berkeley.edu>
+Date: Wed, 22 Mar 2017 09:53:07 -0400
+Subject: [PATCH] Disable some settings in build_overrides.
+
+---
+ build_overrides/build.gni | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build_overrides/build.gni b/build_overrides/build.gni
+index af4924d4c..ffaafdebc 100644
+--- a/build_overrides/build.gni
++++ b/build_overrides/build.gni
+@@ -14,7 +14,7 @@ mac_sdk_min_build_override = "10.11"
+ enable_java_templates = true
+ 
+ # Some non-Chromium builds don't use Chromium's third_party/binutils.
+-linux_use_bundled_binutils_override = true
++linux_use_bundled_binutils_override = false
+ 
+ # Variable that can be used to support multiple build scenarios, like having
+ # Chromium specific targets in a client project's GN file etc.
+-- 
+2.12.1
+

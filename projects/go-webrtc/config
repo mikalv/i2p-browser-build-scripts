@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://github.com/keroserene/go-webrtc.git
-git_hash: 69c5ca70533142494d145b43ef2f46ca94715557
+git_hash: ab1b64862e0c4b4182010699911c2c5818f0a101
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 remote_docker: 1
 
@@ -23,7 +23,9 @@ var:
     # the prebuilt libwebrtc-magic.a libraries. Since we build our own
     # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
     # using CGO_CXXFLAGS.
-    export CGO_CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=1
+    # __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
+    export CGO_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=1 -D__STDC_FORMAT_MACROS=1"
+    export CGO_LDFLAGS=-latomic
 
 targets:
   master:
