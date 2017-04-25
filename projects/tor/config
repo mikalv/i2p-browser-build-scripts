@@ -5,9 +5,10 @@ git_hash: 'tor-[% c("version") %]'
 git_url: https://git.torproject.org/tor.git
 gpg_keyring: tor.gpg
 tag_gpg_id: 1
-remote_docker: 1
 
 var:
+  container:
+    use_container: 1
   deps:
     - build-essential
     - automake
@@ -50,6 +51,7 @@ targets:
       flag_mwindows: ''
 
 input_files:
+  - project: container-image
   - name: openssl
     project: openssl
   - name: libevent
@@ -59,4 +61,3 @@ input_files:
     enable: '[% c("var/windows") %]'
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
-  - project: docker-image

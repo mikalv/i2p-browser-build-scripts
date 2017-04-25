@@ -5,7 +5,10 @@ git_hash: 'obfs4proxy-[% c("version") %]'
 tag_gpg_id: 1
 gpg_keyring: obfs4.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 targets:
   nightly:
@@ -13,7 +16,7 @@ targets:
     tag_gpg_id: 0
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: go
     project: go
   - name: goptlib

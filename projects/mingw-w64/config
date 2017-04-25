@@ -3,8 +3,9 @@ filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 git_url: http://git.code.sf.net/p/mingw-w64/mingw-w64
 git_hash: 98e5b4930a717eafddd8ca0f0dfeb7c57c6b026a
 version: '[% c("abbrev") %]'
-remote_docker: 1
 var:
+  container:
+    use_container: 1
   gcc_version: 5.1.0
   deps:
     - automake
@@ -17,6 +18,7 @@ var:
     export PATH="/var/tmp/dist/mingw-w64/helpers:/var/tmp/dist/mingw-w64/bin:$PATH"
     export gcclibs=/var/tmp/dist/mingw-w64/gcclibs
 input_files:
+  - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("var/gcc_version") %]/gcc-[% c("var/gcc_version") %].tar.bz2'
     sha256sum: b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad
   - name: binutils
@@ -24,4 +26,3 @@ input_files:
   - filename: i686-w64-mingw32-g++
   - filename: i686-w64-mingw32-gcc
   - filename: i686-w64-mingw32-ld
-  - project: docker-image

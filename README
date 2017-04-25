@@ -5,13 +5,12 @@ Installing build dependencies
 -----------------------------
 
 To build Tor Browser, you need a Linux distribution that has support
-for Docker (such as Debian jessie, Ubuntu 14.04, Fedora 20, etc ...).
-The Docker package is usually named docker.io or docker-io.
-On Debian jessie, the docker.io package is available in backports.
+for runC (such as Debian jessie, Ubuntu 14.04, Fedora 20, etc ...).
+On Debian jessie, the runc package is available in backports.
 
-Your user account should have access to the docker command without using
-sudo, so it should be in the docker group. The docker daemon should
-also be running.
+Your user account should have access sudo access, which is required to
+be able to extract container file systems, start containers and copy
+files to and from containers.
 
 The sources of most components are downloaded using git, which needs to
 be installed. The sources of webrtc are downloaded using gclient, which
@@ -41,7 +40,7 @@ If you are running Debian or Ubuntu, you can install them with:
                   libio-captureoutput-perl libfile-slurp-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
-                  libfile-copy-recursive-perl git libgtk2.0-dev curl
+                  libfile-copy-recursive-perl git libgtk2.0-dev curl runc
 
 
 Starting a build
@@ -182,18 +181,6 @@ branches to create a list of used build files, and delete the files
 from the 'out' directory that are not used. If you want to see the list
 of files and containers that would be removed without doing it, you can
 use 'make clean-dry-run'.
-
-
-Multiple build directories on the same host
--------------------------------------------
-
-You can do multiple builds of Tor Browser in different directories on
-the same host. However the docker images namespace is global, so you
-may have some conflicts with the same image names used by the
-different builds. By default, the docker images are prefixed with
-tor-browser_$USER. You can change this prefix by defining the
-docker_image_prefix option in rbm.local.conf, using a different prefix
-for each of your build directories.
 
 
 Common Build Errors

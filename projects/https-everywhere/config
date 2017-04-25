@@ -6,9 +6,11 @@ git_submodule: 1
 gpg_keyring: https-everywhere.gpg
 tag_gpg_id: 1
 filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"
-remote_docker: 1
-distribution: Debian-7.11
 var:
+  container:
+    use_container: 1
+    suite: wheezy
+    arch: amd64
   deps:
     - git
     - python
@@ -19,8 +21,9 @@ var:
     - rsync
     - zip
     - unzip
+
 input_files:
-  - project: docker-image
+  - project: container-image
 
 targets:
   nightly:

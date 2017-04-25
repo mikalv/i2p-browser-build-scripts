@@ -5,7 +5,6 @@ git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branc
 tag_gpg_id: 1
 git_url: https://git.torproject.org/tor-browser.git
 gpg_keyring: torbutton.gpg
-remote_docker: 1
 
 var:
   firefox_version: 52.1.0esr
@@ -19,6 +18,8 @@ var:
     - autoconf2.13
     - yasm
     - python
+  container:
+    use_container: 1
 
 targets:
   nightly:
@@ -74,7 +75,7 @@ targets:
       martools_filename: mar-tools-win32.zip
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
   - filename: get-moz-build-date

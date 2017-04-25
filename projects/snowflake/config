@@ -3,7 +3,10 @@ version: '[% c("abbrev") %]'
 git_url: https://git.torproject.org/pluggable-transports/snowflake.git
 git_hash: 9f2e9a6ecb696149708716ca06ce842df03cf492
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 targets:
   linux-i686:
@@ -19,7 +22,7 @@ targets:
         - libx11-dev
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: go
     project: go
   - name: '[% c("var/compiler") %]'

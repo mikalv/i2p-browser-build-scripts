@@ -1,9 +1,10 @@
 # vim: filetype=yaml sw=2
 version: '[% c("var/torbrowser_version") %]'
 filename: 'tor-browser-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
-remote_docker: 1
 
 var:
+  container:
+    use_container: 1
   ddmg: '[% INCLUDE ddmg.sh %]'
 
 targets:
@@ -24,12 +25,13 @@ targets:
         - bzip2
         - faketime
   windows-i686:
-    distribution: Ubuntu-14.10
     var:
       mar_osname: win32
+      container:
+        suite: utopic
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - project: firefox
     name: firefox
   - project: tor

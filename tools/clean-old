@@ -27,24 +27,6 @@ sub clean_file {
     }
 }
 
-sub clean_docker_images {
-    my ($dockerdir, $used_files) = @_;
-    my $imgprefix = RBM::project_config('docker-image', 'docker_image_prefix');
-    my @imgs = read_dir($dockerdir);
-    foreach my $dockerimage (@imgs) {
-        next if $used_files->{"$dockerdir/$dockerimage"};
-        my $img = "$imgprefix:$dockerimage";
-        print "Cleaning docker image $img\n";
-        next if $options{'dry-run'};
-        my ($out, $err, $success) = capture_exec('docker', 'rmi', '-f', $img);
-        if (!$success) {
-            print STDERR "Error removing docker image $img:\n$err\n";
-            exit 1;
-        }
-        unlink "$dockerdir/$dockerimage";
-    }
-}
-
 sub get_project_input_files {
     my ($project, @targets) = @_;
     print "Getting input files for $project ", join(' ', @targets), "\n";
@@ -108,7 +90,4 @@ foreach my $branch (keys %$clean) {
 }
 my %used_files = map { $_ => 1 } @files;
 my $outdir = $RBM::config->{basedir} . '/out';
-# Don't clean docker-image files yet
-$used_files{"$outdir/docker-image"} = 1;
 clean_file($outdir, \%used_files);
-clean_docker_images("$outdir/docker-image", \%used_files);

@@ -5,14 +5,15 @@ git_hash: '[% c("version") %]'
 tag_gpg_id: 1
 gpg_keyring: goptlib.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 
 build: '[% c("projects/go/var/build_go_lib") %]'
 
 var:
+  container:
+    use_container: 1
   go_lib: git.torproject.org/pluggable-transports/goptlib.git
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: go
     project: go

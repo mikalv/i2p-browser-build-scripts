@@ -1,0 +1,52 @@
+# vim: filetype=yaml sw=2
+filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %].tar.gz'
+pkg_type: build
+
+var:
+  ubuntu_version: 17.04
+
+  container_dir: '[% c("tmp_dir") %]/rbm-containers/[% sha256(c("build_id")) %]'
+  container_user: rbm
+
+  container:
+    use_container: 1
+    # We need CAP_SYS_ADMIN for debootstrap to work
+    CAP_SYS_ADMIN: 1
+
+pre: |
+  #!/bin/sh
+  set -e
+  apt-get update -y
+  apt-get install -y debian-archive-keyring ubuntu-keyring debootstrap
+  debootstrap --arch=[% c("var/container/arch") %] [% c("var/container/debootstrap_opt") %] [% c("var/container/suite") %] base-image [% c("var/container/debootstrap_mirror") %]
+  tar -C ./base-image -czf [% dest_dir %]/[% c("filename") %] .
+
+targets:
+  wheezy-amd64:
+    var:
+      container:
+        suite: wheezy
+        arch: amd64
+  jessie-amd64:
+    var:
+      container:
+        suite: jessie
+        arch: amd64
+  precise-amd64:
+    var:
+      container:
+        suite: precise
+        arch: amd64
+        debootstrap_opt: --keyring=/usr/share/keyrings/ubuntu-archive-removed-keys.gpg
+  utopic-amd64:
+    var:
+      container:
+        suite: utopic
+        arch: amd64
+        debootstrap_mirror: http://old-releases.ubuntu.com/ubuntu/
+
+input_files:
+  - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
+    filename: 'container-image_ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
+    sha256sum: df2c8fd540e474b8e1e29c0db8ed6b43a932918f1b9a8149bb82104a7c07ba2a
+

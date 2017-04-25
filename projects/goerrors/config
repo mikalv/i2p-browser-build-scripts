@@ -3,14 +3,15 @@ version: '[% c("abbrev") %]'
 git_url: https://github.com/pkg/errors
 git_hash: 248dadf4e9068a0b3e79f02ed0a610d935de5302
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 
 build: '[% c("projects/go/var/build_go_lib") %]'
 
 var:
+  container:
+    use_container: 1
   go_lib: github.com/pkg/errors
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: go
     project: go

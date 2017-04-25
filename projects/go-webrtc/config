@@ -3,11 +3,12 @@ version: '[% c("abbrev") %]'
 git_url: https://github.com/keroserene/go-webrtc.git
 git_hash: ab1b64862e0c4b4182010699911c2c5818f0a101
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 
 build: '[% c("projects/go/var/build_go_lib") %]'
 
 var:
+  container:
+    use_container: 1
   go_lib: github.com/keroserene/go-webrtc
   build_go_lib_pre: |
     [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
@@ -43,7 +44,7 @@ targets:
         - lib32stdc++6
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: go
     project: go
   - name: webrtc

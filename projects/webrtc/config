@@ -1,13 +1,14 @@
 # vim: filetype=yaml sw=2
 version: '[% c("var/webrtc_tag") %]'
-remote_docker: 1
 filename: 'webrtc-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 var:
+  container:
+    use_container: 1
   webrtc_tag: c279861207c5b15fc51069e96595782350e0ac12
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - project: webrtc
     pkg_type: fetch_sources
   - project: depot_tools
@@ -27,7 +28,6 @@ targets:
         os: linux
   linux-i686:
     var:
-      dockerbuild: "[% pc('docker-image', 'pre') %]"
       sort_deps: 0
       arch_deps:
         - lib32asound2-dev
@@ -65,7 +65,9 @@ targets:
 
 steps:
   fetch_sources:
-    remote_docker: 0
+    var:
+      container:
+        use_container: 0
     filename: 'webrtc-sources-[% c("var/webrtc_tag") %].tar.gz'
     fetch_sources: |
       #!/bin/bash

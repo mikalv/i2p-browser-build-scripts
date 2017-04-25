@@ -5,7 +5,10 @@ git_hash: 'release-[% c("version") %]-stable'
 tag_gpg_id: 1
 gpg_keyring: libevent.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 targets:
   osx-x86_64:
@@ -14,6 +17,6 @@ targets:
         - faketime
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'

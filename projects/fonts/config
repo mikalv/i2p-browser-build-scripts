@@ -3,8 +3,9 @@ version: '[% c("abbrev") %]'
 git_url: https://github.com/googlei18n/noto-fonts.git
 git_hash: 720e34851382ee3c1ef024d8dffb68ffbfb234c2
 filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].tar.gz"
-remote_docker: 1
 var:
+  container:
+    use_container: 1
   noto_fonts_hinted:
     - Arimo-Regular.ttf
     - Arimo-Bold.ttf
@@ -85,7 +86,7 @@ targets:
         - NotoSansYi-Regular.ttf
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - URL: https://github.com/googlei18n/noto-emoji/raw/2f1ffdd6fbbd05d6f382138a3d3adcd89c5ce800/fonts/NotoEmoji-Regular.ttf
     sha256sum: 415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5
     enable: '[% c("var/linux") %]'

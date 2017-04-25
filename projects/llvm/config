@@ -1,10 +1,13 @@
 # vim: filetype=yaml sw=2
 version: 3.8.0
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - project: cmake
     name: cmake
   - URL: 'http://releases.llvm.org/[% c("version") %]/llvm-[% c("version") %].src.tar.xz'

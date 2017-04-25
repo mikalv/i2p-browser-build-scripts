@@ -1,9 +1,10 @@
 # vim: filetype=yaml sw=2
 version: 2.24
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 var:
   configure_opt: '--disable-multilib --enable-gold --enable-deterministic-archives --enable-plugins'
+  container:
+    use_container: 1
 
 targets:
   windows-i686:
@@ -15,7 +16,7 @@ input_files:
     sig_ext: sig
     file_gpg_id: 1
     gpg_keyring: binutils.gpg
-  - project: docker-image
+  - project: container-image
   - filename: enable-reloc-section-ld.patch
     enable: '[% c("var/windows") %]'
   - filename: peXXigen.patch

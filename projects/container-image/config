@@ -1,0 +1,86 @@
+# vim: filetype=yaml sw=2
+filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %]-[% sha256(c("pre")).substr(0, 12) %].tar.gz'
+pkg_type: build
+
+var:
+  container:
+    use_container: 1
+    suite: '[% pc(c("origin_project"), "var/container/suite") %]'
+    arch: '[% pc(c("origin_project"), "var/container/arch") %]'
+
+lsb_release:
+  id: Debian
+  codename: wheezy
+  release: 7.11
+
+pre: |
+  #!/bin/sh
+  # [% c('var/container/suite') %]
+  set -e
+  [% IF pc(c('origin_project'), 'var/pre_pkginst') -%]
+  [% pc(c('origin_project'), 'var/pre_pkginst') %]
+  [% END -%]
+  [% IF c("var/container/suite") == "precise" -%]
+  export INITRD=no
+  mkdir -p /etc/container_environment
+  echo -n no > /etc/container_environment/INITRD
+  dpkg-divert --local --rename --add /sbin/initctl
+  ln -s /bin/true /sbin/initctl
+  dpkg-divert --local --rename --add /usr/bin/ischroot
+  ln -sf /bin/true /usr/bin/ischroot
+  cat >> /etc/apt/sources.list << EOF
+  deb http://archive.ubuntu.com/ubuntu/ precise-updates main
+  deb-src http://archive.ubuntu.com/ubuntu/ precise-updates main
+
+  deb http://archive.ubuntu.com/ubuntu/ precise universe
+  deb-src http://archive.ubuntu.com/ubuntu/ precise universe
+  deb http://archive.ubuntu.com/ubuntu/ precise-updates universe
+  deb-src http://archive.ubuntu.com/ubuntu/ precise-updates universe
+
+  deb http://archive.ubuntu.com/ubuntu/ precise-security main
+  deb-src http://archive.ubuntu.com/ubuntu/ precise-security main
+  deb http://archive.ubuntu.com/ubuntu/ precise-security universe
+  deb-src http://archive.ubuntu.com/ubuntu/ precise-security universe
+  EOF
+  [% END -%]
+  apt-get update -y
+  apt-get upgrade -y
+  [%
+     deps = [];
+     IF pc(c('origin_project'), 'var/deps');
+       CALL deps.import(pc(c('origin_project'), 'var/deps'));
+     END;
+     IF pc(c('origin_project'), 'var/arch_deps');
+       CALL deps.import(pc(c('origin_project'), 'var/arch_deps'));
+     END;
+     IF deps.size;
+       IF pc(c('origin_project'), 'var/sort_deps');
+         deps = deps.sort;
+       END;
+       FOREACH pkg IN deps;
+         SET p = tmpl(pkg);
+         IF p;
+           GET c('install_package', { pkg_name => p });
+           GET "\n";
+         END;
+       END;
+     END;
+  -%]
+  [% IF pc(c('origin_project'), 'var/post_pkginst') -%]
+  [% pc(c('origin_project'), 'var/post_pkginst') %]
+  [% END -%]
+
+remote_get: |
+  #!/bin/sh
+  set -e
+  [%
+    SET src = shell_quote(c('get_src', { error_if_undef => 1 }));
+    SET dst = shell_quote(c('get_dst', { error_if_undef => 1 }));
+  -%]
+  mkdir -p "[% dst %]"
+  sudo tar -C "[% c("var/container/dir") %]/rootfs" -czf "[% dst %]/[% c("filename") %]" .
+
+input_files:
+  - project: debootstrap-image
+    target:
+      - '[% c("var/container/suite") %]-[% c("var/container/arch") %]'

@@ -1,10 +1,11 @@
 # vim: filetype=yaml sw=2
 version: 1.7.5
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 
 var:
   go14_version: 1.4.3
+  container:
+    use_container: 1
 
   setup: |
     mkdir -p /var/tmp/dist
@@ -69,7 +70,7 @@ targets:
       GOARCH: 386
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
     enable: '[% c("var/windows") || c("var/osx") %]'

@@ -1,7 +1,10 @@
 # vim: filetype=yaml sw=2
 version: 1.0.2k
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 targets:
   linux-x86_64:
@@ -18,7 +21,7 @@ targets:
       configure_opts: --cross-compile-prefix=x86_64-apple-darwin10- darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
 
 input_files:
-  - project: docker-image
+  - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
   - URL: 'https://www.openssl.org/source/openssl-[% c("version") %].tar.gz'

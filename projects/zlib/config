@@ -5,9 +5,12 @@ git_hash: 'v[% c("version") %]'
 git_url: https://github.com/madler/zlib.git
 gpg_keyring: zlib.gpg
 tag_gpg_id: 1
-remote_docker: 1
+
+var:
+  container:
+    use_container: 1
 
 input_files:
+  - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
-  - project: docker-image

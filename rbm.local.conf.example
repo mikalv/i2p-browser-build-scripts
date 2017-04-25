@@ -16,12 +16,6 @@
 ### this.
 #debug: 0
 
-### If you are doing multiple builds in different directories on the
-### same host, you should define docker_image_prefix with a different
-### value for each build directory, so that the different builds don't
-### use the same docker image names.
-#docker_image_prefix: tor-browser_XXXXX
-
 ### The build_log option defines in which file the build logs of each
 ### component are stored. If you set it to '-' the logs are output on
 ### stdout and stderr.

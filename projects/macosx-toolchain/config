@@ -1,8 +1,9 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 version: 10.7-1
-remote_docker: 1
 var:
+  container:
+    use_container: 1
   setup: |
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf [% c("compiler_tarfile") %]
@@ -15,6 +16,7 @@ var:
     export LDFLAGS="[% c('var/LDFLAGS') %]"
 
 input_files:
+  - project: container-image
   - name: llvm
     project: llvm
   - name: cctools
@@ -23,4 +25,3 @@ input_files:
   - name: SDK
     URL: https://people.torproject.org/~mikeperry/mirrors/sources/MacOSX10.7.sdk.tar.gz
     sha256sum: da77bb0003fcca5ea8c4e8cb2da8828ded750c54afdcac29ec6f3b46ad5e3adf
-  - project: docker-image

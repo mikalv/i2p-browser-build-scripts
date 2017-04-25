@@ -1,8 +1,9 @@
 # vim: filetype=yaml sw=2
 version: 2.51
 filename: 'nsis-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-remote_docker: 1
 var:
+  container:
+    use_container: 1
   deps:
     - build-essential
     - libmpc-dev
@@ -12,6 +13,7 @@ var:
     - xsltproc
 
 input_files:
+  - project: container-image
   - filename: 'nsis-[% c("version") %].tar.bz2'
     URL: 'http://downloads.sourceforge.net/nsis/nsis-[% c("version") %]-src.tar.bz2'
     sha256sum: 43d4c9209847e35eb6e2c7cd5a7586e1445374c056c2c7899e40a080e17a1be7
@@ -21,4 +23,3 @@ input_files:
   - filename: nsis-missing-unistd-include.patch
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
-  - project: docker-image
