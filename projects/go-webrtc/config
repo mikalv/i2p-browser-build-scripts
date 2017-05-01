@@ -31,17 +31,11 @@ var:
 targets:
   master:
     git_hash: master
-  linux-x86_64:
+  linux:
     var:
       arch_deps:
         - pkg-config
         - libx11-dev
-  linux-i686:
-    var:
-      arch_deps:
-        - pkg-config:i386
-        - libx11-dev:i386
-        - lib32stdc++6
 
 input_files:
   - project: container-image

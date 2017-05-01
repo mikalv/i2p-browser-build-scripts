@@ -28,9 +28,8 @@ targets:
     var:
       torbrowser_update_channel: default
 
-  linux-x86_64:
+  linux:
     var:
-      martools_filename: mar-tools-linux64.zip
       arch_deps:
         - libgtk2.0-dev
         - libdbus-glib-1-dev
@@ -44,25 +43,13 @@ targets:
         - libx11-xcb-dev
         # We built GCC but not the libmpc2, thus we need to install it
         - libmpc2
+  linux-x86_64:
+    var:
+      martools_filename: mar-tools-linux64.zip
 
   linux-i686:
     var:
       martools_filename: mar-tools-linux32.zip
-      sort_deps: 0
-      arch_deps:
-        - libc6-dev-i386
-        - libgtk2.0-dev:i386
-        - libdbus-glib-1-dev:i386
-        - libxt-dev:i386
-        # To pass configure since ESR 31.
-        - libpulse-dev:i386
-        # To pass configure since ESR 45.
-        - libgconf2-dev:i386
-        # To pass configure since ESR 52
-        - libx11-xcb-dev:i386
-        # We built GCC but not the libmpc2, thus we need to install it
-        - libmpc2
-        - hardening-wrapper
 
   osx-x86_64:
     var:

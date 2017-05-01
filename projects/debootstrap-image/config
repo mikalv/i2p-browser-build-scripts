@@ -27,22 +27,44 @@ targets:
       container:
         suite: wheezy
         arch: amd64
+  wheezy-i386:
+    var:
+      container:
+        suite: wheezy
+        arch: i386
   jessie-amd64:
     var:
       container:
         suite: jessie
         arch: amd64
+  jessie-i386:
+    var:
+      container:
+        suite: jessie
+        arch: i386
   precise-amd64:
     var:
       container:
         suite: precise
         arch: amd64
         debootstrap_opt: --keyring=/usr/share/keyrings/ubuntu-archive-removed-keys.gpg
+  precise-i386:
+    var:
+      container:
+        suite: precise
+        arch: i386
+        debootstrap_opt: --keyring=/usr/share/keyrings/ubuntu-archive-removed-keys.gpg
   utopic-amd64:
     var:
       container:
         suite: utopic
         arch: amd64
+        debootstrap_mirror: http://old-releases.ubuntu.com/ubuntu/
+  utopic-i386:
+    var:
+      container:
+        suite: utopic
+        arch: i386
         debootstrap_mirror: http://old-releases.ubuntu.com/ubuntu/
 
 input_files:

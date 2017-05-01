@@ -21,22 +21,18 @@ targets:
     git_hash: master
     tag_gpg_id: 0
 
-  linux-i686:
+  linux:
     var:
-      libdir: lib32
-      sort_deps: 0
-      arch_deps:
-        - libc6-dev-i386
-        - libtool
-        - zlib1g-dev:i386
-        - hardening-wrapper
-  linux-x86_64:
-    var:
-      libdir: lib64
       arch_deps:
         - libtool
         - zlib1g-dev
         - hardening-wrapper
+  linux-i686:
+    var:
+      libdir: lib
+  linux-x86_64:
+    var:
+      libdir: lib64
   osx-x86_64:
     var:
       arch_deps:

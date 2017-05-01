@@ -9,13 +9,7 @@ var:
     use_container: 1
 
 targets:
-  linux-i686:
-    var:
-      arch_deps:
-        - pkg-config
-        - libx11-dev:i386
-        - lib32stdc++6
-  linux-x86_64:
+  linux:
     var:
       arch_deps:
         - pkg-config

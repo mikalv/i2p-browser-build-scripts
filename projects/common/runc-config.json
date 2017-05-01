@@ -2,7 +2,11 @@
 	"ociVersion": "1.0.0-rc1",
 	"platform": {
 		"os": "linux",
-		"arch": "amd64"
+[% IF c("var/container/arch") == 'i386' -%]
+		"arch": "386"
+[% ELSE -%]
+		"arch": "[% c("var/container/arch") %]"
+[% END -%]
 	},
 	"process": {
 		"terminal": true,

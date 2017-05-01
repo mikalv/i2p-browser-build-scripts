@@ -4,12 +4,11 @@ version: 5.1.0
 var:
   container:
     use_container: 1
-  configure_opt: --enable-multilib --enable-languages=c,c++ --with-arch_32=i686
   deps:
     - build-essential
     - libmpc-dev
-    - libc6-dev-i386
   setup: |
+    [% c("var/setarch") -%]
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/gcc/bin:$PATH"
@@ -36,12 +35,20 @@ var:
     popd
 
 targets:
-  osx-x86_64:
-    var:
-      configure_opt: --enable-multilib --enable-languages=c,c++
   windows-i686:
     var:
       configure_opt: --disable-multilib --enable-languages=c,c++
+  linux-i686:
+    var:
+      configure_opt: --enable-multilib --enable-languages=c,c++ --with-system-zlib
+      arch_deps:
+        - libc6-dev
+        - zlib1g-dev
+  linux-x86_64:
+    var:
+      configure_opt: --enable-multilib --enable-languages=c,c++ --with-arch_32=i686
+      arch_deps:
+        - libc6-dev-i386
 input_files:
   - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("version") %]/gcc-[% c("version") %].tar.bz2'
