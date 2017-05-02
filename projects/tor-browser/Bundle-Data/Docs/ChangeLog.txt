@@ -83,6 +83,18 @@ Tor Browser 7.0a3 -- April 20 2017
      * Bug 21960: Linux bundles based on ESR 52 are not reproducible anymore
      * Bug 21629: Fix broken ASan builds when switching to ESR 52
 
+Tor Browser 6.5.2 -- April 19 2017
+ * All Platforms
+   * Update Firefox to 45.9.0esr
+   * Update HTTPS-Everywhere to 5.2.14
+   * Update NoScript to 5.0.2
+   * Bug 21555+16450: Don't remove Authorization header on subdomains (e.g. Twitter)
+   * Bug 19316: Make sure our Windows updates can deal with the SSE2 requirement
+   * Bug 21917: Add new obfs4 bridges
+   * Bug 21918: Move meek-amazon to d2cly7j4zqgua7.cloudfront.net backend
+ * Windows
+   * Bug 21795: Fix Tor Browser crashing on github.com
+
 Tor Browser 7.0a2-hardened -- March 7 2017
  * All Platforms
    * Update Firefox to 45.8.0esr
