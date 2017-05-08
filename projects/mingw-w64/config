@@ -13,6 +13,7 @@ var:
     - libmpc-dev
     - g++-mingw-w64-i686
   setup: |
+    [% c("var/setarch") -%]
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf [% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/mingw-w64/helpers:/var/tmp/dist/mingw-w64/bin:$PATH"

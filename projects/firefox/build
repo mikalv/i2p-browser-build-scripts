@@ -1,4 +1,5 @@
 #!/bin/bash
+[% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
 [% IF c("var/windows") -%]
   mkdir -p /var/tmp/dist
