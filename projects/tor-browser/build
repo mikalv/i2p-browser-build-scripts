@@ -152,11 +152,12 @@ rm -rf chrome/en-US
 unzip omni.ja defaults/preferences/000-tor-browser.js || [ $? -lt 3 ]
 cp defaults/preferences/000-tor-browser.js $rootdir
 [% IF c("var/osx") %]
-  # Embed our default bookmarks.
-  mkdir -p defaults/profile/
-  cp -p $rootdir/bookmarks.html defaults/profile/
-  [% c("var/touch") %] defaults/profile/bookmarks.html
-  zip -Xm omni.ja defaults/profile/bookmarks.html
+  # Embed our default bookmarks within the en-US locale.
+  mkdir -p chrome/en-US/locale/browser
+  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
+  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
+  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
+  rm -rf chrome
 [% END %]
 # Set the locale of the bundle.
 echo "pref(\"general.useragent.locale\", \"en-US\");" >> defaults/preferences/000-tor-browser.js
@@ -165,8 +166,8 @@ zip -Xm omni.ja defaults/preferences/000-tor-browser.js
 rm -rf defaults
 popd
 
-# Prepare our language packs for using the proper search engines. See bug
-# 18915 for more details.
+# Prepare our language packs for using the proper search engines and embed
+# our default bookmarks. See bugs 18915 and 21879 for more details.
 [% FOREACH lang = c('var/locales') %]
 [% SET lang = tmpl(lang);
    SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
@@ -175,6 +176,9 @@ popd
   search_plugins_path=prep_[% lang %]/browser/chrome/[% lang %]/locale/browser
   rm -rf $search_plugins_path/searchplugins
   cp -rf $rootdir/searchplugins $search_plugins_path
+  [% IF c("var/osx") -%]
+    cp $rootdir/bookmarks.html prep_[% lang %]/browser/chrome/[% lang %]/locale/browser/
+  [% END -%]
   rm [% xpi %]
   cd prep_[% lang %]
   [% c('zip', {
