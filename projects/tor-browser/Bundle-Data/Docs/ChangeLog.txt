@@ -18,7 +18,7 @@ Tor Browser 7.0a3 -- April 20 2017
      * Translations update
    * Update HTTPS-Everywhere to 5.2.14
    * Update NoScript to 5.0.2
-   * Update sandboxed-tor-browser to 0.0.5
+   * Update sandboxed-tor-browser to 0.0.6
      * Bug 21764: Use bubblewrap's `--die-with-parent` when supported
      * Fix e10s Web Content crash on systems with grsec kernels
      * Bug 21928: Force a reinstall if an existing hardened bundle is present
@@ -26,6 +26,7 @@ Tor Browser 7.0a3 -- April 20 2017
      * Bug 21927: Remove the ability to install/update the hardened bundle
      * Bug 21244: Update the MAR signing key for 7.0
      * Bug 21536: Remove asn's scramblesuit bridge from Tor Browser
+     * Add back the old release MAR signing key
      * Add `prlimit64` to the firefox system call whitelist
      * Fix compilation with Go 1.8
      * Use Config.Clone() to clone TLS configs when available
