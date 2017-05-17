@@ -1,0 +1,23 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+version: 0.2
+git_hash: 'tb-v[% c("version") %]'
+git_url: https://github.com/immunant/selfrando.git
+gpg_keyring: selfrando.gpg
+tag_gpg_id: 1
+
+var:
+  container:
+    use_container: 1
+  arch_deps:
+    - scons
+    - zlib1g-dev
+
+input_files:
+  - project: container-image
+  - name: binutils
+    project: binutils
+  - name: elfutils
+    project: elfutils
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'

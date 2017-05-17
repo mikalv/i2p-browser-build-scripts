@@ -21,3 +21,5 @@ input_files:
     enable: '[% c("var/windows") %]'
   - filename: peXXigen.patch
     enable: '[% c("var/windows") %]'
+  - filename: binutils-224-gold.patch
+    enable: '[% c("var/linux-x86_64") %]'
