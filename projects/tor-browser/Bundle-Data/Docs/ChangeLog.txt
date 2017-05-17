@@ -1,3 +1,46 @@
+Tor Browser 7.0a4 -- May 15 2017
+ * All Platforms
+   * Update Firefox to 52.1.1esr
+   * Update Tor to 0.3.0.6
+   * Update Tor Launcher to 0.2.12.1
+     * Bug 20761: Don't ignore additional SocksPorts
+     * Translation update
+   * Update HTTPS-Everywhere to 5.2.16
+   * Update NoScript to 5.0.4
+   * Bug 21962: Fix crash on about:addons page
+   * Bug 21778: Canvas prompt is not shown in Tor Browser based on ESR52
+   * Bug 21569: Add first-party domain to Permissions key
+   * Bug 22165: Don't allow collection of local IP addresses
+   * Bug 13017: Work around audio fingerprinting by disabling the Web Audio API
+   * Bug 10286: Disable Touch API and add fingerprinting resistance as fallback
+   * Bug 13612: Disable Social API
+   * Bug 10283: Disable SpeechSynthesis API
+   * Bug 21675: Spoof window.navigator.hardwareConcurrency
+   * Bug 21792: Suppress MediaError.message
+   * Bug 16337: Round times exposed by Animation API to nearest 100ms
+   * Bug 21726: Keep Graphite support disabled
+   * Bug 21685: Disable remote new tab pages
+   * Bug 21790: Disable captive portal detection
+   * Bug 21686: Disable Microsoft Family Safety support
+   * Bug 22073: Make sure Mozilla's experiments are disabled
+   * Bug 21683: Disable newly added Safebrowsing capabilities
+   * Bug 22071: Disable Kinto-based blocklist update mechanism
+   * Bug 22072: Hide TLS error reporting checkbox
+   * Bug 20761: Don't ignore additional SocksPorts
+   * Bug 21340: Identify and backport new patches from Firefox
+   * Bug 22153: Fix broken feeds on higher security levels
+   * Bug 22025: Fix broken certificate error pages on higher security levels
+   * Bug 21710: Upgrade Go to 1.8.1
+ * Mac
+   * Bug 21940: Don't allow privilege escalation during update
+   * Bug 22044: Fix broken default search engine on macOS
+   * Bug 21879: Use our default bookmarks on OSX
+   * Bug 21779: Non-admin users can't access Tor Browser on macOS
+ * Linux
+   * Bug 22041: Fix update error during update to 7.0a3
+   * Bug 22238: Fix use of hardened wrapper for Firefox build
+   * Bug 20683: Selfrando support for 64-bit Linux systems
+
 Tor Browser 7.0a3 -- April 20 2017
  * All Platforms
    * Update Firefox to 52.1.0esr

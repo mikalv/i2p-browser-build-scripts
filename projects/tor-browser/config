@@ -54,9 +54,9 @@ input_files:
     name: snowflake
     enable: '[% c("var/snowflake") %]'
   - filename: Bundle-Data
-  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-5.0.2-fx+sm.xpi
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-5.0.4-fx+sm.xpi
     name: noscript
-    sha256sum: 31ba7743699deefb606bcc49197d26d926f6b4e3d3526cd2f8a339f857a04fb1
+    sha256sum: cd8e5561bdd7331d9fdd510fb1bd1cb6460d64f351076b523d31361ff9853c76
   - filename: RelativeLink
     enable: '[% c("var/linux") %]'
   - project: libdmg-hfsplus
