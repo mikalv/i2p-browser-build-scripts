@@ -120,6 +120,8 @@ input_files:
 build: |
   #!/bin/sh
   [% c("var/set_default_env") -%]
+  # reset HOME which was changed by var/set_default_env, for gpg
+  [% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
   destdir="[% dest_dir _ '/' _ c("var/publish_dir") %]"
   mkdir -p "$destdir"
   [% IF c("var/torbrowser-windows-i686") -%]
