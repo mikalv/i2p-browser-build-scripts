@@ -47,12 +47,14 @@ targets:
     var:
       configure_opt: --enable-multilib --enable-languages=c,c++ --with-system-zlib
       arch_deps:
+        - hardening-wrapper
         - libc6-dev
         - zlib1g-dev
   linux-x86_64:
     var:
       configure_opt: --enable-multilib --enable-languages=c,c++ --with-arch_32=i686
       arch_deps:
+        - hardening-wrapper
         - libc6-dev-i386
 input_files:
   - project: container-image
