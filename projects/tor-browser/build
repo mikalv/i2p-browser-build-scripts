@@ -229,12 +229,6 @@ rm -f precomplete
 python $MARTOOLS/createprecomplete.py
 popd
 
-[% IF c("var/osx") -%]
-  # Ensure that files and directories are accessible by non-admin users
-  # if the app bundle is placed in /Applications. See bug 21779.
-  chmod -R o+rX "$TBDIR"
-[% END -%]
-
 cd $distdir
 
 [% IF c("var/build_mar") -%]
@@ -306,12 +300,6 @@ rm -rf $distdir/${PKG_DIR}
       rm -f precomplete
       python $MARTOOLS/createprecomplete.py
       popd
-
-      [% IF c("var/osx") -%]
-        # Ensure that files and directories are accessible by non-admin users
-        # if the app bundle is placed in /Applications. See bug 21779.
-        chmod -R o+rX "[% browserdir %]"
-      [% END -%]
 
       # Create full MAR file and compressed package for this locale.
       MAR_FILE=tor-browser-[% c("var/mar_osname") %]-[% c("var/torbrowser_version") %]_[% lang %].mar
