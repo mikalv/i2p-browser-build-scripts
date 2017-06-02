@@ -52,9 +52,6 @@ cd /var/tmp/dist/go/src
   # http://golang.org/doc/install/source#environment
   export GOOS=darwin
   export GOARCH=amd64
-  # Remove a preprocessor directive that causes problems when building with the 10.7 SDK.
-  # https://github.com/golang/go/issues/17732
-  sed -i -e '/^#cgo CFLAGS:/s/-D__MAC_OS_X_VERSION_MAX_ALLOWED=1060//' crypto/x509/root_cgo_darwin.go
   CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= ./make.bash
 [% ELSIF c("var/windows") -%]
   # Create a cc-for-target script that closes over CC, CFLAGS, and LDFLAGS.
