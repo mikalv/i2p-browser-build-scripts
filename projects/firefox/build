@@ -45,7 +45,7 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 [% END %]
 
 [% IF c("var/linux") %]
-  mkdir -p $distdir/Debug/Browser/gmp-clearkey/0.1
+  mkdir -p $distdir/Debug/Browser/
 [% END %]
 
 cd /var/tmp/build/[% project %]-[% c("version") %]
@@ -148,7 +148,7 @@ cd $distdir
 [% IF c("var/linux") %]
   # Strip and generate debuginfo for the firefox binary that we keep, all *.so
   # files, the plugin-container, and the updater (see ticket #10126)
-  for LIB in Browser/*.so Browser/firefox Browser/plugin-container Browser/gmp-clearkey/0.1/*.so Browser/updater
+  for LIB in Browser/*.so Browser/firefox Browser/plugin-container Browser/updater
   do
       objcopy --only-keep-debug $LIB Debug/$LIB
       strip $LIB
