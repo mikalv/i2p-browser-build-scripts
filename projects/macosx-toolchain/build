@@ -11,23 +11,6 @@ cd $distdir/cctools/bin
 ln -s ../../clang/bin/clang x86_64-apple-darwin10-clang
 ln -s ../../clang/bin/clang++ x86_64-apple-darwin10-clang++
 
-cd $distdir
-# Bug 20439: build with PIE
-# If we add -fPIE to the FLAGS, the firefox build fails in js/src/ctypes/libffi
-# with libtool giving an error:
-#   libtool: compile: unable to infer tagged configuration
-# To avoid this error, we add -fPIE using wrappers on clang and clang++
-mkdir clang/helpers
-cat > clang/helpers/clang << EOF
-#!/bin/sh
-exec $distdir/clang/bin/clang -fPIE "\$@"
-EOF
-cat > clang/helpers/clang++ << EOF
-#!/bin/sh
-exec $distdir/clang/bin/clang++ -fPIE "\$@"
-EOF
-chmod +x clang/helpers/clang clang/helpers/clang++
-
 cd "/var/tmp/dist"
 [% c('tar', {
    tar_src => [ project ],

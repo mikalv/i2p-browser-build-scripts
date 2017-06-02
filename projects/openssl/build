@@ -10,7 +10,7 @@ export CC='gcc -m32'
 [% END %]
 [% IF c("var/osx") -%]
   # Tricking OpenSSL into using our clang as cross-compiler
-  ln -s $clangdir/helpers/clang $clangdir/helpers/x86_64-apple-darwin10-cc
+  ln -s $clangdir/bin/clang $clangdir/bin/x86_64-apple-darwin10-cc
   export CC="cc [% c("var/FLAGS") %]"
 [% END -%]
 ./Configure --prefix=$distdir [% c('var/configure_opts') %]
