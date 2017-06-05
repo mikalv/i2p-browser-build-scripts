@@ -13,7 +13,7 @@ var:
     tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/gcc/bin:$PATH"
     [% IF c("var/osname") == "linux-i686" -%]
-    export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib32
+    export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib
     [% ELSE -%]
     export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib64
     [% END -%]
