@@ -1,3 +1,56 @@
+Tor Browser 7.5a1 -- June 14 2017
+ * All Platforms
+   * Update Firefox to 52.2.0esr
+   * Update Tor to 0.3.1.3-alpha
+   * Update Torbutton to 1.9.7.4
+     * Bug 22542: Security Settings window too small on macOS 10.12
+     * Bug 22104: Adjust our content policy whitelist for ff52-esr
+     * Bug 22457: Allow resources loaded by view-source://
+     * Bug 21627: Ignore HTTP 304 responses when checking redirects
+     * Bug 22459: Adapt our use of the nsIContentPolicy to e10s mode
+     * Translations update
+   * Update Tor Launcher to 0.2.12.2
+     * Bug 22283: Linux 7.0a4 is broken after update due to unix: lines in torrc
+     * Translations update
+   * Update HTTPS-Everywhere to 5.2.18
+   * Update NoScript to 5.0.5
+   * Update sandboxed-tor-browser to 0.0.7
+   * Bug 22362: NoScript's XSS filter freezes the browser
+   * Bug 21766: Fix crash when the external application helper dialog is invoked
+   * Bug 21886: Download is stalled in non-e10s mode
+   * Bug 22333: Disable WebGL2 API for now
+   * Bug 21861: Disable additional mDNS code to avoid proxy bypasses
+   * Bug 21684: Don't expose navigator.AddonManager to content
+   * Bug 21431: Clean-up system extensions shipped in Firefox 52
+   * Bug 22320: Use preference name 'referer.hideOnionSource' everywhere
+   * Bug 16285: Don't ship ClearKey EME system and update EME preferences
+   * Bug 21972: about:support is partially broken
+   * Bug 21323: Enable Mixed Content Blocking
+   * Bug 22415: Fix format error in our pipeline patch
+   * Bug 21862: Rip out potentially unsafe Rust code
+   * Bug 16485: Improve about:cache page
+   * Bug 22462: Backport of patch for bug 1329521 to fix assertion failure
+   * Bug 22458: Fix broken `about:cache` page on higher security levels
+   * Bug 18531: Uncaught exception when opening ip-check.info
+   * Bug 18574: Uncaught exception when clicking items in Library
+   * Bug 22327: Isolate Page Info media previews to first party domain
+   * Bug 22452: Isolate tab list menuitem favicons to first party domain
+   * Bug 15555: View-source requests are not isolated by first party domain
+   * Bug 5293: Neuter fingerprinting with Battery API
+   * Bug 22429: Add IPv6 address for Lisbeth:443 obfs4 bridge
+   * Bug 22468: Add default obfs4 bridges frosty and dragon
+ * Windows
+   * Bug 22419: Prevent access to file://
+   * Bug 21617: Fix single RWX page on Windows
+ * OS X
+   * Bug 22558: Don't update OS X 10.7.x and 10.8.x users to Tor Browser 7.0
+
+ * Linux
+   * Bug 16285: Remove ClearKey related library stripping
+   * Bug 21852: Don't use jemalloc4 anymore
+ * Android
+   * Bug 19078: Disable RtspMediaResource stuff in Orfox
+
 Tor Browser 7.0a4 -- May 15 2017
  * All Platforms
    * Update Firefox to 52.1.1esr
@@ -84,7 +137,7 @@ Tor Browser 7.0a3 -- April 20 2017
    * Bug 17334: Hide Referer when leaving a .onion domain (improved patch)
    * Bug 3246: Double-key cookies
    * Bug 8842: Fix XML parsing error
-   * Bug 16886: 16886: "Add-on compatibility check dialog" contains Firefox logo
+   * Bug 16886: "Add-on compatibility check dialog" contains Firefox logo
    * Bug 19192: Untrust Blue Coat CA
    * Bug 19955: Avoid confusing warning that favicon load request got cancelled
    * Bug 20005: Backport fixes for memory leaks investigation
