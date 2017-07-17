@@ -70,9 +70,12 @@ GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_au
 rm -rf out/Release
 "$GN" gen out/Release --args="$GN_ARGS"
 ninja -C out/Release webrtc field_trial metrics_default pc_test_utils
-# https://github.com/keroserene/go-webrtc/issues/23#issuecomment-175312648
-# libwebrtc-linux-386-magic.a(dump_syms_regtest.o): unsupported ELF file type 2
-ar crs libwebrtc-magic.a $(find . -name '*.o' -not -name '*.main.o' -not -name 'dump_syms_regtest.o' | sort)
+# .o files under out/Release/obj/ are the build outputs. Don't include .o
+# files from elsewhere under out/ because they are build helpers and things
+# like that, not necessarily of the target architecture, and anyway are not
+# needed.
+# https://bugs.torproject.org/22832
+ar crs libwebrtc-magic.a $(find out/Release/obj -name '*.o' | sort)
 
 mkdir -p $distdir
 cd $distdir
