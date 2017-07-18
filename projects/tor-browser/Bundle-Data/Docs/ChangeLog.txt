@@ -1,3 +1,15 @@
+Tor Browser 7.5a2 -- July 6 2017
+ * All Platforms
+   * Update Tor to 0.3.1.4-alpha
+   * Update HTTPS-Everywhere to 5.2.19
+ * Linux
+   * Update sandboxed-tor-browser to 0.0.9
+
+Tor Browser 7.0.2 -- July 3 2017
+ * All Platforms
+   * Update Tor to 0.3.0.9, fixing bug #22753
+   * Update HTTPS-Everywhere to 5.2.19
+
 Tor Browser 7.5a1 -- June 14 2017
  * All Platforms
    * Update Firefox to 52.2.0esr
@@ -50,6 +62,151 @@ Tor Browser 7.5a1 -- June 14 2017
    * Bug 21852: Don't use jemalloc4 anymore
  * Android
    * Bug 19078: Disable RtspMediaResource stuff in Orfox
+
+Tor Browser 7.0.1 -- June 13 2017
+ * All Platforms
+   * Update Firefox to 52.2.0esr
+   * Update Tor to 0.3.0.8
+   * Update Torbutton to 1.9.7.4
+     * Bug 22542: Security Settings window too small on macOS 10.12
+   * Update HTTPS-Everywhere to 5.2.18
+   * Bug 22362: NoScript's XSS filter freezes the browser
+ * OS X
+   * Bug 22558: Don't update OS X 10.7.x and 10.8.x users to Tor Browser 7.0
+
+Tor Browser 7.0 -- June 7 2017
+ * All Platforms
+   * Update Firefox to 52.1.2esr
+   * Update Tor to 0.3.0.7
+   * Update Torbutton to 1.9.7.3
+     * Bug 22104: Adjust our content policy whitelist for ff52-esr
+     * Bug 22457: Allow resources loaded by view-source://
+     * Bug 21627: Ignore HTTP 304 responses when checking redirects
+     * Bug 22459: Adapt our use of the nsIContentPolicy to e10s mode
+     * Bug 21865: Update our JIT preferences in the security slider
+     * Bug 21747: Make 'New Tor Circuit for this Site' work in ESR52
+     * Bug 21745: Fix handling of catch-all circuit
+     * Bug 21547: Fix circuit display under e10s
+     * Bug 21268: e10s compatibility for New Identity
+     * Bug 21267: Remove window resize implementation for now
+     * Bug 21201: Make Torbutton multiprocess compatible
+     * Translations update
+   * Update Tor Launcher to 0.2.12.2
+     * Bug 22283: Linux 7.0a4 broken after update due to unix: lines in torrc
+     * Bug 20761: Don't ignore additional SocksPorts
+     * Bug 21920: Don't show locale selection dialog
+     * Bug 21546: Mark Tor Launcher as multiprocess compatible
+     * Bug 21264: Add a README file
+     * Translations update
+   * Update HTTPS-Everywhere to 5.2.17
+   * Update NoScript to 5.0.5
+   * Update Go to 1.8.3 (bug 22398)
+   * Bug 21962: Fix crash on about:addons page
+   * Bug 21766: Fix crash when the external application helper dialog is invoked
+   * Bug 21886: Download is stalled in non-e10s mode
+   * Bug 21778: Canvas prompt is not shown in Tor Browser based on ESR52
+   * Bug 21569: Add first-party domain to Permissions key
+   * Bug 22165: Don't allow collection of local IP addresses
+   * Bug 13017: Work around audio fingerprinting by disabling the Web Audio API
+   * Bug 10286: Disable Touch API and add fingerprinting resistance as fallback
+   * Bug 13612: Disable Social API
+   * Bug 10283: Disable SpeechSynthesis API
+   * Bug 22333: Disable WebGL2 API for now
+   * Bug 21861: Disable additional mDNS code to avoid proxy bypasses
+   * Bug 21684: Don't expose navigator.AddonManager to content
+   * Bug 21431: Clean-up system extensions shipped in Firefox 52
+   * Bug 22320: Use preference name 'referer.hideOnionSource' everywhere
+   * Bug 16285: Don't ship ClearKey EME system and update EME preferences
+   * Bug 21675: Spoof window.navigator.hardwareConcurrency
+   * Bug 21792: Suppress MediaError.message
+   * Bug 16337: Round times exposed by Animation API to nearest 100ms
+   * Bug 21972: about:support is partially broken
+   * Bug 21726: Keep Graphite support disabled
+   * Bug 21323: Enable Mixed Content Blocking
+   * Bug 21685: Disable remote new tab pages
+   * Bug 21790: Disable captive portal detection
+   * Bug 21686: Disable Microsoft Family Safety support
+   * Bug 22073: Make sure Mozilla's experiments are disabled
+   * Bug 21683: Disable newly added Safebrowsing capabilities
+   * Bug 22071: Disable Kinto-based blocklist update mechanism
+   * Bug 22415: Fix format error in our pipeline patch
+   * Bug 22072: Hide TLS error reporting checkbox
+   * Bug 20761: Don't ignore additional SocksPorts
+   * Bug 21862: Rip out potentially unsafe Rust code
+   * Bug 16485: Improve about:cache page
+   * Bug 22462: Backport of patch for bug 1329521 to fix assertion failure
+   * Bug 21340: Identify and backport new patches from Firefox
+   * Bug 22153: Fix broken feeds on higher security levels
+   * Bug 22025: Fix broken certificate error pages on higher security levels
+   * Bug 21887: Fix broken error pages on higher security levels
+   * Bug 22458: Fix broken `about:cache` page on higher security levels
+   * Bug 21876: Enable e10s by default on all supported platforms
+   * Bug 21876: Always use esr policies for e10s
+   * Bug 20905: Fix resizing issues after moving to a direct Firefox patch
+   * Bug 21875: Modal dialogs are maximized in ESR52 nightly builds
+   * Bug 21885: SVG is not disabled in Tor Browser based on ESR52
+   * Bug 17334: Hide Referer when leaving a .onion domain (improved patch)
+   * Bug 18531: Uncaught exception when opening ip-check.info
+   * Bug 18574: Uncaught exception when clicking items in Library
+   * Bug 22327: Isolate Page Info media previews to first party domain
+   * Bug 22452: Isolate tab list menuitem favicons to first party domain
+   * Bug 15555: View-source requests are not isolated by first party domain
+   * Bug 3246: Double-key cookies
+   * Bug 8842: Fix XML parsing error
+   * Bug 5293: Neuter fingerprinting with Battery API
+   * Bug 16886: 16886: "Add-on compatibility check dialog" contains Firefox logo
+   * Bug 19645: TBB zooms text when resizing browser window
+   * Bug 19192: Untrust Blue Coat CA
+   * Bug 19955: Avoid confusing warning that favicon load request got cancelled
+   * Bug 20005: Backport fixes for memory leaks investigation
+   * Bug 20755: ltn.com.tw is broken in Tor Browser
+   * Bug 21896: Commenting on website is broken due to CAPTCHA not being displayed
+   * Bug 20680: Rebase Tor Browser patches to 52 ESR
+   * Bug 22429: Add IPv6 address for Lisbeth:443 obfs4 bridge
+   * Bug 22468: Add default obfs4 bridges frosty and dragon
+ * Windows
+   * Bug 22419: Prevent access to file://
+   * Bug 12426: Make use of HeapEnableTerminationOnCorruption
+   * Bug 19316: Make sure our Windows updates can deal with the SSE2 requirement
+   * Bug 21868: Fix build bustage with FIREFOX_52_0_2esr_RELEASE for Windows
+ * OS X
+   * Bug 21940: Don't allow privilege escalation during update
+   * Bug 22044: Fix broken default search engine on macOS
+   * Bug 21879: Use our default bookmarks on OSX
+   * Bug 21779: Non-admin users can't access Tor Browser on macOS
+   * Bug 21723: Fix inconsistent generation of MOZ_MACBUNDLE_ID
+   * Bug 21724: Make Firefox and Tor Browser distinct macOS apps
+   * Bug 21931: Backport OSX SetupMacCommandLine updater fixes
+   * Bug 15910: Don't download GMPs via the local fallback
+ * Linux
+   * Bug 16285: Remove ClearKey related library stripping
+   * Bug 22041: Fix update error during update to 7.0a3
+   * Bug 22238: Fix use of hardened wrapper for Firefox build
+   * Bug 21907: Fix runtime error on CentOS 6
+   * Bug 15910: Don't download GMPs via the local fallback
+ * Android
+   * Bug 19078: Disable RtspMediaResource stuff in Orfox
+ * Build system
+   * Windows
+     * Bug 21837: Fix reproducibility of accessibility code for Windows
+     * Bug 21240: Create patches to fix mingw-w64 compilation of Firefox ESR 52
+     * Bug 21904: Bump mingw-w64 commit to help with sandbox compilation
+     * Bug 18831: Use own Yasm for Firefox cross-compilation
+   * OS X
+     * Bug 21328: Updating to clang 3.8.0
+     * Bug 21754: Remove old GCC toolchain and macOS SDK
+     * Bug 19783: Remove unused macOS helper scripts
+     * Bug 10369: Don't use old GCC toolchain anymore for utils
+     * Bug 21753: Replace our old GCC toolchain in PT descriptor
+     * Bug 18530: ESR52 based Tor Browser only runs on macOS 10.9+
+     * Bug 22328: Remove clang PIE wrappers
+   * Linux
+     * Bug 21930: NSS libraries are missing from mar-tools archive
+     * Bug 21239: Adapt Linux Firefox descriptor to ESR52 (use GTK2)
+     * Bug 21960: Linux bundles based on ESR 52 are not reproducible anymore
+     * Bug 21629: Fix broken ASan builds when switching to ESR 52
+     * Bug 22444: Use hardening-wrapper when building GCC
+     * Bug 22361: Fix hardening of libraries built in linux/gitian-utils.yml
 
 Tor Browser 7.0a4 -- May 15 2017
  * All Platforms
