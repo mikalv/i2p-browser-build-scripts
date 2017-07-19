@@ -39,14 +39,10 @@ targets:
   linux-i686:
     var:
       webrtc:
-        arch: ia32
-        lib_arch: 386
         lib_path: lib/libwebrtc-linux-386-magic.a
   linux-x86_64:
     var:
       webrtc:
-        arch: x64
-        lib_arch: amd64
         lib_path: lib/libwebrtc-linux-amd64-magic.a
 
 steps:
