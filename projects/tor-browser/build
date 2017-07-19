@@ -109,7 +109,17 @@ cp -a Bundle-Data/Docs/* $TBDIR/$DOCSPATH
 tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -x
 
 cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TBDIR/$TORCONFIGPATH/torrc-defaults
-cat Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+[% IF c("var/linux") -%]
+  cat Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+[% END -%]
+[% IF c("var/windows") -%]
+  # We don't have snowflake available on Windows yet
+  grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+[% END -%]
+[% IF c("var/osx") -%]
+  # FTE is temporarily removed due to bug 18495.
+  grep -Ev 'default_bridge\.fte' Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+[% END -%]
 cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> $TBDIR/$MEEKPROFILEPATH/user.js
 
 [% IF c("var/osx") %]
