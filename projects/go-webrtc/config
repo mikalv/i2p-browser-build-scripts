@@ -20,13 +20,23 @@ var:
     # Replace the prebuilt webrtc library with our own one.
     rm -rf include/ lib/
     cp -a /var/tmp/dist/webrtc/{include,lib} .
-    # The go-webrtc package sets _GLIBCXX_USE_CXX11_ABI=0 for compatibility with
-    # the prebuilt libwebrtc-magic.a libraries. Since we build our own
-    # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
-    # using CGO_CXXFLAGS.
-    # __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
-    export CGO_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=1 -D__STDC_FORMAT_MACROS=1"
-    export CGO_LDFLAGS=-latomic
+    [% IF c("var/linux") -%]
+      # The go-webrtc package sets _GLIBCXX_USE_CXX11_ABI=0 for compatibility with
+      # the prebuilt libwebrtc-magic.a libraries. Since we build our own
+      # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
+      # using CGO_CXXFLAGS.
+      # __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
+      export CGO_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=1 -D__STDC_FORMAT_MACROS=1"
+      export CGO_LDFLAGS=-latomic
+    [% END -%]
+    [% IF c("var/osx") -%]
+      export CGO_ENABLED=1
+      export CGO_CFLAGS="[% c("var/FLAGS") %] -mmacosx-version-min=10.7"
+      export CGO_CXXFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=10.7"
+      export CGO_LDFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=10.7"
+      export CC="$clangdir/bin/clang"
+      export CXX="$clangdir/bin/clang++"
+    [% END -%]
 
 targets:
   master:
@@ -36,6 +46,10 @@ targets:
       arch_deps:
         - pkg-config
         - libx11-dev
+  osx-x86_64:
+    var:
+      arch_deps:
+        - pkg-config
 
 input_files:
   - project: container-image

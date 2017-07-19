@@ -52,7 +52,12 @@ cd /var/tmp/dist/go/src
   # http://golang.org/doc/install/source#environment
   export GOOS=darwin
   export GOARCH=amd64
-  CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= ./make.bash
+  # faketime is needed because clang 3.8.0 on Darwin embeds the timestamps of
+  # certain intermediate object files (including those that arise here while
+  # compiling the Go runtime itself). Without this, variable timestamps would
+  # end up in snowflake-client.
+  # https://github.com/golang/go/issues/9206#issuecomment-310476743
+  CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= [% c("var/faketime") %] ./make.bash
 [% ELSIF c("var/windows") -%]
   # Create a cc-for-target script that closes over CC, CFLAGS, and LDFLAGS.
   # Go's CC_FOR_TARGET only allows a command name, not a command with arguments.

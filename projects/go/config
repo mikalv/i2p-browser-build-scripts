@@ -60,6 +60,8 @@ targets:
     var:
       GOOS: darwin
       GOARCH: amd64
+      arch_deps:
+        - faketime
   linux:
     var:
       GOOS: linux
