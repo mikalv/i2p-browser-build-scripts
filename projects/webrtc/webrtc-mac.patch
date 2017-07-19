@@ -1,0 +1,305 @@
+From bd27c327f72ea231353983aa35a0c3e6ae8055d5 Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:26:55 -0700
+Subject: [PATCH 1/8] Disable assertions that prevent cross-compiling for mac.
+
+---
+ config/BUILDCONFIG.gn  | 4 ++--
+ toolchain/mac/BUILD.gn | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
+index d055e705..78a2023a 100644
+--- a/build/config/BUILDCONFIG.gn
++++ b/build/config/BUILDCONFIG.gn
+@@ -232,8 +232,8 @@ if (target_os == "android") {
+ } else if (target_os == "ios") {
+   _default_toolchain = "//build/toolchain/mac:ios_clang_$target_cpu"
+ } else if (target_os == "mac") {
+-  assert(host_os == "mac", "Mac cross-compiles are unsupported.")
+-  _default_toolchain = host_toolchain
++  # assert(host_os == "mac", "Mac cross-compiles are unsupported.")
++  _default_toolchain = "//build/toolchain/mac:clang_$host_cpu"
+ } else if (target_os == "win") {
+   # On Windows we use the same toolchain for host and target by default.
+   assert(target_os == host_os, "Win cross-compiles only work on win hosts.")
+diff --git a/build/toolchain/mac/BUILD.gn b/build/toolchain/mac/BUILD.gn
+index b417e76a..5f48927d 100644
+--- a/build/toolchain/mac/BUILD.gn
++++ b/build/toolchain/mac/BUILD.gn
+@@ -14,7 +14,7 @@ if (is_ios) {
+ import("//build/config/mac/mac_sdk.gni")
+ import("//build/config/mac/symbols.gni")
+ 
+-assert(host_os == "mac")
++# assert(host_os == "mac")
+ 
+ import("//build/toolchain/cc_wrapper.gni")
+ import("//build/toolchain/clang_static_analyzer.gni")
+--
+2.11.0
+
+From a58bb43ea406939fcc978aa808714d04802074ac Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:29:14 -0700
+Subject: [PATCH 2/8] Hardcode cross-compiling flags in config/mac/BUILD.gn.
+
+The build system doesn't provide a general way to set flags externally.
+"No way to provide extra CFLAGS/CXXFLAGS/LDFLAGS"
+https://bugs.chromium.org/p/chromium/issues/detail?id=595653
+---
+ config/mac/BUILD.gn | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/build/config/mac/BUILD.gn b/build/config/mac/BUILD.gn
+index 84180e6a..2054b46f 100644
+--- a/build/config/mac/BUILD.gn
++++ b/build/config/mac/BUILD.gn
+@@ -83,6 +83,11 @@ config("runtime_library") {
+     "-isysroot",
+     sysroot,
+     "-mmacosx-version-min=$mac_deployment_target",
++    "-target",
++    "x86_64-apple-darwin10",
++    "-mlinker-version=136",
++    "-B",
++    "/var/tmp/dist/macosx-toolchain/cctools/bin",
+   ]
+ 
+   asmflags = common_flags
+--
+2.11.0
+
+From 4c57d854280a0f0a4f55cba0457ae44f6369ca08 Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:30:28 -0700
+Subject: [PATCH 3/8] Port build/config/mac/plist_util.py to biplist.
+
+So as not to require the plutil command. plutil was only being used to
+convert between XML and binary plist formats, because versions of the
+plistlib module before Python 3.4 only support the XML format. The
+biplist library handles both formats natively.
+
+FAILED: gen/webrtc/examples/AppRTCMobile_info_plist_merged.plist
+python ../../build/config/mac/plist_util.py merge -f=xml1 -o=gen/webrtc/examples/AppRTCMobile_info_plist_merged.plist ../../build/config/mac/BuildInfo.plist ../../webrtc/examples/objc/AppRTCMobile/mac/Info.plist
+Traceback (most recent call last):
+  File "../../build/config/mac/plist_util.py", line 254, in <module>
+    sys.exit(Main())
+  File "../../build/config/mac/plist_util.py", line 250, in Main
+    args.func(args)
+  File "../../build/config/mac/plist_util.py", line 207, in _Execute
+    data = MergePList(data, LoadPList(filename))
+  File "../../build/config/mac/plist_util.py", line 121, in LoadPList
+    subprocess.check_call(['plutil', '-convert', 'xml1', '-o', name, path])
+  File "/usr/lib/python2.7/subprocess.py", line 535, in check_call
+    retcode = call(*popenargs, **kwargs)
+  File "/usr/lib/python2.7/subprocess.py", line 522, in call
+    return Popen(*popenargs, **kwargs).wait()
+  File "/usr/lib/python2.7/subprocess.py", line 710, in __init__
+    errread, errwrite)
+  File "/usr/lib/python2.7/subprocess.py", line 1335, in _execute_child
+    raise child_exception
+OSError: [Errno 2] No such file or directory
+---
+ config/mac/plist_util.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/build/config/mac/plist_util.py b/build/config/mac/plist_util.py
+index 0928fa13..898edc1a 100644
+--- a/build/config/mac/plist_util.py
++++ b/build/config/mac/plist_util.py
+@@ -3,7 +3,7 @@
+ # found in the LICENSE file.
+ 
+ import argparse
+-import plistlib
++import biplist
+ import os
+ import re
+ import subprocess
+@@ -116,6 +116,7 @@ def Interpolate(plist, substitutions):
+ 
+ def LoadPList(path):
+   """Loads Plist at |path| and returns it as a dictionary."""
++  return biplist.readPlist(path)
+   fd, name = tempfile.mkstemp()
+   try:
+     subprocess.check_call(['plutil', '-convert', 'xml1', '-o', name, path])
+@@ -127,6 +128,7 @@ def LoadPList(path):
+ 
+ def SavePList(path, format, data):
+   """Saves |data| as a Plist to |path| in the specified |format|."""
++  return biplist.writePlist(data, path, {"xml1": False, "binary1": True}[format]) # doesn't handle "json" format
+   fd, name = tempfile.mkstemp()
+   try:
+     with os.fdopen(fd, 'w') as f:
+--
+2.11.0
+
+From d9577991412310d3313d9dcd86453ce24f845c2e Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:37:34 -0700
+Subject: [PATCH 4/8] Hack workaround to disable dispatch_queue_get_label.
+
+dispatch_queue_get_label and DISPATCH_CURRENT_QUEUE_LABEL require SDK
+10.9+. I don't know if removing this code even makes sense, but it at
+least won't crash immediately because of a null pointer.
+
+https://developer.apple.com/documentation/dispatch/dispatch_current_queue_label
+https://developer.apple.com/library/content/releasenotes/General/APIDiffsMacOSX10_9/General.html
+
+FAILED: obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o ../../../../clang/bin/clang++ -MMD -MF obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o.d -DV8_DEPRECATION_WARNINGS -DNO_TCMALLOC -DUSE_EXTERNAL_POPUP_MENU=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -DENABLE_MEDIA_ROUTER=1 -DFIELDTRIAL_TESTING_ENABLED -DCR_XCODE_VERSION=0730 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE=2 -D__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORE=0 -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DEXPAT_RELATIVE_PATH -DHAVE_SCTP -DWEBRTC_POSIX -DWEBRTC_MAC -I../.. -Igen -fno-strict-aliasing -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -arch x86_64 -Wall -Wpartial-availability -Wno-unused-local-typedefs -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-unused-parameter -O2 -gdwarf-2 -isysroot /home/debian/build/MacOSX10.7.sdk -mmacosx-version-min=10.9 -target x86_64-apple-darwin10 -mlinker-version=136 -B /home/debian/build/cctools/bin -fvisibility=hidden -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-strict-overflow -fvisibility-inlines-hidden -std=c++11 -stdlib=libc++ -Wno-narrowing -fno-rtti -fno-exceptions -Wnon-virtual-dtor -Woverloaded-virtual -c ../../webrtc/base/sequenced_task_checker_impl.cc -o obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o
+warning: unknown warning option '-Wno-maybe-uninitialized'; did you mean '-Wno-uninitialized'? [-Wunknown-warning-option]
+../../webrtc/base/sequenced_task_checker_impl.cc:34:46: error: use of undeclared identifier 'DISPATCH_CURRENT_QUEUE_LABEL'
+    current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
+                                             ^
+---
+ webrtc/base/sequenced_task_checker_impl.cc | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/webrtc/base/sequenced_task_checker_impl.cc b/webrtc/base/sequenced_task_checker_impl.cc
+index f03e0b679..352b2162d 100644
+--- a/webrtc/base/sequenced_task_checker_impl.cc
++++ b/webrtc/base/sequenced_task_checker_impl.cc
+@@ -30,8 +30,9 @@ bool SequencedTaskCheckerImpl::CalledSequentially() const {
+ #if defined(WEBRTC_MAC)
+   // If we're not running on a TaskQueue, use the system dispatch queue
+   // label as an identifier.
+-  if (current_queue == nullptr)
+-    current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
++  // Disable this because dispatch_queue_get_label requires SDK 10.9+.
++  // if (current_queue == nullptr)
++  //   current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
+ #endif
+   CritScope scoped_lock(&lock_);
+   if (!attached_) {  // true if previously detached.
+-- 
+2.11.0
+
+
+From 62a6fa6376194ce673c220eef19fefeebe58fee1 Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:41:16 -0700
+Subject: [PATCH 5/8] Include <sys/socket.h> in macifaddrs_converter.cc.
+
+Without this, when built against MacOSX10.7.sdk, there are errors:
+
+In file included from ../../webrtc/base/macifaddrs_converter.cc:13:
+/home/debian/build/MacOSX10.7.sdk/usr/include/net/if.h:300:19: error: field has incomplete type 'struct sockaddr'
+                struct  sockaddr ifru_addr;
+
+Related references:
+https://trac.macports.org/ticket/49012
+https://trac.macports.org/browser/trunk/dports/gnome/gstreamer1/files/patch-struct-sockadr.diff?rev=140712
+---
+ webrtc/base/macifaddrs_converter.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/webrtc/base/macifaddrs_converter.cc b/webrtc/base/macifaddrs_converter.cc
+index 2ad070e8e..1995f1940 100644
+--- a/webrtc/base/macifaddrs_converter.cc
++++ b/webrtc/base/macifaddrs_converter.cc
+@@ -10,6 +10,7 @@
+ 
+ #include <memory>
+ 
++#include <sys/socket.h>
+ #include <net/if.h>
+ #include <sys/ioctl.h>
+ #include <unistd.h>
+-- 
+2.11.0
+
+
+From e6a421534723408fb1292ce25051a1970f750a4a Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:42:34 -0700
+Subject: [PATCH 6/8] Provide definitions of NS_ENUM and NS_OPTIONS.
+
+---
+ webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h b/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
+index f9f15c37d..277676d85 100644
+--- a/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
++++ b/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
+@@ -25,4 +25,17 @@
+ #define RTC_FWD_DECL_OBJC_CLASS(classname) typedef struct objc_object classname
+ #endif
+ 
++// http://iamthewalr.us/blog/2012/11/ns_enum-and-ns_options/
++#if (__cplusplus && __cplusplus >= 201103L && (__has_extension(cxx_strong_enums) || __has_feature(objc_fixed_enum))) || (!__cplusplus && __has_feature(objc_fixed_enum))
++#define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
++#if (__cplusplus)
++#define NS_OPTIONS(_type, _name) _type _name; enum : _type
++#else
++#define NS_OPTIONS(_type, _name) enum _name : _type _name; enum _name : _type
++#endif
++#else
++#define NS_ENUM(_type, _name) _type _name; enum
++#define NS_OPTIONS(_type, _name) _type _name; enum
++#endif
++
+ #endif  // WEBRTC_BASE_OBJC_RTC_MACROS_H_
+-- 
+2.11.0
+
+
+From baf5ddbd1e1281cd7c4cdda709e2ea7e07903727 Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:43:05 -0700
+Subject: [PATCH 7/8] Replace firstObject with objectAtIndex:0.
+
+firstObject doesn't exist in our version of the SDK.
+
+The two method calls are not exactly the same; on an empty array,
+firstObject returns nil while objectAtIndex:0 raises an exception. Let's
+hope that doesn't matter.
+---
+ webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm b/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
+index 182056228..93bea08f9 100644
+--- a/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
++++ b/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
+@@ -176,7 +176,7 @@ using namespace webrtc::videocapturemodule;
+ }
+ 
+ - (AVCaptureVideoDataOutput*)currentOutput {
+-  return [[_captureSession outputs] firstObject];
++  return [[_captureSession outputs] objectAtIndex:0];
+ }
+ 
+ - (void)startCaptureInBackgroundWithOutput:
+-- 
+2.11.0
+
+
+From 0b5f86af5bc4b7697ee60adf7e1e057a023438e0 Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 26 Jun 2017 11:43:51 -0700
+Subject: [PATCH 8/8] Disable the desktop_capture module.
+
+It's causing an error related to CoreGraphics.h and hopefully we don't
+need it.
+---
+ webrtc/modules/BUILD.gn | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/webrtc/modules/BUILD.gn b/webrtc/modules/BUILD.gn
+index e750a8109..590f34275 100644
+--- a/webrtc/modules/BUILD.gn
++++ b/webrtc/modules/BUILD.gn
+@@ -18,7 +18,6 @@ group("modules") {
+     "audio_processing",
+     "bitrate_controller",
+     "congestion_controller",
+-    "desktop_capture",
+     "media_file",
+     "pacing",
+     "remote_bitrate_estimator",
+-- 
+2.11.0
+

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 [% c("var/set_default_env") -%]
 [% c("var/setarch") -%]
 distdir=/var/tmp/dist/[% project %]
@@ -9,6 +10,15 @@ mkdir -p /var/tmp/dist
 [% IF c("var/linux") %]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
   export PATH="/var/tmp/dist/binutils/bin:$PATH"
+[% END -%]
+[% IF c("var/osx") -%]
+  # src/build/toolchain/mac/filter_libtool.py wants libtool to be called exactly "libtool".
+  ln -sf x86_64-apple-darwin10-libtool $cctoolsdir/libtool
+  export AR=x86_64-apple-darwin10-ar
+  # Certain cross-compiling flags are set in webrtc-mac.patch because the build
+  # system doesn't honor CFLAGS etc. environment variables.
+[% ELSE -%]
+  AR=ar
 [% END -%]
 
 # Setting up depot_tools
@@ -24,15 +34,48 @@ tar -C /var/tmp/build -xf webrtc-sources-[% c('version') %].tar.gz
 builddir=/var/tmp/build/[% project %]/src
 cd $builddir
 
-patch -p1 < $rootdir/webrtc-linux.patch
+[% IF c("var/linux") -%]
+  patch -p1 < $rootdir/webrtc-linux.patch
+[% END -%]
+[% IF c("var/osx") -%]
+  patch -p1 < $rootdir/webrtc-mac.patch
+[% END -%]
 
-# First, build a copy of GN, rather than use the prebuilt copy in buildtools/linux64.
-cd tools/gn
-# __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
-CXXFLAGS=-D__STDC_FORMAT_MACROS=1 LDFLAGS=-latomic ./bootstrap/bootstrap.py --no-rebuild --no-clean
-cd ../..
-# This is where bootstrap.py stashes the built gn.
-GN="$PWD/out_bootstrap/gn"
+[% IF c("var/linux") -%]
+  # First, build a copy of GN, rather than use the prebuilt copy in buildtools/linux64.
+  cd tools/gn
+  # __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
+  CXXFLAGS=-D__STDC_FORMAT_MACROS=1 LDFLAGS=-latomic ./bootstrap/bootstrap.py --no-rebuild --no-clean
+  cd ../..
+  # This is where bootstrap.py stashes the built gn.
+  GN="$PWD/out_bootstrap/gn"
+[% END -%]
+[% IF c("var/osx") -%]
+  # The linux descriptor builds its own copy of gn, using tools/gn/bootstrap/bootstrap.py.
+  # I tried that here, but for some reason the gn so built doesn't work. On "gn gen",
+  # it crashes with this error:
+  #   [0624/022439.767916:FATAL:command_gen.cc(59)] Check failed: !rule.empty().
+  # Instead, use the gn packaged with depot_tools.
+  GN="/var/tmp/dist/depot_tools/gn"
+
+  # Hardcode the output of some utility programs that otherwise require Xcode
+  # tools, like xcode-select, xcodebuild, sw_vers, and xcrun. This probably
+  # needs to be kept in sync with the SDK version.
+  cat <<EOF > build/mac/find_sdk.py
+print("$sysrootdir")
+print("10.7")
+EOF
+  cat <<EOF > build/config/mac/sdk_info.py
+print("machine_os_build=\"10.7\"")
+print("sdk_build=\"10.7\"")
+print("sdk_path=\"$sysrootdir\"")
+print("sdk_platform_path=\"$sysrootdir\"")
+print("sdk_version=\"10.7\"")
+print("xcode_build=\"7.3\"")
+print("xcode_version=\"0730\"")
+EOF
+[% END -%]
+
 
 [% IF c("var/linux") -%]
   export CC=gcc
@@ -50,7 +93,6 @@ GN="$PWD/out_bootstrap/gn"
 export GN_ARGS=""
 # For a list of all possible GN args, do "gn gen out/Release; gn args --list out/Release".
 # https://chromium.googlesource.com/chromium/src/+/master/tools/gn/docs/cross_compiles.md
-GN_ARGS+=" target_os=\"linux\" target_cpu=\"[% IF c("var/linux-i686") %]x86[% ELSE %]x64[% END %]\""
 # Not debug.
 GN_ARGS+=" is_debug=false"
 # There are warnings from unused returns.
@@ -59,23 +101,44 @@ GN_ARGS+=" treat_warnings_as_errors=false"
 GN_ARGS+=" is_component_build=false"
 # Do not use bundled utilities.
 GN_ARGS+=" is_clang=false use_sysroot=false"
-GN_ARGS+=" gold_path=\"$INSTDIR/binutils/bin\""
-# Make extra sure we don't use bundled binutils.
-rm -rf third_party/binutils/Linux_*
-# Avoid some dependencies.
-GN_ARGS+=" use_ozone=true use_gconf=false"
-GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_audio_device=false rtc_include_pulse_audio=false"
-# Included for "field_trial" below.  Maybe "fieldtrial_testing_like_official_build" could help here?
-#GN_ARGS+=" rtc_include_tests=false"
+[% IF c("var/linux") -%]
+  GN_ARGS+=" target_os=\"linux\" target_cpu=\"[% IF c("var/linux-i686") %]x86[% ELSE %]x64[% END %]\""
+  GN_ARGS+=" gold_path=\"$INSTDIR/binutils/bin\""
+  # Make extra sure we don't use bundled binutils.
+  rm -rf third_party/binutils/Linux_*
+  # Avoid some dependencies.
+  GN_ARGS+=" use_ozone=true use_gconf=false"
+  GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_audio_device=false rtc_include_pulse_audio=false"
+  # Included for "field_trial" below.  Maybe "fieldtrial_testing_like_official_build" could help here?
+  #GN_ARGS+=" rtc_include_tests=false"
+[% END -%]
+[% IF c("var/osx") -%]
+  GN_ARGS+=" target_os=\"mac\" target_cpu=\"x64\" mac_deployment_target=\"10.7\""
+  GN_ARGS+=" clang_use_chrome_plugins=false"
+  GN_ARGS+=" clang_base_path=\"$clangdir\""
+  # Avoid some dependencies.
+  GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_audio_device=false"
+  # Tests are needed for field_trial, metrics_default, and pc_test_utils targets
+  # (which include code needed by go-webrtc).
+  GN_ARGS+=" rtc_include_tests=true"
+  # Make sure not to use bundled clang and binutils.
+  rm -rf third_party/llvm-build
+  rm -rf third_party/binutils
+[% END -%]
 rm -rf out/Release
 "$GN" gen out/Release --args="$GN_ARGS"
 ninja -C out/Release webrtc field_trial metrics_default pc_test_utils
+# The cctools ar doesn't have the 'D' deterministic option of GNU ar, but the
+# ZERO_AR_DATE environment variable similarly sets timestamps within the
+# archive to zero.
+# https://opensource.apple.com/source/cctools/cctools-886/ar/archive.c.auto.html
+# https://codereview.chromium.org/699083004/
 # .o files under out/Release/obj/ are the build outputs. Don't include .o
 # files from elsewhere under out/ because they are build helpers and things
 # like that, not necessarily of the target architecture, and anyway are not
 # needed.
 # https://bugs.torproject.org/22832
-ar crs libwebrtc-magic.a $(find out/Release/obj -name '*.o' | sort)
+[% IF c("var/osx") %]ZERO_AR_DATE=1 [% END %]"$AR" crs libwebrtc-magic.a $(find out/Release/obj -name '*.o' | sort)
 
 mkdir -p $distdir
 cd $distdir
