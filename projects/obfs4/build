@@ -2,11 +2,7 @@
 [% c("var/set_default_env") -%]
 [% pc('go', 'var/setup', { go_tarfile => c('input_files_by_name/go') }) %]
 distdir=/var/tmp/dist/[% project %]
-[% IF c("var/osx") %]
-  PTDIR="$distdir/Contents/MacOS/Tor/PluggableTransports"
-[% ELSE %]
-  PTDIR="$distdir/TorBrowser/Tor/PluggableTransports"
-[% END %]
+[% c("var/set_PTDIR_DOCSDIR") -%]
 mkdir -p $PTDIR
 
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/goptlib') %]
