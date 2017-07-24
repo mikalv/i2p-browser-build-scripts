@@ -1,0 +1,19 @@
+# vim: filetype=yaml sw=2
+version: 1.2.1
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+
+targets:
+  linux:
+    var:
+      arch_deps:
+        - python-setuptools
+        - python-dev
+
+input_files:
+  - project: container-image
+  - URL: 'https://pypi.python.org/packages/source/a/argparse/argparse-[% c("version") %].tar.gz'
+    sha256sum: ddaf4b0a618335a32b6664d4ae038a1de8fbada3b25033f9021510ed2b3941a4

@@ -1,0 +1,22 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+[% c("var/setarch") -%]
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+distdir="/var/tmp/dist/[% project %]"
+[% c("var/set_PTDIR_DOCSDIR") -%]
+mkdir -p $PTDIR $DOCSDIR
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
+cd /var/tmp/build/[% project %]-[% c('version') %]
+tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/gmp') %]
+ln -s /var/tmp/dist/gmp thirdparty/gmp
+export PYTHON=python2
+make
+cp -ra fte $PTDIR/
+cp -a {LICENSE,README.md} $DOCSDIR/
+cp -a thirdparty/re2/LICENSE $DOCSDIR/LICENSE.re2
+cd $distdir
+[% c('tar', {
+        tar_src => [ '.' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

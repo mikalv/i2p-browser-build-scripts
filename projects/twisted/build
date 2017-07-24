@@ -1,0 +1,16 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+distdir="/var/tmp/dist/[% project %]"
+[% c("var/set_PTDIR_DOCSDIR") -%]
+mkdir -p $PTDIR
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf $rootdir/Twisted-[% c('version') %].tar.bz2
+cd /var/tmp/build/Twisted-[% c('version') %]
+export PYTHON=python2
+$PYTHON setup.py build --build-lib build
+cp -a build/twisted $PTDIR/
+cd $distdir
+[% c('tar', {
+        tar_src => [ '.' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

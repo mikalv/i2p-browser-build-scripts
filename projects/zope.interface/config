@@ -1,0 +1,19 @@
+# vim: filetype=yaml sw=2
+version: 4.0.5
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+
+targets:
+  linux:
+    var:
+      arch_deps:
+        - python-setuptools
+        - python-dev
+
+input_files:
+  - project: container-image
+  - URL: 'https://pypi.python.org/packages/source/z/zope.interface/zope.interface-[% c("version") %].zip'
+    sha256sum: 1a7c84716bbd9981915b64a81d8a3f076a5934a8c8df4224655469b3564940cc

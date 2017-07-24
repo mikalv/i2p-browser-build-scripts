@@ -1,0 +1,20 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://github.com/kpdyer/fteproxy.git
+# tag 0.2.19
+git_hash: 597f8378f6f4f3de570b8e1064c2e4cb8d67fbd0
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+
+targets:
+  linux:
+    var:
+      arch_deps:
+        - python-setuptools
+        - python-dev
+
+input_files:
+  - project: container-image
