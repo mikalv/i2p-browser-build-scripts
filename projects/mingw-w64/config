@@ -6,7 +6,7 @@ version: '[% c("abbrev") %]'
 var:
   container:
     use_container: 1
-  gcc_version: 5.1.0
+  gcc_version: 5.4.0
   deps:
     - automake
     - build-essential
@@ -21,7 +21,7 @@ var:
 input_files:
   - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("var/gcc_version") %]/gcc-[% c("var/gcc_version") %].tar.bz2'
-    sha256sum: b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad
+    sha256sum: 608df76dec2d34de6558249d8af4cbee21eceddbcb580d666f7a5a583ca3303a
   - name: binutils
     project: binutils
   - filename: i686-w64-mingw32-g++

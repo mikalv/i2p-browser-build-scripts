@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-version: 5.1.0
+version: 5.4.0
 var:
   container:
     use_container: 1
@@ -59,4 +59,4 @@ targets:
 input_files:
   - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("version") %]/gcc-[% c("version") %].tar.bz2'
-    sha256sum: b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad
+    sha256sum: 608df76dec2d34de6558249d8af4cbee21eceddbcb580d666f7a5a583ca3303a
