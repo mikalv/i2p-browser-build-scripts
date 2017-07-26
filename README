@@ -5,8 +5,12 @@ Installing build dependencies
 -----------------------------
 
 To build Tor Browser, you need a Linux distribution that has support
-for runC (such as Debian jessie, Ubuntu 14.04, Fedora 20, etc ...).
-On Debian jessie, the runc package is available in backports.
+for runc (such as Debian jessie, Ubuntu 14.04, Fedora 20, etc ...).
+On Debian jessie, the runc package is available in backports. On Debian
+stretch, the runc package is available in the main repository.
+Version 0.1.1 of runc is required (which is the version available in
+Debian stretch and jessie-backports). It is not yet working with runc
+version 1.0.0: https://trac.torproject.org/projects/tor/ticket/23039
 
 Your user account should have access sudo access, which is required to
 be able to extract container file systems, start containers and copy
