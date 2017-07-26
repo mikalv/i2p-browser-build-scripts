@@ -5,9 +5,6 @@ pkg_type: build
 var:
   ubuntu_version: 17.04
 
-  container_dir: '[% c("tmp_dir") %]/rbm-containers/[% sha256(c("build_id")) %]'
-  container_user: rbm
-
   container:
     use_container: 1
     # We need CAP_SYS_ADMIN for debootstrap to work
