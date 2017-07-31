@@ -55,7 +55,3 @@ pref("noscript.restrictSubdocScripting", true);
 pref("noscript.showVolatilePrivatePermissionsToggle", false);
 pref("noscript.volatilePrivatePermissions", true);
 pref("noscript.clearClick", 0);
-// Workaround for bug 22362: Disable XSS filter for now as it freezes the
-// browser in some circumstances.
-pref("noscript.filterXGet", false);
-pref("noscript.filterXPost", false);
