@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-version: 0.2
+version: 0.3.2
 git_hash: 'tb-v[% c("version") %]'
 git_url: https://github.com/immunant/selfrando.git
 gpg_keyring: selfrando.gpg
@@ -12,6 +12,14 @@ var:
   arch_deps:
     - scons
     - zlib1g-dev
+
+targets:
+  linux-x86_64:
+    var:
+      selfrando_arch: x86_64
+  linux-i686:
+    var:
+      selfrando_arch: x86
 
 input_files:
   - project: container-image

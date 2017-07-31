@@ -73,8 +73,7 @@ input_files:
     enable: '[% c("var/linux") %]'
   - project: selfrando
     name: selfrando
-    # XXX: 64bits only for now :(, see #20683.
-    enable: '[% c("var/linux-x86_64") %]'
+    enable: '[% c("var/linux") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
   - URL: https://people.torproject.org/~mikeperry/mirrors/sources/msvcr100.dll

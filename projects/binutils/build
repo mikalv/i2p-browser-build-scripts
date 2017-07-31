@@ -26,10 +26,9 @@ cd [% project %]-[% c("version") %]
   # Zeroing timestamps in PE headers reliably, see bug 12753.
   patch -p1 < ../peXXigen.patch
 [% END -%]
-[% IF c("var/linux-x86_64") -%]
+[% IF c("var/linux") -%]
   # We need to work around a gold linker bug in 2.24 to get selfrando working,
   # see bug 20683.
-  # XXX: 64bits only for now :(, see #20683.
   patch -p1 < $rootdir/binutils-224-gold.patch
 [% END -%]
 ./configure --prefix=$distdir [% c('var/configure_opt') %]

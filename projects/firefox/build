@@ -27,8 +27,7 @@ mkdir -p /var/tmp/build
   export PATH="/var/tmp/dist/binutils/bin:$PATH"
 [% END -%]
 
-[% IF c("var/linux-x86_64") -%]
-  # XXX: 64bits only for now :(, see #20683.
+[% IF c("var/linux") -%]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/selfrando') %]
   # Selfrando wrapper
   export PATH="/var/tmp/dist/selfrando/Tools/TorBrowser/tc-wrapper/:$PATH"
