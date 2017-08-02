@@ -11,7 +11,7 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
   export LD_PRELOAD=[% c("var/faketime_path") %]
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
 [% END -%]
-make -j4
+make -j[% c("buildconf/nb_procs") %]
 make install
 cd /var/tmp/dist
 [% c('tar', {

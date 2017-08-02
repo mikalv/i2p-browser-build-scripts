@@ -21,7 +21,7 @@ export LLVM_HOME=$(pwd)
 mkdir build
 cd build
 cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$distdir -DCMAKE_BUILD_TYPE:STRING=Release $LLVM_HOME
-make -j4
+make -j[% c("buildconf/nb_procs") %]
 make install
 cd /var/tmp/dist
 [% c('tar', {
