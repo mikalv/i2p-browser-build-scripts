@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+[% c("var/set_default_env") -%]
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+distdir="/var/tmp/dist/[% project %]"
+mkdir -p $distdir
+WINEROOT=$HOME/.wine/drive_c
+wineboot -i
+msiexec /qn /i python-[% c("version") %].msi TARGETDIR=$distdir
+sed -i 's/self.dll_libraries = get_msvcr()/pass#self.dll_libraries = get_msvcr()/g' $distdir/Lib/distutils/cygwinccompiler.py
+tar xf setuptools-*.tar.gz
+rm setuptools-*.tar.gz
+cd setuptools-*
+wine $distdir/python.exe setup.py install
+cd $rootdir
+7z x $rootdir/py2exe-*.exe
+cp -a PLATLIB/* $distdir/Lib/site-packages/
+export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
+export LD_PRELOAD=[% c("var/faketime_path") %]
+cd wine-wrappers
+# Push our config into wine-wrappers.
+> settings.py
+echo "LD_PRELOAD = \"$LD_PRELOAD\"" >> settings.py
+echo "FAKETIME = \"$FAKETIME\"" >> settings.py
+# Must pre-copy python27.dll into the build directory, or else py2exe can't find it.
+mkdir -p build/bdist.win32/winexe/bundle-2.7/
+cp -a $distdir/python27.dll build/bdist.win32/winexe/bundle-2.7/
+LD_PRELOAD= $distdir/python.exe setup.py py2exe
+mkdir -p $distdir/wineroot/windows/
+cp -a dist/gcc.exe dist/g++.exe dist/dllwrap.exe $distdir/wineroot/windows/
+cp $rootdir/pyc-timestamp.sh $distdir/
+cd $distdir/..
+[% c('tar', {
+        tar_src => [ project, 'mingw-w64' ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

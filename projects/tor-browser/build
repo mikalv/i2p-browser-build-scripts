@@ -56,6 +56,10 @@ mv $TBDIR/meek-http-helper@bamsoftware.com.xpi $TBDIR/$MEEKPROFILEPATH/extension
   tar -C $TBDIR -xf [% c('input_files_by_name/snowflake') -%]
 [% END -%]
 
+[% IF c("var/fteproxy") -%]
+  tar -C $TBDIR -xf [% c('input_files_by_name/fteproxy') %]
+[% END -%]
+
 tar -C $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %] -xf [% c('input_files_by_name/fonts') %]
 
 [% IF c("var/linux") %]

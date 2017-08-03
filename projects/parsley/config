@@ -12,8 +12,15 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
 
 input_files:
   - project: container-image
   - URL: 'https://pypi.python.org/packages/source/P/Parsley/Parsley-[% c("version") %].tar.gz'
     sha256sum: 50d30cee70770fd44db7cea421cb2fb75af247c3a1cd54885c06b30a7c85dd23
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") %]'

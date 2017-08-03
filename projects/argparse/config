@@ -12,8 +12,15 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
 
 input_files:
   - project: container-image
   - URL: 'https://pypi.python.org/packages/source/a/argparse/argparse-[% c("version") %].tar.gz'
     sha256sum: ddaf4b0a618335a32b6664d4ae038a1de8fbada3b25033f9021510ed2b3941a4
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") %]'

@@ -12,8 +12,18 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
+      arch_deps:
+        - p7zip-full
+        - faketime
 
 input_files:
   - project: container-image
   - URL: 'https://pypi.python.org/packages/source/T/Twisted/Twisted-[% c("version") %].tar.bz2'
     sha256sum: 095175638c019ac7c0604f4c291724a16ff1acd062e181b01293bf4dcbc62cf3
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") %]'

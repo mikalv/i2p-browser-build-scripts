@@ -12,6 +12,13 @@ targets:
         - python-dev
         - python-setuptools
 
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
+      arch_deps:
+        - faketime
+
 input_files:
   - project: container-image
   - name: '[% c("var/compiler") %]'

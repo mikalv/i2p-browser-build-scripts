@@ -1,0 +1,55 @@
+# vim: filetype=yaml sw=2
+version: 2.7.5
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  compiler: mingw-w64
+  post_pkginst: '[% c("var/install_wine_ppa") %]'
+  arch_deps:
+    - p7zip-full
+    - faketime
+  container:
+    use_container: 1
+  setup: |
+    [% pc('mingw-w64', 'var/setup') %]
+    # wine path ($HOME/.wine) gets included in some binaries, so set HOME
+    # to a fixed path.
+    export HOME=/var/tmp/home
+    mkdir -p $HOME
+    WINEROOT=$HOME/.wine/drive_c
+    wineboot -i
+    cp -a /var/tmp/dist/winpython/wineroot/windows/* $WINEROOT/windows/
+    export PYTHON="wine /var/tmp/dist/winpython/python.exe"
+
+    # Set the timestamp on every .pyc file in a zip file, and re-dzip the zip file.
+    function py2exe_zip_timestomp {
+      ZIPFILE="$1"
+      local tmpdir="$(mktemp -d)"
+      local tmpzip="$(mktemp -u)"
+      unzip -d "$tmpdir" "$ZIPFILE"
+      cd "$tmpdir"
+      find . -name '*.pyc' -print0 | xargs -0 /var/tmp/dist/winpython/pyc-timestamp.sh "2000-01-01 00:00:00"
+      [% c('zip', {
+        zip_src => [ '.' ],
+        zip_args => '$tmpzip',
+        }) %]
+      cd -
+      mv -f "$tmpzip" "$ZIPFILE"
+      rm -rf "$tmpdir"
+    }
+
+
+input_files:
+  - project: container-image
+  - URL: 'https://www.python.org/ftp/python/[% c("version") %]/python-[% c("version") %].msi'
+    file_gpg_id: 1
+    sig_ext: asc
+    gpg_keyring: winpython.gpg
+  - URL: https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.tar.gz
+    sha256sum: 75d288687066ed124311d6ca5f40ffa92a0e81adcd7fff318c6e84082713cf39
+  - URL: http://downloads.sourceforge.net/py2exe/0.6.9/py2exe-0.6.9.win32-py2.7.exe
+    sha256sum: 610a8800de3d973ed5ed4ac505ab42ad058add18a68609ac09e6cf3598ef056c
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - filename: wine-wrappers
+  - filename: pyc-timestamp.sh

@@ -10,9 +10,26 @@ tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/gmp') %]
 ln -s /var/tmp/dist/gmp thirdparty/gmp
-export PYTHON=python2
-make
-cp -ra fte $PTDIR/
+mkdir -p $distdir
+tar -C $distdir -xf $rootdir/[% c('input_files_by_name/obfsproxy') %]
+[% IF c("var/windows") -%]
+  pydir=$distdir/python
+  export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
+  export LD_PRELOAD=
+  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
+  # FTE only needs libgmp-10.dll and no libgmpxx anymore.
+  cp -a /var/tmp/dist/gmp/bin/libgmp-10.dll .
+  cp -a /var/tmp/dist/gmp/bin/libgmp-10.dll $distdir/TorBrowser/Tor/
+  WINDOWS_BUILD=1 CROSS_COMPILE=1 make
+  $PYTHON setup.py install --prefix=$(winepath -w "$pydir")
+  $PYTHON setup.py install
+[% ELSE -%]
+  export PYTHON=python2
+  make
+  cp -ra fte $PTDIR/
+  mkdir -p $distdir/TorBrowser/Tor
+  cp /var/tmp/dist/gmp/lib/libgmp.so.10 $distdir/TorBrowser/Tor/
+[% END -%]
 cp -a {LICENSE,README.md} $DOCSDIR/
 cp -a thirdparty/re2/LICENSE $DOCSDIR/LICENSE.re2
 cd $distdir

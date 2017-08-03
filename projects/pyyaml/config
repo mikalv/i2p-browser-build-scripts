@@ -12,8 +12,15 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
 
 input_files:
   - project: container-image
   - URL: 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-[% c("version") %].tar.gz'
     sha256sum: c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") %]'

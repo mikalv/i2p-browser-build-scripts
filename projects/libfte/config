@@ -14,6 +14,12 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
+  windows-i686:
+    var:
+      compiler: winpython
+      post_pkginst: '[% c("var/install_wine_ppa") %]'
+      arch_deps:
+        - faketime
 
 input_files:
   - project: container-image
@@ -21,3 +27,5 @@ input_files:
     project: '[% c("var/compiler") %]'
   - project: gmp
     name: gmp
+  - project: obfsproxy
+    name: obfsproxy
