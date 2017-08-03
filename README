@@ -205,3 +205,10 @@ Common Build Errors
 You can look at the README.BUILD_ERRORS file for a list of common build
 errors and their solutions.
 
+
+Hacking on the Tor Browser build
+--------------------------------
+
+The file README.HACKING tries to list the main things to know when
+making changes to the Tor Browser build.
+

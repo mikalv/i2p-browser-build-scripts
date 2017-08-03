@@ -1,0 +1,223 @@
+Hacking on Tor Browser Build
+============================
+
+This file tries to list the main things to know when making changes to
+the Tor Browser build.
+
+
+rbm documentation
+-----------------
+
+If you go to directory rbm/doc, you can find the rbm documentation. You
+can build it with 'make html' or 'make man'.
+
+
+Using and defining options
+--------------------------
+
+Options can be used in templates with the following syntax:
+
+  [% c("option_name") %]
+
+More details about the templates syntax can be found in
+rbm/doc/rbm_templates.7 and [http://template-toolkit.org/docs/manual/index.html].
+
+Some options have a specific meaning to rbm. You can see their descriptions
+in rbm/doc/rbm_config.7 and rbm/doc/rbm_input_files.7.
+
+When the option does not have a specific meaning to rbm, it is a good
+idea to define it under var/ to avoid potential conflicts in option names
+with a future version of rbm.
+
+The options can be defined in different places:
+
+- rbm.conf for options available to all components
+- project/$project/config for options available to one component
+- rbm.local.conf for user defined options
+
+In each of those places, an option can be defined:
+
+- at the root of the document
+- under targets/$target/, in which case the definition only applies when
+  a specific target is defined
+
+The targets are usually used to select:
+
+- the platform: torbrowser-linux-x86_64, torbrowser-linux-i686,
+  torbrowser-windows-i686, torbrowser-osx-x86_64
+- the channel: release, nightly, alpha
+
+The targets torbrowser-linux-x86_64, torbrowser-linux-i686,
+torbrowser-windows-i686, torbrowser-osx-x86_64 are special cases. They
+do not contain options directly, instead they contain a list of other
+targets. For instance, the torbrowser-linux-x86_64 target is pointing
+to the linux-x86_64 and linux targets. You should define an option under
+the linux target if it applies to Linux on both architectures, or under
+the linux-x86_64 if it only applies to the x86_64 architecture.
+
+An option that is defined at the root of rbm.conf can be overrided by
+an other definition under a target, or inside projects/$project/config.
+You can find the complete priority order in rbm/doc/rbm_config.7.
+
+
+Defining a project's filename
+-----------------------------
+
+The filename option defines the output file or directory from the build
+of a component. If the file or directory exists in the out/$component
+directory, the component will not be rebuilt when it is used as a
+dependency from an other component.
+
+The filename is usually something like this:
+
+  filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+The var/build_id value is a hash that is based on the build inputs of
+the component:
+ - the build script (after template evaluation)
+ - the container definition
+ - the input files (the filename when it is a dependency on an other
+   project, the filename and hash of its content otherwise)
+This means that each time the build script, the container or one of the
+dependencies is modified, the output filename will change and a rebuild
+of the component will be required.
+
+The version and var/osname values could be removed from the filename,
+but they are useful to get an idea of what a file contains.
+
+
+Adding some Linux/Windows/OSX specific changes to a build script
+----------------------------------------------------------------
+
+You can use the following template syntax in the build scripts:
+
+  [% IF c("var/linux") -%]
+    # do something for linux
+  [% ELSIF c("var/windows") -%]
+    # do something for windows
+  [% ELSIF c("var/osx") -%]
+    # do something for osx
+  [% END -%]
+
+You can also use var/linux-x86_64 and var/linux-i686 for things that
+only apply to x86_64 and i686 linux builds. You can use the var/release,
+var/alpha and var/nightly options to do things depending on the channel.
+
+As an alternative you can define an option with a different value
+depending on the target:
+
+  targets:
+    linux:
+      var:
+        do_something: 'do something for linux'
+    windows-i686:
+      var:
+        do_something: 'do something for windows'
+    osx-x86_64:
+      var:
+        do_something: 'do something for osx'
+
+And in the build script, use:
+
+  [% c("var/do_something") %]
+
+
+Evaluating a component's build script
+-------------------------------------
+
+If you want to look at the build script used to build a component for a
+specific platform/channel, you can use the following command:
+
+   $ ./rbm/rbm showconf $component build --target $channel --target $platform
+
+$component should be replaced by the name of the component.
+
+$channel should be one of the following:
+
+ - release
+
+ - alpha
+
+ - nightly
+
+$platform should be one of the following:
+
+ - torbrowser-linux-x86_64
+
+ - torbrowser-linux-i686
+
+ - torbrowser-windows-i686
+
+ - torbrowser-osx-x86_64
+
+For example, to see the tor's build script for linux x86_64 on the alpha
+channel, you can use:
+
+  $ ./rbm/rbm showconf tor build --target alpha --target \
+    torbrowser-linux-x86_64
+
+If the component you are looking at has many dependencies, the display
+can take some time as various build_id values need to be computed. If
+you don't care about the accuracy of input and output file names, you
+can add '--target no_build_id' to the command line. For instance if you
+want to look at the build script for the tor-browser component (which
+has a lot of dependencies), you can use:
+
+  $ ./rbm/rbm showconf tor build --target alpha --target \
+     torbrowser-linux-x86_64 --target no_build_id
+
+The same type of commands can be used to look at any option values,
+replacing build with the name of the option you want to look at. For
+instance if you want to know the output filename of tor on linux-x86_64
+on the alpha channel, you can use:
+
+  $ ./rbm/rbm showconf tor filename --target alpha --target \
+    torbrowser-linux-x86_64
+
+
+Building a single component
+---------------------------
+
+When you are working on some changes to a component, before creating a
+full bundle with those changes, you might want to try a build of the
+component you modified only.
+
+This can be done with the following command:
+
+   $ ./rbm/rbm build $component --target $channel --target $platform
+
+See the previous section "Evaluating a component's build script" for a
+list of possible values for $channel and $platform.
+
+For instance if you want to build tor for linux-x86_64 on the alpha
+channel, you can run:
+
+   $ ./rbm/rbm build tor --target alpha --target torbrowser-linux-x86_64
+
+To find the resulting file from the build, you can use 'ls -ltr out/tor/'
+to find the file with the last modification time.
+
+
+Debugging a build error
+-----------------------
+
+If the build fails, a debugging shell will automatically be opened in
+the container used for the build (unless you set debug to 0 in
+rbm.local.conf).
+
+Before using the debugging shell, you can first look at the build logs
+in an other terminal (the filename of the log file is indicated in the
+rbm output).
+
+In the debug shell, you can type 'bash' to get a shell with completion.
+You can then look at the 'build' file, and copy paste some of its commands
+to debug the problem. If you need to edit files, vim is not installed
+in the build containers, but vi can be used instead.
+
+When you press ctrl+d (twice if you opened a bash shell) the debug shell
+is closed and the container containing the failed build is removed.
+
+If you want to make a backup of the container's rootfs with the failed
+build to look at it later, you should be able to find it in
+/tmp/$UID/rbm-containers.
+
