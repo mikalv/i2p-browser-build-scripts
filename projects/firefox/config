@@ -7,7 +7,7 @@ git_url: https://git.torproject.org/tor-browser.git
 gpg_keyring: torbutton.gpg
 
 var:
-  firefox_version: 52.2.0esr
+  firefox_version: 52.3.0esr
   torbrowser_branch: 7.5
   torbrowser_update_channel: alpha
   copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'

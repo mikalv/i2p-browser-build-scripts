@@ -1,3 +1,60 @@
+Tor Browser 7.5a4 -- August 9 2017
+ * All Platforms
+   * Update Firefox to 52.3.0esr
+   * Update Tor to 0.3.1.5-alpha
+   * Update OpenSSL to 1.0.2l
+   * Update Torbutton to 1.9.8
+     * Bug 22610: Avoid crashes when canceling external helper app related downloads
+     * Bug 22472: Fix FTP downloads when external helper app dialog is shown
+     * Bug 22471: Downloading pdf files via the PDF viewer download button is broken
+     * Bug 22618: Downloading pdf file via file:/// is stalling
+     * Bug 22542: Resize slider window to work without scrollbars
+     * Bug 21999: Fix display of language prompt in non-en-US locales
+     * Bug 18193: Don't let about:tor have chrome privileges
+     * Bug 22535: Search on about:tor discards search query
+     * Bug 21948: Going back to about:tor page gives "Address isn't valid" error
+     * Code clean-up
+     * Translations update
+   * Update Tor Launcher to 0.2.12.3
+     * Bug 22592: Default bridge settings are not removed
+     * Translations update
+   * Update HTTPS-Everywhere to 5.2.21
+   * Update NoScript to 5.0.8.1
+     * Bug 22362: Remove workaround for XSS related browser freezing
+     * Bug 22067: NoScript Click-to-Play bypass with embedded videos and audio
+   * Update sandboxed-tor-browser to 0.0.12
+   * Bug 22610: Avoid crashes when canceling external helper app related downloads
+   * Bug 22472: Fix FTP downloads when external helper app dialog is shown
+   * Bug 22471: Downloading pdf files via the PDF viewer download button is broken
+   * Bug 22618: Downloading pdf file via file:/// is stalling
+   * Bug 21321: Exempt .onions from HTTP related security warnings
+   * Bug 21830: Copying large text from web console leaks to /tmp
+   * Bug 22073: Disable GetAddons option on addons page
+   * Bug 22884: Fix broken about:tor page on higher security levels
+   * Bug 22829: Remove default obfs4 bridge riemann.
+ * Windows
+   * Bug 21617: Fix single RWX page on Windows (included in 52.3.0esr)
+ * OS X
+   * Bug 22831: Enable Snowflake for mac
+ * Linux
+   * Bug 22832: Don't include monthly timestamp in libwebrtc build output
+   * Bug 20848: Deploy Selfrando in 32bit Linux builds
+ * Build system
+   * Windows
+     * Bug 22563: Update mingw-w64 to fix W^X violations
+     * Bug 20929: Bump GCC version to 5.4.0
+   * Linux
+     * Bug 20929: Bump GCC version to 5.4.0
+
+Tor Browser 7.5a3 -- July 28 2017
+ * Linux
+   * Bug 23044: Don't allow GIO supported protocols by default
+
+Tor Browser 7.0.3 -- July 27 2017
+ * Linux
+   * Bug 23044: Don't allow GIO supported protocols by default
+   * Bug 22829: Remove default obfs4 bridge riemann.
+
 Tor Browser 7.5a2 -- July 6 2017
  * All Platforms
    * Update Tor to 0.3.1.4-alpha
