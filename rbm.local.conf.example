@@ -24,10 +24,10 @@
 buildconf:
   buildconf: 1
 
-  ### The buildconf/nb_procs option can be used to select the number of
+  ### The buildconf/num_procs option can be used to select the number of
   ### build processes to run simultaneously. You can also use the
-  ### RBM_NB_PROCS environment variable. The default is 4.
-  #nb_procs: 8
+  ### RBM_NUM_PROCS environment variable. The default is 4.
+  #num_procs: 8
 
 var:
   local_conf: 1

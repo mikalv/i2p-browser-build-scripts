@@ -64,7 +64,7 @@ find -type f -print0 | xargs -0 [% c("var/touch") %]
   export LD_PRELOAD=[% c("var/faketime_path") %]
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
 [% END -%]
-make -j[% c("buildconf/nb_procs") %]
+make -j[% c("buildconf/num_procs") %]
 make install
 [% IF c("var/osx") -%]
   unset LD_PRELOAD

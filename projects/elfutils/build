@@ -13,7 +13,7 @@ tar -C /var/tmp/build -xf $rootdir/[% c('input_files_by_name/elfutils') %]
 
 cd /var/tmp/build/[% project %]-[% c("version") %]
 ./configure --prefix="$distdir"
-make -j[% c("buildconf/nb_procs") %]
+make -j[% c("buildconf/num_procs") %]
 make install
 
 cd /var/tmp/dist

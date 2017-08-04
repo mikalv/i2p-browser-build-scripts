@@ -32,7 +32,7 @@ cd [% project %]-[% c("version") %]
   patch -p1 < $rootdir/binutils-224-gold.patch
 [% END -%]
 ./configure --prefix=$distdir [% c('var/configure_opt') %]
-make -j[% c("buildconf/nb_procs") %]
+make -j[% c("buildconf/num_procs") %]
 make install
 
 [% IF c("var/linux") %]

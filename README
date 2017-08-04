@@ -96,11 +96,11 @@ Number of make processes
 
 By default the builds are run with 4 processes simultaneously (with
 make -j4). If you want to change the number of processes used, you can
-set the RBM_NB_PROCS environment variable:
+set the RBM_NUM_PROCS environment variable:
 
-  $ export RBM_NB_PROCS=8
+  $ export RBM_NUM_PROCS=8
 
-You can also set the buildconf/nb_procs option in rbm.local.conf.
+You can also set the buildconf/num_procs option in rbm.local.conf.
 
 
 Automated builds

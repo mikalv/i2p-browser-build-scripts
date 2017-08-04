@@ -9,7 +9,7 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 # during compile time.
 ./configure --disable-static --enable-shared --enable-cxx \
     [% c("var/configure_opt") %] [% c("var/configure_opt_gmp") %] --prefix=$distdir
-make -j[% c("buildconf/nb_procs") %]
+make -j[% c("buildconf/num_procs") %]
 make install
 cd /var/tmp/dist
 [% c('tar', {
