@@ -4,7 +4,7 @@ output_dir: 'release/unsigned'
 
 var:
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
-  publish_dir: '[% c("version") %]'
+  publish_dir: '[% c("version") %]-[% c("var/torbrowser_build") %]'
 
 targets:
   torbrowser-all:
@@ -39,13 +39,13 @@ targets:
 
   nightly:
     output_dir: 'nightly'
-    version: '[% c("var/today") %]'
+    publish_dir: '[% c("var/today") %]'
     var:
       build_target: nightly
 
   alpha_nightly:
     output_dir: 'alpha_nightly'
-    version: '[% c("var/today") %]'
+    publish_dir: '[% c("var/today") %]'
     var:
       build_target: alpha
 
@@ -56,13 +56,13 @@ targets:
 
   testbuild:
     output_dir: 'testbuild'
-    version: '.'
+    publish_dir: ''
     var:
       build_target: torbrowser-testbuild
 
   hardened_nightly:
     output_dir: 'hardened_nightly'
-    version: '[% c("var/today") %]'
+    publish_dir: '[% c("var/today") %]'
     var:
       build_target: hardened
 
