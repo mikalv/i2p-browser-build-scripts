@@ -29,6 +29,11 @@ buildconf:
   ### RBM_NUM_PROCS environment variable. The default is 4.
   #num_procs: 8
 
+  ### The buildconf/git_signtag_opt option is useful when you tag a release.
+  ### It is used to set the 'git tag' argument to select the keyid for
+  ### signing the tag.
+  #git_signtag_opt: '-u keyid'
+
 var:
   local_conf: 1
 

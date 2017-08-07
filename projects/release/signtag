@@ -1,0 +1,8 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+# reset HOME which was changed by var/set_default_env, for gpg/git
+[% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
+cd [% c("basedir") %]
+git tag [% c("buildconf/git_signtag_opt") %] -m \
+        'Tagging [% c("var/torbrowser_build") %] for [% c("var/torbrowser_version") %]' \
+        tbb-[% c("var/torbrowser_version") %]-[% c("var/torbrowser_build") %]

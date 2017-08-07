@@ -117,3 +117,9 @@ input_files:
      - torbrowser-windows-i686
      - expert-bundle
 
+steps:
+  signtag:
+    build_log: '-'
+    debug: 0
+    input_files: []
+    signtag: '[% INCLUDE signtag %]'
