@@ -1,0 +1,26 @@
+#!/bin/sh
+[% c("var/set_default_env") -%]
+# reset HOME which was changed by var/set_default_env, for gpg
+[% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
+destdir="[% dest_dir _ '/' _ c("var/publish_dir") %]"
+mkdir -p "$destdir"
+[% IF c("var/torbrowser-windows-i686") -%]
+  mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
+  mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/
+% END -%]
+[% IF c("var/torbrowser-osx-x86_64") -%]
+  mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
+[% END -%]
+[% IF c("var/torbrowser-linux-i686") -%]
+  mv [% c('input_files_by_name/linux-i686') %]/* "$destdir"/
+[% END -%]
+[% IF c("var/torbrowser-linux-x86_64") -%]
+  mv [% c('input_files_by_name/linux-x86_64') %]/* "$destdir"/
+  mv [% c('input_files_by_name/sandbox-linux-x86_64') %] "$destdir"/sandbox-[% pc('sandbox', 'version') %]-linux64.zip
+[% END -%]
+cd "$destdir"
+sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar *.zip | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
+[% IF c("var/sign_build") -%]
+  gpg -abs [% c("var/sign_build_gpg_opts") %] sha256sums-unsigned-build.txt
+[% END -%]
+cat sha256sums-unsigned-build.txt
