@@ -77,9 +77,6 @@ testbuild-windows-i686: submodule-update
 testbuild-osx-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-osx-x86_64
 
-hardened-linux-x86_64: submodule-update
-	$(rbm) build release --target hardened --target torbrowser-linux-x86_64
-
 signtag-release: submodule-update
 	$(rbm) build release --step signtag --target release
 

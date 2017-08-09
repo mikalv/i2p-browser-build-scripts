@@ -60,17 +60,6 @@ targets:
     var:
       build_target: torbrowser-testbuild
 
-  hardened_nightly:
-    output_dir: 'hardened_nightly'
-    publish_dir: '[% c("var/today") %]'
-    var:
-      build_target: hardened
-
-  hardened:
-    output_dir: 'hardened'
-    var:
-      build_target: hardened
-
 input_files:
 
 # Release
