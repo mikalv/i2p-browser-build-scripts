@@ -10,7 +10,7 @@ pushd [% src %]
 find . -type f | sed -e 's/^\.\///' | sort | xargs -i echo "{}={}" > [% filelist %]
 find . -type l | sed -e 's/^\.\///' | sort | xargs -i echo "{}={}" >> [% filelist %]
 
-export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
+export LD_PRELOAD=[% c("var/faketime_path") %]
 export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
 
 genisoimage -D -V "Tor Browser" -no-pad -R -apple -o "$dmg_tmpdir/tbb-uncompressed.dmg" -path-list [% filelist %] -graft-points -gid 20 -dir-mode 0755 -new-dir-mode 0755
