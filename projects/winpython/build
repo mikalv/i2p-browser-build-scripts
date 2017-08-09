@@ -25,7 +25,7 @@ echo "FAKETIME = \"$FAKETIME\"" >> settings.py
 # Must pre-copy python27.dll into the build directory, or else py2exe can't find it.
 mkdir -p build/bdist.win32/winexe/bundle-2.7/
 cp -a $distdir/python27.dll build/bdist.win32/winexe/bundle-2.7/
-LD_PRELOAD= $distdir/python.exe setup.py py2exe
+LD_PRELOAD= wine $distdir/python.exe setup.py py2exe
 mkdir -p $distdir/wineroot/windows/
 cp -a dist/gcc.exe dist/g++.exe dist/dllwrap.exe $distdir/wineroot/windows/
 cp $rootdir/pyc-timestamp.sh $distdir/
