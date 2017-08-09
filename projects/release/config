@@ -39,15 +39,15 @@ targets:
 
   nightly:
     output_dir: 'nightly'
-    publish_dir: '[% c("var/today") %]'
     var:
       build_target: nightly
+      publish_dir: '[% c("var/today") %]'
 
   alpha_nightly:
     output_dir: 'alpha_nightly'
-    publish_dir: '[% c("var/today") %]'
     var:
       build_target: alpha
+      publish_dir: '[% c("var/today") %]'
 
   alpha:
     output_dir: 'alpha/unsigned'
@@ -56,9 +56,9 @@ targets:
 
   testbuild:
     output_dir: 'testbuild'
-    publish_dir: ''
     var:
       build_target: torbrowser-testbuild
+      publish_dir: ''
 
 input_files:
 
