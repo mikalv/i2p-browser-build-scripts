@@ -198,6 +198,30 @@ To find the resulting file from the build, you can use 'ls -ltr out/tor/'
 to find the file with the last modification time.
 
 
+Patching Firefox (or an other component)
+----------------------------------------
+
+If you want to test a firefox patch, the easiest way to do it is to
+copy the patch file to the projects/firefox/ directory, then edit
+projects/firefox/config to add the new patch to the list of input_files:
+
+  - filename: patch-for-XXXX.patch
+
+Then edit projects/firefox/build to add a line somewhere (probably just
+before running the configure script) to apply the patch:
+
+  patch -p1 < $rootdir/patch-for-XXXX.patch
+
+You can now run 'make testbuild' (or an other build target) to start a
+build with the patch.
+
+As an alternative, if you have your patch in a git repository, you can
+edit projects/firefox/config to change the git_url option to point to
+your git repository, and change the git_hash option to point to the
+commit you want to build. You will also need to comment the
+'tag_gpg_id: 1' line (unless git_hash is pointing to a signed git tag).
+
+
 Debugging a build error
 -----------------------
 
