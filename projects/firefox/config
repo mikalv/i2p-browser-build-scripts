@@ -27,7 +27,7 @@ targets:
       torbrowser_update_channel: release
 
   nightly:
-    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1'
+    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-2'
     tag_gpg_id: 0
     var:
       torbrowser_update_channel: default
