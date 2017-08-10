@@ -222,6 +222,21 @@ commit you want to build. You will also need to comment the
 'tag_gpg_id: 1' line (unless git_hash is pointing to a signed git tag).
 
 
+The Firefox mozconfig files
+---------------------------
+
+In the gitian build, we are using the mozconfig files included in the
+tor-browser.git repository (the .mozconfig, .mozconfig-mac and
+.mozconfig-mingw files).
+
+In the rbm build however, we need to make some small modifications to
+those files, so we are instead using mozconfig files stored in the
+projects/firefox/ directory and ignoring the .mozconfig files from the
+tor-browser.git repository.
+
+This could change in the future, when we are not using gitian anymore.
+
+
 Debugging a build error
 -----------------------
 
