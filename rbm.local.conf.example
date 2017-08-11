@@ -21,6 +21,11 @@
 ### stdout and stderr.
 #build_log: '-'
 
+### By default, the logs from previous builds are kept in the log files.
+### If you set build_log_append to 0, then previous logs are cleaned
+### when starting a new build.
+#build_log_append: 0
+
 buildconf:
   buildconf: 1
 
