@@ -256,7 +256,6 @@ in the build containers, but vi can be used instead.
 When you press ctrl+d (twice if you opened a bash shell) the debug shell
 is closed and the container containing the failed build is removed.
 
-If you want to make a backup of the container's rootfs with the failed
-build to look at it later, you should be able to find it in
-/tmp/$UID/rbm-containers.
+The path to the container should be printed on the screen in case you
+want to backup its rootfs to be able to look at it later.
 
