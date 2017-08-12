@@ -37,7 +37,7 @@ targets:
     var:
       arch_deps:
         - faketime
-  windows-i686:
+  windows:
     var:
       arch_deps:
         - faketime

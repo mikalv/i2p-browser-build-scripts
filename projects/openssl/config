@@ -13,9 +13,9 @@ targets:
   linux-i686:
     var:
       configure_opts: -shared linux-generic32
-  windows-i686:
+  windows:
     var:
-      configure_opts: '-shared --cross-compile-prefix=i686-w64-mingw32- mingw "-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs"'
+      configure_opts: '-shared --cross-compile-prefix=[% c("arch") %]-w64-mingw32- mingw[% IF c("var/windows-x86_64") %]64[% END %] "-fstack-protector-all -Wstack-protector --param ssp-buffer-size=4 -fno-strict-overflow -Wno-missing-field-initializers -Wformat -Wformat-security -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -lssp -L$gcclibs"'
   osx-x86_64:
     var:
       configure_opts: --cross-compile-prefix=x86_64-apple-darwin10- darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
