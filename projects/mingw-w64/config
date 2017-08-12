@@ -11,19 +11,26 @@ var:
     - automake
     - build-essential
     - libmpc-dev
-    - g++-mingw-w64-i686
   setup: |
     [% c("var/setarch") -%]
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf [% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/mingw-w64/helpers:/var/tmp/dist/mingw-w64/bin:$PATH"
     export gcclibs=/var/tmp/dist/mingw-w64/gcclibs
+targets:
+  windows-i686:
+    var:
+      libgcc_dll: libgcc_s_sjlj-1.dll
+      arch_deps:
+        - g++-mingw-w64-i686
+  windows-x86_64:
+    var:
+      libgcc_dll: libgcc_s_seh-1.dll
+      arch_deps:
+        - g++-mingw-w64-x86-64
 input_files:
   - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("var/gcc_version") %]/gcc-[% c("var/gcc_version") %].tar.bz2'
     sha256sum: 608df76dec2d34de6558249d8af4cbee21eceddbcb580d666f7a5a583ca3303a
   - name: binutils
     project: binutils
-  - filename: i686-w64-mingw32-g++
-  - filename: i686-w64-mingw32-gcc
-  - filename: i686-w64-mingw32-ld

@@ -7,9 +7,9 @@ var:
     use_container: 1
 
 targets:
-  windows-i686:
+  windows:
     var:
-      configure_opt: '--target=i686-w64-mingw32 --disable-multilib --enable-deterministic-archives'
+      configure_opt: '--target=[% c("arch") %]-w64-mingw32 --disable-multilib --enable-deterministic-archives'
 
 input_files:
   - URL: https://ftp.gnu.org/gnu/binutils/binutils-[% c("version") %].tar.bz2
@@ -19,6 +19,8 @@ input_files:
   - project: container-image
   - filename: enable-reloc-section-ld.patch
     enable: '[% c("var/windows") %]'
+  - filename: 64bit-fixups.patch
+    enable: '[% c("var/windows-x86_64") %]'
   - filename: peXXigen.patch
     enable: '[% c("var/windows") %]'
   - filename: binutils-224-gold.patch

@@ -21,10 +21,13 @@ cd [% project %]-[% c("version") %]
 [% IF c('var/windows') -%]
   # XXX: This is needed due to bug 10102.
   sed 's/= extern_rt_rel_d;/= extern_rt_rel_d;\n  memset (extern_rt_rel_d, 0, PE_IDATA5_SIZE);/' -i ld/pe-dll.c
-  # Needed for the hardening...
-  patch -p1 < ../enable-reloc-section-ld.patch
   # Zeroing timestamps in PE headers reliably, see bug 12753.
   patch -p1 < ../peXXigen.patch
+  # Needed for the hardening...
+  patch -p1 < ../enable-reloc-section-ld.patch
+[% END -%]
+[% IF c('var/windows-x86_64') -%]
+  patch -p1 < ../64bit-fixups.patch
 [% END -%]
 [% IF c("var/linux") -%]
   # We need to work around a gold linker bug in 2.24 to get selfrando working,
