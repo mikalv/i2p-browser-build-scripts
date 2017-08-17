@@ -77,3 +77,13 @@ signtag-{release,alpha}
 Create a git signed tag for the selected channel, using the version and
 build number defined as var/torbrowser_version and var/torbrowser_build.
 
+incrementals-{release,alpha}
+----------------------------
+Create incremental mar files for an unsigned build in the release or
+alpha channel.
+
+update_responses-{release,alpha}
+--------------------------------
+Create update responses xml files for a signed build in the release or
+alpha channel.
+

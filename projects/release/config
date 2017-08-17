@@ -1,10 +1,11 @@
 # vim: filetype=yaml sw=2
 version: '[% c("var/torbrowser_version") %]'
-output_dir: 'release/unsigned'
+output_dir: release
 
 var:
+  signed_status: unsigned
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
-  publish_dir: '[% c("version") %]-[% c("var/torbrowser_build") %]'
+  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/torbrowser_build") %]'
 
 targets:
   torbrowser-all:
@@ -50,7 +51,7 @@ targets:
       publish_dir: '[% c("var/today") %]'
 
   alpha:
-    output_dir: 'alpha/unsigned'
+    output_dir: alpha
     var:
       build_target: alpha
 
@@ -59,6 +60,10 @@ targets:
     var:
       build_target: torbrowser-testbuild
       publish_dir: ''
+
+  signed:
+    var:
+      signed_status: signed
 
 input_files:
 
@@ -112,3 +117,13 @@ steps:
     debug: 0
     input_files: []
     signtag: '[% INCLUDE signtag %]'
+  update_responses_config:
+    build_log: '-'
+    debug: 0
+    input_files: []
+    update_responses_config: '[% INCLUDE update_responses_config %]'
+  hash_incrementals:
+    build_log: '-'
+    debug: 0
+    input_files: []
+    hash_incrementals: '[% INCLUDE hash_incrementals %]'

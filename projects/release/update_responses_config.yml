@@ -1,0 +1,40 @@
+---
+appname_marfile: tor-browser
+appname_bundle_osx: TorBrowser
+appname_bundle_linux: tor-browser
+appname_bundle_win: torbrowser-install
+releases_dir: [% path(c('output_dir')) %]/[% c("var/signed_status") %]
+download:
+    archive_url: https://archive.torproject.org/tor-package-archive/torbrowser
+    gpg_keyring: ../../keyring/torbrowser.gpg
+    bundles_url: https://dist.torproject.org/torbrowser
+    mars_url: https://cdn.torproject.org/aus1/torbrowser
+build_targets:
+    linux32: Linux_x86-gcc3
+    linux64: Linux_x86_64-gcc3
+    win32:
+        - WINNT_x86-gcc3
+        - WINNT_x86-gcc3-x86
+        - WINNT_x86-gcc3-x64
+    osx32: Darwin_x86-gcc3
+    osx64: Darwin_x86_64-gcc3
+channels:
+    [% pc('firefox', 'var/torbrowser_update_channel') %]: [% c("var/torbrowser_version") %]
+versions:
+    [% c("var/torbrowser_version") %]:
+        platformVersion: [% pc('firefox', 'var/firefox_platform_version') %]
+        detailsURL: https://blog.torproject.org/blog/tor-browser-[% c("var/torbrowser_version") FILTER remove('\.') %]-released
+        incremental_from:
+[% FOREACH v IN c("var/torbrowser_incremental_from") -%]
+          - [% v %]
+[% END -%]
+        migrate_archs:
+          osx32: osx64
+        migrate_langs:
+            pt-PT: pt-BR
+        win32:
+            minSupportedInstructionSet: SSE2
+        osx32:
+            minSupportedOSVersion: 13.0.0
+        osx64:
+            minSupportedOSVersion: 13.0.0
