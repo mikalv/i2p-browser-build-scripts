@@ -275,6 +275,8 @@ cd $distdir
 [% END %]
 rm -rf $distdir/${PKG_DIR}
 
+cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
+
 # If we did not create a multi-lingual package above, create a package for
 # each locale.
 [% IF ! c("var/multi_lingual") %]
