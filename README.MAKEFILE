@@ -82,6 +82,12 @@ incrementals-{release,alpha}
 Create incremental mar files for an unsigned build in the release or
 alpha channel.
 
+dmg2mar-{release,alpha)
+-----------------------
+Generate updated mar files for the OSX bundles, from the dmg files, then
+regenerate the OSX incremental mar files. You should run this after
+signing the OSX dmg files.
+
 update_responses-{release,alpha}
 --------------------------------
 Create update responses xml files for a signed build in the release or

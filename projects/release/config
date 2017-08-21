@@ -127,3 +127,8 @@ steps:
     debug: 0
     input_files: []
     hash_incrementals: '[% INCLUDE hash_incrementals %]'
+  dmg2mar:
+    build_log: '-'
+    debug: 0
+    input_files: []
+    dmg2mar: '[% INCLUDE dmg2mar %]'

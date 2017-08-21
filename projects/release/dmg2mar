@@ -1,0 +1,4 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+cd [% shell_quote(path(dest_dir)) %]/[% c("var/signed_status") %]/[%  c("version") %]
+[% shell_quote(c("basedir")) %]/tools/dmg2mar

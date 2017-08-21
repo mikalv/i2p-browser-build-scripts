@@ -103,6 +103,18 @@ update_responses-alpha: submodule-update
 	$(rbm) build release --step update_responses_config --target alpha --target signed
 	tools/update-responses/update_responses alpha
 
+dmg2mar-release: submodule-update
+	$(rbm) build release --step update_responses_config --target release --target signed
+	$(rbm) build release --step dmg2mar --target release --target signed
+	tools/update-responses/download_missing_versions release
+	CHECK_CODESIGNATURE_EXISTS=1 MAR_SKIP_EXISTING=1 tools/update-responses/gen_incrementals release
+
+dmg2mar-alpha: submodule-update
+	$(rbm) build release --step update_responses_config --target alpha --target signed
+	$(rbm) build release --step dmg2mar --target alpha --target signed
+	tools/update-responses/download_missing_versions alpha
+	CHECK_CODESIGNATURE_EXISTS=1 MAR_SKIP_EXISTING=1 tools/update-responses/gen_incrementals alpha
+
 submodule-update:
 	git submodule update --init
 
