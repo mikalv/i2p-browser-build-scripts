@@ -122,6 +122,11 @@ steps:
     debug: 0
     input_files: []
     update_responses_config: '[% INCLUDE update_responses_config %]'
+  create_update_responses_tar:
+    build_log: '-'
+    debug: 0
+    input_files: []
+    create_update_responses_tar: '[% INCLUDE create_update_responses_tar %]'
   hash_incrementals:
     build_log: '-'
     debug: 0

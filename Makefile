@@ -97,11 +97,11 @@ incrementals-alpha: submodule-update
 
 update_responses-release: submodule-update
 	$(rbm) build release --step update_responses_config --target release --target signed
-	tools/update-responses/update_responses release
+	$(rbm) build release --step create_update_responses_tar --target release --target signed
 
 update_responses-alpha: submodule-update
 	$(rbm) build release --step update_responses_config --target alpha --target signed
-	tools/update-responses/update_responses alpha
+	$(rbm) build release --step create_update_responses_tar --target alpha --target signed
 
 dmg2mar-release: submodule-update
 	$(rbm) build release --step update_responses_config --target release --target signed

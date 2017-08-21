@@ -91,5 +91,6 @@ signing the OSX dmg files.
 update_responses-{release,alpha}
 --------------------------------
 Create update responses xml files for a signed build in the release or
-alpha channel.
+alpha channel. The files can be found in a tar in the directory
+{release,alpha}/update-responses.
 
