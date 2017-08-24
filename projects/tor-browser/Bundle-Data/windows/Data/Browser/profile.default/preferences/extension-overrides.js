@@ -8,9 +8,9 @@ pref("extensions.https_everywhere.toolbar_hint_shown", true);
 
 # NoScript Preferences:
 pref("capability.policy.maonoscript.javascript.enabled", "allAccess");
-pref("capability.policy.maonoscript.sites", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
-pref("noscript.default", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
-pref("noscript.mandatory", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
+pref("capability.policy.maonoscript.sites", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-extension: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
+pref("noscript.default", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-extension: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
+pref("noscript.mandatory", "about: about:tbupdate about:tor chrome: resource: blob: mediasource: moz-extension: moz-safe-about: about:neterror about:certerror about:feeds about:tabcrashed about:cache");
 pref("noscript.ABE.enabled", false);
 pref("noscript.ABE.notify", false);
 pref("noscript.ABE.wanIpAsLocal", false);
