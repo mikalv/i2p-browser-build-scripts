@@ -55,7 +55,7 @@ to the linux-x86_64 and linux targets. You should define an option under
 the linux target if it applies to Linux on both architectures, or under
 the linux-x86_64 if it only applies to the x86_64 architecture.
 
-An option that is defined at the root of rbm.conf can be overrided by
+An option that is defined at the root of rbm.conf can be overridden by
 an other definition under a target, or inside projects/$project/config.
 You can find the complete priority order in rbm/doc/rbm_config.7.
 
@@ -150,7 +150,7 @@ $platform should be one of the following:
 
  - torbrowser-osx-x86_64
 
-For example, to see the tor's build script for linux x86_64 on the alpha
+For example, to see tor's build script for linux x86_64 on the alpha
 channel, you can use:
 
   $ ./rbm/rbm showconf tor build --target alpha --target \
@@ -159,7 +159,7 @@ channel, you can use:
 If the component you are looking at has many dependencies, the display
 can take some time as various build_id values need to be computed. If
 you don't care about the accuracy of input and output file names, you
-can add '--target no_build_id' to the command line. For instance if you
+can add '--target no_build_id' to the command line. For instance, if you
 want to look at the build script for the tor-browser component (which
 has a lot of dependencies), you can use:
 
@@ -168,7 +168,7 @@ has a lot of dependencies), you can use:
 
 The same type of commands can be used to look at any option values,
 replacing build with the name of the option you want to look at. For
-instance if you want to know the output filename of tor on linux-x86_64
+instance, if you want to know the output filename of tor on linux-x86_64
 on the alpha channel, you can use:
 
   $ ./rbm/rbm showconf tor filename --target alpha --target \
@@ -189,7 +189,7 @@ This can be done with the following command:
 See the previous section "Evaluating a component's build script" for a
 list of possible values for $channel and $platform.
 
-For instance if you want to build tor for linux-x86_64 on the alpha
+For instance, if you want to build tor for linux-x86_64 on the alpha
 channel, you can run:
 
    $ ./rbm/rbm build tor --target alpha --target torbrowser-linux-x86_64
@@ -201,7 +201,7 @@ to find the file with the last modification time.
 Patching Firefox (or an other component)
 ----------------------------------------
 
-If you want to test a firefox patch, the easiest way to do it is to
+If you want to test a Firefox patch, the easiest way to do it is to
 copy the patch file to the projects/firefox/ directory, then edit
 projects/firefox/config to add the new patch to the list of input_files:
 
@@ -231,10 +231,10 @@ tor-browser.git repository (the .mozconfig, .mozconfig-mac and
 
 In the rbm build however, we need to make some small modifications to
 those files, so we are instead using mozconfig files stored in the
-projects/firefox/ directory and ignoring the .mozconfig files from the
+projects/firefox/ directory, ignoring the .mozconfig files from the
 tor-browser.git repository.
 
-This could change in the future, when we are not using gitian anymore.
+This could change in the future, when we are not using Gitian anymore.
 
 
 Debugging a build error
