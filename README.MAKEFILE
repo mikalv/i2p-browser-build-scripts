@@ -14,7 +14,7 @@ Same as release, for the selected platform only.
 alpha
 -----
 Build Tor Browser for the alpha channel, for all supported platforms.
-The resulting build can be found in directoryp alpha/$version.
+The resulting build can be found in directory alpha/$version.
 
 alpha-{linux-x86_64,linux-i686,windows-i686,osx-x86_64}
 -------------------------------------------------------
