@@ -12,9 +12,9 @@ Version 0.1.1 of runc is required (which is the version available in
 Debian stretch and jessie-backports). It is not yet working with runc
 version 1.0.0: https://trac.torproject.org/projects/tor/ticket/23039
 
-Your user account should have access sudo access, which is required to
-be able to extract container file systems, start containers and copy
-files to and from containers.
+Your user account should have sudo access, which is required to be able
+to extract container file systems, start containers and copy files to and
+from containers.
 
 The sources of most components are downloaded using git, which needs to
 be installed. The sources of webrtc are downloaded using gclient, which
@@ -117,7 +117,7 @@ Or set the debug option to 0 in the rbm.local.conf file.
 
 If you want to select the output directory, you can use rbm's --output-dir
 option. You can look at the Makefile to find the rbm command for what
-you want to build, and add the --output-dir option. For example if you
+you want to build, and add the --output-dir option. For example, if you
 want to build Tor Browser nightly for linux-x86_64:
 
    ./rbm/rbm build release --output-dir=/var/builds/nightly/2017-01-23 \
@@ -168,7 +168,7 @@ Copy the tools/tor-browser-builds-boklm file and edit it to change the
    $ vim tools/tor-browser-builds-$user
 
 You can now run ./tools/tor-browser-builds-$user to start the build, and
-add it to you crontab.
+add it to your crontab.
 
 The html build reports will be available in the reports/ directory, and
 the build files in the tor-browser-builds/ directory (unless you changed
@@ -192,7 +192,7 @@ Cleaning obsolete files and containers images
 You can run 'make clean' to clean old build files and containers that
 are no longer used in current builds. Before doing that, you need to
 configure the branches and build targets you are using in the
-rbm.local.conf file. The cleaning script will checkout all the configured
+rbm.local.conf file. The cleaning script will check out all the configured
 branches to create a list of used build files, and delete the files
 from the 'out' directory that are not used. If you want to see the list
 of files and containers that would be removed without doing it, you can
