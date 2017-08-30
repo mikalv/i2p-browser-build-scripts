@@ -46,6 +46,10 @@ If you are running Debian or Ubuntu, you can install them with:
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
                   libfile-copy-recursive-perl git libgtk2.0-dev curl runc
 
+The build system is based on rbm, which is included as a git submodule
+in the rbm/ directory. You can fetch the rbm git submodule by running
+'make submodule-update'.
+
 
 Starting a build
 ----------------
