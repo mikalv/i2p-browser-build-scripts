@@ -8,3 +8,6 @@
       - locales
       - vim-nox
       - tmux
+      - tor
+      - torsocks
+      - screen
