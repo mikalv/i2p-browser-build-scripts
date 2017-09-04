@@ -1,0 +1,32 @@
+---
+
+- name: Install dependencies for Tor Browser build
+  apt:
+      name: "{{ item }}"
+      state: present
+  with_items:
+      - git
+      - sudo
+      - libyaml-libyaml-perl
+      - libtemplate-perl
+      - libio-handle-util-perl
+      - libio-all-perl
+      - libio-captureoutput-perl
+      - libfile-slurp-perl
+      - libstring-shellquote-perl
+      - libsort-versions-perl
+      - libdigest-sha-perl
+      - libdata-uuid-perl
+      - libdata-dump-perl
+      - libfile-copy-recursive-perl
+      - libgtk2.0-dev
+      - curl
+      - runc
+
+- name: Create the tbb-build group
+  group:
+      name: tbb-build
+      state: present
+
+- name: Give sudo access to tbb-build group members
+  copy: src=sudoers-tbb-build dest=/etc/sudoers.d/tbb-build owner=root group=root mode=0440
