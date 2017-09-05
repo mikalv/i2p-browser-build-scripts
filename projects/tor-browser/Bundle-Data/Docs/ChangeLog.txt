@@ -1,3 +1,14 @@
+Tor Browser 7.0.5 -- September 4 2017
+ * All Platforms
+   * Update Torbutton to 1.9.7.6
+     * Bug 22989: Fix dimensions of new windows on macOS
+     * Translations update
+   * Update HTTPS-Everywhere to 2017.8.31
+   * Update NoScript to 5.0.9
+   * Bug 23166: Add new obfs4 bridge to the built-in ones
+   * Bug 23258: Fix broken HTTPS-Everywhere on higher security levels
+   * Bug 21270: NoScript settings break WebExtensions add-ons
+
 Tor Browser 7.5a4 -- August 9 2017
  * All Platforms
    * Update Firefox to 52.3.0esr
