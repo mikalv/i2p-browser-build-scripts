@@ -14,7 +14,7 @@ tar -C /var/tmp/dist -xf $rootdir/[% project %]-[% c("version") %].tar.gz
 cd /var/tmp/dist
 mv [% project %]-[% c("version") %] [% project %]
 cd [% project %]
-scons -Q arch=[% c("var/selfrando_arch") %] LIBELF_PATH="/var/tmp/dist/elfutils" FORCE_INPLACE=1 DEBUG_LEVEL=env WRITE_LAYOUTS=env LOG=console
+scons -Q arch=[% c("var/selfrando_arch") %] LIBELF_PATH="/var/tmp/dist/elfutils" NO_MREMAP=1 FORCE_INPLACE=1 DEBUG_LEVEL=env WRITE_LAYOUTS=env LOG=console
 # Fix the path where we install selfrando
 sed -i 's|^SR_PATH=.*|SR_PATH=/var/tmp/dist/selfrando/out/[% c("var/selfrando_arch") %]/bin|' Tools/TorBrowser/tc-wrapper/ld
 
