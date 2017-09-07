@@ -9,7 +9,7 @@
 [% END -%]
 	},
 	"process": {
-		"terminal": true,
+		"terminal": [% IF c("interactive") %]true[% ELSE %]false[% END %],
 		"user": {
 			"uid": 0,
 			"gid": 0
