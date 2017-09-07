@@ -259,3 +259,20 @@ is closed and the container containing the failed build is removed.
 The path to the container should be printed on the screen in case you
 want to backup its rootfs to be able to look at it later.
 
+
+Testing an rbm patch
+--------------------
+
+When you are working on a patch to rbm, you might want to try a Tor
+Browser build using your patched version of rbm. You could patch the
+rbm in the rbm/ directory, however your patch can be reverted if you
+use any of the makefile rules that does a 'git submodule update'.
+To avoid this you can clone the rbm git repository to a separate
+directory, where you will apply your patch. To do a build using your
+patched rbm, take the command from the makefile, but replace $(rbm)
+with the path to your patched rbm.
+
+For example, if you want to try a Linux x86_64 alpha build, you can run:
+  $ /path_to_rbm/rbm build release --target alpha --target \
+                                                torbrowser-linux-x86_64
+
