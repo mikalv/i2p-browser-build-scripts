@@ -6,8 +6,10 @@
 ### options you want to modify.
 
 
-### The tmp_dir option defines where temporary files are stored.
-### You should modify this if your /tmp partition is small.
+### The tmp_dir option defines where temporary files are stored. The
+### builds are made from this directory, so using a directory on a fast
+### disk can improve build time. By default we are using a tmp directory
+### under the tor-browser-build directory.
 #tmp_dir: /tmp
 
 ### The debug option defines whether a debugging shell should be opened

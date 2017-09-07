@@ -28,19 +28,3 @@ nopat
 $ qvm-pref --set [vmname] kernelopts 'nopat vsyscall=emulate'
 ----
 
-
-tmp partition is full
----------------------
-
-If your /tmp partition is small, you will get a 'No space left on device'
-error during the build. To select an other directory with more space
-available to store temporary files, you can define the TMPDIR environment
-variable:
-
-----
-$ mkdir /home/user/tmp
-$ export TMPDIR=/home/user/tmp
-----
-
-You can also define the tmp_dir option in the rbm.local.conf file.
-
