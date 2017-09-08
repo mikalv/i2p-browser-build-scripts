@@ -37,7 +37,7 @@ var:
     popd
 
 targets:
-  windows-i686:
+  windows:
     var:
       configure_opt: --disable-multilib --enable-languages=c,c++
       arch_deps:

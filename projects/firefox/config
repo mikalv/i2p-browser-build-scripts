@@ -66,6 +66,10 @@ targets:
     var:
       martools_filename: mar-tools-win32.zip
 
+  windows-x86_64:
+    var:
+      martools_filename: mar-tools-win64.zip
+
 input_files:
   - project: container-image
   - name: '[% c("var/compiler") %]'
