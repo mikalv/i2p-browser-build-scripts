@@ -52,10 +52,15 @@ var:
         }) %]
 
 targets:
-  windows-i686:
+  windows:
     var:
       GOOS: windows
+  windows-i686:
+    var:
       GOARCH: 386
+  windows-x86_64:
+    var:
+      GOARCH: amd64
   osx-x86_64:
     var:
       GOOS: darwin

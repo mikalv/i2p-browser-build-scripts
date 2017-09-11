@@ -64,11 +64,11 @@ cd /var/tmp/dist/go/src
   # https://github.com/golang/go/issues/15457
   CC_FOR_TARGET="$(pwd)/cc-for-target"
   echo "#!/bin/sh" > "$CC_FOR_TARGET"
-  echo "exec i686-w64-mingw32-gcc [% c("var/CFLAGS") %] [% c("var/LDFLAGS") %] \"\$@\"" >> "$CC_FOR_TARGET"
+  echo "exec [% c("arch") %]-w64-mingw32-gcc [% c("var/CFLAGS") %] [% c("var/LDFLAGS") %] \"\$@\"" >> "$CC_FOR_TARGET"
   chmod +x "$CC_FOR_TARGET"
   # http://golang.org/doc/install/source#environment
   export GOOS=windows
-  export GOARCH=386
+  export GOARCH=[% c("var/GOARCH") %]
   CGO_ENABLED=1 CC_FOR_TARGET="$CC_FOR_TARGET" CC= CFLAGS= LDFLAGS= ./make.bash
 [% END -%]
 
