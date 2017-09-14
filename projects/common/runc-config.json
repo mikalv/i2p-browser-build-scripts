@@ -1,5 +1,5 @@
 {
-	"ociVersion": "1.0.0-rc1",
+	"ociVersion": "1.0.0[% IF !c("var_p/runc100") %]-rc1[% END %]",
 	"platform": {
 		"os": "linux",
 [% IF c("var/container/arch") == 'i386' -%]
@@ -22,6 +22,90 @@
 			"TERM=xterm"
 		],
 		"cwd": "/",
+[% IF c("var_p/runc100") -%]
+		"capabilities": {
+			"bounding": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE",
+				"CAP_SETGID",
+				"CAP_SETUID",
+				"CAP_MKNOD",
+				"CAP_SYS_CHROOT",
+[% IF c("var/container/CAP_SYS_ADMIN") -%]
+				"CAP_SYS_ADMIN",
+[% END -%]
+				"CAP_FSETID",
+				"CAP_FOWNER",
+				"CAP_DAC_OVERRIDE",
+				"CAP_CHOWN"
+			],
+			"effective": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE",
+				"CAP_SETGID",
+				"CAP_SETUID",
+				"CAP_MKNOD",
+				"CAP_SYS_CHROOT",
+[% IF c("var/container/CAP_SYS_ADMIN") -%]
+				"CAP_SYS_ADMIN",
+[% END -%]
+				"CAP_FSETID",
+				"CAP_FOWNER",
+				"CAP_DAC_OVERRIDE",
+				"CAP_CHOWN"
+			],
+			"inheritable": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE",
+				"CAP_SETGID",
+				"CAP_SETUID",
+				"CAP_MKNOD",
+				"CAP_SYS_CHROOT",
+[% IF c("var/container/CAP_SYS_ADMIN") -%]
+				"CAP_SYS_ADMIN",
+[% END -%]
+				"CAP_FSETID",
+				"CAP_FOWNER",
+				"CAP_DAC_OVERRIDE",
+				"CAP_CHOWN"
+			],
+			"permitted": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE",
+				"CAP_SETGID",
+				"CAP_SETUID",
+				"CAP_MKNOD",
+				"CAP_SYS_CHROOT",
+[% IF c("var/container/CAP_SYS_ADMIN") -%]
+				"CAP_SYS_ADMIN",
+[% END -%]
+				"CAP_FSETID",
+				"CAP_FOWNER",
+				"CAP_DAC_OVERRIDE",
+				"CAP_CHOWN"
+			],
+			"ambient": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE",
+				"CAP_SETGID",
+				"CAP_SETUID",
+				"CAP_MKNOD",
+				"CAP_SYS_CHROOT",
+[% IF c("var/container/CAP_SYS_ADMIN") -%]
+				"CAP_SYS_ADMIN",
+[% END -%]
+				"CAP_FSETID",
+				"CAP_FOWNER",
+				"CAP_DAC_OVERRIDE",
+				"CAP_CHOWN"
+			]
+		},
+[% ELSE -%]
 		"capabilities": [
 			"CAP_AUDIT_WRITE",
 			"CAP_KILL",
@@ -38,6 +122,7 @@
 			"CAP_DAC_OVERRIDE",
 			"CAP_CHOWN"
 		],
+[% END -%]
 		"rlimits": [
 			{
 				"type": "RLIMIT_NOFILE",
@@ -165,6 +250,10 @@
 			"/proc/kcore",
 			"/proc/latency_stats",
 			"/proc/timer_stats",
+[% IF c("var_p/runc100") -%]
+			"/proc/timer_list",
+			"/sys/firmware",
+[% END -%]
 			"/proc/sched_debug"
 		],
 		"readonlyPaths": [
