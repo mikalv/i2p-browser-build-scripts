@@ -1,5 +1,5 @@
 {
-	"ociVersion": "1.0.0[% IF !c("var_p/runc100") %]-rc1[% END %]",
+	"ociVersion": "1.0.0[% IF !c("var_p/runc_spec100") %]-rc1[% END %]",
 	"platform": {
 		"os": "linux",
 [% IF c("var/container/arch") == 'i386' -%]
@@ -22,7 +22,7 @@
 			"TERM=xterm"
 		],
 		"cwd": "/",
-[% IF c("var_p/runc100") -%]
+[% IF c("var_p/runc_spec100") -%]
 		"capabilities": {
 			"bounding": [
 				"CAP_AUDIT_WRITE",
@@ -250,7 +250,7 @@
 			"/proc/kcore",
 			"/proc/latency_stats",
 			"/proc/timer_stats",
-[% IF c("var_p/runc100") -%]
+[% IF c("var_p/runc_spec100") -%]
 			"/proc/timer_list",
 			"/sys/firmware",
 [% END -%]
