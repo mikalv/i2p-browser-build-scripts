@@ -18,9 +18,6 @@ ac_add_options --enable-tor-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
-# We can't build the sandbox code with mingw-w64:
-# https://bugzilla.mozilla.org/show_bug.cgi?id=1042426
-ac_add_options --disable-sandbox
 # Let's make sure no preference is enabling either Adobe's or Google's CDM.
 ac_add_options --disable-eme
 ac_add_options --disable-crashreporter
