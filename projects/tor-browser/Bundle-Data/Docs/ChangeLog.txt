@@ -21,7 +21,7 @@ Tor Browser 7.5a4 -- August 9 2017
      * Bug 22618: Downloading pdf file via file:/// is stalling
      * Bug 22542: Resize slider window to work without scrollbars
      * Bug 21999: Fix display of language prompt in non-en-US locales
-     * Bug 18193: Don't let about:tor have chrome privileges
+     * Bug 18913: Don't let about:tor have chrome privileges
      * Bug 22535: Search on about:tor discards search query
      * Bug 21948: Going back to about:tor page gives "Address isn't valid" error
      * Code clean-up
@@ -63,7 +63,7 @@ Tor Browser 7.0.4 -- August 8 2017
    * Update Tor to 0.3.0.10
    * Update Torbutton to 1.9.7.5
      * Bug 21999: Fix display of language prompt in non-en-US locales
-     * Bug 18193: Don't let about:tor have chrome privileges
+     * Bug 18913: Don't let about:tor have chrome privileges
      * Bug 22535: Search on about:tor discards search query
      * Bug 21948: Going back to about:tor page gives "Address isn't valid" error
      * Code clean-up
