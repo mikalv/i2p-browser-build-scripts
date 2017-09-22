@@ -34,6 +34,7 @@
       - libxml-libxml-perl
       - libwww-perl
       - libjson-perl
+      - libyaml-perl
 
 - name: Create the tbb-build group
   group:
