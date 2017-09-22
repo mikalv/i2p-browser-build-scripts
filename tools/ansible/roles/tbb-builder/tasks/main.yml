@@ -23,6 +23,18 @@
       - curl
       - runc
 
+- name: Install dependencies for update_responses script
+  apt:
+      name: "{{ item }}"
+      state: present
+  with_items:
+      - libfindbin-libs-perl
+      - libxml-writer-perl
+      - libparallel-forkmanager-perl
+      - libxml-libxml-perl
+      - libwww-perl
+      - libjson-perl
+
 - name: Create the tbb-build group
   group:
       name: tbb-build
