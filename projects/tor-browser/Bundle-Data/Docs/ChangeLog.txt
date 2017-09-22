@@ -1,3 +1,40 @@
+Tor Browser 7.5a5 -- September 27 2017
+ * All Platforms
+   * Update Firefox to 52.4.0esr
+   * Update Tor to 0.3.2.1-alpha
+   * Update Torbutton to 1.9.8.1
+     * Bug 20375: Warn users after entering fullscreen mode
+     * Bug 22989: Fix dimensions of new windows on macOS
+     * Bug 23526: Add 2017 Donation banner text
+     * Bug 23483: Donation banner on about:tor for 2017 (testing mode)
+     * Translations update
+   * Update Tor Launcher to 0.2.13
+     * Bug 23240: Retrieve current bootstrap progress before showing progress bar
+     * Bug 22232: Add README on use of bootstrap status messages
+     * Translations update
+   * Update HTTPS-Everywhere to 2017.9.12
+   * Update NoScript to 5.0.10
+   * Update sandboxed-tor-browser to 0.0.13
+   * Bug 23393: Don't crash all tabs when closing one tab
+   * Bug 23166: Add new obfs4 bridge to the built-in ones
+   * Bug 23258: Fix broken HTTPS-Everywhere on higher security levels
+   * Bug 21270: NoScript settings break WebExtensions add-ons
+   * Bug 23104: CSS line-height reveals the platform Tor Browser is running on
+ * Windows
+   * Bug 16010: Enable content sandboxing on Windows
+   * Bug 23582: Enable the Windows DLL blocklist for mingw-w64 builds
+   * Bug 23396: Update the msvcr100.dll we ship
+   * Bug 23230: Fix build error on Windows 64
+ * OS X
+   * Bug 23404: Add missing Noto Sans Buginese font to the macOS whitelist
+ * Linux
+   * Bug 10089: Set middlemouse.contentLoadURL to false by default
+   * Bug 22692: Enable content sandboxing on Linux
+   * Bug 18101: Suppress upload file dialog proxy bypass (linux part)
+ * Build System
+   * All Platforms
+     * Switch from gitian/tor-browser-bundle to rbm/tor-browser-build
+
 Tor Browser 7.0.5 -- September 4 2017
  * All Platforms
    * Update Torbutton to 1.9.7.6
