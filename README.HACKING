@@ -218,8 +218,25 @@ build with the patch.
 As an alternative, if you have your patch in a git repository, you can
 edit projects/firefox/config to change the git_url option to point to
 your git repository, and change the git_hash option to point to the
-commit you want to build. You will also need to comment the
-'tag_gpg_id: 1' line (unless git_hash is pointing to a signed git tag).
+commit you want to build. If the new git_hash option is not pointing to
+a signed tag, you will also need to comment the 'tag_gpg_id: 1' line.
+The git_hash option can point to a tag, a commit, a branch or anything
+that is understood by git.
+
+If you specify a branch in the git_hash option, you don't need to prefix
+it with a git remote name as all branches from the git repository
+selected in the git_url option are created as local branches.
+
+If you want to work on a local git repository, it is not a good idea to
+work on the git_clones/firefox repository directly. Instead you should
+create a separate git repository and update the git_url option with a
+file:// URL pointing to your repository.
+
+After changing the git_url option or when new commits have been added
+to a branch, you should run "make fetch" before starting a build to get
+the new commits. If you want to fetch new commits automatically when
+starting a new build you can add a "fetch: 1" line to
+projects/firefox/config.
 
 
 The Firefox mozconfig files
