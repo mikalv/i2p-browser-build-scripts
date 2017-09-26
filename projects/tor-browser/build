@@ -327,6 +327,10 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
                 tar_args => '-cJf $OUTDIR/tor-browser-' _ c("var/mar_osname") _ '-' _ c("var/torbrowser_version") _ '_' _ lang _ '.tar.xz',
             }) %]
       [% ELSIF c("var/osx") %]
+        [% # Rename the Japanese bundle to not confuse users
+           IF lang == 'ja-JP-mac';
+             SET lang = 'ja';
+           END; -%]
         [% c('var/ddmg', {
           dmg_src => tbdir,
           dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_' _ lang _ '.dmg',
