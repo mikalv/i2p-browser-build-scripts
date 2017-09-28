@@ -38,6 +38,7 @@ pref("noscript.temp", "");
 pref("noscript.untrusted", "");
 pref("noscript.forbidMedia", false);
 pref("noscript.allowWhitelistUpdates", false);
+pref("noscript.fixLinks", false);
 // Now handled by plugins.click_to_play
 pref("noscript.forbidFlash", false);
 pref("noscript.forbidSilverlight", false);
