@@ -238,6 +238,10 @@ the new commits. If you want to fetch new commits automatically when
 starting a new build you can add a "fetch: 1" line to
 projects/firefox/config.
 
+Remember that the git_hash option has different definitions for alpha
+and nightly builds, so you should modify the right one depending on
+what type of build you are doing (see also the "Types of builds" section).
+
 
 The Firefox mozconfig files
 ---------------------------
@@ -292,4 +296,21 @@ with the path to your patched rbm.
 For example, if you want to try a Linux x86_64 alpha build, you can run:
   $ /path_to_rbm/rbm build release --target alpha --target \
                                                 torbrowser-linux-x86_64
+
+
+Types of builds: nightly, alpha, release and testbuild
+------------------------------------------------------
+
+The testbuild makefile target allows you to do a build quickly in the
+testbuild directory, skipping the generation of all the locales and the
+mar files. This is useful during development.
+
+By default the testbuild is based on the alpha build. All the options
+can have a different definition for the alpha, release and nightly builds.
+Usually the git_hash option has a different definition for the nightly
+builds in order to point to the master branch.
+
+If you want your testbuild target to create builds based on nightly
+rather than alpha, you can edit your rbm.local.conf file and uncomment
+the targets/torbrowser-testbuild definition.
 
