@@ -1,0 +1,6 @@
+---
+
+- name: Install dma (DragonFly Mail Agent)
+  apt:
+      name: dma
+      state: present
