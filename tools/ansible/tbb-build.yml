@@ -6,3 +6,4 @@
       - role: useful-packages
       - role: tbb-team
       - role: mta
+      - role: unattended-upgrades

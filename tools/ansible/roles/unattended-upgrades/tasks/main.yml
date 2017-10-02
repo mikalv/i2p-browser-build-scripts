@@ -1,0 +1,18 @@
+---
+
+- name: Install unattended-updates
+  apt:
+      name: unattended-upgrades
+      state: present
+
+- name: Install apt-listchanges
+  apt:
+      name: apt-listchanges
+      state: present
+
+- name: create /etc/apt/apt.conf.d/50unattended-upgrades
+  template: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades mode=0644
+
+- name: create /etc/apt/apt.conf.d/20auto-upgrades
+  template: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades mode=0644
+
