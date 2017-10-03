@@ -1,4 +1,4 @@
-Tor Browser 7.5a5 -- September 27 2017
+Tor Browser 7.5a5 -- September 28 2017
  * All Platforms
    * Update Firefox to 52.4.0esr
    * Update Tor to 0.3.2.1-alpha
@@ -34,6 +34,20 @@ Tor Browser 7.5a5 -- September 27 2017
  * Build System
    * All Platforms
      * Switch from gitian/tor-browser-bundle to rbm/tor-browser-build
+
+Tor Browser 7.0.6 -- September 28 2017
+ * All Platforms
+   * Update Firefox to 52.4.0esr
+   * Update Tor to 0.3.1.7
+   * Update Torbutton to 1.9.7.7
+     * Bug 22542: Security Settings window too small on macOS 10.12 (fixup)
+     * Bug 20375: Warn users after entering fullscreen mode
+   * Update HTTPS-Everywhere to 2017.9.12
+   * Update NoScript to 5.0.10
+   * Bug 21830: Copying large text from web console leaks to /tmp
+   * Bug 23393: Don't crash all tabs when closing one tab
+ * OS X
+   * Bug 23404: Add missing Noto Sans Buginese font to the macOS whitelist
 
 Tor Browser 7.0.5 -- September 4 2017
  * All Platforms
