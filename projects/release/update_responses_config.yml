@@ -23,7 +23,7 @@ channels:
 versions:
     [% c("var/torbrowser_version") %]:
         platformVersion: [% pc('firefox', 'var/firefox_platform_version') %]
-        detailsURL: https://blog.torproject.org/blog/tor-browser-[% c("var/torbrowser_version") FILTER remove('\.') %]-released
+        detailsURL: https://blog.torproject.org/tor-browser-[% c("var/torbrowser_version") FILTER remove('\.') %]-released
         incremental_from:
 [% FOREACH v IN c("var/torbrowser_incremental_from") -%]
           - [% v %]
