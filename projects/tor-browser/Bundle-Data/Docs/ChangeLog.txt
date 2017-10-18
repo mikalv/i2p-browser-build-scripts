@@ -1,3 +1,21 @@
+Tor Browser 7.5a6 -- October 19 2017
+ * All Platforms
+   * Update Firefox to 52.4.1esr
+   * Update Tor to 0.3.2.2-alpha
+   * Update Torbutton to 1.9.8.2
+     * Bug 23887: Update banner locales and Mozilla text
+     * Translations update
+   * Update HTTPS-Everywhere to 2017.10.4
+   * Update NoScript to 5.1.2
+     * Bug 23723: Loading entities from NoScript .dtd files is blocked
+     * Bug 23724: NoScript update breaks Security Slider and its icon disappears
+   * Bug 23745: Tab crashes when using Tor Browser to access Google Drive
+   * Bug 23694: Update the detailsURL in update responses
+   * Bug 22501: Requests via javascript: violate FPI
+ * OS X
+   * Bug 23807: Tab crashes when playing video on High Sierra
+   * Bug 23025: Add some hardening flags to macOS build
+
 Tor Browser 7.5a5 -- September 28 2017
  * All Platforms
    * Update Firefox to 52.4.0esr
