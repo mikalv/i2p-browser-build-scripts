@@ -41,6 +41,13 @@ sub exit_error {
     exit (exists $_[1] ? $_[1] : 1);
 }
 
+sub get_tmpdir {
+    my ($config) = @_;
+    return File::Temp->newdir($config->{tmp_dir} ?
+                                (DIR => $config->{tmp_dir})
+                                : ());
+}
+
 sub build_targets_by_os {
     return ($_[0]) unless $config->{build_targets}{$_[0]};
     my $r = $config->{build_targets}{$_[0]};
@@ -197,7 +204,7 @@ sub create_incremental_mar {
         };
     };
     return if $pm->start($finished_file);
-    my $tmpdir = File::Temp->newdir();
+    my $tmpdir = get_tmpdir($config);
     extract_mar(mar_filename($appname, $from_version, $os, $lang), "$tmpdir/A");
     extract_mar(mar_filename($appname, $new_version, $os, $lang), "$tmpdir/B");
     if ($ENV{CHECK_CODESIGNATURE_EXISTS}) {
@@ -254,12 +261,12 @@ sub channel_to_version {
 sub get_buildinfos {
     my ($config, $version) = @_;
     return if exists $config->{versions}{$version}{buildID};
-    extract_martools($version);
+    extract_martools($config, $version);
     my $files = $config->{versions}{$version}{files};
     foreach my $os (keys %$files) {
         foreach my $lang (keys %{$files->{$os}}) {
             next unless $files->{$os}{$lang}{complete};
-            my $tmpdir = File::Temp->newdir();
+            my $tmpdir = get_tmpdir($config);
             extract_mar(
                 mar_filename($config->{appname_marfile}, $version, $os, $lang),
                 "$tmpdir");
@@ -412,10 +419,10 @@ sub osname {
 
 my $martools_tmpdir;
 sub extract_martools {
-    my ($version) = @_;
+    my ($config, $version) = @_;
     my $osname = osname;
     my $marzip = "$releases_dir/$version/mar-tools-$osname.zip";
-    $martools_tmpdir = File::Temp->newdir();
+    $martools_tmpdir = get_tmpdir($config);
     my $old_cwd = getcwd;
     chdir $martools_tmpdir;
     my (undef, undef, $success) = capture_exec('unzip', $marzip);
@@ -513,7 +520,7 @@ sub check_update_responses_channel {
 
 sub download_version {
     my ($config, $version) = @_;
-    my $tmpdir = File::Temp->newdir();
+    my $tmpdir = get_tmpdir($config);
     my $destdir = "$releases_dir/$version";
     my $urldir = "$config->{download}{archive_url}/$version";
     print "Downloading version $version\n";
@@ -548,7 +555,7 @@ sub download_version {
         unless $sums{$martools} eq sha256_hex(read_file("$tmpdir/$martools"));
     move "$tmpdir/$martools", "$destdir/$martools";
     move "$tmpdir/$martools.asc", "$destdir/$martools.asc";
-    extract_martools($version);
+    extract_martools($config, $version);
 
     foreach my $file (sort grep { $_ =~ m/\.mar$/ } keys %sums) {
         print "Downloading $file\n";
@@ -619,7 +626,7 @@ my %actions = (
     gen_incrementals => sub {
         my ($config) = @_;
         foreach my $version (channel_to_version($config, @ARGV)) {
-            extract_martools($version);
+            extract_martools($config, $version);
             get_version_files($config, $version);
             create_incremental_mars_for_version($config, $version);
         }
