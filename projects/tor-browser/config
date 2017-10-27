@@ -67,6 +67,9 @@ input_files:
     enable: '[% c("var/osx") %]'
   - project: nsis
     name: nsis
+    target:
+      - '[% c("var/channel") %]'
+      - torbrowser-windows-i686
     enable: '[% c("var/windows") %]'
   - name: tbb-windows-installer
     project: tbb-windows-installer
