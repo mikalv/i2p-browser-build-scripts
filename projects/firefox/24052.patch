@@ -1,0 +1,57 @@
+From c5d1bb91512f9dd20e0f54c6f3e6979588cf9f56 Mon Sep 17 00:00:00 2001
+From: Georg Koppen <gk@torproject.org>
+Date: Fri, 27 Oct 2017 20:40:57 +0000
+Subject: [PATCH] Bug 24052: Streamline handling of file:// resources
+
+We should make sure restrictions regarding loading of file:// resources
+are adhered to more strictly, at least on *nix platforms.
+
+This is a workaround for
+https://bugzilla.mozilla.org/show_bug.cgi?id=1412081.
+
+diff --git a/netwerk/base/nsIOService.cpp b/netwerk/base/nsIOService.cpp
+index 0da79c18ae41..0cc67da7b18f 100644
+--- a/netwerk/base/nsIOService.cpp
++++ b/netwerk/base/nsIOService.cpp
+@@ -789,12 +789,20 @@ nsIOService::NewChannelFromURIWithProxyFlagsInternal(nsIURI* aURI,
+         // if calling newChannel2() fails we try to fall back to
+         // creating a new channel by calling NewChannel().
+         if (NS_FAILED(rv)) {
++#ifdef XP_UNIX
++        if (rv == NS_ERROR_FILE_TARGET_DOES_NOT_EXIST) {
++            return rv;
++        } else {
++#endif
+             rv = handler->NewChannel(aURI, getter_AddRefs(channel));
+             NS_ENSURE_SUCCESS(rv, rv);
+             // The protocol handler does not implement NewChannel2, so
+             // maybe we need to wrap the channel (see comment in MaybeWrap
+             // function).
+             channel = nsSecCheckWrapChannel::MaybeWrap(channel, aLoadInfo);
++#ifdef XP_UNIX
++        }
++#endif
+         }
+     }
+ 
+diff --git a/netwerk/protocol/file/nsFileProtocolHandler.cpp b/netwerk/protocol/file/nsFileProtocolHandler.cpp
+index e55cb9d47460..c24c928b6f02 100644
+--- a/netwerk/protocol/file/nsFileProtocolHandler.cpp
++++ b/netwerk/protocol/file/nsFileProtocolHandler.cpp
+@@ -188,6 +188,13 @@ nsFileProtocolHandler::NewChannel2(nsIURI* uri,
+                                    nsILoadInfo* aLoadInfo,
+                                    nsIChannel** result)
+ {
++#ifdef XP_UNIX
++    if (aLoadInfo && aLoadInfo->TriggeringPrincipal()) {
++      if (aLoadInfo->TriggeringPrincipal()->GetIsCodebasePrincipal()) {
++        return NS_ERROR_FILE_TARGET_DOES_NOT_EXIST;
++      }
++    }
++#endif
+     nsFileChannel *chan = new nsFileChannel(uri);
+     if (!chan)
+         return NS_ERROR_OUT_OF_MEMORY;
+-- 
+2.14.2
+

@@ -81,6 +81,8 @@ input_files:
     enable: '[% c("var/linux") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
+  - filename: 24052.patch
+    enable: '[% c("var/linux") || c("var/osx") %]'
   - URL: https://people.torproject.org/~gk/mirrors/sources/msvcr100.dll
     sha256sum: 8793353461826fbd48f25ea8b835be204b758ce7510db2af631b28850355bd18
     enable: '[% c("var/windows") %]'
