@@ -88,6 +88,7 @@ fi
 
 [% IF c("var/linux") || c("var/osx") %]
   patch -p1 < $rootdir/24052.patch
+  patch -p1 < $rootdir/24052_2.patch
 [% END -%]
 
 rm -f configure

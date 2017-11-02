@@ -1,0 +1,29 @@
+From e2c1240ad25f4edcc7d3828b29f6aeb953a24a2e Mon Sep 17 00:00:00 2001
+From: Arthur Edelstein <arthuredelstein@gmail.com>
+Date: Wed, 1 Nov 2017 02:33:18 -0700
+Subject: [PATCH] Bug 24052: Handle redirects by blocking them early
+
+This is the second part of the workaround for
+https://bugzilla.mozilla.org/show_bug.cgi?id=1412081.
+
+diff --git a/netwerk/protocol/http/nsHttpChannel.cpp b/netwerk/protocol/http/nsHttpChannel.cpp
+index 0e570e8cb57d..b38be48bf0c9 100644
+--- a/netwerk/protocol/http/nsHttpChannel.cpp
++++ b/netwerk/protocol/http/nsHttpChannel.cpp
+@@ -5419,6 +5419,13 @@ nsHttpChannel::AsyncProcessRedirection(uint32_t redirectType)
+         return NS_ERROR_CORRUPTED_CONTENT;
+     }
+ 
++    bool isRedirectToFile = false;
++    rv = mRedirectURI->SchemeIs("file", &isRedirectToFile);
++    if (!NS_FAILED(rv) && isRedirectToFile) {
++        LOG(("Attempted to redirect from a remote page to a file:// URI."));
++        return NS_ERROR_FAILURE;
++    }
++
+     if (mApplicationCache) {
+         // if we are redirected to a different origin check if there is a fallback
+         // cache entry to fall back to. we don't care about file strict
+-- 
+2.14.2
+
