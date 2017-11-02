@@ -1,3 +1,9 @@
+Tor Browser 7.5a7 -- November 6 2017
+ * OS X
+   * Bug 24052: Streamline handling of file:// resources
+ * Linux
+   * Bug 24052: Streamline handling of file:// resources
+
 Tor Browser 7.5a6 -- October 19 2017
  * All Platforms
    * Update Firefox to 52.4.1esr
