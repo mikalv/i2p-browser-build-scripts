@@ -75,7 +75,7 @@ targets:
         - NotoSansCherokee-Regular.ttf
         - NotoSansMongolian-Regular.ttf
         - NotoSansYi-Regular.ttf
-  windows-i686:
+  windows:
     var:
       noto_fonts_hinted:
         - NotoSansKhmer-Regular.ttf
