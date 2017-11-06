@@ -8,6 +8,10 @@ mkdir -p "$destdir"
   mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
   mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/
 [% END -%]
+[% IF c("var/torbrowser-windows-x86_64") -%]
+  mv [% c('input_files_by_name/windows-x86_64') %]/* "$destdir"/
+  mv [% c('input_files_by_name/windows64-expert-bundle') %]/* "$destdir"/
+[% END -%]
 [% IF c("var/torbrowser-osx-x86_64") -%]
   mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
 [% END -%]
