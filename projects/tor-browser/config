@@ -24,11 +24,20 @@ targets:
         - python
         - bzip2
         - faketime
+  windows:
+    var:
+      arch_deps:
+        - python-pefile
   windows-i686:
     var:
       mar_osname: win32
-      arch_deps:
-        - python-pefile
+  windows-x86_64:
+    var:
+      mar_osname: win64
+      # We use a 32bit container to be able to use a 32bit nsis and
+      # pe_checksum_fix.py
+      container:
+        arch: i386
 
 input_files:
   - project: container-image

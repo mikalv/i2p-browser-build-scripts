@@ -270,7 +270,7 @@ cd $distdir
   python $rootdir/pe_checksum_fix.py
   mv torbrowser-install-tmp2.exe torbrowser-install.exe
   rm torbrowser-install-tmp.exe
-  mv torbrowser-install.exe $OUTDIR/torbrowser-install-[% c("var/torbrowser_version") %]_${PKG_LOCALE}.exe
+  mv torbrowser-install.exe $OUTDIR/torbrowser-install[% IF c("var/windows-x86_64") %]-win64[% END %]-[% c("var/torbrowser_version") %]_${PKG_LOCALE}.exe
   popd
 [% END %]
 rm -rf $distdir/${PKG_DIR}
@@ -344,7 +344,7 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
         python $rootdir/pe_checksum_fix.py
         mv torbrowser-install-tmp2.exe torbrowser-install.exe
         rm torbrowser-install-tmp.exe
-        mv torbrowser-install.exe $OUTDIR/torbrowser-install-[% c("var/torbrowser_version") %]_[% lang %].exe
+        mv torbrowser-install.exe $OUTDIR/torbrowser-install[% IF c("var/windows-x86_64") %]-win64[% END %]-[% c("var/torbrowser_version") %]_[% lang %].exe
         popd
       [% END %]
       rm -rf [% tbdir %]
