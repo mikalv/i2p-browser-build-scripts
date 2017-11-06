@@ -105,9 +105,10 @@ cd $distdir
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
 [%
    IF c("var/expert_bundle");
+     SET win_arch = c('var/windows-x86_64') ? 'win64' : 'win32';
      c('zip', {
         zip_src => [ 'Data', 'Tor', ],
-        zip_args => dest_dir _ '/' _ c('filename') _ '/tor-win32-' _ c("version") _ '.zip',
+        zip_args => dest_dir _ '/' _ c('filename') _ '/tor-' _ win_arch _ '-' _ c("version") _ '.zip',
       });
    ELSE;
      IF c("var/osx");
