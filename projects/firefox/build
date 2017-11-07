@@ -120,6 +120,9 @@ make -C obj-* package INNER_MAKE_PACKAGE=true
   rm -f $distdir/Browser/*.chk
 [% END %]
 
+[% IF c("var/windows-x86_64") -%]
+  mv $rootdir/msvcr100-x86_64.dll $rootdir/msvcr100.dll
+[% END -%]
 [% IF c("var/windows") %]
   cp -a obj-*/dist/firefox/* $distdir/Browser/
   cp -a $rootdir/msvcr100.dll $distdir/Browser
