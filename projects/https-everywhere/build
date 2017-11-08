@@ -2,15 +2,8 @@
 [% c("var/set_default_env") -%]
 tar xf [% project %]-[% c('version') %].tar.gz
 cd [% project %]-[% c('version') %]
-# patch makexpi.sh because we don't have a git repository
-sed -i makexpi.sh -e 's/git rev-parse --short HEAD/echo aaaaaa/'
-# XXX: Bloody hack to workaround a bug in HTTPS_E's git hash extraction in
-# makexpi.sh. See https://trac.torproject.org/projects/tor/ticket/10066
-# The solution there does not work for us as doing something like
-# |./makexpi.sh foo| to build tag |foo| is a) trying to download the sources
-# during build time (again) and b) broken due to a certificate error.
-rm -f .git/refs/heads/master
-./makexpi.sh
+# Bug 10394: We don't want to autoupdate HTTPS Everywhere anymore.
+./make.sh --remove-update-channel
 # Since 5.0.2 a .xpi for AMO is built, too. We don't need it.
 rm pkg/*-amo.xpi
 mv pkg/*.xpi [% dest_dir _ '/' _ c('filename') %]
