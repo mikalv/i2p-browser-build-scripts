@@ -118,7 +118,10 @@ cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TB
 [% END -%]
 [% IF c("var/windows") -%]
   # We don't have snowflake available on Windows yet
-  grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+  # We don't have fte available on Windows x86_64 yet
+  grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
+  [% IF c("var/windows-x86_64") %]| grep -v 'default_bridge\.fte' [% END %] \
+      >> $TBDIR/$EXTOVERRIDESPATH
 [% END -%]
 [% IF c("var/osx") -%]
   # FTE is temporarily removed due to bug 18495.
