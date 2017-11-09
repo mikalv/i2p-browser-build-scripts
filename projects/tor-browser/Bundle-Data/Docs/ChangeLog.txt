@@ -28,6 +28,7 @@ Tor Browser 7.5a6 -- October 19 2017
    * Update NoScript to 5.1.2
      * Bug 23723: Loading entities from NoScript .dtd files is blocked
      * Bug 23724: NoScript update breaks Security Slider and its icon disappears
+   * Update sandboxed-tor-browser to 0.0.14
    * Bug 23745: Tab crashes when using Tor Browser to access Google Drive
    * Bug 23694: Update the detailsURL in update responses
    * Bug 22501: Requests via javascript: violate FPI
