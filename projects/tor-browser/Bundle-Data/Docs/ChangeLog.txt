@@ -1,4 +1,4 @@
-Tor Browser 7.5a7 -- November 15 2017
+Tor Browser 7.5a8 -- November 15 2017
  * All Platforms
    * Update Firefox to 52.5.0esr
    * Update Tor to 0.3.2.4-alpha
