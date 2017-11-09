@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 0.0.14
+version: 0.0.15
 git_url: https://git.torproject.org/tor-browser/sandboxed-tor-browser
 git_hash: 'sandboxed-tor-browser-[% c("version") %]'
 tag_gpg_id: 1

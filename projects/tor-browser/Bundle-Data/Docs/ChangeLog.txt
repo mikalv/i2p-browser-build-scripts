@@ -1,3 +1,25 @@
+Tor Browser 7.5a7 -- November 15 2017
+ * All Platforms
+   * Update Firefox to 52.5.0esr
+   * Update Tor to 0.3.2.4-alpha
+   * Update Torbutton to 1.9.8.3
+     * Bug 23997: Add link to Tor Browser manual for de, nl, tr, vi
+     * Bug 23949: Fix donation banner display
+     * Update locales with translated banner
+     * Translations update
+   * Update Tor Launcher to 0.2.14
+     * Bug 23262: Implement integrated progress bar
+     * Bug 23261: implement configuration portion of new Tor Launcher UI
+     * Translations update
+   * Update HTTPS-Everywhere to 2017.10.30
+   * Update NoScript to 5.1.5
+     * Bug 23968: NoScript icon jumps to the right after update
+   * Update sandboxed-tor-browser to 0.0.15
+   * Bug 10394: Don't autoupdate HTTPS Everywhere anymore
+ * Windows
+   * Bug 20636+10026: Create 64bit Tor Browser for Windows
+   * Bug 24052: Block file:// redirects early
+
 Tor Browser 7.5a7 -- November 4 2017
  * OS X
    * Bug 24052: Streamline handling of file:// resources
