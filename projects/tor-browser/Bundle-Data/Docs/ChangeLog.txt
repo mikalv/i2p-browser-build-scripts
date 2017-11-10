@@ -7,7 +7,7 @@ Tor Browser 7.5a8 -- November 15 2017
      * Bug 23949: Fix donation banner display
      * Update locales with translated banner
      * Translations update
-   * Update Tor Launcher to 0.2.14
+   * Update Tor Launcher to 0.2.14.1
      * Bug 23262: Implement integrated progress bar
      * Bug 23261: implement configuration portion of new Tor Launcher UI
      * Translations update
