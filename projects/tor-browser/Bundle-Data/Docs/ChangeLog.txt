@@ -15,7 +15,6 @@ Tor Browser 7.5a8 -- November 15 2017
    * Update NoScript to 5.1.5
      * Bug 23968: NoScript icon jumps to the right after update
    * Update sandboxed-tor-browser to 0.0.15
-   * Bug 10394: Don't autoupdate HTTPS Everywhere anymore
  * Windows
    * Bug 20636+10026: Create 64bit Tor Browser for Windows
    * Bug 24052: Block file:// redirects early

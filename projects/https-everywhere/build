@@ -2,8 +2,7 @@
 [% c("var/set_default_env") -%]
 tar xf [% project %]-[% c('version') %].tar.gz
 cd [% project %]-[% c('version') %]
-# Bug 10394: We don't want to autoupdate HTTPS Everywhere anymore.
-./make.sh --remove-update-channel
+./make.sh
 # Since 5.0.2 a .xpi for AMO is built, too. We don't need it.
 rm pkg/*-amo.xpi
 mv pkg/*.xpi [% dest_dir _ '/' _ c('filename') %]
