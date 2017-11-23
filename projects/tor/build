@@ -57,6 +57,7 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 ./autogen.sh
 find -type f -print0 | xargs -0 [% c("var/touch") %]
 ./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
+    [% IF c("var/asan") %]--enable-fragile-hardening[% END %] \
     [% IF c("var/windows") %]--with-zlib-dir="$zlibdir"[% END %] \
     [% IF c("var/osx") %]--enable-static-openssl[% END %] \
     --prefix="$distdir" [% c("var/configure_opt") %]

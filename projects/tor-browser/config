@@ -69,7 +69,9 @@ input_files:
   - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-5.1.7-fx+sm.xpi
     name: noscript
     sha256sum: 617f73683acdca7df2a7d08843443d38929afbf40075e113ab3ccab0eef7cd6b
-  - filename: RelativeLink
+  - filename: 'RelativeLink/start-tor-browser.desktop'
+    enable: '[% c("var/linux") %]'
+  - filename: 'RelativeLink/execdesktop'
     enable: '[% c("var/linux") %]'
   - project: libdmg-hfsplus
     name: libdmg

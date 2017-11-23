@@ -8,6 +8,9 @@ release: submodule-update
 release-linux-x86_64: submodule-update
 	$(rbm) build release --target release --target torbrowser-linux-x86_64
 
+release-linux-x86_64-debug: submodule-update
+	$(rbm) build release --target release --target torbrowser-linux-x86_64-debug
+
 release-linux-i686: submodule-update
 	$(rbm) build release --target release --target torbrowser-linux-i686
 
@@ -26,6 +29,9 @@ alpha: submodule-update
 alpha-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-linux-x86_64
 
+alpha-linux-x86_64-debug: submodule-update
+	$(rbm) build release --target alpha --target torbrowser-linux-x86_64-debug
+
 alpha-linux-i686: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-linux-i686
 
@@ -43,6 +49,9 @@ nightly: submodule-update
 
 nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-linux-x86_64
+
+nightly-linux-x86_64-debug: submodule-update
+	$(rbm) build release --target nightly --target torbrowser-linux-x86_64-debug
 
 nightly-linux-i686: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-linux-i686
@@ -79,6 +88,9 @@ testbuild: submodule-update
 
 testbuild-linux-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64
+
+testbuild-linux-x86_64-debug: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64-debug
 
 testbuild-linux-i686: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-linux-i686
