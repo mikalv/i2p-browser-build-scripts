@@ -25,7 +25,7 @@ You also need a few perl modules installed:
 - IO::Handle
 - IO::CaptureOutput
 - File::Temp
-- File::Tiny
+- Path::Tiny
 - File::Path
 - File::Copy::Recursive
 - String::ShellQuote
@@ -38,7 +38,7 @@ If you are running Debian or Ubuntu, you can install them with:
 
 # apt-get install libyaml-libyaml-perl libtemplate-perl \
                   libio-handle-util-perl libio-all-perl \
-                  libio-captureoutput-perl libfile-tiny-perl \
+                  libio-captureoutput-perl libpath-tiny-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
                   libfile-copy-recursive-perl git libgtk2.0-dev curl runc
