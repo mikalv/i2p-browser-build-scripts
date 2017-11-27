@@ -12,7 +12,7 @@
       - libio-handle-util-perl
       - libio-all-perl
       - libio-captureoutput-perl
-      - libfile-slurp-perl
+      - libfile-tiny-perl
       - libstring-shellquote-perl
       - libsort-versions-perl
       - libdigest-sha-perl
