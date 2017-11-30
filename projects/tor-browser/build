@@ -43,6 +43,11 @@ mkdir -p $TBDIR/$MEEKPROFILEPATH/extensions
 # Extract the MAR tools.
 unzip -d $rootdir $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip
 MARTOOLS=$rootdir/mar-tools
+[% IF c("var/windows-x86_64") -%]
+  # Workaround for bug 24477
+  rm -Rf $MARTOOLS
+  unzip -d $rootdir $rootdir/mar-tools-linux32.zip
+[% END -%]
 
 mv [% c('input_files_by_name/tor-launcher') %] $TBDIR/$EXTSPATH/tor-launcher@torproject.org.xpi
 mv [% c('input_files_by_name/torbutton') %] $TBDIR/$EXTSPATH/torbutton@torproject.org.xpi
