@@ -3,7 +3,7 @@ version: '[% c("var/ff_version") %]-[% c("var/ff_build") %]'
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
 
 var:
-  ff_version: '[% pc("firefox", "var/firefox_version") %]'
+  ff_version: 52.5.1esr
   ff_build: build1
   ff_arch: linux-i686
   input_filename: 'dl-langpack-[% c("var/ff_arch") %]-[% c("version") %]'
