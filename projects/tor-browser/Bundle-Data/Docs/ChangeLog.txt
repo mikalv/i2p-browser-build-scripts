@@ -1,8 +1,7 @@
-Tor Browser 7.5a9 -- November 30 2017
+Tor Browser 7.5a9 -- December 05 2017
  * All Platforms
-   * Update Firefox to 52.5.1esr
-     * Bug 24040: Tor Browser crashes at riot.im/app
-   * Update Tor to 0.3.2.5-alpha
+   * Update Firefox to 52.5.2esr
+   * Update Tor to 0.3.2.6-alpha
    * Update HTTPS-Everywhere to 2017.11.21
    * Update NoScript to 5.1.7
    * Update sandboxed-tor-browser to 0.0.16
