@@ -1,0 +1,4 @@
+---
+- hosts: fpcentral
+  roles:
+      - role: fpcentral

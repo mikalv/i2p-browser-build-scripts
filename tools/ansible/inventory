@@ -1,5 +1,8 @@
 build-sunet-a ansible_ssh_user=root ansible_ssh_host=build-sunet-a.torproject.net
+fpcentral ansible_become=True ansible_become_method=sudo ansible_become_user=fpcentral ansible_ssh_host=forrestii.torproject.org allow_world_readable_tmpfiles=True
 
 [tbb-build]
 build-sunet-a
 
+[fpcentral]
+fpcentral

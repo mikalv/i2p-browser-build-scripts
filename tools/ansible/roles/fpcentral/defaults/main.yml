@@ -1,0 +1,5 @@
+---
+fpcentral_git_url: https://git.torproject.org/fpcentral.git
+fpcentral_git_commit: fc8fc9113e5ee2f84ce30f0b8051772dd9d75447
+fpcentral_rootdir: /srv/fpcentral.tbb.torproject.org
+fpcentral_virtualenv: "{{ fpcentral_rootdir }}/fpcentral-virtualenv"

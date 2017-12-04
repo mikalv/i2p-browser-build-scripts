@@ -11,3 +11,8 @@ ansible-tbb-build:
   Deploy changes to the machine used by Tor Browser team members to do
   some Tor Browser builds.
 
+fpcentral:
+  Deploy fpcentral to forrestii.torproject.org. To be able to run this
+  you need to be in the fpcentral tpo ldap group. Your ldap password will
+  be asked, to sudo to the fpcentral user.
+
