@@ -136,7 +136,9 @@ sub get_version_downloads {
             ($os, $lang) = ('osx64', $1);
         } elsif ($file =~ m/^$config->{appname_bundle_linux}-(linux32|linux64)-${version}_(.+).tar.xz$/) {
             ($os, $lang) = ($1, $2);
-        } elsif ($file =~ m/^$config->{appname_bundle_win}-${version}_(.+).exe$/) {
+        } elsif ($file =~ m/^$config->{appname_bundle_win64}-${version}_(.+).exe$/) {
+            ($os, $lang) = ('win64', $1);
+        } elsif ($file =~ m/^$config->{appname_bundle_win32}-${version}_(.+).exe$/) {
             ($os, $lang) = ('win32', $1);
         } else {
             next;

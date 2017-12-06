@@ -3,7 +3,8 @@ tmp_dir: '[% c("tmp_dir") %]'
 appname_marfile: tor-browser
 appname_bundle_osx: TorBrowser
 appname_bundle_linux: tor-browser
-appname_bundle_win: torbrowser-install
+appname_bundle_win32: torbrowser-install
+appname_bundle_win64: torbrowser-install-win64
 releases_dir: [% path(c('output_dir')) %]/[% c("var/signed_status") %]
 download:
     archive_url: https://archive.torproject.org/tor-package-archive/torbrowser
@@ -17,6 +18,7 @@ build_targets:
         - WINNT_x86-gcc3
         - WINNT_x86-gcc3-x86
         - WINNT_x86-gcc3-x64
+    win64: WINNT_x86_64-gcc3-x64
     osx32: Darwin_x86-gcc3
     osx64: Darwin_x86_64-gcc3
 channels:
