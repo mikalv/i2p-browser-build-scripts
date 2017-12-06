@@ -1,9 +1,9 @@
-Tor Browser 7.5a9 -- December 05 2017
+Tor Browser 7.5a9 -- December 08 2017
  * All Platforms
    * Update Firefox to 52.5.2esr
    * Update Tor to 0.3.2.6-alpha
    * Update HTTPS-Everywhere to 2017.11.21
-   * Update NoScript to 5.1.7
+   * Update NoScript to 5.1.8.1
    * Update sandboxed-tor-browser to 0.0.16
 
 Tor Browser 7.5a8 -- November 15 2017
