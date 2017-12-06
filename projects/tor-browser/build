@@ -70,6 +70,10 @@ tar -C $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %] -xf [% c('input_f
 [% IF c("var/linux") %]
   cp RelativeLink/* ${TB_STAGE_DIR}/Browser/
   cp RelativeLink/start-tor-browser.desktop ${TB_STAGE_DIR}/
+  cat > ${TB_STAGE_DIR}/Browser/start-tor-browser << 'RBM_TB_EOF'
+[% INCLUDE 'RelativeLink/start-tor-browser' -%]
+RBM_TB_EOF
+  chmod +x ${TB_STAGE_DIR}/Browser/start-tor-browser
 [% END %]
 
 tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/tor-browser.tar.gz

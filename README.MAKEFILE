@@ -50,6 +50,10 @@ locale is created, without mar files. By default it is based on the
 alpha channel, but you can change that by editing rbm.conf.local.
 The resulting build can be found in directory testbuild.
 
+{release,alpha,nightly,testbuild}-linux-x86_64-debug
+----------------------------------------------------
+Create a debug build for Linux x86_64 with debug features such as ASan.
+
 fetch
 -----
 Fetch new commits from all components. This is useful when you want to
