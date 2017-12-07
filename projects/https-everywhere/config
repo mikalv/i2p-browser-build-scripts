@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2017.11.21
+version: 2017.12.6
 git_url: https://git.torproject.org/https-everywhere.git
 git_hash: '[% c("version") %]'
 git_submodule: 1
