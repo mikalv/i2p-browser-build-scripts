@@ -1,3 +1,28 @@
+Tor Browser 7.5a10 -- December 19 2017
+ * All Platforms
+   * Update Tor to 0.3.2.7-rc
+   * Update OpenSSL to 1.0.2n
+   * Update Torbutton to 1.9.8.4
+     * Bug 21847: Update copy for security slider
+     * Bug 10573: Replace deprecated nsILocalFile with nsIFile (code clean-up)
+     * Translations update
+   * Update Tor Launcher to 0.2.14.2
+     * Bug 24623: Revise "country that censors Tor" text
+     * Bug 24428: Bootstrap error message sometimes lost
+     * Bug 24624: tbb-logo.svg may cause network access
+     * Bug 10573: Replace deprecated nsILocalFile with nsIFile (code clean-up)
+     * Translations update
+   * Update NoScript to 5.1.8.3
+   * Bug 23104: CSS line-height reveals the platform Tor Browser is running on
+   * Bug 24398: Plugin-container process exhausts memory
+ * OS X
+   * Bug 24566: Avoid white flashes when opening dialogs in Tor Browser
+ * Linux
+   * Bug 23970: Make "Print to File" work with sandboxing enabled
+   * Bug 23016: "Print to File" is broken on some non-english Linux systems
+ * Android
+   * Bug 22084: Spoof network information API
+
 Tor Browser 7.5a9 -- December 09 2017
  * All Platforms
    * Update Firefox to 52.5.2esr
