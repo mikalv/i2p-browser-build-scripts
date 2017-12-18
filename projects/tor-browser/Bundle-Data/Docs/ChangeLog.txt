@@ -34,6 +34,22 @@ Tor Browser 7.5a8 -- November 15 2017
    * Bug 20636+10026: Create 64bit Tor Browser for Windows
    * Bug 24052: Block file:// redirects early
 
+Tor Browser 7.0.10 -- November 14 2017
+ * All Platforms
+   * Update Firefox to 52.5.0esr
+   * Update Tor to 0.3.1.8
+   * Update Torbutton to 1.9.7.10
+     * Bug 23997: Add link to Tor Browser manual for de, nl, tr, vi
+     * Translations update
+   * Update HTTPS-Everywhere to 2017.10.30
+     * Bug 24178: Use make.sh for building HTTPS-Everywhere
+   * Update NoScript to 5.1.5
+     * Bug 23968: NoScript icon jumps to the right after update
+ * Windows
+   * Bug 23582: Enable the Windows DLL blocklist for mingw-w64 builds
+   * Bug 23396: Update the msvcr100.dll we ship
+   * Bug 24052: Block file:// redirects early
+
 Tor Browser 7.5a7 -- November 4 2017
  * OS X
    * Bug 24052: Streamline handling of file:// resources
