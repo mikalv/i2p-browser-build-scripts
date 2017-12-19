@@ -1,4 +1,6 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
+export TMPDIR=[% shell_quote(c("tmp_dir")) %]
+mkdir -p "$TMPDIR"
 cd [% shell_quote(path(dest_dir)) %]/[% c("var/signed_status") %]/[%  c("version") %]
 [% shell_quote(c("basedir")) %]/tools/dmg2mar
