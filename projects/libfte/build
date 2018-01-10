@@ -16,12 +16,12 @@ tar -C $distdir -xf $rootdir/[% c('input_files_by_name/obfsproxy') %]
   pydir=$distdir/python
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
   export LD_PRELOAD=
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
   # FTE only needs libgmp-10.dll and no libgmpxx anymore.
   cp -a /var/tmp/dist/gmp/bin/libgmp-10.dll .
   cp -a /var/tmp/dist/gmp/bin/libgmp-10.dll $distdir/TorBrowser/Tor/
   WINDOWS_BUILD=1 CROSS_COMPILE=1 make
-  $PYTHON setup.py install --prefix=$(winepath -w "$pydir")
+  $PYTHON setup.py install --prefix=$(wine winepath -w "$pydir")
   $PYTHON setup.py install
 [% ELSE -%]
   export PYTHON=python2

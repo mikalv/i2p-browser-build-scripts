@@ -24,8 +24,8 @@ cd /var/tmp/build/Twisted-[% c('version') %]
   # the -c option, so we set the compiler in a configuration file.
   echo $'[build_ext]\ncompiler=mingw32' > setup.cfg
   mkdir -p $pydir/Lib/site-packages
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
-  LD_PRELOAD= $PYTHON setup.py install --single-version-externally-managed --record /dev/null --prefix=$(winepath -w $pydir)
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
+  LD_PRELOAD= $PYTHON setup.py install --single-version-externally-managed --record /dev/null --prefix=$(wine winepath -w $pydir)
 [% ELSE -%]
   export PYTHON=python2
   $PYTHON setup.py build --build-lib build

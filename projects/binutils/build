@@ -25,6 +25,8 @@ cd [% project %]-[% c("version") %]
   patch -p1 < ../peXXigen.patch
   # Needed for the hardening...
   patch -p1 < ../enable-reloc-section-ld.patch
+  # fix "right-hand operand of comma expression has no effect" warning
+  patch -p1 < ../fix-warning-bfd.patch
 [% END -%]
 [% IF c('var/windows-x86_64') -%]
   patch -p1 < ../64bit-fixups.patch

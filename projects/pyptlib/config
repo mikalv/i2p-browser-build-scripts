@@ -19,7 +19,8 @@ targets:
   windows-i686:
     var:
       compiler: winpython
-      post_pkginst: '[% c("var/install_wine_ppa") %]'
+      arch_deps:
+        - wine
 
 input_files:
   - project: container-image

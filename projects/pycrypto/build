@@ -27,7 +27,7 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
   ac_cv_func_malloc_0_nonnull=yes sh configure --host=i686-w64-mingw32
   export LD_PRELOAD=
   $PYTHON setup.py build_ext -c mingw32
-  $PYTHON setup.py install --prefix=$(winepath -w $pydir)
+  $PYTHON setup.py install --prefix=$(wine winepath -w $pydir)
 [% ELSE -%]
   export PYTHON=python2
   ./configure --build=i686-linux-gnu [% c("var/configure_opt") %]

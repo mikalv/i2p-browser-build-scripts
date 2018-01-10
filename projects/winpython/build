@@ -5,8 +5,8 @@ set -e
 distdir="/var/tmp/dist/[% project %]"
 mkdir -p $distdir
 WINEROOT=$HOME/.wine/drive_c
-wineboot -i
-msiexec /qn /i python-[% c("version") %].msi TARGETDIR=$distdir
+wine wineboot -i
+wine msiexec /qn /i python-[% c("version") %].msi TARGETDIR=$distdir
 sed -i 's/self.dll_libraries = get_msvcr()/pass#self.dll_libraries = get_msvcr()/g' $distdir/Lib/distutils/cygwinccompiler.py
 tar xf setuptools-*.tar.gz
 rm setuptools-*.tar.gz

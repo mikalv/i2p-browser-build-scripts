@@ -13,8 +13,8 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 [% IF c("var/windows") -%]
   pydir="$distdir/python"
   mkdir -p $pydir/Lib/site-packages
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
-  $PYTHON setup.py install --prefix=$(winepath -w $pydir)
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
+  $PYTHON setup.py install --prefix=$(wine winepath -w $pydir)
 [% ELSE -%]
   python2 setup.py build --build-lib build
   cp -a build/argparse.py $PTDIR/

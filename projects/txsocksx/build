@@ -18,8 +18,8 @@ mkdir vcversioner-1.14.1.1-py2.7.egg
 [% IF c("var/windows") -%]
   pydir="$distdir/python"
   mkdir -p $pydir/Lib/site-packages
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
-  $PYTHON setup.py install_lib --install-dir=$(winepath -w "$pydir/Lib/site-packages")
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
+  $PYTHON setup.py install_lib --install-dir=$(wine winepath -w "$pydir/Lib/site-packages")
 [% ELSE -%]
   export PYTHON=python2
   $PYTHON setup.py build --build-lib build

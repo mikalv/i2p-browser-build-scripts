@@ -21,9 +21,9 @@ tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 [% IF c("var/windows") -%]
   pydir="$distdir/python"
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
   $PYTHON setup_py2exe.py py2exe
-  $PYTHON setup.py install --prefix=$(winepath -w $pydir)
+  $PYTHON setup.py install --prefix=$(wine winepath -w $pydir)
   py2exe_zip_timestomp py2exe_bundle/dist/obfsproxy.zip
   cp -an py2exe_bundle/dist/{*.pyd,*.exe,*.zip} $PTDIR/
   # http://bugs.winehq.org/show_bug.cgi?id=3591

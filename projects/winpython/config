@@ -4,10 +4,10 @@ filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 
 var:
   compiler: mingw-w64
-  post_pkginst: '[% c("var/install_wine_ppa") %]'
   arch_deps:
     - p7zip-full
     - faketime
+    - wine
   container:
     use_container: 1
   setup: |
@@ -17,7 +17,7 @@ var:
     export HOME=/var/tmp/home
     mkdir -p $HOME
     WINEROOT=$HOME/.wine/drive_c
-    wineboot -i
+    wine wineboot -i
     cp -a /var/tmp/dist/winpython/wineroot/windows/* $WINEROOT/windows/
     export PYTHON="wine /var/tmp/dist/winpython/python.exe"
 

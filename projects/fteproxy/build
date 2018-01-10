@@ -12,7 +12,7 @@ tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 [% IF c("var/windows") -%]
   pydir="$distdir/python"
-  export PYTHONPATH="$(winepath -w $pydir)\\Lib\\site-packages"
+  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
   $PYTHON setup_tbb.py py2exe
   py2exe_zip_timestomp dist/fteproxy.zip
   cp -an dist/{*.pyd,*.exe,*.zip} $PTDIR/
