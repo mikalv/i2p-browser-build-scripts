@@ -96,4 +96,17 @@ targets:
       ### Uncomment this if you want to create mar files in your test build.
       #build_mar: 1
 
+  nightly:
+
+    ### By default 'fetch' is set to 1 for nightly builds, meaning that new
+    ### commits will be fetched automatically during each build. You can
+    ### disable this during developement if you want to do rebuilds to test
+    ### a specific change, but don't want rebuilds caused by unrelated
+    ### changes, or if you want to decide at which point new commits are
+    ### fetched. When 'fetch' is set to 'if_needed', new commits will only
+    ### be fetched if the selected commit (or branch, or tag) is not present,
+    ### which means that existing branches won't be updated. In that case
+    ### you can fetch new commits by running 'make fetch'.
+    #fetch: 'if_needed'
+
 # vim: filetype=yaml sw=2

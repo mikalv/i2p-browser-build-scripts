@@ -89,7 +89,8 @@ Updating git sources
 
 You can run "make fetch" to fetch the latest sources from git for all
 components included in Tor Browser. You should run this if you want to
-make a nightly build with the latest commits.
+make a nightly build with the latest commits, and you disabled automatic
+fetching of new commits for nightly builds in rbm.local.conf.
 
 
 Number of make processes
