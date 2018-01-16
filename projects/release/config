@@ -29,7 +29,7 @@ targets:
       torbrowser-windows-i686: 1
   torbrowser-windows-x86_64:
     var:
-      torbrowser-windows-x86_64: 1
+      torbrowser-windows-x86_64: '[% c("var/alpha") || c("var/nightly") %]'
   torbrowser-osx-x86_64:
     var:
       torbrowser-osx-x86_64: 1
