@@ -106,13 +106,14 @@ tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_b
   rm -Rf Bundle-Data/mac
   mv $SKELETON_TMP Bundle-Data/mac
 
-
   # Install a "tor" shim that sets the working directory. See #10030.
   mv $TBDIR/$TORBINPATH/tor $TBDIR/$TORBINPATH/tor.real
   cp Bundle-Data/mac-tor.sh $TBDIR/$TORCONFIGPATH/tor
 
-  SANDBOX_FOLDER="$TB_STAGE_DIR/Sandboxed Tor Browser"
-  mv Bundle-Data/mac-sandbox "$SANDBOX_FOLDER"
+  [% IF ! c("var/release") -%]
+    SANDBOX_FOLDER="$TB_STAGE_DIR/Sandboxed Tor Browser"
+    mv Bundle-Data/mac-sandbox "$SANDBOX_FOLDER"
+  [% END -%]
 
   tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
 [% END %]
