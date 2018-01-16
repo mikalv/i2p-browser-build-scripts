@@ -82,7 +82,7 @@ input_files:
     enable: '[% c("var/linux") %]'
   - project: selfrando
     name: selfrando
-    enable: '[% c("var/linux") %]'
+    enable: '[% c("var/linux") && ! c("var/release") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
   - URL: https://people.torproject.org/~gk/mirrors/sources/msvcr100.dll

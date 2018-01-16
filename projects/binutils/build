@@ -29,7 +29,7 @@ cd [% project %]-[% c("version") %]
 [% IF c('var/windows-x86_64') -%]
   patch -p1 < ../64bit-fixups.patch
 [% END -%]
-[% IF c("var/linux") -%]
+[% IF c("var/linux") && ! c("var/release") -%]
   # We need to work around a gold linker bug in 2.24 to get selfrando working,
   # see bug 20683.
   patch -p1 < $rootdir/binutils-224-gold.patch
