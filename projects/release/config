@@ -85,7 +85,7 @@ input_files:
 
  - name: sandbox-linux-x86_64
    project: sandbox
-   enable: '[% c("var/torbrowser-linux-x86_64") %]'
+   enable: '[% c("var/torbrowser-linux-x86_64") && ! c("var/release") %]'
    target:
      - '[% c("var/build_target") %]'
      - torbrowser-linux-x86_64

@@ -20,7 +20,9 @@ mkdir -p "$destdir"
 [% END -%]
 [% IF c("var/torbrowser-linux-x86_64") -%]
   mv [% c('input_files_by_name/linux-x86_64') %]/* "$destdir"/
-  mv [% c('input_files_by_name/sandbox-linux-x86_64') %] "$destdir"/sandbox-[% pc('sandbox', 'version') %]-linux64.zip
+  [% IF ! c("var/release") %]
+    mv [% c('input_files_by_name/sandbox-linux-x86_64') %] "$destdir"/sandbox-[% pc('sandbox', 'version') %]-linux64.zip
+  [% END %]
 [% END -%]
 cd "$destdir"
 cat > .htaccess <<EOF
