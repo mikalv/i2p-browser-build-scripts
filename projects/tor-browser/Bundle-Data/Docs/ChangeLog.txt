@@ -1,3 +1,26 @@
+Tor Browser 8.0a1 -- January 23 2018
+ * All Platforms
+   * Update Firefox to 52.6.0esr
+   * Update Tor to 0.3.2.9
+   * Update Torbutton to 1.9.8.5
+     * Bug 21245: Add da translation to Torbutton and keep track of it
+     * Bug 24702: Remove Mozilla text from banner
+     * Translations update
+   * Update Tor Launcher to 0.2.14.3
+     * Translations update
+   * Update HTTPS Everywhere to 2018.1.11
+   * Bug 24756: Add noisebridge01 obfs4 bridge configuration
+   * Bug 23916: Add new MAR signing key
+   * Bug 22548: Firefox downgrades VP9 videos to VP8 for some users
+ * Windows
+   * Bug 24197: Fix win64 sandbox compile issues
+ * Build System
+   * Windows
+     * Bug 18691: switch Windows builds from precise to jessie
+   * Linux
+     * Bug 23892: Include Firefox and Tor debug files in final build directory
+     * Bug 24842: include libasan.so.2 and libubsan.so.0 in debug builds
+
 Tor Browser 7.5a10 -- December 19 2017
  * All Platforms
    * Update Tor to 0.3.2.7-rc
