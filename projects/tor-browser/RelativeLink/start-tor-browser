@@ -270,7 +270,9 @@ fi
 
 LD_LIBRARY_PATH="${HOME}/TorBrowser/Tor/"
 export LD_LIBRARY_PATH
+[% IF ! c("var/release") %]
 export SELFRANDO_write_layout_file=
+[% END %]
 
 [% IF c("var/asan") -%]
 # We need to disable LSan which is enabled by default now. Otherwise we'll get
