@@ -56,3 +56,7 @@ pref("noscript.restrictSubdocScripting", true);
 pref("noscript.showVolatilePrivatePermissionsToggle", false);
 pref("noscript.volatilePrivatePermissions", true);
 pref("noscript.clearClick", 0);
+
+# PDF.js
+// needs to be a user_pref because pdf.js blows away non-user prefs with it's own defaults each time
+user_pref("pdfjs.disableRange", true);
