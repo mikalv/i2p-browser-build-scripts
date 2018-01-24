@@ -58,6 +58,8 @@ openssldir=/var/tmp/dist/openssl
 [% END %]
 
 cd /var/tmp/build/[% project %]-[% c('version') %]
+# add git hash to micro-revision.i for #24995
+echo '"[% c("abbrev", { abbrev_length => 16 }) %]"' > micro-revision.i
 ./autogen.sh
 find -type f -print0 | xargs -0 [% c("var/touch") %]
 ./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
