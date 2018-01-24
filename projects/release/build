@@ -32,7 +32,7 @@ RewriteRule ^sha256sums.txt.asc$ sha256sums-unsigned-build.txt.asc
 RewriteRule ^sha256sums.incrementals.txt$ sha256sums-unsigned-build.incrementals.txt
 RewriteRule ^sha256sums.incrementals.txt.asc$ sha256sums-unsigned-build.incrementals.txt.asc
 EOF
-sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar *.zip | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
+sha256sum $(ls -1 *.exe *.tar.xz *.dmg *.mar *.zip *.tar.gz | grep -v '\.incremental\.mar$' | sort) > sha256sums-unsigned-build.txt
 [% IF c("var/sign_build") -%]
   gpg -abs [% c("var/sign_build_gpg_opts") %] sha256sums-unsigned-build.txt
 [% END -%]
