@@ -28,3 +28,30 @@ nopat
 $ qvm-pref --set [vmname] kernelopts 'nopat vsyscall=emulate'
 ----
 
+
+Error during debootstrap image creation
+---------------------------------------
+
+If the debootstrap-image-.log contains errors similar to the following:
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/zesty/InRelease
+   Temporary failure resolving 'archive.ubuntu.com'
+
+Check /etc/resolv.conf on the host to see if the nameserver is set to
+127.0.0.1. This can happen when runc performs a bind mount of
+/etc/resolv.conf and the host system is running systemd-resolved.
+
+sudo systemctl disable systemd-resolved.service
+sudo service systemd-resolved stop
+
+Put the following line in the [main] section of your
+/etc/NetworkManager/NetworkManager.conf:
+
+dns=default
+
+Delete the symlink /etc/resolv.conf
+
+rm /etc/resolv.conf
+
+Restart network-manager
+
+sudo service network-manager restart
