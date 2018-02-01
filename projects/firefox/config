@@ -94,8 +94,5 @@ input_files:
   - project: gcc
     name: gcc
     enable: '[% c("var/windows") %]'
-  - project: yasm
-    name: yasm
-    enable: '[% c("var/windows") %]'
   - filename: STL_win64.patch
     enable: '[% c("var/windows-x86_64") %]'
