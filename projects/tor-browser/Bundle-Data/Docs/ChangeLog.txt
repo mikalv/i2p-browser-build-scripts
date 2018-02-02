@@ -21,6 +21,57 @@ Tor Browser 8.0a1 -- January 23 2018
      * Bug 23892: Include Firefox and Tor debug files in final build directory
      * Bug 24842: include libasan.so.2 and libubsan.so.0 in debug builds
 
+Tor Browser 7.5 -- January 23 2018
+ * All Platforms
+   * Update Firefox to 52.6.0esr
+   * Update Tor to 0.3.2.9
+   * Update OpenSSL to 1.0.2n
+   * Update Torbutton to 1.9.8.5
+     * Bug 21847: Update copy for security slider
+     * Bug 21245: Add da translation to Torbutton and keep track of it
+     * Bug 24702: Remove Mozilla text from banner
+     * Bug 10573: Replace deprecated nsILocalFile with nsIFile (code clean-up)
+     * Translations update
+   * Update Tor Launcher to 0.2.14.3
+     * Bug 23262: Implement integrated progress bar
+     * Bug 23261: implement configuration portion of new Tor Launcher UI
+     * Bug 24623: Revise "country that censors Tor" text
+     * Bug 24624: tbb-logo.svg may cause network access
+     * Bug 23240: Retrieve current bootstrap progress before showing progress bar
+     * Bug 24428: Bootstrap error message sometimes lost
+     * Bug 22232: Add README on use of bootstrap status messages
+     * Bug 10573: Replace deprecated nsILocalFile with nsIFile (code clean-up)
+     * Translations update
+   * Update HTTPS Everywhere to 2018.1.11
+   * Update NoScript to 5.1.8.3
+   * Bug 23104: CSS line-height reveals the platform Tor Browser is running on
+   * Bug 24398: Plugin-container process exhausts memory
+   * Bug 22501: Requests via javascript: violate FPI
+   * Bug 24756: Add noisebridge01 obfs4 bridge configuration
+ * Windows
+   * Bug 16010: Enable content sandboxing on Windows
+   * Bug 23230: Fix build error on Windows 64
+ * OS X
+   * Bug 24566: Avoid white flashes when opening dialogs in Tor Browser
+   * Bug 23025: Add some hardening flags to macOS build
+ * Linux
+   * Bug 23970: Make "Print to File" work with sandboxing enabled
+   * Bug 23016: "Print to File" is broken on some non-english Linux systems
+   * Bug 10089: Set middlemouse.contentLoadURL to false by default
+   * Bug 18101: Suppress upload file dialog proxy bypass (linux part)
+ * Android
+   * Bug 22084: Spoof network information API
+ * Build System
+   * All Platforms
+     * Switch from gitian/tor-browser-bundle to rbm/tor-browser-build
+   * Windows
+     * Bug 22563: Update mingw-w64 to fix W^X violations
+     * Bug 20929: Bump GCC version to 5.4.0
+   * Linux
+     * Bug 20929: Bump GCC version to 5.4.0
+     * Bug 23892: Include Firefox and Tor debug files in final build directory
+     * Bug 24842: include libasan.so.2 and libubsan.so.0 in debug builds
+
 Tor Browser 7.5a10 -- December 19 2017
  * All Platforms
    * Update Tor to 0.3.2.7-rc
