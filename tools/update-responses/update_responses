@@ -526,22 +526,22 @@ sub download_version {
     my $destdir = "$releases_dir/$version";
     my $urldir = "$config->{download}{archive_url}/$version";
     print "Downloading version $version\n";
-    foreach my $file (qw(sha256sums-unsigned-build.txt sha256sums-unsigned-build.txt.asc)) {
+    foreach my $file (qw(sha256sums-signed-build.txt sha256sums-signed-build.txt.asc)) {
         if (getstore("$urldir/$file", "$tmpdir/$file") != 200) {
             exit_error "Error downloading $urldir/$file";
         }
     }
     if (system('gpg', '--no-default-keyring', '--keyring',
             "$FindBin::Bin/$config->{download}{gpg_keyring}", '--verify',
-            "$tmpdir/sha256sums-unsigned-build.txt.asc",
-            "$tmpdir/sha256sums-unsigned-build.txt")) {
+            "$tmpdir/sha256sums-signed-build.txt.asc",
+            "$tmpdir/sha256sums-signed-build.txt")) {
         exit_error "Error checking gpg signature for version $version";
     }
     mkdir $destdir;
-    move "$tmpdir/sha256sums-unsigned-build.txt.asc", "$destdir/sha256sums-unsigned-build.txt.asc";
-    move "$tmpdir/sha256sums-unsigned-build.txt", "$destdir/sha256sums-unsigned-build.txt";
+    move "$tmpdir/sha256sums-signed-build.txt.asc", "$destdir/sha256sums-signed-build.txt.asc";
+    move "$tmpdir/sha256sums-signed-build.txt", "$destdir/sha256sums-signed-build.txt";
     my %sums = map { chomp; reverse split '  ', $_ }
-                 read_file "$destdir/sha256sums-unsigned-build.txt";
+                 read_file "$destdir/sha256sums-signed-build.txt";
 
     my $martools = 'mar-tools-' . osname . '.zip';
     exit_error "Error downloading $urldir/$martools\n"
@@ -557,19 +557,13 @@ sub download_version {
         unless $sums{$martools} eq sha256_hex(read_file("$tmpdir/$martools"));
     move "$tmpdir/$martools", "$destdir/$martools";
     move "$tmpdir/$martools.asc", "$destdir/$martools.asc";
-    extract_martools($config, $version);
 
     foreach my $file (sort grep { $_ =~ m/\.mar$/ } keys %sums) {
         print "Downloading $file\n";
         exit_error "Error downloading $urldir/$file\n"
                 unless getstore("$urldir/$file", "$tmpdir/$file") == 200;
-        if ($sums{$file} ne sha256_hex(read_file("$tmpdir/$file"))) {
-            exit_error "Error unsigning $file"
-                if system('signmar', '-r', "$tmpdir/$file", "$tmpdir/$file.u");
-            exit_error "Wrong checksum for $file"
-                unless $sums{$file} eq sha256_hex(read_file("$tmpdir/$file.u"));
-            move "$tmpdir/$file.u", "$tmpdir/$file";
-        }
+        exit_error "Wrong checksum for $file"
+                unless $sums{$file} eq sha256_hex(read_file("$tmpdir/$file"));
         move "$tmpdir/$file", "$destdir/$file";
     }
 }
