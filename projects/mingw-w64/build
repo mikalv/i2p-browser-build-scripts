@@ -29,7 +29,7 @@ sed 's/msvcrt/msvcr100/' -i $distdir/msvcr100.spec
 sed 's/msvcrt/msvcr100/' -i gcc-[% c("var/gcc_version") %]/gcc/config/i386/t-mingw-w32
 # LDFLAGS_FOR_TARGET does not work for some reason. Thus, we take
 # CFLAGS_FOR_TARGET.
-export CFLAGS_FOR_TARGET="-specs=$distdir/msvcr100.spec -Wl,--nxcompat -Wl,--dynamicbase"
+export CFLAGS_FOR_TARGET="-specs=$distdir/msvcr100.spec -Wl,--nxcompat -Wl,--dynamicbase -Wl,--no-insert-timestamp"
 gcc-[% c("var/gcc_version") %]/configure --prefix=$distdir --target=[% c("arch") %]-w64-mingw32 --disable-multilib --enable-languages=c,c++
 make -j[% c("buildconf/num_procs") %] all-gcc
 make install-gcc
@@ -59,17 +59,17 @@ mkdir -p $distdir/helpers
 
 cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-g++ << 'EOF'
 #!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -Wl,--no-insert-timestamp -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
 EOF
 
 cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-gcc << 'EOF'
 #!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -Wl,--no-insert-timestamp -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
 EOF
 
 cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-ld << 'EOF'
 #!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld --dynamicbase --nxcompat --enable-reloc-section -lssp -L$gcclibs "$@"
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld --dynamicbase --nxcompat --enable-reloc-section --no-insert-timestamp -lssp -L$gcclibs "$@"
 EOF
 
 chmod +x $distdir/helpers/*

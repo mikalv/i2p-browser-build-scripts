@@ -1,8 +1,35 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
-# remove hardening wrappers
-rm -Rf /var/tmp/dist/mingw-w64/helpers
+# Some of the hardening flags are causing the build to fail, so we
+# overwrite the helpers with only the flags required to make the build
+# reproducible.
+helpersdir=/var/tmp/dist/mingw-w64/helpers
+cat > $helpersdir/[% c("arch") %]-w64-mingw32-g++ << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ -Wl,--no-insert-timestamp "$@"
+EOF
+
+cat > $helpersdir/[% c("arch") %]-w64-mingw32-gcc << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc -Wl,--no-insert-timestamp "$@"
+EOF
+
+cat > $helpersdir/[% c("arch") %]-w64-mingw32-ld << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld --no-insert-timestamp "$@"
+EOF
+# the nsis build system expects all toolchain binaries to be in the same
+# directory, so we create wrappers for the other commands in the same
+# directory.
+for util in ar ranlib windres
+do
+    cat > $helpersdir/[% c("arch") %]-w64-mingw32-$util <<EOF
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-$util "\$@"
+EOF
+    chmod +x $helpersdir/[% c("arch") %]-w64-mingw32-$util
+done
 mkdir -p /var/tmp/dist
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf nsis-[% c('version') %].tar.bz2
