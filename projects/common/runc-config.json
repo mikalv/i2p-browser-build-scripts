@@ -2,11 +2,7 @@
 	"ociVersion": "1.0.0[% IF !c("var_p/runc_spec100") %]-rc1[% END %]",
 	"platform": {
 		"os": "linux",
-[% IF c("var/container/arch") == 'i386' -%]
-		"arch": "386"
-[% ELSE -%]
-		"arch": "[% c("var/container/arch") %]"
-[% END -%]
+		"arch": "amd64"
 	},
 	"process": {
 		"terminal": [% IF c("interactive") %]true[% ELSE %]false[% END %],
