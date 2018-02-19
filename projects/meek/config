@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 0.25
+version: 0.29
 git_url: https://git.torproject.org/pluggable-transports/meek.git
 git_hash: '[% c("version") %]'
 tag_gpg_id: 1
