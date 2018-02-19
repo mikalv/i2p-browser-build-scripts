@@ -198,6 +198,8 @@ echo "pref(\"general.useragent.locale\", \"en-US\");" >> defaults/preferences/00
 [% c("var/touch") %] defaults/preferences/000-tor-browser.js
 zip -Xm omni.ja defaults/preferences/000-tor-browser.js
 rm -rf defaults
+# create tbb_version.json file for #25020
+echo '{"version":"[% c("var/torbrowser_version") %]","architecture":"[% c("var/mar_osname") %]","channel":"[% c("var/channel") %]","locale":"en-US"}' > ../tbb_verson.json
 popd
 
 # Prepare our language packs for using the proper search engines and embed
@@ -327,6 +329,8 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
       [% c("var/touch") %] defaults/preferences/000-tor-browser.js
       zip -Xm omni.ja defaults/preferences/000-tor-browser.js
       rm -rf defaults
+      # create tbb_version.json file for #25020
+      echo '{"version":"[% c("var/torbrowser_version") %]","architecture":"[% c("var/mar_osname") %]","channel":"[% c("var/channel") %]","locale":"[% lang %]"}' > ../tbb_verson.json
       popd
 
       # Set the update.locale (it is used to replace %LOCALE% within
