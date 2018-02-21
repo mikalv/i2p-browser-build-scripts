@@ -1,3 +1,35 @@
+Tor Browser 8.0a2 -- February 23 2018
+ * All Platforms
+   * Update Tor to 0.3.3.2-alpha
+   * Update Torbutton to 1.9.9
+     * Bug 24159: Version check does not deal with platform specific checks
+     * Bug 25016: Remove 2017 donation banner
+     * Translations update
+   * Update Tor Launcher to 0.2.15
+     * Bug 25089: Special characters are not escaped in proxy password
+     * Translations update
+   * Update HTTPS Everywhere to 2018.1.29
+   * Update NoScript to 5.1.8.4
+   * Update meek to 0.29
+   * Bug 25215: Revert bug 18619 (we are not disabling IndexedDB any longer)
+   * Bug 19910: Rip out optimistic data socks handshake variant (#3875)
+   * Bug 22659: Changes to `intl.accept.languages` get overwritten after restart
+   * Bug 25000: Add [System+Principal] to the NoScript whitelist
+   * Bug 15599: Disable Range requests used by pdfjs as they are not isolated
+   * Bug 22614: Make e10s/non-e10s Tor Browsers indistinguishable
+   * Bug 13575: Disable randomised Firefox HTTP cache decay user tests
+   * Bug 25020: Add a tbb_version.json file
+   * Bug 24995: Include git hash in tor --version
+ * OS X
+   * Bug 22794: Don't open AF_INET/AF_INET6 sockets when AF_LOCAL is configured
+ * Linux
+   * Bug 22794: Don't open AF_INET/AF_INET6 sockets when AF_LOCAL is configured
+ * Windows:
+   * Bug 25266: PT config should include full names of executable files
+ * Build System
+   * Windows
+     * Bug 25111: Don't compile Yasm on our own anymore for Windows Tor Browser
+
 Tor Browser 8.0a1 -- January 23 2018
  * All Platforms
    * Update Firefox to 52.6.0esr

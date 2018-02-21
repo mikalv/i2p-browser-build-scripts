@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
-version: 0.3.2.9
+version: 0.3.3.2-alpha
 git_hash: 'tor-[% c("version") %]'
 git_url: https://git.torproject.org/tor.git
 gpg_keyring: tor.gpg
