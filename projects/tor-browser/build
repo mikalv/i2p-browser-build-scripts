@@ -299,8 +299,8 @@ rm -rf $distdir/${PKG_DIR}
 
 cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
 [% IF c("var/linux") -%]
-  cp $rootdir/[% c('input_files_by_name/firefox') %]/tor-browser-debug.tar.gz "$OUTDIR"/tor-browser-[% c("var/mar_osname") %]-debug.tar.gz
-  cp $rootdir/[% c('input_files_by_name/tor') %]/tor-debug.tar.gz "$OUTDIR"/tor-[% c("var/mar_osname") %]-debug.tar.gz
+  cp $rootdir/[% c('input_files_by_name/firefox') %]/tor-browser-debug.tar.xz "$OUTDIR"/tor-browser-[% c("var/mar_osname") %]-debug.tar.xz
+  cp $rootdir/[% c('input_files_by_name/tor') %]/tor-debug.tar.xz "$OUTDIR"/tor-[% c("var/mar_osname") %]-debug.tar.xz
 [% END -%]
 
 # If we did not create a multi-lingual package above, create a package for

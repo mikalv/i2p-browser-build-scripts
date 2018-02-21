@@ -133,6 +133,6 @@ mkdir -p [% dest_dir _ '/' _ c('filename') %]
 [% IF c("var/linux") %]
 [% c('tar', {
         tar_src => [ 'Debug' ],
-        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor-debug.tar.gz',
+        tar_args => '-cJf ' _ dest_dir _ '/' _ c('filename') _ '/tor-debug.tar.xz',
     }) %]
 [% END %]
