@@ -100,7 +100,7 @@ targets:
 
     ### By default 'fetch' is set to 1 for nightly builds, meaning that new
     ### commits will be fetched automatically during each build. You can
-    ### disable this during developement if you want to do rebuilds to test
+    ### disable this during development if you want to do rebuilds to test
     ### a specific change, but don't want rebuilds caused by unrelated
     ### changes, or if you want to decide at which point new commits are
     ### fetched. When 'fetch' is set to 'if_needed', new commits will only
