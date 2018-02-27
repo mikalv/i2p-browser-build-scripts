@@ -39,6 +39,11 @@ targets:
       container:
         suite: jessie
         arch: i386
+  buster-amd64:
+    var:
+      container:
+        suite: buster
+        arch: amd64
   precise-amd64:
     var:
       container:
