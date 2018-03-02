@@ -20,29 +20,6 @@ pre: |
   [% IF pc(c('origin_project'), 'var/pre_pkginst') -%]
   [% pc(c('origin_project'), 'var/pre_pkginst') %]
   [% END -%]
-  [% IF c("var/container/suite") == "precise" -%]
-  export INITRD=no
-  mkdir -p /etc/container_environment
-  echo -n no > /etc/container_environment/INITRD
-  dpkg-divert --local --rename --add /sbin/initctl
-  ln -s /bin/true /sbin/initctl
-  dpkg-divert --local --rename --add /usr/bin/ischroot
-  ln -sf /bin/true /usr/bin/ischroot
-  cat >> /etc/apt/sources.list << EOF
-  deb http://archive.ubuntu.com/ubuntu/ precise-updates main
-  deb-src http://archive.ubuntu.com/ubuntu/ precise-updates main
-
-  deb http://archive.ubuntu.com/ubuntu/ precise universe
-  deb-src http://archive.ubuntu.com/ubuntu/ precise universe
-  deb http://archive.ubuntu.com/ubuntu/ precise-updates universe
-  deb-src http://archive.ubuntu.com/ubuntu/ precise-updates universe
-
-  deb http://archive.ubuntu.com/ubuntu/ precise-security main
-  deb-src http://archive.ubuntu.com/ubuntu/ precise-security main
-  deb http://archive.ubuntu.com/ubuntu/ precise-security universe
-  deb-src http://archive.ubuntu.com/ubuntu/ precise-security universe
-  EOF
-  [% END -%]
   apt-get update -y
   apt-get upgrade -y
   [%
