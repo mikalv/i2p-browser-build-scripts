@@ -1,3 +1,17 @@
+Tor Browser 8.0a3 -- March 13 2018
+ * All platforms
+   * Update Firefox to 52.7.0esr
+   * Update Tor to 0.3.3.3-alpha
+   * Update Tor Launcher to 0.2.15.1
+     * Bug 23136: Moat integration (fetch bridges for the user)
+     * Translations update
+   * Update HTTPS Everywhere to 2018.2.26
+     * Bug 25339: Adapt build system for Python 3.6 based build procedure
+   * Bug 25356: Update obfs4proxy to v0.0.7
+   * Bug 25147: Sanitize HTML fragments created for chrome-privileged documents
+ * Windows
+   * Bug 25112: No sandboxing on 64-bit Windows <= Vista
+
 Tor Browser 8.0a2 -- February 23 2018
  * All Platforms
    * Update Tor to 0.3.3.2-alpha
