@@ -1,3 +1,7 @@
+Tor Browser 8.0a4 -- March 17 2018
+ * All platforms
+   * Update Firefox to 52.7.2esr
+
 Tor Browser 8.0a3 -- March 13 2018
  * All platforms
    * Update Firefox to 52.7.0esr
