@@ -10,26 +10,22 @@ input_files:
   - project: container-image
   - project: cmake
     name: cmake
-  - URL: 'http://releases.llvm.org/[% c("version") %]/llvm-[% c("version") %].src.tar.xz'
-    # no proper HTTPS
+  - URL: 'https://releases.llvm.org/[% c("version") %]/llvm-[% c("version") %].src.tar.xz'
     name: llvm
     sig_ext: sig
     file_gpg_id: 1
     gpg_keyring: llvm.gpg
-  - URL: 'http://releases.llvm.org/[% c("version") %]/cfe-[% c("version") %].src.tar.xz'
-    # no proper HTTPS
+  - URL: 'https://releases.llvm.org/[% c("version") %]/cfe-[% c("version") %].src.tar.xz'
     name: cfe
     sig_ext: sig
     file_gpg_id: 1
     gpg_keyring: llvm.gpg
-  - URL: 'http://releases.llvm.org/[% c("version") %]/libcxx-[% c("version") %].src.tar.xz'
-    # no proper HTTPS
+  - URL: 'https://releases.llvm.org/[% c("version") %]/libcxx-[% c("version") %].src.tar.xz'
     name: libcxx
     sig_ext: sig
     file_gpg_id: 1
     gpg_keyring: llvm.gpg
-  - URL: 'http://releases.llvm.org/[% c("version") %]/libcxxabi-[% c("version") %].src.tar.xz'
-    # no proper HTTPS
+  - URL: 'https://releases.llvm.org/[% c("version") %]/libcxxabi-[% c("version") %].src.tar.xz'
     name: libcxxabi
     sig_ext: sig
     file_gpg_id: 1

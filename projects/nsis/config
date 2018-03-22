@@ -15,7 +15,7 @@ var:
 input_files:
   - project: container-image
   - filename: 'nsis-[% c("version") %].tar.bz2'
-    URL: 'http://downloads.sourceforge.net/nsis/nsis-[% c("version") %]-src.tar.bz2'
+    URL: 'https://downloads.sourceforge.net/nsis/nsis-[% c("version") %]-src.tar.bz2'
     sha256sum: 43d4c9209847e35eb6e2c7cd5a7586e1445374c056c2c7899e40a080e17a1be7
   - name: debian
     URL: 'http://http.debian.net/debian/pool/main/n/nsis/nsis_2.51-1.debian.tar.xz'

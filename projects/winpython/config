@@ -47,7 +47,7 @@ input_files:
     gpg_keyring: winpython.gpg
   - URL: https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.tar.gz
     sha256sum: 75d288687066ed124311d6ca5f40ffa92a0e81adcd7fff318c6e84082713cf39
-  - URL: http://downloads.sourceforge.net/py2exe/0.6.9/py2exe-0.6.9.win32-py2.7.exe
+  - URL: https://downloads.sourceforge.net/py2exe/0.6.9/py2exe-0.6.9.win32-py2.7.exe
     sha256sum: 610a8800de3d973ed5ed4ac505ab42ad058add18a68609ac09e6cf3598ef056c
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
