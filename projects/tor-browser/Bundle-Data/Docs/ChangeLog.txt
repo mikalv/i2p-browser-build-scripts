@@ -1,4 +1,25 @@
+Tor Browser 8.0a5 -- March 27 2018
+ * All platforms
+   * Update Firefox to 52.7.3esr
+   * Update HTTPS Everywhere to 2018.3.13
+   * Bug 23439: Exempt .onion domains from mixed content warnings
+ * OS X
+   * Update Snowflake
+     * Bug 21312+25579+25449: Fix crashes and memory/file descriptor leaks in go-webrtc
+ * Linux
+   * Update Snowflake
+     * Bug 21312+25579+25449: Fix crashes and memory/file descriptor leaks in go-webrtc
+ * Build System
+   * Windows
+     * Bug 16472: Update Binutils to 2.29.1
+   * Linux
+     * Bug 16472: Update Binutils to 2.29.1
+
 Tor Browser 8.0a4 -- March 17 2018
+ * All platforms
+   * Update Firefox to 52.7.2esr
+
+Tor Browser 7.5.2 -- March 17 2018
  * All platforms
    * Update Firefox to 52.7.2esr
 
