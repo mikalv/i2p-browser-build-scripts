@@ -9,11 +9,6 @@ Tor Browser 8.0a5 -- March 27 2018
  * Linux
    * Update Snowflake
      * Bug 21312+25579+25449: Fix crashes and memory/file descriptor leaks in go-webrtc
- * Build System
-   * Windows
-     * Bug 16472: Update Binutils to 2.29.1
-   * Linux
-     * Bug 16472: Update Binutils to 2.29.1
 
 Tor Browser 8.0a4 -- March 17 2018
  * All platforms
