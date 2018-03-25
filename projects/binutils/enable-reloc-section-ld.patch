@@ -1,29 +1,30 @@
-From fba503a78c50d6134943245d55e820f53e8f19cd Mon Sep 17 00:00:00 2001
+From 093b08a9e7af23a258306b710ebc4556d12f94f7 Mon Sep 17 00:00:00 2001
 From: Erinn Clark <erinn@torproject.org>
 Date: Fri, 8 Aug 2014 14:23:44 -0400
 Subject: [PATCH] add relocation section so Windows bundles can have ASLR
 
 Patch by skruffy.
+
 ---
- ld/emultempl/pe.em  |  7 ++++++
- ld/emultempl/pep.em | 11 ++++++++--
+ ld/emultempl/pe.em  |  6 +++++
+ ld/emultempl/pep.em |  8 ++++++-
  ld/pe-dll.c         | 63 ++++++++++++++++++++++++++++++-----------------------
  ld/pe-dll.h         |  1 +
- 4 files changed, 53 insertions(+), 29 deletions(-)
+ 4 files changed, 50 insertions(+), 28 deletions(-)
 
 diff --git a/ld/emultempl/pe.em b/ld/emultempl/pe.em
-index 339b7c5..3958b81 100644
+index 5d6da9e..14c07f7 100644
 --- a/ld/emultempl/pe.em
 +++ b/ld/emultempl/pe.em
-@@ -272,6 +272,7 @@ fragment <<EOF
+@@ -268,6 +268,7 @@ fragment <<EOF
+ #define OPTION_TERMINAL_SERVER_AWARE	(OPTION_WDM_DRIVER + 1)
+ /* Determinism.  */
  #define OPTION_INSERT_TIMESTAMP		(OPTION_TERMINAL_SERVER_AWARE + 1)
- #define OPTION_NO_INSERT_TIMESTAMP	(OPTION_INSERT_TIMESTAMP + 1)
- #define OPTION_BUILD_ID			(OPTION_NO_INSERT_TIMESTAMP + 1)
-+#define OPTION_ENABLE_RELOC_SECTION	(OPTION_BUILD_ID + 1)
++#define OPTION_ENABLE_RELOC_SECTION	(OPTION_INSERT_TIMESTAMP + 1)
  
  static void
  gld${EMULATION_NAME}_add_options
-@@ -315,6 +316,7 @@ gld${EMULATION_NAME}_add_options
+@@ -310,6 +311,7 @@ gld${EMULATION_NAME}_add_options
      {"export-all-symbols", no_argument, NULL, OPTION_EXPORT_ALL},
      {"exclude-symbols", required_argument, NULL, OPTION_EXCLUDE_SYMBOLS},
      {"exclude-all-symbols", no_argument, NULL, OPTION_EXCLUDE_ALL_SYMBOLS},
@@ -31,7 +32,7 @@ index 339b7c5..3958b81 100644
      {"exclude-libs", required_argument, NULL, OPTION_EXCLUDE_LIBS},
      {"exclude-modules-for-implib", required_argument, NULL, OPTION_EXCLUDE_MODULES_FOR_IMPLIB},
      {"kill-at", no_argument, NULL, OPTION_KILL_ATS},
-@@ -782,6 +784,9 @@ gld${EMULATION_NAME}_handle_option (int optc)
+@@ -773,6 +775,9 @@ gld${EMULATION_NAME}_handle_option (int optc)
      case OPTION_EXCLUDE_ALL_SYMBOLS:
        pe_dll_exclude_all_symbols = 1;
        break;
@@ -41,30 +42,29 @@ index 339b7c5..3958b81 100644
      case OPTION_EXCLUDE_LIBS:
        pe_dll_add_excludes (optarg, EXCLUDELIBS);
        break;
-@@ -2076,6 +2081,8 @@ gld_${EMULATION_NAME}_finish (void)
+@@ -1839,6 +1844,7 @@ gld_${EMULATION_NAME}_finish (void)
+   if (link_info.shared
  #if !defined(TARGET_IS_shpe)
-       || (!bfd_link_relocatable (&link_info)
- 	  && pe_def_file->num_exports != 0)
-+      || (!bfd_link_relocatable (&link_info)
-+          && pe_dll_enable_reloc_section)
+       || (!link_info.relocatable && pe_def_file->num_exports != 0)
++      || (!link_info.relocatable && pe_dll_enable_reloc_section)
  #endif
      )
      {
 diff --git a/ld/emultempl/pep.em b/ld/emultempl/pep.em
-index c253d2f..fccbd63 100644
+index b738800..b566903 100644
 --- a/ld/emultempl/pep.em
 +++ b/ld/emultempl/pep.em
-@@ -246,7 +246,8 @@ enum options
+@@ -242,7 +242,8 @@ enum options
+   OPTION_NO_BIND,
+   OPTION_WDM_DRIVER,
    OPTION_INSERT_TIMESTAMP,
-   OPTION_NO_INSERT_TIMESTAMP,
-   OPTION_TERMINAL_SERVER_AWARE,
--  OPTION_BUILD_ID
-+  OPTION_BUILD_ID,
+-  OPTION_TERMINAL_SERVER_AWARE
++  OPTION_TERMINAL_SERVER_AWARE,
 +  OPTION_ENABLE_RELOC_SECTION
  };
  
  static void
-@@ -288,6 +289,7 @@ gld${EMULATION_NAME}_add_options
+@@ -284,6 +285,7 @@ gld${EMULATION_NAME}_add_options
      {"export-all-symbols", no_argument, NULL, OPTION_EXPORT_ALL},
      {"exclude-symbols", required_argument, NULL, OPTION_EXCLUDE_SYMBOLS},
      {"exclude-all-symbols", no_argument, NULL, OPTION_EXCLUDE_ALL_SYMBOLS},
@@ -72,7 +72,7 @@ index c253d2f..fccbd63 100644
      {"exclude-libs", required_argument, NULL, OPTION_EXCLUDE_LIBS},
      {"exclude-modules-for-implib", required_argument, NULL, OPTION_EXCLUDE_MODULES_FOR_IMPLIB},
      {"kill-at", no_argument, NULL, OPTION_KILL_ATS},
-@@ -739,6 +741,9 @@ gld${EMULATION_NAME}_handle_option (int optc)
+@@ -727,6 +729,9 @@ gld${EMULATION_NAME}_handle_option (int optc)
      case OPTION_EXCLUDE_ALL_SYMBOLS:
        pep_dll_exclude_all_symbols = 1;
        break;
@@ -82,22 +82,19 @@ index c253d2f..fccbd63 100644
      case OPTION_EXCLUDE_LIBS:
        pep_dll_add_excludes (optarg, EXCLUDELIBS);
        break;
-@@ -1857,7 +1862,9 @@ gld_${EMULATION_NAME}_finish (void)
+@@ -1618,6 +1623,7 @@ gld_${EMULATION_NAME}_finish (void)
+ 
  #ifdef DLL_SUPPORT
-   if (bfd_link_pic (&link_info)
-       || (!bfd_link_relocatable (&link_info)
--	  && pep_def_file->num_exports != 0))
-+          && pe_dll_enable_reloc_section)
-+      || (!bfd_link_relocatable (&link_info)
-+          && pep_def_file->num_exports != 0))
+   if (link_info.shared
++      || (!link_info.relocatable && pe_dll_enable_reloc_section)
+       || (!link_info.relocatable && pep_def_file->num_exports != 0))
      {
        pep_dll_fill_sections (link_info.output_bfd, &link_info);
-       if (command_line.out_implib_filename)
 diff --git a/ld/pe-dll.c b/ld/pe-dll.c
-index c398f23..3797f1a 100644
+index e9e133b..4230dc3 100644
 --- a/ld/pe-dll.c
 +++ b/ld/pe-dll.c
-@@ -151,6 +151,7 @@ def_file * pe_def_file = 0;
+@@ -152,6 +152,7 @@ def_file * pe_def_file = 0;
  int pe_dll_export_everything = 0;
  int pe_dll_exclude_all_symbols = 0;
  int pe_dll_do_default_excludes = 1;
@@ -105,10 +102,10 @@ index c398f23..3797f1a 100644
  int pe_dll_kill_ats = 0;
  int pe_dll_stdcall_aliases = 0;
  int pe_dll_warn_dup_exports = 0;
-@@ -3430,8 +3431,15 @@ pe_dll_build_sections (bfd *abfd, struct bfd_link_info *info)
+@@ -3370,8 +3371,15 @@ pe_dll_build_sections (bfd *abfd, struct bfd_link_info *info)
    process_def_file_and_drectve (abfd, info);
  
-   if (pe_def_file->num_exports == 0 && !bfd_link_pic (info))
+   if (pe_def_file->num_exports == 0 && !info->shared)
 -    return;
 -
 +    {
@@ -123,7 +120,7 @@ index c398f23..3797f1a 100644
    generate_edata (abfd, info);
    build_filler_bfd (1);
    pe_output_file_set_long_section_names (filler_bfd);
-@@ -3446,13 +3454,9 @@ pe_exe_build_sections (bfd *abfd, struct bfd_link_info *info ATTRIBUTE_UNUSED)
+@@ -3386,13 +3394,9 @@ pe_exe_build_sections (bfd *abfd, struct bfd_link_info *info ATTRIBUTE_UNUSED)
    pe_output_file_set_long_section_names (filler_bfd);
  }
  
@@ -139,13 +136,13 @@ index c398f23..3797f1a 100644
    generate_reloc (abfd, info);
    if (reloc_sz > 0)
      {
-@@ -3469,38 +3473,43 @@ pe_dll_fill_sections (bfd *abfd, struct bfd_link_info *info)
+@@ -3409,38 +3413,43 @@ pe_dll_fill_sections (bfd *abfd, struct bfd_link_info *info)
        lang_do_assignments (lang_final_phase_enum);
      }
  
 -  fill_edata (abfd, info);
 -
--  if (bfd_link_dll (info))
+-  if (info->shared && !info->pie)
 -    pe_data (abfd)->dll = 1;
 -
 -  edata_s->contents = edata_d;
@@ -177,7 +174,7 @@ index c398f23..3797f1a 100644
 -      /* Resize the sections.  */
 -      lang_reset_memory_regions ();
 -      lang_size_sections (NULL, TRUE);
-+  if (bfd_link_pic (info) && !bfd_link_pie (info))
++  if (info->shared && !info->pie)
 +    pe_data (abfd)->dll = 1;
  
 -      /* Redo special stuff.  */
@@ -203,10 +200,10 @@ index c398f23..3797f1a 100644
  
  bfd_boolean
 diff --git a/ld/pe-dll.h b/ld/pe-dll.h
-index 48d169b..05ff72b 100644
+index 4697390..2bf71d9 100644
 --- a/ld/pe-dll.h
 +++ b/ld/pe-dll.h
-@@ -30,6 +30,7 @@ extern def_file *pe_def_file;
+@@ -31,6 +31,7 @@ extern def_file *pe_def_file;
  extern int pe_dll_export_everything;
  extern int pe_dll_exclude_all_symbols;
  extern int pe_dll_do_default_excludes;
@@ -215,5 +212,5 @@ index 48d169b..05ff72b 100644
  extern int pe_dll_stdcall_aliases;
  extern int pe_dll_warn_dup_exports;
 -- 
-2.1.4
+2.0.1
 

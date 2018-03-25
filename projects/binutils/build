@@ -21,11 +21,20 @@ cd [% project %]-[% c("version") %]
 [% IF c('var/windows') -%]
   # XXX: This is needed due to bug 10102.
   sed 's/= extern_rt_rel_d;/= extern_rt_rel_d;\n  memset (extern_rt_rel_d, 0, PE_IDATA5_SIZE);/' -i ld/pe-dll.c
+  # Zeroing timestamps in PE headers reliably, see bug 12753.
+  patch -p1 < ../peXXigen.patch
   # Needed for the hardening...
   patch -p1 < ../enable-reloc-section-ld.patch
+  # fix "right-hand operand of comma expression has no effect" warning
+  patch -p1 < ../fix-warning-bfd.patch
 [% END -%]
 [% IF c('var/windows-x86_64') -%]
   patch -p1 < ../64bit-fixups.patch
+[% END -%]
+[% IF c("var/linux") && ! c("var/release") -%]
+  # We need to work around a gold linker bug in 2.24 to get selfrando working,
+  # see bug 20683.
+  patch -p1 < $rootdir/binutils-224-gold.patch
 [% END -%]
 ./configure --prefix=$distdir [% c('var/configure_opt') %]
 make -j[% c("buildconf/num_procs") %]
