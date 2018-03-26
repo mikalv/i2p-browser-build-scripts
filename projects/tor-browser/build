@@ -34,6 +34,7 @@ touch "$GENERATEDPREFSPATH"
   EXTSPATH=TorBrowser/Data/Browser/profile.default/extensions
   TORCONFIGPATH=TorBrowser/Data/Tor
   MEEKPROFILEPATH=TorBrowser/Data/Browser/profile.meek-http-helper
+  MOATPROFILEPATH=TorBrowser/Data/Browser/profile.moat-http-helper
 
   mkdir -p "$TBDIR/TorBrowser/Data/Browser/Caches"
 [% END %]
@@ -143,6 +144,13 @@ cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/u
   sha256sum `find $MEEKPROFILEPATH -type f | sort` | sha256sum | sed -e 's/ *-$//' > $MEEKPROFILEPATH/meek-template-sha256sum.txt
   popd
 [% END %]
+
+# For platforms for which we need to ship a Moat helper profile in addition
+# to a meek one, create it by duplicating the meek one that we just finished
+# creating.
+if [ ! -z "$MOATPROFILEPATH" ]; then
+  cp -pR $TBDIR/$MEEKPROFILEPATH $TBDIR/$MOATPROFILEPATH
+fi
 
 [% IF ! c("var/multi_lingual") %]
   echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$GENERATEDPREFSPATH"
