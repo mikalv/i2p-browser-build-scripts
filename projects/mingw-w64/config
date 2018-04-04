@@ -14,7 +14,7 @@ var:
   setup: |
     [% c("var/setarch") -%]
     mkdir -p /var/tmp/dist
-    tar -C /var/tmp/dist -xf [% c("compiler_tarfile") %]
+    tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/mingw-w64/helpers:/var/tmp/dist/mingw-w64/bin:$PATH"
     export gcclibs=/var/tmp/dist/mingw-w64/gcclibs
 targets:
