@@ -29,3 +29,5 @@ input_files:
     name: gmp
   - project: obfsproxy
     name: obfsproxy
+  - filename: bug20302.patch
+    enable: '[% c("var/windows") %]'

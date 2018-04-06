@@ -13,6 +13,7 @@ ln -s /var/tmp/dist/gmp thirdparty/gmp
 mkdir -p $distdir
 tar -C $distdir -xf $rootdir/[% c('input_files_by_name/obfsproxy') %]
 [% IF c("var/windows") -%]
+  patch -p1 < $rootdir/bug20302.patch
   pydir=$distdir/python
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
   export LD_PRELOAD=
