@@ -21,7 +21,7 @@ make install
 cd /var/tmp/build
 mkdir gcc
 cd gcc
-tar xjf $rootdir/gcc-[% c("var/gcc_version") %].tar.bz2
+tar xJf $rootdir/gcc-[% c("var/gcc_version") %].tar.xz
 # We don't want to link against msvcrt.dll due to bug 9084.
 [% c("arch") %]-w64-mingw32-g++ -dumpspecs > $distdir/msvcr100.spec
 sed 's/msvcrt/msvcr100/' -i $distdir/msvcr100.spec
