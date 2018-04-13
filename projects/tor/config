@@ -3,6 +3,7 @@ filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/buil
 version: 0.3.3.3-alpha
 git_hash: 'tor-[% c("version") %]'
 git_url: https://git.torproject.org/tor.git
+git_submodule: 1
 gpg_keyring: tor.gpg
 tag_gpg_id: 1
 
@@ -57,3 +58,6 @@ input_files:
     enable: '[% c("var/windows") %]'
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
+  - name: rust
+    project: rust
+    enable: '[% c("var/linux") && c("var/nightly") %]'

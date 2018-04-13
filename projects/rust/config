@@ -1,0 +1,62 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+version: 1.25.0
+var:
+  prev_version: 1.24.1
+  container:
+    use_container: 1
+
+targets:
+  linux:
+    var:
+      arch_deps:
+        - hardening-wrapper
+        - libssl-dev
+        - pkg-config
+      # We use
+      # `--enable-local-rust` to avoid downloading the required compiler during
+      # build time
+      #
+      # `--enable-vendor` to avoid downloading crates during build time and just
+      # use the ones which are shipped with the source
+      #
+      # `--enable-extended` to build not only rustc but cargo as well
+      #
+      # `--release-channel=stable` to just include stable features in the
+      # compiler
+      #
+      # `--sysconfdir=etc` to avoid install failures as |make install| wants to
+      # write to /etc otherwise
+      #
+      # the `target` triple to explicitly specify the architecture and platform
+      # for the compiler/std lib. Ideally, it should not be needed unless one is
+      # cross-compiling, but compiling `alloc_jemalloc` fails without that in a
+      # 32bit container. "--host=x86_64-unknown-linux-gnu" is used in its
+      # configure script in this case.
+      # `--set=` to explicitly specify the C compiler. We need to compile the
+      # bundled LLVM and it wants to use `cc`. However, we don't have that in
+      # our compiled GCC resulting in weird errors due to C and C++ compiler
+      # version mismatch. We avoid that with this configure option. We need to
+      # build our own GCC in the first place as 4.7.2 is too old to get all the
+      # Rust pieces compiled.
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=[% c("arch") %]-unknown-linux-gnu --set=target.[% c("arch") %]-unknown-linux-gnu.cc=gcc
+
+input_files:
+  - project: container-image
+  - project: cmake
+    name: cmake
+  - project: gcc
+    name: gcc
+    enable: '[% c("var/linux") %]'
+  - URL: 'https://static.rust-lang.org/dist/rustc-[% c("version") %]-src.tar.gz'
+    name: rust
+    sig_ext: asc
+    file_gpg_id: 1
+    gpg_keyring: rust.gpg
+  - URL: 'https://static.rust-lang.org/dist/rust-[% c("var/prev_version") %]-[% c("arch") %]-unknown-linux-gnu.tar.xz'
+    name: prev_rust
+    sig_ext: asc
+    file_gpg_id: 1
+    gpg_keyring: rust.gpg
+  - filename: binaryen.patch
+    enable: '[% c("var/linux") %]'

@@ -1,0 +1,38 @@
+#!/bin/bash
+[% c('var/setarch') %]
+[% c("var/set_default_env") -%]
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/dist
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
+export PATH="/var/tmp/dist/cmake/bin:$PATH"
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/prev_rust') %]
+cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('arch') %]-unknown-linux-gnu
+./install.sh --prefix=$distdir-rust-old
+export PATH="$distdir-rust-old/bin:$PATH"
+
+[% IF c("var/linux") %]
+  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc') }) %]
+[% END -%]
+
+cd $rootdir
+mkdir /var/tmp/build
+tar -C /var/tmp/build -xf  [% c('input_files_by_name/rust') %]
+cd /var/tmp/build/rustc-[% c('version') %]-src
+
+[% IF c("var/linux") %]
+  # binaryen hardcodes /usr/bin/cc and /usr/bin/c++ as the C and C++ compiler.
+  # But that is too old on Debian Wheezy which is why we need to patch it, so
+  # we can use our own GCC instead.
+  patch -p1 < $rootdir/binaryen.patch
+[% END %]
+
+mkdir build
+cd build
+../configure --prefix=$distdir [% c("var/configure_opt") %]
+make -j[% c("buildconf/num_procs") %]
+make install
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+        }) %]
