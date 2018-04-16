@@ -1,0 +1,7 @@
+---
+
+- hosts: boklm-tbb-nightly-build
+  roles:
+      - role: tbb-builder
+      - role: tbb-nightly-build
+      - role: unattended-upgrades

@@ -138,43 +138,18 @@ Automated builds using tbb-testsuite
 ------------------------------------
 
 The Tor Browser testsuite scripts can also be used to do nightly builds
-and publish the build logs.
+and publish the build logs. The recommended way to do that is to use
+the ansible roles from the tools/ansible directory. See next section
+for details.
 
-If you want to do that, start by cloning the git repository:
 
-   $ git clone https://git.torproject.org/boklm/tor-browser-bundle-testsuite.git
+Using ansible to set up a nightly build machine
+-----------------------------------------------
 
-Install some dependencies:
-
-   # apt-get install -y libdata-dump-perl libfile-slurp-perl \
-               libio-captureoutput-perl perlmagick libjson-perl \
-               libwww-perl liblwp-protocol-https-perl libtemplate-perl \
-               libyaml-syck-perl libdatetime-perl \
-               libemail-sender-perl libemail-simple-perl libfile-type-perl \
-               libipc-run-perl libxml-libxml-perl
-
-Copy the config/tor-browser_build-boklm file and edit it:
-
-   $ cd tor-browser-bundle-testsuite
-   $ cp config/tor-browser_build-boklm config/tor-browser_build-$user
-   $ vim config/tor-browser_build-$user
-
-Change the publish_dir and publish_url options. The publish_dir option is
-the local directory where the builds will be stored. The publish_url
-option is the public URL where the builds will be available.
-
-Copy the tools/tor-browser-builds-boklm file and edit it to change the
---config= option:
-
-   $ cp tools/tor-browser-builds-boklm tools/tor-browser-builds-$user
-   $ vim tools/tor-browser-builds-$user
-
-You can now run ./tools/tor-browser-builds-$user to start the build, and
-add it to your crontab.
-
-The html build reports will be available in the reports/ directory, and
-the build files in the tor-browser-builds/ directory (unless you changed
-the publish_dir option).
+The directory tools/ansible contains some ansible roles to set up a
+nightly build machine. You can look at the playbook defined in
+boklm-tbb-nightly-build.yml and variables in group_vars/boklm-tbb-nightly/
+for an example of how it can be used.
 
 
 Signing builds

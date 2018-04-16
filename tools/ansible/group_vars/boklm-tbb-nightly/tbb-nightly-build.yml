@@ -1,0 +1,3 @@
+---
+nightly_build_hostname: f4amtbsowhix7rrf.onion
+nightly_build_url: 'http://{{ nightly_build_hostname }}'

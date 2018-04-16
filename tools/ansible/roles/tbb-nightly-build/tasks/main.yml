@@ -1,0 +1,84 @@
+---
+- name: create tbb-nightly user
+  user:
+      name: "{{ nightly_build_user }}"
+      comment: "Tor Browser Nightly Builds"
+      groups: tbb-build
+      createhome: yes
+      home: "/home/{{ nightly_build_user }}"
+
+- name: clone tor browser testsuite
+  become: yes
+  become_user: "{{ nightly_build_user }}"
+  git:
+      repo: "{{ testsuite_git_url }}"
+      dest: "{{ testsuite_dir }}"
+      version: "{{ testsuite_git_commit }}"
+
+- name: install testsuite dependencies
+  command: "{{ testsuite_dir }}/install-deps"
+
+- name: add testsuite config
+  template:
+      src: testsuite-config
+      dest: "{{ testsuite_dir }}/config/tbb-nightly"
+      mode: 0644
+      owner: "{{ nightly_build_user }}"
+
+- name: create rbm-config directory
+  file:
+      path: '{{ testsuite_dir }}/rbm-config/'
+      state: directory
+      owner: '{{ nightly_build_user }}'
+      mode: 0755
+
+- name: add rbm config
+  template:
+      src: rbm.local.conf
+      dest: "{{ testsuite_dir }}/rbm-config/tbb-nightly.rbm.local.conf"
+      mode: 0644
+      owner: "{{ nightly_build_user }}"
+
+- name: add start-tbb-nightly script
+  template:
+      src: start-tbb-nightly
+      dest: "/home/{{ nightly_build_user }}/start-tbb-nightly"
+      mode: 0755
+      owner: "{{ nightly_build_user }}"
+
+- name: add cron to start nighly build
+  cron:
+      name: tbb-nightly-build
+      user: "{{ nightly_build_user }}"
+      hour: "{{ nightly_build_cron_hour }}"
+      minute: "{{ nightly_build_cron_minute }}"
+      job: "/home/{{ nightly_build_user }}/start-tbb-nightly"
+
+- name: create wwwdir
+  file:
+      path: '{{ nightly_build_wwwdir }}'
+      state: directory
+      owner: '{{ nightly_build_user }}'
+      mode: 0755
+
+- name: add index page
+  template:
+      src: www-index.html
+      dest: "{{ nightly_build_wwwdir }}/index.html"
+      mode: 0644
+      owner: "{{ nightly_build_user }}"
+
+- name: install nginx
+  apt:
+      name: nginx
+      state: present
+  when: nightly_build_nginx_enable
+
+- name: add nginx config
+  template:
+      src: nginx.conf
+      dest: /etc/nginx/sites-enabled/tbb-nightly-build
+      mode: 0644
+  notify:
+      - restart nginx
+  when: nightly_build_nginx_enable

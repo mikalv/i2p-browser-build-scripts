@@ -16,3 +16,9 @@ fpcentral:
   you need to be in the fpcentral tpo ldap group. Your ldap password will
   be asked, to sudo to the fpcentral user.
 
+boklm-tbb-nightly-build:
+  This target is used by boklm to deploy a nightly build machine. If
+  anybody else wants to set up their own nightly builds, it is possible to
+  do it by adding a new host to the inventory file and making copies of
+  group_vars/boklm-tbb-nightly/ and boklm-tbb-nightly-build.yml.
+

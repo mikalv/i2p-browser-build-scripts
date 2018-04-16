@@ -1,0 +1,27 @@
+# vim: filetype=perl expandtab
+use strict;
+use FindBin;
+use DateTime;
+use TBBTestSuite::TestSuite::TorBrowserBuild;
+
+my $date = DateTime->now->ymd;
+my $name = "tor-browser-$date";
+
+if (-d "$options->{'reports-dir'}/r/$name") {
+    print "Doing nothing: $name already done\n";
+    return ( args => [] );
+}
+
+my $testsuite = TBBTestSuite::TestSuite::TorBrowserBuild->new({
+        publish_dir => "$FindBin::Bin/tor-browser-builds/$date",
+        publish_url => "{{ nightly_build_url }}/tor-browser-builds/$date",
+        rbm_local_conf => "$FindBin::Bin/rbm-config/tbb-nightly.rbm.local.conf",
+        make_clean => 1,
+    });
+
+my %res = (
+    name => $name,
+    args => [ $testsuite ],
+    tags => [ 'nightly' ],
+);
+%res;
