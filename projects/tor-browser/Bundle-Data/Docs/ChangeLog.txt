@@ -1,3 +1,26 @@
+Tor Browser 8.0a6 -- April 19 2018
+ * All platforms
+   * Update Tor to 0.3.3.5-rc
+   * Update OpenSSL to 1.0.2o
+   * Update Torbutton to 1.9.9.1
+     * Bug 25126: Make about:tor layout responsive
+     * Translations update
+   * Update HTTPS Everywhere to 2018.4.11
+   * Update NoScript to 5.1.8.5
+   * Bug 21537: Mark .onion cookies as secure
+   * Bug 21850: Update about:tbupdate handling for e10s
+   * Bug 25721: Backport patches from Mozilla's bug 1448771
+ * Linux
+   * Bug 20283: Tor Browser should run without a `/proc` filesystem.
+ * Windows
+   * Bug 13893: Make EMET compatible with Tor Browser
+ * Build System
+   * Windows
+     * Bug 25420: Update GCC to 6.4.0
+     * Bug 20302: Fix FTE compilation for Windows with GCC 6.4.0
+   * Linux
+     * Bug 25304: Update GCC to 6.4.0
+
 Tor Browser 8.0a5 -- March 27 2018
  * All platforms
    * Update Firefox to 52.7.3esr
