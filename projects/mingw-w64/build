@@ -22,21 +22,27 @@ cd /var/tmp/build
 mkdir gcc
 cd gcc
 tar xJf $rootdir/gcc-[% c("var/gcc_version") %].tar.xz
-# We don't want to link against msvcrt.dll due to bug 9084.
+# We don't want to link against msvcrt.dll due to bug 9084 and want to use
+# pthreads, too, as this is needed for ESR60, at least due to bug 1406542.
 [% c("arch") %]-w64-mingw32-g++ -dumpspecs > $distdir/msvcr100.spec
-sed 's/msvcrt/msvcr100/' -i $distdir/msvcr100.spec
-# Linking libgcc against msvcrt is hard-coded...
-sed 's/msvcrt/msvcr100/' -i gcc-[% c("var/gcc_version") %]/gcc/config/i386/t-mingw-w32
+sed 's/msvcrt/msvcr100 -lpthread/' -i $distdir/msvcr100.spec
 # LDFLAGS_FOR_TARGET does not work for some reason. Thus, we take
 # CFLAGS_FOR_TARGET.
 export CFLAGS_FOR_TARGET="-specs=$distdir/msvcr100.spec -Wl,--nxcompat -Wl,--dynamicbase -Wl,--no-insert-timestamp"
-gcc-[% c("var/gcc_version") %]/configure --prefix=$distdir --target=[% c("arch") %]-w64-mingw32 --disable-multilib --enable-languages=c,c++
+gcc-[% c("var/gcc_version") %]/configure --prefix=$distdir --target=[% c("arch") %]-w64-mingw32 --with-gnu-ld --with-gnu-as --disable-multilib --enable-threads=posix --enable-languages=c,c++
 make -j[% c("buildconf/num_procs") %] all-gcc
 make install-gcc
 
 mkdir -p /var/tmp/build/builddir/mingw-w64/mingw-w64-crt32
 cd /var/tmp/build/builddir/mingw-w64/mingw-w64-crt32
 /var/tmp/build/[% project %]-[% c("version") %]/mingw-w64-crt/configure \
+                 --host=[% c("arch") %]-w64-mingw32 --prefix=$distdir/[% c("arch") %]-w64-mingw32
+make -j[% c("buildconf/num_procs") %]
+make install
+
+mkdir -p /var/tmp/build/builddir/mingw-w64/mingw-w64-pthread
+cd /var/tmp/build/builddir/mingw-w64/mingw-w64-pthread
+/var/tmp/build/[% project %]-[% c("version") %]/mingw-w64-libraries/winpthreads/configure \
                  --host=[% c("arch") %]-w64-mingw32 --prefix=$distdir/[% c("arch") %]-w64-mingw32
 make -j[% c("buildconf/num_procs") %]
 make install
