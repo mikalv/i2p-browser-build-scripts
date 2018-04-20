@@ -55,25 +55,6 @@ mkdir -p $distdir/gcclibs
 cp [% c("arch") %]-w64-mingw32/libssp/.libs/libssp-0.dll $distdir/gcclibs
 cp [% c("arch") %]-w64-mingw32/libgcc/shlib/[% c("var/libgcc_dll") %] $distdir/gcclibs
 
-mkdir -p $distdir/helpers
-
-cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-g++ << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
-EOF
-
-cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-gcc << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc -Wl,--dynamicbase -Wl,--nxcompat -Wl,--enable-reloc-section -fstack-protector --param ssp-buffer-size=4 -fno-strict-overflow "$@"
-EOF
-
-cat > $distdir/helpers/[% c("arch") %]-w64-mingw32-ld << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld --dynamicbase --nxcompat --enable-reloc-section -lssp -L$gcclibs "$@"
-EOF
-
-chmod +x $distdir/helpers/*
-
 cd /var/tmp/dist
 [% c('tar', {
         tar_src => [ project ],

@@ -17,6 +17,29 @@
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 
+[% IF c("var/windows") -%]
+  mingwdir=/var/tmp/dist/mingw-w64
+  mkdir -p $mingwdir/helpers
+
+  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-g++ << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ [% c("var/LDFLAGS") %] [% c("var/CFLAGS") %] "$@"
+EOF
+
+  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-gcc << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc [% c("var/LDFLAGS") %] [% c("var/CFLAGS") %] "$@"
+EOF
+
+  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-ld << 'EOF'
+#!/bin/sh
+/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld [% c("var/LDFLAGS") %] "$@"
+EOF
+
+  chmod +x $mingwdir/helpers/*
+  export PATH="$mingwdir/helpers:$PATH"
+[% END -%]
+
 [% IF c("var/linux") %]
   mkdir -p /var/tmp/dist
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
