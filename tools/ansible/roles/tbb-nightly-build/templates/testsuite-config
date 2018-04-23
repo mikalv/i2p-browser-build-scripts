@@ -23,5 +23,10 @@ my %res = (
     name => $name,
     args => [ $testsuite ],
     tags => [ 'nightly' ],
+    'reports-url' => '{{ nightly_build_url }}/reports/',
+    'email-subject' => '[build result: [% success ? "ok" : "failed" %]] [% options.name %]',
+    {% if nightly_build_email_to is defined %}'email-report' => 1,{% endif %}
+    {% if nightly_build_email_to is defined %}'email-to' => {{ nightly_build_email_to }}{% endif %}
+    {% if nightly_build_email_from is defined %}'email-from' => {{ nightly_build_email_from }}{% endif %}
 );
 %res;

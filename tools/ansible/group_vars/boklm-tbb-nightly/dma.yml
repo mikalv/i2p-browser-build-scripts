@@ -1,0 +1,8 @@
+---
+dma_conf: |
+    SMARTHOST mail.riseup.net
+    AUTHPATH /etc/dma/auth.conf
+    SECURETRANSFER
+    STARTTLS
+    MAILNAME /etc/mailname
+    MASQUERADE boklm-tbb-nightly@riseup.net

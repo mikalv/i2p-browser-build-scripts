@@ -4,3 +4,21 @@
   apt:
       name: dma
       state: present
+
+- name: create dma auth.conf
+  copy:
+      dest: /etc/dma/auth.conf
+      mode: 0640
+      owner: root
+      group: mail
+      content: "{{ dma_auth_conf }}"
+  when: dma_auth_conf is defined
+
+- name: create dma.conf
+  copy:
+      dest: /etc/dma/dma.conf
+      mode: 0640
+      owner: root
+      group: mail
+      content: "{{ dma_conf }}"
+  when: dma_conf is defined

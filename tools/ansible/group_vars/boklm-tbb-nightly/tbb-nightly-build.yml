@@ -1,3 +1,5 @@
 ---
 nightly_build_hostname: f4amtbsowhix7rrf.onion
 nightly_build_url: 'http://{{ nightly_build_hostname }}'
+nightly_build_email_from: "'Tor Browser Nightly Builds (boklm) <boklm-tbb-nightly@riseup.net>',"
+nightly_build_email_to: "[ 'boklm@torproject.org', 'gk@torproject.org' ],"
