@@ -46,13 +46,18 @@ The same as alpha_nightly, for the selected platform only.
 testbuild
 ---------
 Build a Tor Browser test build. To make the build faster, only the en-US
-locale is created, without mar files. By default it is based on the
-alpha channel, but you can change that by editing rbm.local.conf.
-The resulting build can be found in directory testbuild.
+locale is created, without mar files, and without the source tarballs.
+By default it is based on the alpha channel, but you can change that by
+editing rbm.local.conf. The resulting build can be found in directory
+testbuild.
 
 {release,alpha,nightly,testbuild}-linux-x86_64-debug
 ----------------------------------------------------
 Create a debug build for Linux x86_64 with debug features such as ASan.
+
+{release,alpha,nightly,testbuild}-src
+-------------------------------------
+Create source tarballs for firefox, torbutton and tor-launcher.
 
 fetch
 -----

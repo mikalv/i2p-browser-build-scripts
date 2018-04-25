@@ -16,6 +16,7 @@ targets:
     - torbrowser-osx-x86_64
     - torbrowser-android-armv7
     - torbrowser-android-x86
+    - torbrowser-src
   torbrowser-android-armv7:
     var:
       torbrowser-android-armv7: 1
@@ -41,6 +42,12 @@ targets:
   torbrowser-osx-x86_64:
     var:
       torbrowser-osx-x86_64: 1
+  torbrowser-src:
+    var:
+      torbrowser-src: '[% ! c("var/testbuild") %]'
+  torbrowser-src-testbuild:
+    var:
+      torbrowser-src: 1
 
   notarget:
     - release
@@ -74,6 +81,7 @@ targets:
   testbuild:
     output_dir: 'testbuild'
     var:
+      testbuild: 1
       build_target: torbrowser-testbuild
       publish_dir: ''
 
@@ -152,6 +160,30 @@ input_files:
      - '[% c("var/build_target") %]'
      - torbrowser-windows-x86_64
      - expert-bundle
+
+ - name: src-firefox
+   project: firefox
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
+
+ - name: src-torbutton
+   project: torbutton
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
+
+ - name: src-tor-launcher
+   project: tor-launcher
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
 
 steps:
   signtag:
