@@ -10,9 +10,7 @@ cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('arch') %]-unknown-linux-
 ./install.sh --prefix=$distdir-rust-old
 export PATH="$distdir-rust-old/bin:$PATH"
 
-[% IF ! c("var/windows") %]
-  [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
-[% END -%]
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 
 [% IF c("var/osx") %]
   # We need to clear `CC` and `LDFLAGS` as they are used for the host platform
@@ -59,6 +57,16 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
   # But that is too old on Debian Wheezy which is why we need to patch it, so
   # we can use our own GCC instead.
   patch -p1 < $rootdir/binaryen.patch
+[% END %]
+
+[% IF c("var/windows-i686") %]
+  # Cross-compiling for Windows 32bit is currently not possible without any
+  # patches. The reason for that is libstd expecting DWARF unwinding while most
+  # toolchains on Linux, targeting Windows 32bit, use SjLj unwinding.
+  # See: https://github.com/rust-lang/rust/issues/12859 for discussion about
+  # that and https://github.com/rust-lang/rust/pull/49633 for a newer attempt to
+  # fix this problem.
+  patch -p1 < $rootdir/panic-abort.patch
 [% END %]
 
 mkdir build

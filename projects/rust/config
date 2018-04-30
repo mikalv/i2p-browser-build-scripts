@@ -48,6 +48,13 @@ targets:
         - pkg-config
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=x86_64-apple-darwin --set=target.x86_64-apple-darwin.cc=x86_64-apple-darwin-clang
 
+  windows:
+    var:
+      arch_deps:
+        - libssl-dev
+        - pkg-config
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=[% c("arch") %]-pc-windows-gnu
+
 input_files:
   - project: container-image
   - project: cmake
@@ -66,3 +73,5 @@ input_files:
     gpg_keyring: rust.gpg
   - filename: binaryen.patch
     enable: '[% c("var/linux") %]'
+  - filename: panic-abort.patch
+    enable: '[% c("var/windows-i686") %]'
