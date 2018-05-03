@@ -1,3 +1,19 @@
+Tor Browser 8.0a7 -- May 9 2018
+ * All platforms
+   * Update Firefox to 52.8.0esr
+   * Update Tor Launcher to 0.2.15.2
+     * Bug 25807: Change front domain to unbreak Moat
+     * Translations update
+   * Bug 25973: Backport off-by-one fix (bug 1352073)
+   * Bug 25938: Backport fix for cross-origin header leak (bug 1334776)
+   * Bug 25458: Fix broken UI customization
+   * Bug 25898: Make Youtube videos play automatically again
+   * Bug 25980: Improve backport of bug 1448771 (fixes broken Orfox build)
+ * OS X
+   * Bug 26010: Change Snowflake rendezvous to use the Azure domain front
+ * Linux
+   * Bug 26010: Change Snowflake rendezvous to use the Azure domain front
+
 Tor Browser 8.0a6 -- April 19 2018
  * All platforms
    * Update Tor to 0.3.3.5-rc
