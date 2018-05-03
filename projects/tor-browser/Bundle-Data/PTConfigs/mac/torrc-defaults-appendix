@@ -5,4 +5,4 @@ ClientTransportPlugin obfs2,obfs3,obfs4,scramblesuit exec PluggableTransports/ob
 ClientTransportPlugin meek exec PluggableTransports/meek-client-torbrowser -- PluggableTransports/meek-client
 
 ## snowflake configuration
-ClientTransportPlugin snowflake exec PluggableTransports/snowflake-client -url https://snowflake-reg.appspot.com/ -front www.google.com -ice stun:stun.l.google.com:19302
+ClientTransportPlugin snowflake exec PluggableTransports/snowflake-client -url https://snowflake-broker.azureedge.net/ -front ajax.aspnetcdn.com -ice stun:stun.l.google.com:19302
