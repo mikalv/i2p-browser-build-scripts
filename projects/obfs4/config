@@ -13,6 +13,7 @@ var:
 targets:
   nightly:
     git_hash: master
+    version: '[% c("abbrev") %]'
     tag_gpg_id: 0
 
 input_files:
