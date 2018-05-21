@@ -92,7 +92,7 @@ sub get_version_files {
     return if $config->{versions}{$version}{files};
     my $appname = $config->{appname_marfile};
     my $files = {};
-    my $vdir = "$releases_dir/$version";
+    my $vdir = version_dir($config, $version);
     my $download_url = "$config->{download}{mars_url}/$version";
     opendir(my $d, $vdir) or exit_error "Error opening directory $vdir";
     foreach my $file (readdir $d) {
@@ -126,7 +126,7 @@ sub get_version_files {
 sub get_version_downloads {
     my ($config, $version) = @_;
     my $downloads = {};
-    my $vdir = "$releases_dir/$version";
+    my $vdir = version_dir($config, $version);
     my $download_url = "$config->{download}{bundles_url}/$version";
     opendir(my $d, $vdir) or exit_error "Error opening directory $vdir";
     foreach my $file (readdir $d) {
@@ -179,15 +179,15 @@ sub extract_mar {
 }
 
 sub mar_filename {
-    my ($appname, $version, $os, $lang) = @_;
-    "$releases_dir/$version/$appname-$os-${version}_$lang.mar";
+    my ($config, $appname, $version, $os, $lang) = @_;
+    version_dir($config, $version) .  "/$appname-$os-${version}_$lang.mar";
 }
 
 sub create_incremental_mar {
     my ($config, $pm, $from_version, $new_version, $os, $lang) = @_;
     my $appname = $config->{appname_marfile};
     my $mar_file = "$appname-$os-${from_version}-${new_version}_$lang.incremental.mar";
-    my $mar_file_path = "$releases_dir/$new_version/$mar_file";
+    my $mar_file_path = version_dir($config, $new_version) . '/' . $mar_file;
     if ($ENV{MAR_SKIP_EXISTING} && -f $mar_file_path) {
         print "Skipping $mar_file\n";
         return;
@@ -207,8 +207,8 @@ sub create_incremental_mar {
     };
     return if $pm->start($finished_file);
     my $tmpdir = get_tmpdir($config);
-    extract_mar(mar_filename($appname, $from_version, $os, $lang), "$tmpdir/A");
-    extract_mar(mar_filename($appname, $new_version, $os, $lang), "$tmpdir/B");
+    extract_mar(mar_filename($config, $appname, $from_version, $os, $lang), "$tmpdir/A");
+    extract_mar(mar_filename($config, $appname, $new_version, $os, $lang), "$tmpdir/B");
     if ($ENV{CHECK_CODESIGNATURE_EXISTS}) {
         unless (-f "$tmpdir/A/Contents/_CodeSignature/CodeResources"
             && -f "$tmpdir/B/Contents/_CodeSignature/CodeResources") {
@@ -250,6 +250,11 @@ sub get_config {
         // $config->{$name};
 }
 
+sub version_dir {
+    my ($config, $version) = @_;
+    return get_config($config, $version, 'any', 'releases_dir') . "/$version";
+}
+
 sub channel_to_version {
     my ($config, @channels) = @_;
     return values %{$config->{channels}} unless @channels;
@@ -270,7 +275,7 @@ sub get_buildinfos {
             next unless $files->{$os}{$lang}{complete};
             my $tmpdir = get_tmpdir($config);
             extract_mar(
-                mar_filename($config->{appname_marfile}, $version, $os, $lang),
+                mar_filename($config, $config->{appname_marfile}, $version, $os, $lang),
                 "$tmpdir");
             my $appfile = "$tmpdir/application.ini" if -f "$tmpdir/application.ini";
             $appfile = "$tmpdir/Contents/Resources/application.ini"
@@ -423,7 +428,7 @@ my $martools_tmpdir;
 sub extract_martools {
     my ($config, $version) = @_;
     my $osname = osname;
-    my $marzip = "$releases_dir/$version/mar-tools-$osname.zip";
+    my $marzip = version_dir($config, $version) . "/mar-tools-$osname.zip";
     $martools_tmpdir = get_tmpdir($config);
     my $old_cwd = getcwd;
     chdir $martools_tmpdir;
@@ -523,7 +528,7 @@ sub check_update_responses_channel {
 sub download_version {
     my ($config, $version) = @_;
     my $tmpdir = get_tmpdir($config);
-    my $destdir = "$releases_dir/$version";
+    my $destdir = version_dir($config, $version);
     my $urldir = "$config->{download}{archive_url}/$version";
     print "Downloading version $version\n";
     foreach my $file (qw(sha256sums-signed-build.txt sha256sums-signed-build.txt.asc)) {
@@ -576,7 +581,7 @@ sub download_missing_versions {
         my $cversion = $config->{channels}{$channel};
         next unless $config->{versions}{$cversion}{incremental_from};
         foreach my $version (@{$config->{versions}{$cversion}{incremental_from}}) {
-            next if -d "$releases_dir/$version";
+            next if -d version_dir($config, $version);
             download_version($config, $version);
         }
     }

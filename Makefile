@@ -111,13 +111,13 @@ signtag-alpha: submodule-update
 	$(rbm) build release --step signtag --target alpha
 
 incrementals-release: submodule-update
-	$(rbm) build release --step update_responses_config --target release
+	$(rbm) build release --step update_responses_config --target release --target create_unsigned_incrementals
 	tools/update-responses/download_missing_versions release
 	tools/update-responses/gen_incrementals release
 	$(rbm) build release --step hash_incrementals --target release
 
 incrementals-alpha: submodule-update
-	$(rbm) build release --step update_responses_config --target alpha
+	$(rbm) build release --step update_responses_config --target alpha --target create_unsigned_incrementals
 	tools/update-responses/download_missing_versions alpha
 	tools/update-responses/gen_incrementals alpha
 	$(rbm) build release --step hash_incrementals --target alpha
