@@ -209,6 +209,10 @@ sub create_incremental_mar {
     my $tmpdir = get_tmpdir($config);
     extract_mar(mar_filename($config, $appname, $from_version, $os, $lang), "$tmpdir/A");
     extract_mar(mar_filename($config, $appname, $new_version, $os, $lang), "$tmpdir/B");
+    # bug 26054: make sure previous macOS version is code signed
+    if (($os eq 'osx64') && ! -f "$tmpdir/A/Contents/_CodeSignature/CodeResources") {
+        exit_error "Missing code signature in $from_version while creating $mar_file";
+    }
     if ($ENV{CHECK_CODESIGNATURE_EXISTS}) {
         unless (-f "$tmpdir/A/Contents/_CodeSignature/CodeResources"
             && -f "$tmpdir/B/Contents/_CodeSignature/CodeResources") {
