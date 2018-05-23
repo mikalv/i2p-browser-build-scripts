@@ -194,7 +194,7 @@ cp defaults/preferences/000-tor-browser.js $rootdir
   rm -rf chrome
 [% END %]
 # Set the locale of the bundle.
-echo "pref(\"general.useragent.locale\", \"en-US\");" >> defaults/preferences/000-tor-browser.js
+echo "pref(\"intl.locale.requested\", \"en-US\");" >> defaults/preferences/000-tor-browser.js
 [% c("var/touch") %] defaults/preferences/000-tor-browser.js
 zip -Xm omni.ja defaults/preferences/000-tor-browser.js
 rm -rf defaults
@@ -325,7 +325,7 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
       mkdir -p defaults/preferences
       cp $rootdir/000-tor-browser.js defaults/preferences/
       # Set the locale of the bundle.
-      echo "pref(\"general.useragent.locale\", \"[% lang %]\");" >> defaults/preferences/000-tor-browser.js
+      echo "pref(\"intl.locale.requested\", \"[% lang %]\");" >> defaults/preferences/000-tor-browser.js
       [% c("var/touch") %] defaults/preferences/000-tor-browser.js
       zip -Xm omni.ja defaults/preferences/000-tor-browser.js
       rm -rf defaults
