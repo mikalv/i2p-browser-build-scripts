@@ -48,6 +48,8 @@ targets:
         - libx11-xcb-dev
         # We built GCC but not the libmpc2, thus we need to install it
         - libmpc2
+        # needed to remove RUNPATH added by selfrando (see #22242)
+        - chrpath
   linux-x86_64:
     var:
       martools_filename: mar-tools-linux64.zip
@@ -82,7 +84,7 @@ input_files:
     enable: '[% c("var/linux") %]'
   - project: selfrando
     name: selfrando
-    enable: '[% c("var/linux") && ! c("var/release") %]'
+    enable: '[% c("var/selfrando") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
   - URL: https://people.torproject.org/~gk/mirrors/sources/msvcr100.dll
