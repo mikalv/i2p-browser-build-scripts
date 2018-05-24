@@ -23,5 +23,5 @@ input_files:
     URL: https://people.torproject.org/~gk/mirrors/sources/cctools.tar.gz
     sha256sum: e908fdebc2886ee5491ebfc7e7950af451b3c4e2439c2d7a923ed06ad05113e4
   - name: SDK
-    URL: https://people.torproject.org/~mikeperry/mirrors/sources/MacOSX10.7.sdk.tar.gz
-    sha256sum: da77bb0003fcca5ea8c4e8cb2da8828ded750c54afdcac29ec6f3b46ad5e3adf
+    URL: https://people.torproject.org/~gk/mirrors/sources/MacOSX10.11.sdk.tar.bz2
+    sha256sum: d11e410d757d023be66d2fe7eaa85a1d232da3ac04f177eff3d8b8275cd9ffca

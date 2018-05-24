@@ -2,8 +2,8 @@
 [% c("var/set_default_env") -%]
 distdir="/var/tmp/dist/[% project %]"
 mkdir -p "$distdir"
-tar xzf [% c('input_files_by_name/SDK') %]
-mv MacOSX10.7.sdk "$distdir/SDK"
+tar xjf [% c('input_files_by_name/SDK') %]
+mv MacOSX10.11.sdk "$distdir/SDK"
 tar xf [% c('input_files_by_name/llvm') %]
 mv llvm "$distdir/clang"
 tar -C $distdir -xf [% c('input_files_by_name/cctools') %]
