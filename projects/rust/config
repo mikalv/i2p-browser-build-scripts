@@ -41,13 +41,19 @@ targets:
       # Rust pieces compiled.
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=[% c("arch") %]-unknown-linux-gnu --set=target.[% c("arch") %]-unknown-linux-gnu.cc=gcc
 
+  osx-x86_64:
+    var:
+      arch_deps:
+        - libssl-dev
+        - pkg-config
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=x86_64-apple-darwin --set=target.x86_64-apple-darwin.cc=x86_64-apple-darwin-clang
+
 input_files:
   - project: container-image
   - project: cmake
     name: cmake
-  - project: gcc
-    name: gcc
-    enable: '[% c("var/linux") %]'
+  - project: '[% c("var/compiler") %]'
+    name: '[% c("var/compiler") %]'
   - URL: 'https://static.rust-lang.org/dist/rustc-[% c("version") %]-src.tar.gz'
     name: rust
     sig_ext: asc

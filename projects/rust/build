@@ -10,9 +10,44 @@ cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('arch') %]-unknown-linux-
 ./install.sh --prefix=$distdir-rust-old
 export PATH="$distdir-rust-old/bin:$PATH"
 
-[% IF c("var/linux") %]
-  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc') }) %]
+[% IF ! c("var/windows") %]
+  [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 [% END -%]
+
+[% IF c("var/osx") %]
+  # We need to clear `CC` and `LDFLAGS` as they are used for the host platform
+  # (i.e. Linux).
+  unset CC
+  unset LDFLAGS
+  # Target 10.6 as our toolchain does. Without this explicit declaration Bad
+  # Things will happen, as a lot of dependent code then assumes that the
+  # official macOS target, x86_64-apple-darwin, essentially means 10.4.
+  export MACOSX_DEPLOYMENT_TARGET=10.6
+  # The Rust target for macOS is x86_64-apple-darwin, yet our toolchain is built
+  # for x86_64-apple-darwin10. We can't mix those targets as clang gets confused
+  # that way. Changing the Rust target to x86_64-apple-darwin10 would require a
+  # fair amount of patching, thus we create symlinks to prvoide Rust with the
+  # necessary tools while using our toolchain underneath, targeting 10.6.
+  cd $cctoolsdir
+  for f in `ls x86_64-apple-darwin10-*`; do
+    ln -s $f ${f//x86_64-apple-darwin10/x86_64-apple-darwin}
+  done
+  cd ..
+  ln -s x86_64-apple-darwin10 x86_64-apple-darwin
+  mkdir -p $distdir/helper
+
+  # We need to adapt our CFLAGS and make sure our flags are passed down to all
+  # dependencies. Using `CFLAGS_x86_apple-darwin` did not do the trick, so resort
+  # to a wrapper script.
+  cat > $distdir/helper/x86_64-apple-darwin-clang << 'EOF'
+#!/bin/sh
+BASEDIR=/var/tmp/dist/macosx-toolchain
+$BASEDIR/cctools/bin/x86_64-apple-darwin-clang -target x86_64-apple-darwin -mlinker-version=136 -B $BASEDIR/cctools/bin -isysroot $BASEDIR/SDK/ -Wl,-syslibroot,$BASEDIR/SDK/ -Wl,-dead_strip -Wl,-pie "$@"
+EOF
+
+  chmod +x $distdir/helper/x86_64-apple-darwin-clang
+  export PATH=$distdir/helper:$PATH
+[% END %]
 
 cd $rootdir
 mkdir /var/tmp/build
