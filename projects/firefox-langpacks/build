@@ -4,8 +4,8 @@
 [% FOREACH lang = c('var/locales') %]
   [% SET lang = tmpl(lang) %]
   [% SET filename = c("var/input_filename") _ '/' _ lang _ '.xpi'; %]
-  shasum=$(grep '[% c("var/ff_arch") %]/xpi/[% lang %].xpi$' SHA512SUMS-[% c("version") %] | sed 's|  [% c("var/ff_arch") %]/xpi/[% lang %].xpi$||')
-  echo "$shasum  [% filename %]" | sha512sum -c
+  #shasum=$(grep '[% c("var/ff_arch") %]/xpi/[% lang %].xpi$' SHA512SUMS-[% c("version") %] | sed 's|  [% c("var/ff_arch") %]/xpi/[% lang %].xpi$||')
+  #echo "$shasum  [% filename %]" | sha512sum -c
 [% END %]
 
 mkdir -p [% dest_dir %]/[% c("filename") %]
