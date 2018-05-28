@@ -111,10 +111,10 @@ fi
 
 rm -f configure
 rm -f js/src/configure
-make -f client.mk configure CONFIGURE_ARGS="--with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts"
 
-make -j[% c("buildconf/num_procs") %] -f client.mk build
-make -C obj-* package INNER_MAKE_PACKAGE=true
+./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts
+./mach build
+./mach package
 
 [% IF c("var/osx") %]
   cp -a obj-macos/dist/firefox/* $distdir
