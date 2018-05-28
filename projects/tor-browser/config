@@ -66,9 +66,9 @@ input_files:
     name: snowflake
     enable: '[% c("var/snowflake") %]'
   - filename: Bundle-Data
-  - URL: https://secure.informaction.com/download/releases/noscript-5.1.8.5.xpi
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.1.8.1-an+fx.xpi
     name: noscript
-    sha256sum: 7180f8d24ca31989682dee229b95e3503699f2bb25cb593a6a1f2ce0a2253792
+    sha256sum: 63a8a6a582af6e28084fae3bc72ebc5c5c2437467f8d445c8ea69d1061a3f7b2
   - filename: 'RelativeLink/start-tor-browser.desktop'
     enable: '[% c("var/linux") %]'
   - filename: 'RelativeLink/execdesktop'
