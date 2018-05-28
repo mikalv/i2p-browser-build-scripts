@@ -97,3 +97,9 @@ input_files:
     enable: '[% c("var/windows") %]'
   - filename: STL_win64.patch
     enable: '[% c("var/windows-x86_64") %]'
+  - project: rust
+    name: rust
+    enable: '[% c("var/linux") %]'
+  - project: llvm
+    name: llvm
+    enable: '[% c("var/linux") %]'

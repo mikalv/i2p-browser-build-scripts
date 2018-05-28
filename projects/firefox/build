@@ -48,6 +48,15 @@ EOF
 #  export SELFRANDO_skip_shuffle=
 #[% END -%]
 
+[% IF c("var/linux") %]
+  mkdir -p /var/tmp/dist
+  tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
+  export PATH="/var/tmp/dist/rust/bin:$PATH"
+  # Add llvm so stylo can build
+  tar -C /var/tmp/dist -xf [% c('input_files_by_name/llvm') %]
+  export LLVM_CONFIG="/var/tmp/dist/llvm/bin/llvm-config"
+[% END -%]
+
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 
 [% IF c("var/osx") %]
