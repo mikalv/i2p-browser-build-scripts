@@ -4,6 +4,13 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/dist
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
 export PATH="/var/tmp/dist/cmake/bin:$PATH"
+[% IF c("var/linux") %]
+  # We need a link to our GCC, otherwise the system cc gets used which points to
+  # /usr/bin/gcc.
+  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc'),
+                              hardened_gcc => 0 }) %]
+  ln -s gcc /var/tmp/dist/gcc/bin/cc
+[% END -%]
 mkdir -p /var/tmp/build
 cd /var/tmp/build
 tar -xf $rootdir/[% c('input_files_by_name/llvm') %]
