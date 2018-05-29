@@ -21,5 +21,6 @@ input_files:
     URL: 'http://http.debian.net/debian/pool/main/n/nsis/nsis_2.51-1.debian.tar.xz'
     sha256sum: 1dee6957b4a4b8dfe69bcf28bc7f301a13b96b3fa5a394e36c8926ae781e774a
   - filename: nsis-missing-unistd-include.patch
+  - filename: no-insert-timestamp.patch
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'

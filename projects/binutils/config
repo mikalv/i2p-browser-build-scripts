@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2.24
+version: 2.26.1
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 var:
   configure_opt: '--disable-multilib --enable-gold --enable-deterministic-archives --enable-plugins'
@@ -10,6 +10,9 @@ targets:
   windows:
     var:
       configure_opt: '--target=[% c("arch") %]-w64-mingw32 --disable-multilib --enable-deterministic-archives'
+      arch_deps:
+        # texinfo required for fix-windows-reproducibility.patch
+        - texinfo
 
 input_files:
   - URL: https://ftp.gnu.org/gnu/binutils/binutils-[% c("version") %].tar.bz2
@@ -19,11 +22,9 @@ input_files:
   - project: container-image
   - filename: enable-reloc-section-ld.patch
     enable: '[% c("var/windows") %]'
-  - filename: fix-warning-bfd.patch
-    enable: '[% c("var/windows") %]'
   - filename: 64bit-fixups.patch
     enable: '[% c("var/windows-x86_64") %]'
   - filename: peXXigen.patch
     enable: '[% c("var/windows") %]'
-  - filename: binutils-224-gold.patch
-    enable: '[% c("var/linux") %]'
+  - filename: fix-windows-reproducibility.patch
+    enable: '[% c("var/windows") %]'

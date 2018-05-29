@@ -1,14 +1,19 @@
-From f3ba95e14437f10de8b8f296930ff2a8495d18c6 Mon Sep 17 00:00:00 2001
+From 05164a1162d5f6f696d7f7c4b1bc61ef06d1c288 Mon Sep 17 00:00:00 2001
 From: Georg Koppen <gk@torproject.org>
 Date: Tue, 12 Sep 2017 07:21:16 +0000
 Subject: [PATCH] 64bit fixups
 
+---
+ ld/emultempl/pep.em | 4 ++--
+ ld/pep-dll.c        | 1 +
+ ld/pep-dll.h        | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/ld/emultempl/pep.em b/ld/emultempl/pep.em
-index b566903b14..27006bdf79 100644
+index fccbd63..f7c0a57 100644
 --- a/ld/emultempl/pep.em
 +++ b/ld/emultempl/pep.em
-@@ -730,7 +730,7 @@ gld${EMULATION_NAME}_handle_option (int optc)
+@@ -742,7 +742,7 @@ gld${EMULATION_NAME}_handle_option (int optc)
        pep_dll_exclude_all_symbols = 1;
        break;
      case OPTION_ENABLE_RELOC_SECTION:
@@ -17,17 +22,17 @@ index b566903b14..27006bdf79 100644
        break;
      case OPTION_EXCLUDE_LIBS:
        pep_dll_add_excludes (optarg, EXCLUDELIBS);
-@@ -1623,7 +1623,7 @@ gld_${EMULATION_NAME}_finish (void)
- 
+@@ -1862,7 +1862,7 @@ gld_${EMULATION_NAME}_finish (void)
  #ifdef DLL_SUPPORT
-   if (link_info.shared
--      || (!link_info.relocatable && pe_dll_enable_reloc_section)
-+      || (!link_info.relocatable && pep_dll_enable_reloc_section)
-       || (!link_info.relocatable && pep_def_file->num_exports != 0))
+   if (bfd_link_pic (&link_info)
+       || (!bfd_link_relocatable (&link_info)
+-          && pe_dll_enable_reloc_section)
++          && pep_dll_enable_reloc_section)
+       || (!bfd_link_relocatable (&link_info)
+           && pep_def_file->num_exports != 0))
      {
-       pep_dll_fill_sections (link_info.output_bfd, &link_info);
 diff --git a/ld/pep-dll.c b/ld/pep-dll.c
-index 0e5e8b1523..b5f99b90e0 100644
+index b8c017f..5ad5733 100644
 --- a/ld/pep-dll.c
 +++ b/ld/pep-dll.c
 @@ -31,6 +31,7 @@
@@ -39,7 +44,7 @@ index 0e5e8b1523..b5f99b90e0 100644
  #define pe_dll_stdcall_aliases      pep_dll_stdcall_aliases
  #define pe_dll_warn_dup_exports     pep_dll_warn_dup_exports
 diff --git a/ld/pep-dll.h b/ld/pep-dll.h
-index 1e7e3d65d4..c31e69cc8e 100644
+index 0a27c1f..95d9c15 100644
 --- a/ld/pep-dll.h
 +++ b/ld/pep-dll.h
 @@ -31,6 +31,7 @@ extern def_file * pep_def_file;
@@ -51,5 +56,5 @@ index 1e7e3d65d4..c31e69cc8e 100644
  extern int pep_dll_stdcall_aliases;
  extern int pep_dll_warn_dup_exports;
 -- 
-2.14.1
+2.1.4
 

@@ -25,16 +25,12 @@ cd [% project %]-[% c("version") %]
   patch -p1 < ../peXXigen.patch
   # Needed for the hardening...
   patch -p1 < ../enable-reloc-section-ld.patch
-  # fix "right-hand operand of comma expression has no effect" warning
-  patch -p1 < ../fix-warning-bfd.patch
+  # fix build reproducibility of Windows builds by reverting commit 13e570f80c.
+  # See bug 16472.
+  patch -p1 < ../fix-windows-reproducibility.patch
 [% END -%]
 [% IF c('var/windows-x86_64') -%]
   patch -p1 < ../64bit-fixups.patch
-[% END -%]
-[% IF c("var/linux") && ! c("var/release") -%]
-  # We need to work around a gold linker bug in 2.24 to get selfrando working,
-  # see bug 20683.
-  patch -p1 < $rootdir/binutils-224-gold.patch
 [% END -%]
 ./configure --prefix=$distdir [% c('var/configure_opt') %]
 make -j[% c("buildconf/num_procs") %]
