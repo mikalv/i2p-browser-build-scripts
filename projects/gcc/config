@@ -18,23 +18,25 @@ var:
     export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib64
     [% END -%]
 
-    # Config options for hardening-wrapper
-    export DEB_BUILD_HARDENING=1
-    export DEB_BUILD_HARDENING_STACKPROTECTOR=1
-    export DEB_BUILD_HARDENING_FORTIFY=1
-    export DEB_BUILD_HARDENING_FORMAT=1
-    export DEB_BUILD_HARDENING_PIE=1
+    [% IF c("hardened_gcc") -%]
+      # Config options for hardening-wrapper
+      export DEB_BUILD_HARDENING=1
+      export DEB_BUILD_HARDENING_STACKPROTECTOR=1
+      export DEB_BUILD_HARDENING_FORTIFY=1
+      export DEB_BUILD_HARDENING_FORMAT=1
+      export DEB_BUILD_HARDENING_PIE=1
 
-    # Make sure we use the hardening wrapper
-    pushd /var/tmp/dist/gcc/bin
-    cp /usr/bin/hardened-cc ./
-    mv gcc gcc.real
-    mv c++ c++.real
-    mv g++ g++.real
-    ln -sf hardened-cc gcc
-    ln -sf hardened-cc c++
-    ln -sf hardened-cc g++
-    popd
+      # Make sure we use the hardening wrapper
+      pushd /var/tmp/dist/gcc/bin
+      cp /usr/bin/hardened-cc ./
+      mv gcc gcc.real
+      mv c++ c++.real
+      mv g++ g++.real
+      ln -sf hardened-cc gcc
+      ln -sf hardened-cc c++
+      ln -sf hardened-cc g++
+      popd
+    [% END -%]
 
 targets:
   windows:
@@ -43,6 +45,8 @@ targets:
       arch_deps:
         - libc6-dev
         - zlib1g-dev
+  linux:
+    hardened_gcc: 1
   linux-i686:
     var:
       configure_opt: --enable-multilib --enable-languages=c,c++ --with-system-zlib
