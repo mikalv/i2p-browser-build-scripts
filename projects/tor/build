@@ -39,7 +39,7 @@ openssldir=/var/tmp/dist/openssl
   mkdir -p "$distdir/Debug/Tor"
   cp $openssldir/lib/libssl.so.1.0.0 "$distdir/Tor/"
   cp $openssldir/lib/libcrypto.so.1.0.0 "$distdir/Tor/"
-  cp $libeventdir/lib/libevent-2.0.so.5 "$distdir/Tor/"
+  cp $libeventdir/lib/libevent-2.1.so.6 "$distdir/Tor/"
   # We need to copy the libstdc++.so.6 for Tor Browser on older Linux distros.
   # Copying it into /Browser, which feels more natural, and amending
   # LD_LIBRARY_PATH breaks updates from a Tor Browser with the old
