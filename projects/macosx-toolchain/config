@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-version: 10.7-1
+version: 10.11-1
 var:
   container:
     use_container: 1
@@ -20,8 +20,7 @@ input_files:
   - name: llvm
     project: llvm
   - name: cctools
-    URL: https://people.torproject.org/~gk/mirrors/sources/cctools.tar.gz
-    sha256sum: e908fdebc2886ee5491ebfc7e7950af451b3c4e2439c2d7a923ed06ad05113e4
+    project: cctools
   - name: SDK
     URL: https://people.torproject.org/~gk/mirrors/sources/MacOSX10.11.sdk.tar.bz2
     sha256sum: d11e410d757d023be66d2fe7eaa85a1d232da3ac04f177eff3d8b8275cd9ffca

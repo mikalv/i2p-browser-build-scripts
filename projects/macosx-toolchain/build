@@ -8,10 +8,11 @@ tar xf [% c('input_files_by_name/llvm') %]
 mv llvm "$distdir/clang"
 tar -C $distdir -xf [% c('input_files_by_name/cctools') %]
 cd $distdir/cctools/bin
-ln -s ../../clang/bin/clang x86_64-apple-darwin10-clang
-ln -s ../../clang/bin/clang++ x86_64-apple-darwin10-clang++
-# "go link" expects to find a program called "dsymutil" exactly.
-ln -sf x86_64-apple-darwin10-dsymutil dsymutil
+ln -s ../../clang/bin/clang x86_64-apple-darwin11-clang
+ln -s ../../clang/bin/clang++ x86_64-apple-darwin11-clang++
+# "go link", libevent, and the jemalloc cross-compilation during the Rust build
+# expect to find a program called "dsymutil" exactly.
+ln -s ../../clang/bin/llvm-dsymutil dsymutil
 
 cd "/var/tmp/dist"
 [% c('tar', {
