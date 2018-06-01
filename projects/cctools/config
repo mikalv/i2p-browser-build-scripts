@@ -1,0 +1,16 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+version: '[% c("abbrev") %]'
+# This can be found in
+# browser/config/tooltool-manifest/macosx64/clang.manifest
+git_hash: 8e9c3f2506b51cf56725eaa60b6e90e240e249ca
+git_url: https://github.com/tpoechtrager/cctools-port
+
+var:
+  container:
+    use_container: 1
+
+input_files:
+  - project: container-image
+  - name: llvm
+    project: llvm
