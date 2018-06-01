@@ -17,21 +17,21 @@ export PATH="$distdir-rust-old/bin:$PATH"
   # (i.e. Linux).
   unset CC
   unset LDFLAGS
-  # Target 10.6 as our toolchain does. Without this explicit declaration Bad
+  # Target 10.7 as our toolchain does. Without this explicit declaration Bad
   # Things will happen, as a lot of dependent code then assumes that the
   # official macOS target, x86_64-apple-darwin, essentially means 10.4.
-  export MACOSX_DEPLOYMENT_TARGET=10.6
+  export MACOSX_DEPLOYMENT_TARGET=10.7
   # The Rust target for macOS is x86_64-apple-darwin, yet our toolchain is built
-  # for x86_64-apple-darwin10. We can't mix those targets as clang gets confused
-  # that way. Changing the Rust target to x86_64-apple-darwin10 would require a
-  # fair amount of patching, thus we create symlinks to prvoide Rust with the
-  # necessary tools while using our toolchain underneath, targeting 10.6.
+  # for x86_64-apple-darwin11. We can't mix those targets as clang gets confused
+  # that way. Changing the Rust target to x86_64-apple-darwin11 would require a
+  # fair amount of patching, thus we create symlinks to provide Rust with the
+  # necessary tools while using our toolchain underneath, targeting 10.7.
   cd $cctoolsdir
-  for f in `ls x86_64-apple-darwin10-*`; do
-    ln -s $f ${f//x86_64-apple-darwin10/x86_64-apple-darwin}
+  for f in `ls x86_64-apple-darwin11-*`; do
+    ln -s $f ${f//x86_64-apple-darwin11/x86_64-apple-darwin}
   done
   cd ..
-  ln -s x86_64-apple-darwin10 x86_64-apple-darwin
+  ln -s x86_64-apple-darwin11 x86_64-apple-darwin
   mkdir -p $distdir/helper
 
   # We need to adapt our CFLAGS and make sure our flags are passed down to all
@@ -40,7 +40,7 @@ export PATH="$distdir-rust-old/bin:$PATH"
   cat > $distdir/helper/x86_64-apple-darwin-clang << 'EOF'
 #!/bin/sh
 BASEDIR=/var/tmp/dist/macosx-toolchain
-$BASEDIR/cctools/bin/x86_64-apple-darwin-clang -target x86_64-apple-darwin -mlinker-version=136 -B $BASEDIR/cctools/bin -isysroot $BASEDIR/SDK/ -Wl,-syslibroot,$BASEDIR/SDK/ -Wl,-dead_strip -Wl,-pie "$@"
+$BASEDIR/cctools/bin/x86_64-apple-darwin-clang -target x86_64-apple-darwin -B $BASEDIR/cctools/bin -isysroot $BASEDIR/SDK/ -Wl,-syslibroot,$BASEDIR/SDK/ -Wl,-dead_strip -Wl,-pie "$@"
 EOF
 
   chmod +x $distdir/helper/x86_64-apple-darwin-clang
