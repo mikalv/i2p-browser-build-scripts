@@ -52,7 +52,7 @@ cd /var/tmp/dist/go/src
   # http://golang.org/doc/install/source#environment
   export GOOS=darwin
   export GOARCH=amd64
-  # faketime is needed because clang 3.8.0 on Darwin embeds the timestamps of
+  # faketime is needed because clang 3.9.1 on Darwin embeds the timestamps of
   # certain intermediate object files (including those that arise here while
   # compiling the Go runtime itself). Without this, variable timestamps would
   # end up in snowflake-client.
