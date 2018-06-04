@@ -88,7 +88,7 @@ cp $distdir/share/tor/geoip6 $TORCONFIGDIR
   cd $distdir
   cp bin/tor $TORBINDIR/
   cd $TORBINDIR/
-  x86_64-apple-darwin10-install_name_tool -change $libeventdir/lib/$LIBEVENT_FILE @executable_path/$LIBEVENT_FILE tor
+  x86_64-apple-darwin11-install_name_tool -change $libeventdir/lib/$LIBEVENT_FILE @executable_path/$LIBEVENT_FILE tor
 [% END %]
 
 cd $distdir

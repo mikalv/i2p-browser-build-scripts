@@ -19,7 +19,7 @@ targets:
       configure_opts: '-shared --cross-compile-prefix=[% c("arch") %]-w64-mingw32- mingw[% IF c("var/windows-x86_64") %]64[% END %] "[% c("var/CFLAGS") %] [% c("var/LDFLAGS") %]"'
   osx-x86_64:
     var:
-      configure_opts: --cross-compile-prefix=x86_64-apple-darwin10- darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
+      configure_opts: --cross-compile-prefix=x86_64-apple-darwin11- darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
 
 input_files:
   - project: container-image
