@@ -86,6 +86,8 @@ input_files:
 #    enable: '[% c("var/linux") && ! c("var/release") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
+  - filename: no-dmg.patch
+    enable: '[% c("var/osx") %]'
   - URL: https://people.torproject.org/~gk/mirrors/sources/msvcr100.dll
     sha256sum: 8793353461826fbd48f25ea8b835be204b758ce7510db2af631b28850355bd18
     enable: '[% c("var/windows-i686") %]'
@@ -99,7 +101,7 @@ input_files:
     enable: '[% c("var/windows-x86_64") %]'
   - project: rust
     name: rust
-    enable: '[% c("var/linux") %]'
+    enable: '[% ! c("var/windows") %]'
   - project: llvm
     name: llvm
     enable: '[% c("var/linux") %]'

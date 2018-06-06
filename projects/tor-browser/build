@@ -14,7 +14,7 @@ mkdir -p $OUTDIR
 TB_STAGE_DIR=$distdir/tor-browser-stage
 
 [% IF c("var/osx") %]
-  TBDIR=$TB_STAGE_DIR/TorBrowser.app
+  TBDIR="$TB_STAGE_DIR/Tor Browser.app"
 
   DOCSPATH=Contents/Resources/TorBrowser/Docs
   EXTSPATH=Contents/Resources/distribution/extensions
@@ -34,11 +34,11 @@ TB_STAGE_DIR=$distdir/tor-browser-stage
   EXTOVERRIDESPATH=TorBrowser/Data/Browser/profile.default/preferences/extension-overrides.js
   MEEKPROFILEPATH=TorBrowser/Data/Browser/profile.meek-http-helper
 
-  mkdir -p $TBDIR/TorBrowser/Data/Browser/Caches
+  mkdir -p "$TBDIR/TorBrowser/Data/Browser/Caches"
 [% END %]
 
-mkdir -p $TBDIR/$EXTSPATH
-mkdir -p $TBDIR/$MEEKPROFILEPATH/extensions
+mkdir -p "$TBDIR/$EXTSPATH"
+mkdir -p "$TBDIR/$MEEKPROFILEPATH/extensions"
 
 # Extract the MAR tools.
 unzip -d $rootdir $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip
@@ -49,23 +49,23 @@ MARTOOLS=$rootdir/mar-tools
   unzip -d $rootdir $rootdir/mar-tools-linux32.zip
 [% END -%]
 
-mv [% c('input_files_by_name/tor-launcher') %] $TBDIR/$EXTSPATH/tor-launcher@torproject.org.xpi
-mv [% c('input_files_by_name/torbutton') %] $TBDIR/$EXTSPATH/torbutton@torproject.org.xpi
-mv [% c('input_files_by_name/https-everywhere') %] $TBDIR/$EXTSPATH/https-everywhere-eff@eff.org.xpi
-mv [% c('input_files_by_name/noscript') %] $TBDIR/$EXTSPATH/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi
+mv [% c('input_files_by_name/tor-launcher') %] "$TBDIR/$EXTSPATH/tor-launcher@torproject.org.xpi"
+mv [% c('input_files_by_name/torbutton') %] "$TBDIR/$EXTSPATH/torbutton@torproject.org.xpi"
+mv [% c('input_files_by_name/https-everywhere') %] "$TBDIR/$EXTSPATH/https-everywhere-eff@eff.org.xpi"
+mv [% c('input_files_by_name/noscript') %] "$TBDIR/$EXTSPATH/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi"
 
-tar -C $TBDIR -xf [% c('input_files_by_name/obfs4') %]
-tar -C $TBDIR -xf [% c('input_files_by_name/meek') %]
-mv $TBDIR/meek-http-helper@bamsoftware.com.xpi $TBDIR/$MEEKPROFILEPATH/extensions/
+tar -C "$TBDIR" -xf [% c('input_files_by_name/obfs4') %]
+tar -C "$TBDIR" -xf [% c('input_files_by_name/meek') %]
+mv "$TBDIR/meek-http-helper@bamsoftware.com.xpi" "$TBDIR/$MEEKPROFILEPATH/extensions/"
 [% IF c("var/snowflake") %]
-  tar -C $TBDIR -xf [% c('input_files_by_name/snowflake') -%]
+  tar -C "$TBDIR" -xf [% c('input_files_by_name/snowflake') -%]
 [% END -%]
 
 [% IF c("var/fteproxy") -%]
-  tar -C $TBDIR -xf [% c('input_files_by_name/fteproxy') %]
+  tar -C "$TBDIR" -xf [% c('input_files_by_name/fteproxy') %]
 [% END -%]
 
-tar -C $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %] -xf [% c('input_files_by_name/fonts') %]
+tar -C "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]" -xf [% c('input_files_by_name/fonts') %]
 
 [% IF c("var/linux") %]
   cp RelativeLink/* ${TB_STAGE_DIR}/Browser/
@@ -77,7 +77,7 @@ RBM_TB_EOF
 [% END %]
 
 tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/tor-browser.tar.gz
-tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_by_name/tor') %]/tor.tar.gz
+tar -C "$TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %]" -xf [% c('input_files_by_name/tor') %]/tor.tar.gz
 
 [% IF c("var/linux");
      SET bundledata_osname = 'linux';
@@ -107,8 +107,8 @@ tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_b
   mv $SKELETON_TMP Bundle-Data/mac
 
   # Install a "tor" shim that sets the working directory. See #10030.
-  mv $TBDIR/$TORBINPATH/tor $TBDIR/$TORBINPATH/tor.real
-  cp Bundle-Data/mac-tor.sh $TBDIR/$TORCONFIGPATH/tor
+  mv "$TBDIR/$TORBINPATH/tor" "$TBDIR/$TORBINPATH/tor.real"
+  cp Bundle-Data/mac-tor.sh "$TBDIR/$TORCONFIGPATH/tor"
 
   [% IF ! c("var/release") -%]
     SANDBOX_FOLDER="$TB_STAGE_DIR/Sandboxed Tor Browser"
@@ -118,17 +118,17 @@ tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -xf [% c('input_files_b
   tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
 [% END %]
 
-mkdir -p $TBDIR/$DOCSPATH
-cp -a Bundle-Data/Docs/* $TBDIR/$DOCSPATH
-tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C $TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %] -x
+mkdir -p "$TBDIR/$DOCSPATH"
+cp -a Bundle-Data/Docs/* "$TBDIR/$DOCSPATH"
+tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C "$TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %]" -x
 
-cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TBDIR/$TORCONFIGPATH/torrc-defaults
+cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> "$TBDIR/$TORCONFIGPATH/torrc-defaults"
 [% IF c("var/linux") -%]
   [% IF ! c("var/snowflake") %]
     grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
-       >> $TBDIR/$EXTOVERRIDESPATH
+       >> "$TBDIR/$EXTOVERRIDESPATH"
   [% ELSE %]
-    cat Bundle-Data/PTConfigs/bridge_prefs.js >> $TBDIR/$EXTOVERRIDESPATH
+    cat Bundle-Data/PTConfigs/bridge_prefs.js >> "$TBDIR/$EXTOVERRIDESPATH"
   [% END %]
 [% END -%]
 [% IF c("var/windows") -%]
@@ -136,18 +136,18 @@ cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> $TB
   # We don't have fte available on Windows x86_64 yet
   grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
   [% IF c("var/windows-x86_64") %]| grep -v 'default_bridge\.fte' [% END %] \
-      >> $TBDIR/$EXTOVERRIDESPATH
+      >> "$TBDIR/$EXTOVERRIDESPATH"
 [% END -%]
 [% IF c("var/osx") -%]
   # FTE is temporarily removed due to bug 18495.
   grep -Ev 'default_bridge\.fte' Bundle-Data/PTConfigs/bridge_prefs.js \
   [% IF ! c("var/snowflake") %]| grep -v 'default_bridge\.snowflake' [% END %] \
-      >> $TBDIR/$EXTOVERRIDESPATH
+      >> "$TBDIR/$EXTOVERRIDESPATH"
 [% END -%]
-cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> $TBDIR/$MEEKPROFILEPATH/user.js
+cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/user.js"
 
 [% IF c("var/osx") %]
-  pushd $TBDIR
+  pushd "$TBDIR"
   # Create the meek-template-sha256sum.txt file by generating a list
   # of hashes (one for each file within the meek-http-helper profile) and
   # and then generating one final hash from the contents of the list.
@@ -156,8 +156,8 @@ cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> $TBDIR/$MEEKPROFILEPATH/us
 [% END %]
 
 [% IF ! c("var/multi_lingual") %]
-  echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> $TBDIR/$EXTOVERRIDESPATH
-  echo 'pref("intl.locale.matchOS", false);' >> $TBDIR/$EXTOVERRIDESPATH
+  echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$TBDIR/$EXTOVERRIDESPATH"
+  echo 'pref("intl.locale.matchOS", false);' >> "$TBDIR/$EXTOVERRIDESPATH"
 [% END %]
 
 [% IF c("var/linux") %]
@@ -178,7 +178,7 @@ cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> $TBDIR/$MEEKPROFILEPATH/us
 [% END %]
 
 
-pushd $TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]/browser/
+pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]/browser/"
 # For the proper search engines in our language packs
 unzip omni.ja chrome/en-US/locale/browser/searchplugins* || [ $? -lt 3 ]
 mv chrome/en-US/locale/browser/searchplugins $rootdir
@@ -223,7 +223,7 @@ popd
       }) %]
   # If we are building a multi-lingual package, add all of the language packs.
   [% IF c("var/multi_lingual") %]
-    cp [% xpi %] $TBDIR/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi
+    cp [% xpi %] "$TBDIR/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
   [% END %]
   cd ..
   rm -rf prep_[% lang %]
@@ -232,7 +232,7 @@ popd
 [% IF c("var/multi_lingual") %]
   # Set the update.locale (it is used to replace %LOCALE% within
   # app.update.url).
-  pushd $TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]
+  pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]"
   echo ${PKG_LOCALE} > update.locale
   [% c("var/touch") %] update.locale
   zip -Xm omni.ja update.locale
@@ -253,11 +253,11 @@ popd
 cp -a ${TB_STAGE_DIR} $distdir/$PKG_DIR
 
 [% IF c("var/windows") %]
-  TBDIR=$distdir/$PKG_DIR/"Tor Browser"/Browser
+  TBDIR="$distdir/$PKG_DIR/Tor Browser/Browser"
 [% ELSIF c("var/osx") %]
-  TBDIR=$distdir/$PKG_DIR/TorBrowser.app
+  TBDIR="$distdir/$PKG_DIR/Tor Browser.app"
 [% ELSE %]
-  TBDIR=$distdir/$PKG_DIR/Browser
+  TBDIR="$distdir/$PKG_DIR/Browser"
 [% END %]
 
 pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]"
