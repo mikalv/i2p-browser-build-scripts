@@ -40,7 +40,7 @@ EOF
   export PATH="/var/tmp/dist/binutils/bin:$PATH"
 [% END -%]
 
-[% IF c("var/linux") && ! c("var/release") -%]
+[% IF c("var/selfrando") -%]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/selfrando') %]
   # Selfrando wrapper
   export PATH="/var/tmp/dist/selfrando/Tools/TorBrowser/tc-wrapper/:$PATH"
@@ -194,6 +194,10 @@ cd $distdir
       objcopy --only-keep-debug $LIB Debug/$LIB
       strip $LIB
       objcopy --add-gnu-debuglink=./Debug/$LIB $LIB
+      [% IF c("var/selfrando") -%]
+        # remove RUNPATH added by selfrando (see #22242)
+        chrpath -d $LIB
+      [% END -%]
   done
 [% END %]
 
