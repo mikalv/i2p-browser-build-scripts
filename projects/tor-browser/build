@@ -311,7 +311,7 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
        SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
        SET tbdir = '$distdir/tor-browser_' _ lang;
        IF c("var/osx");
-         SET browserdir = tbdir _ '/TorBrowser.app';
+         SET browserdir = tbdir _ '/Tor Browser.app';
        ELSIF c("var/windows");
          SET browserdir = tbdir _ '/Tor Browser/Browser';
        ELSE;
