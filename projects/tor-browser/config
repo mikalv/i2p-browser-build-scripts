@@ -24,6 +24,7 @@ targets:
         - python
         - bzip2
         - faketime
+        - xz-utils
   windows:
     var:
       arch_deps:
