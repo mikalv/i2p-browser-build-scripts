@@ -376,6 +376,7 @@ sub write_htaccess {
     my $flags = "[last]";
     foreach my $channel (@channels) {
         my $htaccess = "RewriteEngine On\n";
+        $htaccess .= $config->{htaccess_rewrite_rules}{$channel} // '';
         my $version = $config->{channels}{$channel};
         my $migrate_langs = $config->{versions}{$version}{migrate_langs} // {};
         my $files = $config->{versions}{$version}{files};
