@@ -38,8 +38,7 @@ versions:
           osx32: osx64
         migrate_langs:
             pt-PT: pt-BR
-        win32:
-            minSupportedInstructionSet: SSE2
+        minSupportedInstructionSet: SSE2
         osx32:
             minSupportedOSVersion: 13.0.0
         osx64:
