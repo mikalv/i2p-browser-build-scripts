@@ -108,7 +108,6 @@ input_files:
     enable: '[% c("var/windows-x86_64") %]'
   - project: rust
     name: rust
-    enable: '[% ! c("var/windows") %]'
   - project: llvm
     name: llvm
     enable: '[% c("var/linux") %]'

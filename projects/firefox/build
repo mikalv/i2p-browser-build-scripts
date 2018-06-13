@@ -65,11 +65,9 @@ EOF
   export SELFRANDO_skip_shuffle=
 [% END -%]
 
-[% IF ! c("var/windows") %]
-  mkdir -p /var/tmp/dist
-  tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
-  export PATH="/var/tmp/dist/rust/bin:$PATH"
-[% END -%]
+mkdir -p /var/tmp/dist
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
+export PATH="/var/tmp/dist/rust/bin:$PATH"
 
 [% IF c("var/linux") %]
   # Add llvm so stylo can build
