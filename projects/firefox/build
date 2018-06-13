@@ -136,6 +136,10 @@ fi
   patch -p1 < $rootdir/STL_win64.patch
 [% END -%]
 
+[% IF c("var/windows") %]
+  patch -p1 < $rootdir/nsis-uninstall.patch
+[% END -%]
+
 [% IF c("var/osx") %]
   patch -p1 < $rootdir/no-dmg.patch
 [% END -%]
