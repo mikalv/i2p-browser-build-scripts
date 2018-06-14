@@ -213,11 +213,6 @@ cd $distdir
   [% c("var/rezip", { rezip_file => '"Tor Browser.app/Contents/Resources/browser/omni.ja"' }) %]
 [% END %]
 
-[% IF c("var/windows") %]
-  cp $rootdir/msvcr100.dll Browser/
-  cp $gcclibs/libssp-0.dll Browser/
-[% END %]
-
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
 
 [%
