@@ -65,6 +65,11 @@ targets:
       arch_deps:
         - rsync
 
+  windows:
+    var:
+      arch_deps:
+        - wine
+
   windows-i686:
     var:
       martools_filename: mar-tools-win32.zip
@@ -107,3 +112,6 @@ input_files:
   - project: llvm
     name: llvm
     enable: '[% c("var/linux") %]'
+  - project: fxc2
+    name: fxc2
+    enable: '[% c("var/windows") %]'
