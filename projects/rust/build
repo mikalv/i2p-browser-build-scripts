@@ -65,8 +65,8 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
   # toolchains on Linux, targeting Windows 32bit, use SjLj unwinding.
   # See: https://github.com/rust-lang/rust/issues/12859 for discussion about
   # that and https://github.com/rust-lang/rust/pull/49633 for a newer attempt to
-  # fix this problem.
-  patch -p1 < $rootdir/panic-abort.patch
+  # fix this problem. We backport and apply the patch from neersighted.
+  patch -p1 < $rootdir/unwind.patch
 [% END %]
 
 mkdir build

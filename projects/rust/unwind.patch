@@ -1,0 +1,154 @@
+From f967c575e502e507ed51b7ed8d1e2a08525e6ae6 Mon Sep 17 00:00:00 2001
+From: Bjorn Neergaard <bjorn@neersighted.com>
+Date: Tue, 3 Apr 2018 19:01:07 -0600
+Subject: [PATCH] Fix cross-compiling i686-pc-windows-gnu from Linux
+
+This is still very rough and serves as a proof-of-concept for fixing
+Linux -> 32-bit MinGW cross compilation workflow. Currently, clang and
+GCC's MinGW targets both only support DW2 (DWARF) or SJLJ (Set Jump Long
+Jump) unwinding on 32-bit Windows.
+
+The default for GCC (and the way it is shipped on every major distro) is
+to use SJLJ on Windows, as DWARF cannot traverse non-DWARF frames. This
+would work fine, except for the fact that libgcc (our C runtime on the
+MinGW platform) exports symbols under a different name when configured
+to use SJLJ-style unwinding, and uses a preprocessor macro internally to
+alias them.
+
+Because of this, we have to detect this scenario and link to the correct
+symbols ourselves. Linking has been tested with a full bootstrap on both
+x86_64-unknown-linux-gnu and i686-pc-windows-gnu, as well as
+cross-compilation of some of my own projects.
+
+Obviously, the detection is a bit unrefined. Right now we
+unconditionally use SJLJ when compiling Linux -> MinGW. I'd like to add
+feature detection using compiler build flags or autotools-style
+compilation and object analysis. Input on the best way to proceed here
+is welcome.
+
+Also, currently there is copy-pasted/duplicated code in libunwind.
+Ideally, this could be reduced, but this would likely require a
+rethinking of how iOS is special-cased above, to avoid further
+duplication. Input on how to best structure this file is requested.
+
+diff --git a/src/bootstrap/compile.rs b/src/bootstrap/compile.rs
+index c85b04ddc0..2f58f0d9fa 100644
+--- a/src/bootstrap/compile.rs
++++ b/src/bootstrap/compile.rs
+@@ -145,6 +145,11 @@ pub fn std_cargo(build: &Build,
+         cargo.env("MACOSX_DEPLOYMENT_TARGET", target);
+     }
+ 
++    // FIXME: Temporary detection of SJLJ MinGW compilers.
++    if build.build.contains("linux") && target == "i686-pc-windows-gnu" {
++        features.push_str(" sjlj_eh");
++    }
++
+     // When doing a local rebuild we tell cargo that we're stage1 rather than
+     // stage0. This works fine if the local rust and being-built rust have the
+     // same view of what the default allocator is, but fails otherwise. Since
+diff --git a/src/libstd/Cargo.toml b/src/libstd/Cargo.toml
+index c1fe4a89d6..6c8cb330d8 100644
+--- a/src/libstd/Cargo.toml
++++ b/src/libstd/Cargo.toml
+@@ -49,3 +49,4 @@ force_alloc_system = []
+ panic-unwind = ["panic_unwind"]
+ profiler = ["profiler_builtins"]
+ wasm_syscall = []
++sjlj_eh = ["unwind/sjlj_eh"]
+diff --git a/src/libunwind/Cargo.toml b/src/libunwind/Cargo.toml
+index fbd9789d2f..5e319c67fa 100644
+--- a/src/libunwind/Cargo.toml
++++ b/src/libunwind/Cargo.toml
+@@ -14,3 +14,6 @@ doc = false
+ [dependencies]
+ core = { path = "../libcore" }
+ libc = { path = "../rustc/libc_shim" }
++
++[features]
++sjlj_eh = []
+diff --git a/src/libunwind/libunwind.rs b/src/libunwind/libunwind.rs
+index e6fff7963f..6a57cf7c93 100644
+--- a/src/libunwind/libunwind.rs
++++ b/src/libunwind/libunwind.rs
+@@ -10,11 +10,6 @@
+ 
+ #![allow(bad_style)]
+ 
+-macro_rules! cfg_if {
+-    ( $( if #[cfg( $meta:meta )] { $($it1:item)* } else { $($it2:item)* } )* ) =>
+-        ( $( $( #[cfg($meta)] $it1)* $( #[cfg(not($meta))] $it2)* )* )
+-}
+-
+ use libc::{c_int, c_void, uintptr_t};
+ 
+ #[repr(C)]
+@@ -84,7 +79,6 @@ pub type _Unwind_Exception_Cleanup_Fn = extern "C" fn(unwind_code: _Unwind_Reaso
+                                                       exception: *mut _Unwind_Exception);
+ extern "C" {
+     #[unwind]
+-    pub fn _Unwind_Resume(exception: *mut _Unwind_Exception) -> !;
+     pub fn _Unwind_DeleteException(exception: *mut _Unwind_Exception);
+     pub fn _Unwind_GetLanguageSpecificData(ctx: *mut _Unwind_Context) -> *mut c_void;
+     pub fn _Unwind_GetRegionStart(ctx: *mut _Unwind_Context) -> _Unwind_Ptr;
+@@ -216,26 +210,49 @@ if #[cfg(all(any(target_os = "ios", not(target_arch = "arm"))))] {
+         pc
+     }
+ }
++} // cfg_if!
+ 
+-if #[cfg(not(all(target_os = "ios", target_arch = "arm")))] {
+-    // Not 32-bit iOS
++cfg_if! {
++if #[cfg(all(target_os = "ios", target_arch = "arm"))] {
++    // 32-bit iOS uses SjLj and does not provide _Unwind_Backtrace()
+     extern "C" {
+         #[unwind]
+-        pub fn _Unwind_RaiseException(exception: *mut _Unwind_Exception) -> _Unwind_Reason_Code;
+-        pub fn _Unwind_Backtrace(trace: _Unwind_Trace_Fn,
+-                                 trace_argument: *mut c_void)
+-                                 -> _Unwind_Reason_Code;
++        pub fn _Unwind_Resume(exception: *mut _Unwind_Exception) -> !;
++        pub fn _Unwind_SjLj_RaiseException(e: *mut _Unwind_Exception) -> _Unwind_Reason_Code;
+     }
+-} else {
+-    // 32-bit iOS uses SjLj and does not provide _Unwind_Backtrace()
++
++    #[inline]
++    pub unsafe fn _Unwind_RaiseException(exc: *mut _Unwind_Exception) -> _Unwind_Reason_Code {
++        _Unwind_SjLj_RaiseException(exc)
++    }
++
++} else if #[cfg(feature = "sjlj_eh")] {
+     extern "C" {
+         #[unwind]
++        pub fn _Unwind_SjLj_Resume(e: *mut _Unwind_Exception) -> !;
+         pub fn _Unwind_SjLj_RaiseException(e: *mut _Unwind_Exception) -> _Unwind_Reason_Code;
++        pub fn _Unwind_Backtrace(trace: _Unwind_Trace_Fn,
++                                 trace_argument: *mut c_void)
++                                 -> _Unwind_Reason_Code;
++    }
++
++    #[inline]
++    pub unsafe fn _Unwind_Resume(exc: *mut _Unwind_Exception) -> ! {
++        _Unwind_SjLj_Resume(exc)
+     }
+ 
+     #[inline]
+     pub unsafe fn _Unwind_RaiseException(exc: *mut _Unwind_Exception) -> _Unwind_Reason_Code {
+         _Unwind_SjLj_RaiseException(exc)
+     }
++} else {
++    extern "C" {
++        #[unwind]
++        pub fn _Unwind_Resume(exception: *mut _Unwind_Exception) -> !;
++        pub fn _Unwind_RaiseException(exception: *mut _Unwind_Exception) -> _Unwind_Reason_Code;
++        pub fn _Unwind_Backtrace(trace: _Unwind_Trace_Fn,
++                                 trace_argument: *mut c_void)
++                                 -> _Unwind_Reason_Code;
++    }
+ }
+ } // cfg_if!
+-- 
+2.17.1
+

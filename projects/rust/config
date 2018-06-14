@@ -73,5 +73,5 @@ input_files:
     gpg_keyring: rust.gpg
   - filename: binaryen.patch
     enable: '[% c("var/linux") %]'
-  - filename: panic-abort.patch
+  - filename: unwind.patch
     enable: '[% c("var/windows-i686") %]'
