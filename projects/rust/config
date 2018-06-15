@@ -1,8 +1,8 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-version: 1.25.0
+version: 1.26.1
 var:
-  prev_version: 1.24.1
+  prev_version: 1.25.0
   container:
     use_container: 1
 
@@ -71,7 +71,5 @@ input_files:
     sig_ext: asc
     file_gpg_id: 1
     gpg_keyring: rust.gpg
-  - filename: binaryen.patch
-    enable: '[% c("var/linux") %]'
   - filename: unwind.patch
     enable: '[% c("var/windows-i686") %]'
