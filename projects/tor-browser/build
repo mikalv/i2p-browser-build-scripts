@@ -43,11 +43,6 @@ mkdir -p "$TBDIR/$MEEKPROFILEPATH/extensions"
 # Extract the MAR tools.
 unzip -d $rootdir $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip
 MARTOOLS=$rootdir/mar-tools
-[% IF c("var/windows-x86_64") -%]
-  # Workaround for bug 24477
-  rm -Rf $MARTOOLS
-  unzip -d $rootdir $rootdir/mar-tools-linux32.zip
-[% END -%]
 
 mv [% c('input_files_by_name/tor-launcher') %] "$TBDIR/$EXTSPATH/tor-launcher@torproject.org.xpi"
 mv [% c('input_files_by_name/torbutton') %] "$TBDIR/$EXTSPATH/torbutton@torproject.org.xpi"
@@ -241,6 +236,14 @@ popd
 
 
 [% IF c("var/windows") %]
+  # We need to install a recent version of python-pefile so that it works
+  # in a x86_64 container:
+  # https://github.com/TheTorProject/tor-messenger-build/pull/10
+  tar xf $rootdir/[% c('input_files_by_name/python-pefile') %]
+  cd $(echo [% c('input_files_by_name/python-pefile') %] | sed s/\.tar\.gz$//)
+  python setup.py install --user
+  cd ..
+
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/nsis') %]
   export PATH="/var/tmp/dist/nsis/bin:$PATH"
 

@@ -3,23 +3,31 @@
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf nsis-[% c('version') %].tar.bz2
+
+# NSIS requires zlib and we later set the path using ZLIB_W32.
+tar -C /var/tmp/build -xf [% c('input_files_by_name/zlib') %]
+
 cd /var/tmp/build/nsis-[% c('version') %]-src
-tar -xf $rootdir/[% c('input_files_by_name/debian') %]
-rm -f debian/patches/nsis_system_zlib.patch
-rm -f debian/patches/parallel_build.patch
-patch -p1 < $rootdir/nsis-missing-unistd-include.patch
-for patch in $(grep '\.patch$' debian/patches/series)
-do
-    [ -f debian/patches/$patch ] && patch -p1 < debian/patches/$patch
-done
 # Adding --no-insert-timestamp to APPEND_LINKFLAGS is not working as it
 # is used for both the host and cross-compiled parts, but this option is
 # only valid for the Windows linker. Therefore we add it using a patch
 # to the cross-compilation part only.
 patch -p1 < $rootdir/no-insert-timestamp.patch
+
+[% IF c("var/windows-x86_64") %]
+  # Seems like setting TARGET_ARCH is not enough so we need to patch build.cpp
+  # manually; this is confirmed by a comment in the same file.
+  sed -i 's/m_target_type=TARGET_X86ANSI/m_target_type=TARGET_AMD64/' Source/build.cpp
+  [% SET target = "amd64" %]
+[% ELSE %]
+  [% SET target = "x86" %]
+[% END %]
+
 [% SET scons_args = 'VERSION=' _ c("version")
         _ ' APPEND_CCFLAGS="-fgnu89-inline"'
-        _ " SKIPUTILS='NSIS Menu' XGCC_W32_PREFIX=i686-w64-mingw32-"
+        _ " SKIPUTILS='NSIS Menu' XGCC_W32_PREFIX=" _ c("arch") _ "-w64-mingw32-"
+        _ " TARGET_ARCH=" _ target
+        _ " ZLIB_W32=/var/tmp/build/zlib/"
         _ ' PREFIX=/var/tmp/dist/nsis' -%]
 scons [% scons_args %]
 scons [% scons_args %] install

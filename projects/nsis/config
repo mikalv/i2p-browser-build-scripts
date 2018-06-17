@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2.51
+version: 3.03
 filename: 'nsis-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 var:
   container:
@@ -16,11 +16,9 @@ input_files:
   - project: container-image
   - filename: 'nsis-[% c("version") %].tar.bz2'
     URL: 'https://downloads.sourceforge.net/nsis/nsis-[% c("version") %]-src.tar.bz2'
-    sha256sum: 43d4c9209847e35eb6e2c7cd5a7586e1445374c056c2c7899e40a080e17a1be7
-  - name: debian
-    URL: 'http://http.debian.net/debian/pool/main/n/nsis/nsis_2.51-1.debian.tar.xz'
-    sha256sum: 1dee6957b4a4b8dfe69bcf28bc7f301a13b96b3fa5a394e36c8926ae781e774a
-  - filename: nsis-missing-unistd-include.patch
+    sha256sum: abae7f4488bc6de7a4dd760d5f0e7cd3aad7747d4d7cd85786697c8991695eaa
   - filename: no-insert-timestamp.patch
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
+  - name: zlib
+    project: zlib

@@ -28,17 +28,16 @@ targets:
   windows:
     var:
       arch_deps:
-        - python-pefile
+        - python-future
+      pre_pkginst: |
+        # enable jessie-backports for python-future
+        echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
   windows-i686:
     var:
       mar_osname: win32
   windows-x86_64:
     var:
       mar_osname: win64
-      # We use a 32bit container to be able to use a 32bit nsis and
-      # pe_checksum_fix.py
-      container:
-        arch: i386
 
 input_files:
   - project: container-image
@@ -79,18 +78,13 @@ input_files:
     enable: '[% c("var/osx") %]'
   - project: nsis
     name: nsis
-    target:
-      - '[% c("var/channel") %]'
-      - torbrowser-windows-i686
     enable: '[% c("var/windows") %]'
   - name: tbb-windows-installer
     project: tbb-windows-installer
     enable: '[% c("var/windows") %]'
   - filename: pe_checksum_fix.py
     enable: '[% c("var/windows") %]'
-  # Workaround for bug 24477
-  - URL: https://archive.torproject.org/tor-package-archive/torbrowser/7.5a7/mar-tools-linux32.zip
-    sig_ext: asc
-    file_gpg_id: 1
-    gpg_keyring: torbrowser.gpg
-    enable: '[% c("var/windows-x86_64") %]'
+  - name: python-pefile
+    URL: https://files.pythonhosted.org/packages/7e/9b/f99171190f04cd23768547dd34533b4016bd582842f53cd9fe9585a74c74/pefile-2017.11.5.tar.gz
+    sha256sum: 675c35ee0e1677db9e80d2f48d8a7ff2cf38e6207e8cd5e2a2c6d126db025854
+    enable: '[% c("var/windows") %]'
