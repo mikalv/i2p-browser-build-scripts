@@ -43,6 +43,7 @@ make install
 mkdir -p /var/tmp/build/builddir/mingw-w64/mingw-w64-pthread
 cd /var/tmp/build/builddir/mingw-w64/mingw-w64-pthread
 /var/tmp/build/[% project %]-[% c("version") %]/mingw-w64-libraries/winpthreads/configure \
+                 LDFLAGS="-Wl,--no-insert-timestamp" \
                  --host=[% c("arch") %]-w64-mingw32 --prefix=$distdir/[% c("arch") %]-w64-mingw32
 make -j[% c("buildconf/num_procs") %]
 make install
