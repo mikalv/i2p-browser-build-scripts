@@ -12,6 +12,7 @@ mkdir -p $OUTDIR
 # directory named tor-browser (instead of tor-browser_en-US). Therefore we
 # stage everything under tor-browser-stage to avoid a conflict.
 TB_STAGE_DIR=$distdir/tor-browser-stage
+EXTOVERRIDESPATH=$rootdir/Bundle-Data/PTConfigs/extension-overrides.js
 
 [% IF c("var/osx") %]
   TBDIR="$TB_STAGE_DIR/Tor Browser.app"
@@ -20,7 +21,6 @@ TB_STAGE_DIR=$distdir/tor-browser-stage
   EXTSPATH=Contents/Resources/distribution/extensions
   TORBINPATH=Contents/MacOS/Tor
   TORCONFIGPATH=Contents/Resources/TorBrowser/Tor
-  EXTOVERRIDESPATH=Contents/Resources/distribution/preferences//extension-overrides.js
   MEEKPROFILEPATH=Contents/Resources/TorBrowser/Tor/PluggableTransports/template-profile.meek-http-helper
 
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/libdmg') %]
@@ -31,7 +31,6 @@ TB_STAGE_DIR=$distdir/tor-browser-stage
   DOCSPATH=TorBrowser/Docs
   EXTSPATH=TorBrowser/Data/Browser/profile.default/extensions
   TORCONFIGPATH=TorBrowser/Data/Tor
-  EXTOVERRIDESPATH=TorBrowser/Data/Browser/profile.default/preferences/extension-overrides.js
   MEEKPROFILEPATH=TorBrowser/Data/Browser/profile.meek-http-helper
 
   mkdir -p "$TBDIR/TorBrowser/Data/Browser/Caches"
@@ -116,9 +115,9 @@ cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> "$T
 [% IF c("var/linux") -%]
   [% IF ! c("var/snowflake") %]
     grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
-       >> "$TBDIR/$EXTOVERRIDESPATH"
+       >> "$EXTOVERRIDESPATH"
   [% ELSE %]
-    cat Bundle-Data/PTConfigs/bridge_prefs.js >> "$TBDIR/$EXTOVERRIDESPATH"
+    cat Bundle-Data/PTConfigs/bridge_prefs.js >> "$EXTOVERRIDESPATH"
   [% END %]
 [% END -%]
 [% IF c("var/windows") -%]
@@ -126,13 +125,13 @@ cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> "$T
   # We don't have fte available on Windows x86_64 yet
   grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
   [% IF c("var/windows-x86_64") %]| grep -v 'default_bridge\.fte' [% END %] \
-      >> "$TBDIR/$EXTOVERRIDESPATH"
+      >> "$EXTOVERRIDESPATH"
 [% END -%]
 [% IF c("var/osx") -%]
   # FTE is temporarily removed due to bug 18495.
   grep -Ev 'default_bridge\.fte' Bundle-Data/PTConfigs/bridge_prefs.js \
   [% IF ! c("var/snowflake") %]| grep -v 'default_bridge\.snowflake' [% END %] \
-      >> "$TBDIR/$EXTOVERRIDESPATH"
+      >> "$EXTOVERRIDESPATH"
 [% END -%]
 cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/user.js"
 
@@ -146,8 +145,8 @@ cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/u
 [% END %]
 
 [% IF ! c("var/multi_lingual") %]
-  echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$TBDIR/$EXTOVERRIDESPATH"
-  echo 'pref("intl.locale.matchOS", false);' >> "$TBDIR/$EXTOVERRIDESPATH"
+  echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$EXTOVERRIDESPATH"
+  echo 'pref("intl.locale.matchOS", false);' >> "$EXTOVERRIDESPATH"
 [% END %]
 
 [% IF c("var/linux") %]
@@ -174,6 +173,8 @@ unzip omni.ja chrome/en-US/locale/browser/searchplugins* || [ $? -lt 3 ]
 mv chrome/en-US/locale/browser/searchplugins $rootdir
 rm -rf chrome/en-US
 unzip omni.ja defaults/preferences/000-tor-browser.js || [ $? -lt 3 ]
+# Append our built extension-overrides.js to 000-tor-browser.js
+cat "$EXTOVERRIDESPATH" >> defaults/preferences/000-tor-browser.js
 cp defaults/preferences/000-tor-browser.js $rootdir
 [% IF c("var/osx") %]
   # Embed our default bookmarks within the en-US locale.
