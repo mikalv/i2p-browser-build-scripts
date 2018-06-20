@@ -60,8 +60,8 @@ index 84180e6a..2054b46f 100644
      sysroot,
      "-mmacosx-version-min=$mac_deployment_target",
 +    "-target",
-+    "x86_64-apple-darwin10",
-+    "-mlinker-version=136",
++    "x86_64-apple-darwin11",
++    "-Wno-unknown-warning-option",
 +    "-B",
 +    "/var/tmp/dist/macosx-toolchain/cctools/bin",
    ]
@@ -135,47 +135,6 @@ index 0928fa13..898edc1a 100644
      with os.fdopen(fd, 'w') as f:
 --
 2.11.0
-
-From d9577991412310d3313d9dcd86453ce24f845c2e Mon Sep 17 00:00:00 2001
-From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:37:34 -0700
-Subject: [PATCH 4/8] Hack workaround to disable dispatch_queue_get_label.
-
-dispatch_queue_get_label and DISPATCH_CURRENT_QUEUE_LABEL require SDK
-10.9+. I don't know if removing this code even makes sense, but it at
-least won't crash immediately because of a null pointer.
-
-https://developer.apple.com/documentation/dispatch/dispatch_current_queue_label
-https://developer.apple.com/library/content/releasenotes/General/APIDiffsMacOSX10_9/General.html
-
-FAILED: obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o ../../../../clang/bin/clang++ -MMD -MF obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o.d -DV8_DEPRECATION_WARNINGS -DNO_TCMALLOC -DUSE_EXTERNAL_POPUP_MENU=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -DENABLE_MEDIA_ROUTER=1 -DFIELDTRIAL_TESTING_ENABLED -DCR_XCODE_VERSION=0730 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE=2 -D__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORE=0 -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DEXPAT_RELATIVE_PATH -DHAVE_SCTP -DWEBRTC_POSIX -DWEBRTC_MAC -I../.. -Igen -fno-strict-aliasing -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -arch x86_64 -Wall -Wpartial-availability -Wno-unused-local-typedefs -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-unused-parameter -O2 -gdwarf-2 -isysroot /home/debian/build/MacOSX10.7.sdk -mmacosx-version-min=10.9 -target x86_64-apple-darwin10 -mlinker-version=136 -B /home/debian/build/cctools/bin -fvisibility=hidden -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-strict-overflow -fvisibility-inlines-hidden -std=c++11 -stdlib=libc++ -Wno-narrowing -fno-rtti -fno-exceptions -Wnon-virtual-dtor -Woverloaded-virtual -c ../../webrtc/base/sequenced_task_checker_impl.cc -o obj/webrtc/base/rtc_task_queue/sequenced_task_checker_impl.o
-warning: unknown warning option '-Wno-maybe-uninitialized'; did you mean '-Wno-uninitialized'? [-Wunknown-warning-option]
-../../webrtc/base/sequenced_task_checker_impl.cc:34:46: error: use of undeclared identifier 'DISPATCH_CURRENT_QUEUE_LABEL'
-    current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
-                                             ^
----
- webrtc/base/sequenced_task_checker_impl.cc | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/webrtc/base/sequenced_task_checker_impl.cc b/webrtc/base/sequenced_task_checker_impl.cc
-index f03e0b679..352b2162d 100644
---- a/webrtc/base/sequenced_task_checker_impl.cc
-+++ b/webrtc/base/sequenced_task_checker_impl.cc
-@@ -30,8 +30,9 @@ bool SequencedTaskCheckerImpl::CalledSequentially() const {
- #if defined(WEBRTC_MAC)
-   // If we're not running on a TaskQueue, use the system dispatch queue
-   // label as an identifier.
--  if (current_queue == nullptr)
--    current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
-+  // Disable this because dispatch_queue_get_label requires SDK 10.9+.
-+  // if (current_queue == nullptr)
-+  //   current_queue = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
- #endif
-   CritScope scoped_lock(&lock_);
-   if (!attached_) {  // true if previously detached.
--- 
-2.11.0
-
 
 From 62a6fa6376194ce673c220eef19fefeebe58fee1 Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
