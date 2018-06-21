@@ -105,11 +105,6 @@ tar -C "$TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %]" -xf [% c('input_files
   mv "$TBDIR/$TORBINPATH/tor" "$TBDIR/$TORBINPATH/tor.real"
   cp Bundle-Data/mac-tor.sh "$TBDIR/$TORCONFIGPATH/tor"
 
-  [% IF ! c("var/release") -%]
-    SANDBOX_FOLDER="$TB_STAGE_DIR/Sandboxed Tor Browser"
-    mv Bundle-Data/mac-sandbox "$SANDBOX_FOLDER"
-  [% END -%]
-
   tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
 [% END %]
 
