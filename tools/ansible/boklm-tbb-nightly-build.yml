@@ -6,3 +6,5 @@
       - role: tbb-nightly-build
       - role: unattended-upgrades
       - role: mta
+  vars_files:
+      - vaulted_vars/boklm-tbb-nightly/dma-auth.yml
