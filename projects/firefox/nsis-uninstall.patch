@@ -1,14 +1,13 @@
-From 4ef264b601ac92a0b385c40bd011ef94618a176a Mon Sep 17 00:00:00 2001
+From e338a77c64c0afb72e857c7daa63346d35ad3891 Mon Sep 17 00:00:00 2001
 From: Sukhbir Singh <sukhbir@torproject.org>
 Date: Tue, 12 Jun 2018 21:58:24 -0400
 Subject: [PATCH 1/1] Bug 26205: Don't build the uninstaller for Windows during
  Firefox compilation
 
 ---
- browser/Makefile.in                             |  4 ----
- browser/installer/Makefile.in                   |  4 ----
- .../mozbuild/mozbuild/repackaging/installer.py  | 17 +----------------
- 3 files changed, 1 insertion(+), 24 deletions(-)
+ browser/Makefile.in           | 4 ----
+ browser/installer/Makefile.in | 4 ----
+ 2 files changed, 8 deletions(-)
 
 diff --git a/browser/Makefile.in b/browser/Makefile.in
 index 2eb9e708f68e..0c9442183942 100644
@@ -40,34 +39,6 @@ index 1bf11252ee06..dee6d5434106 100644
  ifeq (cocoa,$(MOZ_WIDGET_TOOLKIT))
  MOZ_PKG_MAC_DSSTORE=$(topsrcdir)/$(MOZ_BRANDING_DIRECTORY)/dsstore
  MOZ_PKG_MAC_BACKGROUND=$(topsrcdir)/$(MOZ_BRANDING_DIRECTORY)/background.png
-diff --git a/python/mozbuild/mozbuild/repackaging/installer.py b/python/mozbuild/mozbuild/repackaging/installer.py
-index 9b49eb555153..1e6f6e73c3d8 100644
---- a/python/mozbuild/mozbuild/repackaging/installer.py
-+++ b/python/mozbuild/mozbuild/repackaging/installer.py
-@@ -27,22 +27,7 @@ def repackage_installer(topsrcdir, tag, setupexe, package, output, package_name,
-     tmpdir = tempfile.mkdtemp()
-     old_cwd = os.getcwd()
-     try:
--        if package:
--            z = zipfile.ZipFile(package)
--            z.extractall(tmpdir)
--            z.close()
--
--        # Copy setup.exe into the root of the install dir, alongside the
--        # package.
--        shutil.copyfile(setupexe, mozpath.join(tmpdir, mozpath.basename(setupexe)))
--
--        # archive_exe requires us to be in the directory where the package is
--        # unpacked (the tmpdir)
--        os.chdir(tmpdir)
--
--        sfx_package = mozpath.join(topsrcdir, sfx_stub)
--
--        archive_exe(package_name, tag, sfx_package, output)
-+        pass
- 
-     finally:
-         os.chdir(old_cwd)
 -- 
-2.17.1
+2.18.0.rc2
 
