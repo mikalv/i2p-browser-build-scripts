@@ -300,8 +300,10 @@ cd $distdir
 rm -rf $distdir/${PKG_DIR}
 
 cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
-[% IF c("var/linux") -%]
+[% IF c("var/linux-x86_64") -%]
   cp $rootdir/[% c('input_files_by_name/firefox') %]/tor-browser-debug.tar.xz "$OUTDIR"/tor-browser-[% c("var/mar_osname") %]-debug.tar.xz
+[% END -%]
+[% IF c("var/linux") -%]
   cp $rootdir/[% c('input_files_by_name/tor') %]/tor-debug.tar.xz "$OUTDIR"/tor-[% c("var/mar_osname") %]-debug.tar.xz
 [% END -%]
 

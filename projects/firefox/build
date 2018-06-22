@@ -202,7 +202,7 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 
 cd $distdir
 
-[% IF c("var/linux") %]
+[% IF c("var/linux-x86_64") %]
   # Strip and generate debuginfo for the firefox binary that we keep, all *.so
   # files, the plugin-container, and the updater (see ticket #10126)
   for LIB in Browser/*.so Browser/firefox Browser/plugin-container Browser/updater
@@ -244,7 +244,7 @@ END;
         tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor-browser.tar.gz',
     }) %]
 
-[% IF c("var/linux") %]
+[% IF c("var/linux-x86_64") %]
 [% c('tar', {
         tar_src => [ 'Debug' ],
         tar_args => '-cJf ' _ dest_dir _ '/' _ c('filename') _ '/tor-browser-debug.tar.xz',
