@@ -43,3 +43,7 @@ versions:
             minSupportedOSVersion: 13.0.0
         osx64:
             minSupportedOSVersion: 13.0.0
+        win32:
+            minSupportedOSVersion: 6.1
+        win64:
+            minSupportedOSVersion: 6.1
