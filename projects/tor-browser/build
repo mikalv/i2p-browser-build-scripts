@@ -90,8 +90,6 @@ tar -C "$TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %]" -xf [% c('input_files
   mkdir -p $SKELETON_TMP_RESOURCES/browser
   echo "[XRE]" > $SKELETON_TMP_RESOURCES/browser/override.ini
   echo "EnableProfileMigrator=0" >> $SKELETON_TMP_RESOURCES/browser/override.ini
-  mkdir -p $SKELETON_TMP_RESOURCES/distribution/preferences
-  cp -p Bundle-Data/mac/TorBrowser/Data/Browser/profile.default/preferences/extension-overrides.js $SKELETON_TMP_RESOURCES/distribution/preferences
   mkdir -p $SKELETON_TMP_RESOURCES/TorBrowser/Tor
   cp -p Bundle-Data/mac/TorBrowser/Data/Tor/torrc-defaults $SKELETON_TMP_RESOURCES/TorBrowser/Tor/
   # Place a copy of the bookmarks.html file at the top. It will be moved into
