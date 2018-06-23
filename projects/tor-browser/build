@@ -146,7 +146,6 @@ cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/u
 
 [% IF ! c("var/multi_lingual") %]
   echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$EXTOVERRIDESPATH"
-  echo 'pref("intl.locale.matchOS", false);' >> "$EXTOVERRIDESPATH"
 [% END %]
 
 [% IF c("var/linux") %]
