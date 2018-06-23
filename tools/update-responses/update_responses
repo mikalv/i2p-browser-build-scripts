@@ -6,6 +6,7 @@ use English;
 use FindBin;
 use YAML qw(LoadFile);
 use File::Slurp;
+use File::Path qw(make_path);
 use Digest::SHA qw(sha256_hex);
 use XML::Writer;
 use Cwd;
@@ -547,7 +548,7 @@ sub download_version {
             "$tmpdir/sha256sums-signed-build.txt")) {
         exit_error "Error checking gpg signature for version $version";
     }
-    mkdir $destdir;
+    make_path $destdir;
     move "$tmpdir/sha256sums-signed-build.txt.asc", "$destdir/sha256sums-signed-build.txt.asc";
     move "$tmpdir/sha256sums-signed-build.txt", "$destdir/sha256sums-signed-build.txt";
     my %sums = map { chomp; reverse split '  ', $_ }
