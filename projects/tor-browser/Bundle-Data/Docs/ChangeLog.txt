@@ -12,9 +12,9 @@ Tor Browser 8.0a9 -- June 27 2018
      * Bug 26129: Show our about:tor page on startup
      * Bug 26235: Hide new unusable items from help menu
      * Bug 26058: Remove workaround for hiding 'sign in to sync' button
-     * Bug 20628: Add locales bn-BD, da, he, sv, zh-TW
+     * Bug 20628: Add locales da, he, sv, and zh-TW
      * Translations update
-   * Update Tor Launcher to 0.2.16
+   * Update Tor Launcher to 0.2.16.1
      * Bug 25750: Update Tor Launcher to make it compatible with Firefox 60 ESR
      * Bug 20890: Increase control port connection timeout
      * Bug 20628: Add more locales to Tor Browser
@@ -24,13 +24,14 @@ Tor Browser 8.0a9 -- June 27 2018
    * Bug 25543: Rebase Tor Browser patches for ESR60
    * Bug 23247: Show security state of .onions
    * Bug 26039: Load our preferences that modify extensions
+   * Bug 17965: Isolate HPKP and HSTS to URL bar domain
    * Bug 26365: Add potential AltSvc support
    * Bug 26045: Add new MAR signing keys
    * Bug 22564: Hide Firefox Sync
    * Bug 25090: Disable updater telemetry
    * Bug 26127: Make sure Torbutton and Tor Launcher are not treated as legacy extensions
    * Bug 26073: Migrate general.useragent.locale to intl.locale.requested
-   * Bug 20628: Make Tor Browser available in bn-BD, da, he, sv-SE, and zh-TW
+   * Bug 20628: Make Tor Browser available in da, he, sv-SE, and zh-TW
      * Bug 12927: Include Hebrew translation into Tor Browser
      * Bug 21245: Add danish (da) translation
  * Windows
@@ -40,10 +41,16 @@ Tor Browser 8.0a9 -- June 27 2018
    * Bug 26304: Update zlib to version 1.2.11
  * OS X
    * Bug 24052: Backport fix for bug 1412081 for better file:// handling
+   * Bug 24136: After loading file:// URLs clicking on links is broken on OS X
+   * Bug 24243: Tor Browser only renders HTML for local pages via file://
+   * Bug 24263: Tor Browser does not run extension scripts if loaded via about:debugging
    * Bug 24632: Disable snowflake for now until its build is fixed
    * Bug 26438: Remove broken seatbelt profiles
  * Linux
    * Bug 24052: Backport fix for bug 1412081 for better file:// handling
+   * Bug 24136: After loading file:// URLs clicking on links is broken on Linux
+   * Bug 24243: Tor Browser only renders HTML for local pages via file://
+   * Bug 24263: Tor Browser does not run extension scripts if loaded via about:debugging
    * Bug 26153: Update selfrando to be compatible with Firefox 60 ESR
    * Bug 22242: Remove RUNPATH in Linux binaries embedded by selfrando
    * Bug 26354: Set SSE2 support as minimal requirement for Tor Browser 8
