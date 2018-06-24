@@ -134,6 +134,8 @@ fi
 
 [% IF c("var/windows") %]
   patch -p1 < $rootdir/nsis-uninstall.patch
+  patch -p1 < $rootdir/1464084.patch
+  patch -p1 < $rootdir/1467041.patch
 [% END -%]
 
 [% IF c("var/osx") %]

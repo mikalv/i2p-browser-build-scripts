@@ -1,0 +1,23 @@
+From 8d940fed5975400910c29037a6c575260d3caa22 Mon Sep 17 00:00:00 2001
+From: Georg Koppen <gk@torproject.org>
+Date: Sun, 24 Jun 2018 19:37:55 +0000
+Subject: [PATCH 2/2] Revert "Bug 1467041 - Default to --enable-release when
+ milestone is beta/release. r=froydnj, a=RyanVM"
+
+This reverts commit b1f09cd8f4a1abf13f85a2353ac1b9711200b0e5.
+
+diff --git a/build/moz.configure/toolchain.configure b/build/moz.configure/toolchain.configure
+index 67007c8dcf7c..a1e443019748 100755
+--- a/build/moz.configure/toolchain.configure
++++ b/build/moz.configure/toolchain.configure
+@@ -1387,7 +1387,6 @@ imply_option('--enable-release', mozilla_official)
+ imply_option('--enable-release', depends_if('MOZ_AUTOMATION')(lambda x: True))
+ 
+ js_option('--enable-release',
+-          default=milestone.is_release_or_beta,
+           help='Build with more conservative, release engineering-oriented '
+                'options. This may slow down builds.')
+ 
+-- 
+2.17.1
+
