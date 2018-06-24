@@ -4,8 +4,9 @@ Tor Browser 8.0a9 -- June 27 2018
    * Update Tor to 0.3.4.2-alpha
    * Update Libevent to 2.1.8
    * Update Binutils to 2.26.1
-   * Update Torbutton to 2.0
+   * Update Torbutton to 2.0.1
      * Bug 26100: Adapt Torbutton to Firefox 60 ESR
+     * Bug 26430: New Torbutton icon
      * Bug 24309: Move circuit display to the identity popup
      * Bug 26128: Adapt security slider to the WebExtensions version of NoScript
      * Bug 23247: Show security state of .onions
@@ -70,6 +71,7 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 23561: Fix nsis builds for Windows 64
     * Bug 23231: Remove our STL Wrappers workaround for Windows 64bit
     * Bug 26370: Don't copy msvcr100.dll and libssp-0.dll twice
+    * Bug 26476: Work around Tor Browser crashes due to fix for bug 1467041
     * Bug 18287: Use SHA-2 signature for Tor Browser setup executables
   * OS X
     * Bug 24632: Update macOS toolchain for ESR 60
@@ -78,6 +80,7 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 26003: Clean up our mozconfig-osx-x86_64 file
     * Bug 26195: Use new cctools in our macosx-toolchain project
     * Bug 25975: Get a rust cross-compiler for macOS
+    * Bug 26475: Disable Stylo to make macOS build reproducible
   * Linux
     * Bug 26073: Patch tor-browser-build for transition to ESR 60
     * Bug 25540: Stop building and distributing sandboxed tor browser
