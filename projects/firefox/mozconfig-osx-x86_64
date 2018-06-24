@@ -48,6 +48,9 @@ ac_add_options --disable-crashreporter
 ac_add_options --disable-maintenance-service
 ac_add_options --disable-webrtc
 ac_add_options --disable-tests
+# We need to disable for Stylo right now, as we have reproducibility issues on
+# macOS with it enabled, see: #26475.
+ac_add_options --disable-stylo
 # Let's make sure no preference is enabling either Adobe's or Google's CDM.
 ac_add_options --disable-eme
 # ac_add_options --disable-ctypes
