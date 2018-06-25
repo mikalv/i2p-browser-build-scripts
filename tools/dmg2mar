@@ -36,9 +36,10 @@ use Parallel::ForkManager;
 use Cwd;
 
 # If the application is not TorBrowser (for instance, TorMessenger)
-# set the application name in the TOR_APPNAME_BUNDLE_OSX and in
-# the TOR_APPNAME_MARFILE environment variables
-my $appname = $ENV{TOR_APPNAME_BUNDLE_OSX} // 'TorBrowser';
+# set the application name in the TOR_APPNAME_BUNDLE_OSX,
+# TOR_APPNAME_DMGFILE and TOR_APPNAME_MARFILE environment variables
+my $appname = $ENV{TOR_APPNAME_BUNDLE_OSX} // 'Tor Browser';
+my $appname_dmg = $ENV{TOR_APPNAME_DMGFILE} // 'TorBrowser';
 my $appname_mar = $ENV{TOR_APPNAME_MARFILE} // 'tor-browser';
 
 sub exit_error {
@@ -95,7 +96,7 @@ sub get_dmg_files_from_sha256sums {
     foreach my $line (read_file('sha256sums-unsigned-build.txt')) {
         my (undef, $filename) = split '  ', $line;
         chomp $filename;
-        next unless $filename =~ m/^$appname-(.+)-osx64_(.+)\.dmg$/;
+        next unless $filename =~ m/^$appname_dmg-(.+)-osx64_(.+)\.dmg$/;
         push @files, { filename => $filename, version => $1, lang => $2 };
     }
     return @files;
