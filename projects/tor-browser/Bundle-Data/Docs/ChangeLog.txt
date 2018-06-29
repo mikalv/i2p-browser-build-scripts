@@ -20,7 +20,7 @@ Tor Browser 8.0a9 -- June 27 2018
      * Bug 20890: Increase control port connection timeout
      * Bug 20628: Add more locales to Tor Browser
      * Translations update
-   * Update HTTPS Everywhere to 2018.6.13
+   * Update HTTPS Everywhere to 2018.6.21
    * Update NoScript to 10.1.8.2
    * Bug 25543: Rebase Tor Browser patches for ESR60
    * Bug 23247: Show security state of .onions
