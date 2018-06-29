@@ -119,7 +119,7 @@ incrementals-release: submodule-update
 incrementals-alpha: submodule-update
 	$(rbm) build release --step update_responses_config --target alpha --target create_unsigned_incrementals
 	tools/update-responses/download_missing_versions alpha
-	MAR_OLD_FORMAT=1 tools/update-responses/gen_incrementals alpha
+	tools/update-responses/gen_incrementals alpha
 	$(rbm) build release --step hash_incrementals --target alpha
 
 update_responses-release: submodule-update
@@ -138,9 +138,9 @@ dmg2mar-release: submodule-update
 
 dmg2mar-alpha: submodule-update
 	$(rbm) build release --step update_responses_config --target alpha --target signed
-	MAR_OLD_FORMAT=1 $(rbm) build release --step dmg2mar --target alpha --target signed
+	$(rbm) build release --step dmg2mar --target alpha --target signed
 	tools/update-responses/download_missing_versions alpha
-	CHECK_CODESIGNATURE_EXISTS=1 MAR_SKIP_EXISTING=1 MAR_OLD_FORMAT=1 tools/update-responses/gen_incrementals alpha
+	CHECK_CODESIGNATURE_EXISTS=1 MAR_SKIP_EXISTING=1 tools/update-responses/gen_incrementals alpha
 
 submodule-update:
 	git submodule update --init
