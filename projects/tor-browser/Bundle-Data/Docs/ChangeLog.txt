@@ -86,6 +86,23 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 25540: Stop building and distributing sandboxed tor browser
     * Bug 25481: Rust support for tor-browser and tor
 
+Tor Browser 7.5.6 -- June 26 2018
+ * All platforms
+   * Update Firefox to 52.9.0esr
+   * Update Tor to 0.3.3.7
+   * Update Tor Launcher to 0.2.14.5
+     * Bug 20890: Increase control port connection timeout
+   * Update HTTPS Everywhere to 2018.6.21
+     * Bug 26451: Prevent HTTPS Everywhere from freezing the browser
+   * Update NoScript to 5.1.8.6
+   * Bug 21537: Mark .onion cookies as secure
+   * Bug 25938: Backport fix for cross-origin header leak (bug 1334776)
+   * Bug 25721: Backport patches from Mozilla's bug 1448771
+   * Bug 25147+25458: Sanitize HTML fragments for chrome documents
+   * Bug 26221: Backport fix for leak in SHA256 in nsHttpConnectionInfo.cpp
+ * Windows
+   * Bug 26424: Disable UNC paths to prevent possible proxy bypasses
+
 Tor Browser 8.0a8 -- June 10 2018
  * All platforms
    * Update Firefox to 52.8.1esr
