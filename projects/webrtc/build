@@ -13,8 +13,8 @@ mkdir -p /var/tmp/dist
 [% END -%]
 [% IF c("var/osx") -%]
   # src/build/toolchain/mac/filter_libtool.py wants libtool to be called exactly "libtool".
-  ln -sf x86_64-apple-darwin10-libtool $cctoolsdir/libtool
-  export AR=x86_64-apple-darwin10-ar
+  ln -sf x86_64-apple-darwin11-libtool $cctoolsdir/libtool
+  export AR=x86_64-apple-darwin11-ar
   # Certain cross-compiling flags are set in webrtc-mac.patch because the build
   # system doesn't honor CFLAGS etc. environment variables.
 [% ELSE -%]
@@ -63,14 +63,14 @@ cd $builddir
   # needs to be kept in sync with the SDK version.
   cat <<EOF > build/mac/find_sdk.py
 print("$sysrootdir")
-print("10.7")
+print("10.11")
 EOF
   cat <<EOF > build/config/mac/sdk_info.py
 print("machine_os_build=\"10.7\"")
-print("sdk_build=\"10.7\"")
+print("sdk_build=\"10.11\"")
 print("sdk_path=\"$sysrootdir\"")
 print("sdk_platform_path=\"$sysrootdir\"")
-print("sdk_version=\"10.7\"")
+print("sdk_version=\"10.11\"")
 print("xcode_build=\"7.3\"")
 print("xcode_version=\"0730\"")
 EOF
