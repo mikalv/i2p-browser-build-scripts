@@ -29,6 +29,20 @@ $ qvm-pref --set [vmname] kernelopts 'nopat vsyscall=emulate'
 ----
 
 
+
+If you have an error like this:
+
+----
+Error: Error starting remote:
+could not synchronise with container process: no subsystem for mount
+----
+
+You may be experiencing a similar but different problem. Anecdotally
+this occured on Ubuntu 18.04 Bionic, kernel 4.15.0-24-generic. You need
+to add systemd.legacy_systemd_cgroup_controller=1 to the kernel
+boot commandline in /etc/default/grub (followed by `sudo update-grub`).
+
+
 Error during debootstrap image creation
 ---------------------------------------
 
