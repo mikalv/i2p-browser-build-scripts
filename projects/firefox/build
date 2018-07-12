@@ -142,7 +142,7 @@ rm -f configure
 rm -f js/src/configure
 
 ./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts
-./mach build
+./mach build --verbose
 ./mach build stage-package
 
 [% IF c("var/osx") %]
