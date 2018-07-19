@@ -47,3 +47,8 @@ versions:
             minSupportedOSVersion: 6.1
         win64:
             minSupportedOSVersion: 6.1
+htaccess_rewrite_rules:
+    alpha: |
+        # bug 26569: Redirect pre-8.0a9 alpha users to a separate update directory
+        RewriteRule ^[^/]+/8\.0a[12345678]/.* https://aus1.torproject.org/torbrowser/update_pre8.0a9/alpha/$0 [last]
+        RewriteRule ^[^/]+/[4567]\..*/.* https://aus1.torproject.org/torbrowser/update_pre8.0a9/alpha/$0 [last]
