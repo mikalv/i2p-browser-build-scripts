@@ -102,6 +102,6 @@ input_files:
   - URL: https://github.com/googlei18n/noto-cjk/raw/f36eda03dfa5582a6d49abbfb5c83d0209584158/NotoSansTC-Regular.otf
     sha256sum: e6b82f7d3dab605c428161124ceb5e169cde93de632d800297b167cdd88e7baa
     enable: '[% c("var/linux") %]'
-  - URL: https://downloads.sourceforge.net/stixfonts/STIXv1.1.1-latex.zip
-    sha256sum: e3b0f712e2644438eee2d0dcd2b10b2d54f1b972039de95b2f8e800bae1adbd8
+  - URL: https://github.com/stipub/stixfonts/archive/2.0.0.zip
+    sha256sum: 4327a16797dabebedce28a9075671730e22c7f74831b24b1fb91e27faec5a235
     enable: '[% c("var/linux") || c("var/osx") %]'

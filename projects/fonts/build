@@ -13,8 +13,8 @@ mkdir -p $distdir
    END; %]
 
 [% IF c("var/linux") || c("var/osx") %]
-  unzip -o STIXv1.1.1-latex.zip -d STIX
-  cp "STIX/Fonts/fonts/opentype/public/stix/STIXMath-Regular.otf" $distdir/
+  unzip -o 2.0.0.zip -d STIX
+  cp "STIX/stixfonts-2.0.0/archive/STIXv1.1.1/Fonts/STIX-Word/STIXMath-Regular.otf" $distdir/
 [% END %]
 [% IF c("var/linux") %]
   cp NotoEmoji-Regular.ttf $distdir/
