@@ -11,4 +11,4 @@ else
   echo "Launching '${TBB_START_PROG}'..."
 fi
 
-eval "${TBB_START_PROG} $@"
+${TBB_START_PROG} "$@"
