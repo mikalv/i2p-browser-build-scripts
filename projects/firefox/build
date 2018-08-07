@@ -237,6 +237,10 @@ ELSE;
 END;
 %]
 
+[% IF c("var/linux") %]
+  /var/tmp/dist/gcc/bin/g++ $rootdir/abicheck.cc -o Browser/abicheck
+[% END %]
+
 [% c('tar', {
         tar_src => [ browserdir ],
         tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor-browser.tar.gz',

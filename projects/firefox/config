@@ -116,3 +116,5 @@ input_files:
   - project: fxc2
     name: fxc2
     enable: '[% c("var/windows") %]'
+  - filename: abicheck.cc
+    enable: '[% c("var/linux") %]'

@@ -47,12 +47,14 @@ openssldir=/var/tmp/dist/openssl
   # LD_LIBRARY_PATH value to the Tor Browser with the newer one. Thus, we copy
   # the libstdc++ into the directory with the libs tor depends on, too. See bug
   # 13359 for further details.
-  cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/"
+  mkdir -p "$distdir/Tor/libstdc++"
+  cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/libstdc++/"
   [% IF c("var/asan") -%]
     cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libasan.so.3 "$distdir/Tor/"
     cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libubsan.so.0 "$distdir/Tor/"
   [% END -%]
   chmod 700 "$distdir"/Tor/*.so*
+  chmod 700 "$distdir"/Tor/libstdc++/*.so*
   # This is needed to make RPATH unavailable. See bug 9150.
   export LD_LIBRARY_PATH="$distdir/Tor/"
 [% END %]
