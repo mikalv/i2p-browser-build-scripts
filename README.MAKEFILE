@@ -47,7 +47,7 @@ testbuild
 ---------
 Build a Tor Browser test build. To make the build faster, only the en-US
 locale is created, without mar files. By default it is based on the
-alpha channel, but you can change that by editing rbm.conf.local.
+alpha channel, but you can change that by editing rbm.local.conf.
 The resulting build can be found in directory testbuild.
 
 {release,alpha,nightly,testbuild}-linux-x86_64-debug
