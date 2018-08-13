@@ -57,6 +57,8 @@ openssldir=/var/tmp/dist/openssl
   chmod 700 "$distdir"/Tor/libstdc++/*.so*
   # This is needed to make RPATH unavailable. See bug 9150.
   export LD_LIBRARY_PATH="$distdir/Tor/"
+  # Add libstdc++ to LD_LIBRARY_PATH to avoid rust link issue (bug 27101)
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$distdir/Tor/libstdc++/"
 [% END %]
 
 [% IF c("var/osx") %]
