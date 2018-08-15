@@ -165,6 +165,10 @@ rm -f js/src/configure
   # subsequent builds could test to see if they've been uploaded before...
   # But let's find out if it actually matters first..
   rm -f $distdir/Browser/*.chk
+  # Replace firefox by a wrapper script (#25485)
+  mv $distdir/Browser/firefox $distdir/Browser/firefox.real
+  mv $rootdir/start-firefox $distdir/Browser/firefox
+  chmod 755 $distdir/Browser/firefox
 [% END %]
 
 [% IF c("var/windows-x86_64") -%]
@@ -203,7 +207,7 @@ cd $distdir
 [% IF c("var/linux-x86_64") %]
   # Strip and generate debuginfo for the firefox binary that we keep, all *.so
   # files, the plugin-container, and the updater (see ticket #10126)
-  for LIB in Browser/*.so Browser/firefox Browser/plugin-container Browser/updater
+  for LIB in Browser/*.so Browser/firefox.real Browser/plugin-container Browser/updater
   do
       objcopy --only-keep-debug $LIB Debug/$LIB
       strip $LIB

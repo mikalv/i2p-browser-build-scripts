@@ -118,3 +118,5 @@ input_files:
     enable: '[% c("var/windows") %]'
   - filename: abicheck.cc
     enable: '[% c("var/linux") %]'
+  - filename: start-firefox
+    enable: '[% c("var/linux") %]'

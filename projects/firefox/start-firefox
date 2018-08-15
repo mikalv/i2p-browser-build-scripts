@@ -1,0 +1,14 @@
+#!/bin/sh
+
+basedir=$(dirname "$0")
+
+LD_LIBRARY_PATH="$basedir/TorBrowser/Tor/"
+# Check if the system has a more recent version of libstdc++.so.6; if yes, use
+# that instead of the bundled version.
+"$basedir/abicheck" >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$basedir/TorBrowser/Tor/libstdc++/"
+fi
+export LD_LIBRARY_PATH
+
+exec "$basedir/firefox.real" "$@"

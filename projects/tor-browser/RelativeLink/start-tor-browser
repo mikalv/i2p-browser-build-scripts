@@ -273,15 +273,6 @@ if [ $SYSARCHITECTURE -ne $TORARCHITECTURE ]; then
    exit 1
 fi
 
-LD_LIBRARY_PATH="${HOME}/TorBrowser/Tor/"
-# Check if the system has a more recent version of libstdc++.so.6; if yes, use
-# that instead of the bundled version.
-./abicheck >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${HOME}/TorBrowser/Tor/libstdc++/"
-fi
-export LD_LIBRARY_PATH
-
 [% IF ! c("var/release") %]
 export SELFRANDO_write_layout_file=
 [% END %]
