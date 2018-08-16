@@ -23,6 +23,7 @@ Tor Browser 8.0a10 -- August 20 2018
    * Bug 27082: Enable a limited UITour for user onboarding
    * Bug 26961: New user onboarding
    * Bug 14952: Enable HTTP2 and AltSvc
+     * Bug 25735: Tor Browser stalls while loading Facebook login page
    * Bug 17252: Enable TLS session identifiers with first-party isolation
    * Bug 26353: Prevent speculative connects that violate first-party isolation
    * Bug 24056: Use en-US strings in HTML forms if locale is spoofed to english
@@ -137,6 +138,7 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 25894: Get a rust cross-compiler for Windows
     * Bug 25554: Bump mingw-w64 version for ESR 60
     * Bug 23561: Fix nsis builds for Windows 64
+      * Bug 13469: Windows installer is missing many languages from NSIS file
     * Bug 23231: Remove our STL Wrappers workaround for Windows 64bit
     * Bug 26370: Don't copy msvcr100.dll and libssp-0.dll twice
     * Bug 26476: Work around Tor Browser crashes due to fix for bug 1467041
