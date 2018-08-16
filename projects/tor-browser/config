@@ -69,7 +69,7 @@ input_files:
   - filename: Bundle-Data
   - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.1.8.16-an+fx.xpi
     name: noscript
-    sha256sum: d41f5d36337569d1a1633303d7d07505ab905efba0644e73edccf43edc0d39e0
+    sha256sum: fdc539412a61e6109b9fd331c90bd73faa787eefe1ee8d06b57dc3d906c541cd
   - filename: 'RelativeLink/start-tor-browser.desktop'
     enable: '[% c("var/linux") %]'
   - filename: 'RelativeLink/execdesktop'
