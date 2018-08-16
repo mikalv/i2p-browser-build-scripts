@@ -1,3 +1,71 @@
+Tor Browser 8.0a10 -- August 20 2018
+ * All platforms
+   * Update Tor to 0.3.4.6-rc
+   * Update Torbutton to 2.0.2
+     * Bug 26960: Implement new about:tor start page
+     * Bug 26961: Implement new user onboarding
+     * Bug 26321: Move 'New Identity', 'New Circuit' to File, hamburger menus
+     * Bug 26590: Use new svg.disabled pref in security slider
+     * Bug 26655: Adjust color and size of onion button
+     * Bug 26500: Reposition circuit display relay icon for RTL locales
+     * Bug 26409: Remove spoofed locale implementation
+     * Bug 26189: Remove content-policy.js
+     * Bug 27129: Add locales ca, ga, id, is, nb
+     * Translations update
+   * Update Tor Launcher to 0.2.16.2
+     * Bug 26985: Help button icons missing
+     * Bug 25509: Improve the proxy help text
+     * Bug 27129: Add locales ca, ga, id, is, nb
+     * Translations update
+   * Update NoScript to 10.1.8.16
+   * Update meek to 0.31
+     * Bug 26477: Make meek extension compatible with ESR 60
+   * Bug 27082: Enable a limited UITour for user onboarding
+   * Bug 26961: New user onboarding
+   * Bug 14952: Enable HTTP2 and AltSvc
+   * Bug 17252: Enable TLS session identifiers with first-party isolation
+   * Bug 26353: Prevent speculative connects that violate first-party isolation
+   * Bug 24056: Use en-US strings in HTML forms if locale is spoofed to english
+   * Bug 26456: HTTP .onion sites inherit previous page's certificate information
+   * Bug 26321: Move 'New Identity', 'New Circuit' to File, hamburger menus
+   * Bug 26833: Backport Mozilla's bug 1473247
+   * Bug 26628: Backport Mozilla's bug 1470156
+   * Bug 26237: Clean up toolbar for ESR60-based Tor Browser
+   * Bug 26519: Avoid Firefox icons in ESR60
+   * Bug 26039: Load our preferences that modify extensions (fixup)
+   * Bug 26515: Update Tor Browser blog post URLs
+   * Bug 27129: Add locales ca, ga, id, is, nb
+   * Bug 26216: Fix broken MAR file generation
+   * Bug 26409: Remove spoofed locale implementation
+   * Bug 26603: Remove obsolete HTTP pipelining preferences
+ * Windows
+   * Bug 26514: Fix intermittent updater failures on Win64 (Error 19)
+   * Bug 26874: Fix UNC path restrictions failure in Tor Browser 8.0a9
+   * Bug 12968: Enable HEASLR in Windows x86_64 builds
+   * Bug 9145: Fix broken hardware acceleration
+   * Update tbb-windows-installer to 0.4
+     * Bug 26355: Update tbb-windows-installer to check for Windows7+
+   * Bug 26355: Require Windows7+ for updates to Tor Browser 8
+ * OS X
+   * Bug 26795: Bump snowflake to 6077141f4a for bug 25600
+ * Linux
+   * Bug 25485: Unbreak Tor Browser on systems with newer libstdc++
+   * Bug 20866: Fix OpenGL software rendering on systems with newer libstdc++
+   * Bug 26951+18022: Fix execdesktop argument passing
+   * Bug 26795: Bump snowflake to 6077141f4a for bug 25600
+ * Build System
+   * All
+     * Bug 26410: Stop using old MAR format in the alpha series
+     * Bug 27020: RBM build fails with runc version 1.0.1
+     * Bug 26949: Use GitHub repository for STIX
+     * Bug 26773: Add --verbose to the ./mach build flag for firefox
+     * Bug 26569: Redirect pre-8.0a9 alpha users to a separate update directory
+     * Bug 26319: Don't package up Tor Browser in the `mach package` step
+   * OS X
+     * Bug 26489: Fix .app directory name in tools/dmg2mar
+   * Windows
+     * Bug 27152: Use mozilla/fxc2.git for the fxc2 repository
+
 Tor Browser 8.0a9 -- June 27 2018
  * All platforms
    * Update Firefox to 60.1.0esr
