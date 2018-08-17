@@ -47,6 +47,10 @@ versions:
             minSupportedOSVersion: 6.1
         win64:
             minSupportedOSVersion: 6.1
+[% IF ! c("var/release") -%]
+        mar_compression: xz
+[% END -%]
+mar_compression: bzip2
 htaccess_rewrite_rules:
     alpha: |
         # bug 26569: Redirect pre-8.0a9 alpha users to a separate update directory

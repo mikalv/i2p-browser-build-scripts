@@ -154,19 +154,24 @@ sub get_version_downloads {
 }
 
 sub extract_mar {
-    my ($mar_file, $dest_dir) = @_;
+    my ($mar_file, $dest_dir, $compression) = @_;
     my $old_cwd = getcwd;
     mkdir $dest_dir;
     chdir $dest_dir or exit_error "Cannot enter $dest_dir";
     my $res = system('mar', '-x', $mar_file);
     exit_error "Error extracting $mar_file" if $res;
-    my $bunzip_file = sub {
+    if ($compression ne 'bzip2' && $compression ne 'xz') {
+        exit_error "Unknown compression format $compression";
+    }
+    my $compr_ext = $compression eq 'bzip2' ? 'bz2' : 'xz';
+    my $compr_cmd = $compression eq 'bzip2' ? 'bunzip2' : 'unxz';
+    my $uncompress_file = sub {
         return unless -f $File::Find::name;
-        rename $File::Find::name, "$File::Find::name.bz2";
-        system('bunzip2', "$File::Find::name.bz2") == 0
+        rename $File::Find::name, "$File::Find::name.$compr_ext";
+        system($compr_cmd, "$File::Find::name.$compr_ext") == 0
                 || exit_error "Error decompressing $File::Find::name";
     };
-    find($bunzip_file, $dest_dir);
+    find($uncompress_file, $dest_dir);
     my $manifest = -f 'updatev3.manifest' ? 'updatev3.manifest'
                         : 'updatev2.manifest';
     my @lines = read_file($manifest) if -f $manifest;
@@ -208,8 +213,12 @@ sub create_incremental_mar {
     };
     return if $pm->start($finished_file);
     my $tmpdir = get_tmpdir($config);
-    extract_mar(mar_filename($config, $appname, $from_version, $os, $lang), "$tmpdir/A");
-    extract_mar(mar_filename($config, $appname, $new_version, $os, $lang), "$tmpdir/B");
+    my $mar_c_from = get_config($config, $from_version, $os, 'mar_compression');
+    my $mar_c_new = get_config($config, $new_version, $os, 'mar_compression');
+    extract_mar(mar_filename($config, $appname, $from_version, $os, $lang),
+                "$tmpdir/A", $mar_c_from);
+    extract_mar(mar_filename($config, $appname, $new_version, $os, $lang),
+                "$tmpdir/B", $mar_c_new);
     # bug 26054: make sure previous macOS version is code signed
     if (($os eq 'osx64') && ! -f "$tmpdir/A/Contents/_CodeSignature/CodeResources") {
         exit_error "Missing code signature in $from_version while creating $mar_file";
@@ -279,9 +288,11 @@ sub get_buildinfos {
         foreach my $lang (keys %{$files->{$os}}) {
             next unless $files->{$os}{$lang}{complete};
             my $tmpdir = get_tmpdir($config);
+            my $mar_compression = get_config($config, $version, $os, 'mar_compression');
             extract_mar(
                 mar_filename($config, $config->{appname_marfile}, $version, $os, $lang),
-                "$tmpdir");
+                "$tmpdir",
+                $mar_compression);
             my $appfile = "$tmpdir/application.ini" if -f "$tmpdir/application.ini";
             $appfile = "$tmpdir/Contents/Resources/application.ini"
                                 if -f "$tmpdir/Contents/Resources/application.ini";
