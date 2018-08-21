@@ -10,6 +10,7 @@ Tor Browser 8.0a10 -- August 20 2018
      * Bug 26500: Reposition circuit display relay icon for RTL locales
      * Bug 26409: Remove spoofed locale implementation
      * Bug 26189: Remove content-policy.js
+       * Bug 26544: Images are not centered anymore
      * Bug 27129: Add locales ca, ga, id, is, nb
      * Translations update
    * Update Tor Launcher to 0.2.16.2
