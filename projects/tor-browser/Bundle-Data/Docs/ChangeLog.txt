@@ -23,7 +23,7 @@ Tor Browser 8.0a10 -- August 20 2018
      * Bug 26477: Make meek extension compatible with ESR 60
    * Bug 27082: Enable a limited UITour for user onboarding
    * Bug 26961: New user onboarding
-   * Bug 14952: Enable HTTP2 and AltSvc
+   * Bug 14952+24553: Enable HTTP2 and AltSvc
      * Bug 25735: Tor Browser stalls while loading Facebook login page
    * Bug 17252: Enable TLS session identifiers with first-party isolation
    * Bug 26353: Prevent speculative connects that violate first-party isolation
