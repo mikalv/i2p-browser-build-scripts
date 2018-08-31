@@ -1,3 +1,177 @@
+Tor Browser 8.0 -- September 5 2018
+ * All platforms
+   * Update Firefox to 60.2.0esr
+   * Update Tor to 0.3.3.9
+   * Update OpenSSL to 1.0.2p
+   * Update Libevent to 2.1.8
+   * Update Torbutton to 2.0.5
+     * Bug 26960: Implement new about:tor start page
+     * Bug 26961: Implement new user onboarding
+     * Bug 26962: Circuit display onboarding
+     * Bug 27301: Improve about:tor behavior and appearance
+     * Bug 27214: Improve the onboarding text
+     * Bug 26321: Move 'New Identity', 'New Circuit' to File, hamburger menus
+     * Bug 26100: Adapt Torbutton to Firefox 60 ESR
+     * Bug 26520: Fix sec slider/NoScript for TOR_SKIP_LAUNCH=1
+     * Bug 26430: New Torbutton icon
+     * Bug 24309: Move circuit display to the identity popup
+     * Bug 26884: Use Torbutton to provide security slider on mobile
+     * Bug 26128: Adapt security slider to the WebExtensions version of NoScript
+     * Bug 27276: Adapt to new NoScript messaging protocol
+     * Bug 23247: Show security state of .onions
+     * Bug 26129: Show our about:tor page on startup
+     * Bug 26235: Hide new unusable items from help menu
+     * Bug 26058: Remove workaround for hiding 'sign in to sync' button
+     * Bug 26590: Use new svg.disabled pref in security slider
+     * Bug 26655: Adjust color and size of onion button
+     * Bug 26500: Reposition circuit display relay icon for RTL locales
+     * Bug 26409: Remove spoofed locale implementation
+     * Bug 26189: Remove content-policy.js
+       * Bug 26544: Images are not centered anymore
+     * Bug 26490: Remove the security slider notification
+     * Bug 25126: Make about:tor layout responsive
+     * Bug 27097: Add text for Tor News signup widget
+     * Bug 21245: Add da translation to Torbutton and keep track of it
+     * Bug 27129+20628: Add locales ca, ga, id, is, nb, da, he, sv, and zh-TW
+     * Translations update
+  * Update Tor Launcher to 0.2.16.3
+     * Bug 23136: Moat integration (fetch bridges for the user)
+     * Bug 25750: Update Tor Launcher to make it compatible with Firefox 60 ESR
+     * Bug 26985: Help button icons missing
+     * Bug 25509: Improve the proxy help text
+     * Bug 26466: Remove sv-SE from tracking for releases
+     * Bug 27129+20628: Add locales ca, ga, id, is, nb, da, he, sv, and zh-TW
+     * Translations update
+   * Update HTTPS Everywhere to 2018.8.22
+   * Update NoScript to 10.1.9.1
+   * Update meek to 0.31
+     * Bug 26477: Make meek extension compatible with ESR 60
+   * Update obfs4proxy to v0.0.7 (bug 25356)
+   * Bug 27082: Enable a limited UITour for user onboarding
+   * Bug 26961: New user onboarding
+   * Bug 26962: New feature onboarding
+   * Bug 27283: Fix first-party isolation for UI tour
+   * Bug 27213: Update about:tbupdate to new (about:tor) layout
+   * Bug 14952+24553: Enable HTTP2 and AltSvc
+     * Bug 25735: Tor Browser stalls while loading Facebook login page
+   * Bug 17252: Enable TLS session identifiers with first-party isolation
+   * Bug 26353: Prevent speculative connects that violate first-party isolation
+   * Bug 26670: Make canvas permission prompt respect first-party isolation
+   * Bug 24056: Use en-US strings in HTML forms if locale is spoofed to english
+   * Bug 26456: HTTP .onion sites inherit previous page's certificate information
+   * Bug 26561: .onion images are not displayed
+   * Bug 26321: Move 'New Identity', 'New Circuit' to File, hamburger menus
+   * Bug 26833: Backport Mozilla's bug 1473247
+   * Bug 26628: Backport Mozilla's bug 1470156
+   * Bug 26237: Clean up toolbar for ESR60-based Tor Browser
+   * Bug 26519: Avoid Firefox icons in ESR60
+   * Bug 26039: Load our preferences that modify extensions (fixup)
+   * Bug 26515: Update Tor Browser blog post URLs
+   * Bug 26216: Fix broken MAR file generation
+   * Bug 26409: Remove spoofed locale implementation
+   * Bug 25543: Rebase Tor Browser patches for ESR60
+   * Bug 23247: Show security state of .onions
+   * Bug 26039: Load our preferences that modify extensions
+   * Bug 17965: Isolate HPKP and HSTS to URL bar domain
+   * Bug 21787: Spoof en-US for date picker
+   * Bug 21607: Disable WebVR for now until it is properly audited
+   * Bug 21549: Disable wasm for now until it is properly audited
+   * Bug 26614: Disable Web Authentication API until it is properly audited
+   * Bug 27281: Enable Reader View mode again
+   * Bug 26114: Don't expose navigator.mozAddonManager to websites
+   * Bug 21850: Update about:tbupdate handling for e10s
+   * Bug 26048: Fix potentially confusing "restart to update" message
+   * Bug 27221: Purge startup cache if Tor Browser version changed
+   * Bug 26049: Reduce delay for showing update prompt to 1 hour
+   * Bug 26365: Add potential AltSvc support
+   * Bug 9145: Fix broken hardware acceleration on Windows and enable it
+   * Bug 26045: Add new MAR signing keys
+   * Bug 25215: Revert bug 18619 (we are not disabling IndexedDB any longer)
+   * Bug 19910: Rip out optimistic data socks handshake variant (#3875)
+   * Bug 22564: Hide Firefox Sync
+   * Bug 25090: Disable updater telemetry
+   * Bug 26127: Make sure Torbutton and Tor Launcher are not treated as legacy extensions
+   * Bug 13575: Disable randomised Firefox HTTP cache decay user tests
+   * Bug 22548: Firefox downgrades VP9 videos to VP8 for some users
+   * Bug 24995: Include git hash in tor --version
+   * Bug 27268+27257+27262+26603 : Preferences clean-up
+   * Bug 26073: Migrate general.useragent.locale to intl.locale.requested
+   * Bug 27129+20628: Make Tor Browser available in ca, ga, id, is, nb, da, he, sv, and zh-TW
+     * Bug 12927: Include Hebrew translation into Tor Browser
+     * Bug 21245: Add danish (da) translation
+ * Windows
+   * Bug 20636+10026: Create 64bit Tor Browser for Windows
+     * Bug 26239+24197: Enable content sandboxing for 64bit Windows builds
+     * Bug 26514: Fix intermittent updater failures on Win64 (Error 19)
+     * Bug 26874: Fix UNC path restrictions failure in Tor Browser 8.0a9
+     * Bug 12968: Enable HEASLR in Windows x86_64 builds
+   * Bug 26381: Work around endless loop during page load and about:tor not loading
+   * Bug 22581: Fix shutdown crash
+   * Bug 25266: PT config should include full names of executable files
+   * Bug 26304: Update zlib to version 1.2.11
+   * Update tbb-windows-installer to 0.4
+     * Bug 26355: Update tbb-windows-installer to check for Windows7+
+   * Bug 26355: Require Windows7+ for updates to Tor Browser 8
+ * OS X
+   * Bug 24136: After loading file:// URLs clicking on links is broken on OS X
+   * Bug 24243: Tor Browser only renders HTML for local pages via file://
+   * Bug 24263: Tor Browser does not run extension scripts if loaded via about:debugging
+   * Bug 22794: Don't open AF_INET/AF_INET6 sockets when AF_LOCAL is configured
+ * Linux
+   * Bug 22794: Don't open AF_INET/AF_INET6 sockets when AF_LOCAL is configured
+   * Bug 25485: Unbreak Tor Browser on systems with newer libstdc++
+   * Bug 20866: Fix OpenGL software rendering on systems with newer libstdc++
+   * Bug 26951+18022: Fix execdesktop argument passing
+   * Bug 24136: After loading file:// URLs clicking on links is broken on Linux
+   * Bug 24243: Tor Browser only renders HTML for local pages via file://
+   * Bug 24263: Tor Browser does not run extension scripts if loaded via about:debugging
+   * Bug 20283: Tor Browser should run without a `/proc` filesystem.
+   * Bug 26354: Set SSE2 support as minimal requirement for Tor Browser 8
+ * Build System
+   * All
+     * Bug 26362+26410: Use old MAR format for first ESR60-based stable
+     * Bug 27020: RBM build fails with runc version 1.0.1
+     * Bug 26949: Use GitHub repository for STIX
+     * Bug 26773: Add --verbose to the ./mach build flag for firefox
+     * Bug 26319: Don't package up Tor Browser in the `mach package` step
+     * Bug 27178: add support for xz compression in mar files
+     * Clean up
+   * Windows
+     * Bug 26203: Adapt tor-browser-build/tor-browser for Windows
+     * Bug 26204: Bundle d3dcompiler_47.dll for Tor Browser 8
+     * Bug 26205: Don't build the uninstaller for Windows during Firefox compilation
+     * Bug 26206: Ship pthread related dll where needed
+     * Bug 26396: Build libwinpthread reproducible
+     * Bug 25837: Integrate fxc2 into our build setup for Windows builds
+     * Bug 27152: Use mozilla/fxc2.git for the fxc2 repository
+     * Bug 25894: Get a rust cross-compiler for Windows
+     * Bug 25554: Bump mingw-w64 version for ESR 60
+     * Bug 23561: Fix nsis builds for Windows 64
+       * Bug 13469: Windows installer is missing many languages from NSIS file
+     * Bug 23231: Remove our STL Wrappers workaround for Windows 64bit
+     * Bug 26370: Don't copy msvcr100.dll and libssp-0.dll twice
+     * Bug 26476: Work around Tor Browser crashes due to fix for bug 1467041
+     * Bug 18287: Use SHA-2 signature for Tor Browser setup executables
+     * Bug 25420: Update GCC to 6.4.0
+     * Bug 16472: Update Binutils to 2.26.1
+     * Bug 20302: Fix FTE compilation for Windows with GCC 6.4.0
+     * Bug 25111: Don't compile Yasm on our own anymore for Windows Tor Browser
+     * Bug 18691: Switch Windows builds from precise to jessie
+   * OS X
+     * Bug 24632: Update macOS toolchain for ESR 60
+     * Bug 9711: Build our own cctools for macOS cross-compilation
+     * Bug 25548: Update macOS SDK for Tor Browser builds to 10.11
+     * Bug 26003: Clean up our mozconfig-osx-x86_64 file
+     * Bug 26195: Use new cctools in our macosx-toolchain project
+     * Bug 25975: Get a rust cross-compiler for macOS
+     * Bug 26475: Disable Stylo to make macOS build reproducible
+     * Bug 26489: Fix .app directory name in tools/dmg2mar
+   * Linux
+     * Bug 26073: Patch tor-browser-build for transition to ESR 60
+     * Bug 25481: Rust support for tor-browser and tor
+     * Bug 25304: Update GCC to 6.4.0
+     * Bug 16472: Update Binutils to 2.26.1
+
 Tor Browser 8.0a10 -- August 20 2018
  * All platforms
    * Update Tor to 0.3.4.6-rc
@@ -44,7 +218,6 @@ Tor Browser 8.0a10 -- August 20 2018
    * Bug 26514: Fix intermittent updater failures on Win64 (Error 19)
    * Bug 26874: Fix UNC path restrictions failure in Tor Browser 8.0a9
    * Bug 12968: Enable HEASLR in Windows x86_64 builds
-   * Bug 9145: Fix broken hardware acceleration
    * Update tbb-windows-installer to 0.4
      * Bug 26355: Update tbb-windows-installer to check for Windows7+
    * Bug 26355: Require Windows7+ for updates to Tor Browser 8
@@ -73,7 +246,6 @@ Tor Browser 8.0a9 -- June 27 2018
    * Update Firefox to 60.1.0esr
    * Update Tor to 0.3.4.2-alpha
    * Update Libevent to 2.1.8
-   * Update Binutils to 2.26.1
    * Update Torbutton to 2.0.1
      * Bug 26100: Adapt Torbutton to Firefox 60 ESR
      * Bug 26430: New Torbutton icon
@@ -88,6 +260,7 @@ Tor Browser 8.0a9 -- June 27 2018
    * Update Tor Launcher to 0.2.16.1
      * Bug 25750: Update Tor Launcher to make it compatible with Firefox 60 ESR
      * Bug 20890: Increase control port connection timeout
+     * Bug 26466: Remove sv-SE from tracking for releases
      * Bug 20628: Add more locales to Tor Browser
      * Translations update
    * Update HTTPS Everywhere to 2018.6.21
@@ -97,6 +270,7 @@ Tor Browser 8.0a9 -- June 27 2018
    * Bug 26039: Load our preferences that modify extensions
    * Bug 17965: Isolate HPKP and HSTS to URL bar domain
    * Bug 26365: Add potential AltSvc support
+   * Bug 9145: Fix broken hardware acceleration on Windows and enable it
    * Bug 26045: Add new MAR signing keys
    * Bug 22564: Hide Firefox Sync
    * Bug 25090: Disable updater telemetry
@@ -144,6 +318,7 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 26370: Don't copy msvcr100.dll and libssp-0.dll twice
     * Bug 26476: Work around Tor Browser crashes due to fix for bug 1467041
     * Bug 18287: Use SHA-2 signature for Tor Browser setup executables
+    * Bug 16472: Update Binutils to 2.26.1
   * OS X
     * Bug 24632: Update macOS toolchain for ESR 60
     * Bug 9711: Build our own cctools for macOS cross-compilation
@@ -156,6 +331,7 @@ Tor Browser 8.0a9 -- June 27 2018
     * Bug 26073: Patch tor-browser-build for transition to ESR 60
     * Bug 25540: Stop building and distributing sandboxed tor browser
     * Bug 25481: Rust support for tor-browser and tor
+    * Bug 16472: Update Binutils to 2.26.1
 
 Tor Browser 7.5.6 -- June 26 2018
  * All platforms
