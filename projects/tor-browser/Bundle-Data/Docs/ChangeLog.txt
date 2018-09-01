@@ -4,7 +4,7 @@ Tor Browser 8.0 -- September 5 2018
    * Update Tor to 0.3.3.9
    * Update OpenSSL to 1.0.2p
    * Update Libevent to 2.1.8
-   * Update Torbutton to 2.0.5
+   * Update Torbutton to 2.0.6
      * Bug 26960: Implement new about:tor start page
      * Bug 26961: Implement new user onboarding
      * Bug 26962: Circuit display onboarding
@@ -13,6 +13,7 @@ Tor Browser 8.0 -- September 5 2018
      * Bug 26321: Move 'New Identity', 'New Circuit' to File, hamburger menus
      * Bug 26100: Adapt Torbutton to Firefox 60 ESR
      * Bug 26520: Fix sec slider/NoScript for TOR_SKIP_LAUNCH=1
+     * Bug 27401: Start listening for NoScript before it loads
      * Bug 26430: New Torbutton icon
      * Bug 24309: Move circuit display to the identity popup
      * Bug 26884: Use Torbutton to provide security slider on mobile
@@ -50,6 +51,7 @@ Tor Browser 8.0 -- September 5 2018
    * Bug 27082: Enable a limited UITour for user onboarding
    * Bug 26961: New user onboarding
    * Bug 26962: New feature onboarding
+   * Bug 27403: The onboarding bubble is not always displayed
    * Bug 27283: Fix first-party isolation for UI tour
    * Bug 27213: Update about:tbupdate to new (about:tor) layout
    * Bug 14952+24553: Enable HTTP2 and AltSvc
