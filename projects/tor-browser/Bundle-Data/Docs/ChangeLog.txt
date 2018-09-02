@@ -108,6 +108,7 @@ Tor Browser 8.0 -- September 5 2018
      * Bug 26874: Fix UNC path restrictions failure in Tor Browser 8.0a9
      * Bug 12968: Enable HEASLR in Windows x86_64 builds
    * Bug 26381: Work around endless loop during page load and about:tor not loading
+   * Bug 27411: Fix broken security slider and NoScript interaction on Windows
    * Bug 22581: Fix shutdown crash
    * Bug 25266: PT config should include full names of executable files
    * Bug 26304: Update zlib to version 1.2.11
