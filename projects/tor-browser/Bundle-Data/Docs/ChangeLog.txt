@@ -1,3 +1,50 @@
+Tor Browser 8.5a1 -- September 5 2018
+ * All platforms
+   * Update Firefox to 60.2.0esr
+   * Update Tor to 0.3.4.7-rc
+   * Update OpenSSL to 1.0.2p
+   * Update Torbutton to 2.0.6
+     * Bug 27401: Start listening for NoScript before it loads
+     * Bug 27276: Adapt to new NoScript messaging protocol
+     * Bug 26884: Use Torbutton to provide security slider on mobile
+     * Bug 26962: Circuit display onboarding
+     * Bug 26520: Fix sec slider/NoScript for TOR_SKIP_LAUNCH=1
+     * Bug 26490: Remove the security slider notification
+     * Bug 27301: Improve about:tor behavior and appearance
+     * Bug 27097: Add text for Tor News signup widget
+     * Bug 27214: Improve the onboarding text
+     * Translations update
+   * Update Tor Launcher to 0.2.16.4
+     * Bug 25405: Cannot use Moat if a meek bridge is configured
+     * Bug 27392: Update Moat URLs
+     * Translations update
+   * Update HTTPS Everywhere to 2018.8.22
+   * Update NoScript to 10.1.9.1
+   * Bug 26962: New feature onboarding
+   * Bug 27403: The onboarding bubble is not always displayed
+   * Bug 27283: Fix first-party isolation for UI tour
+   * Bug 27213: Update about:tbupdate to new (about:tor) layout
+   * Bug 26670: Make canvas permission prompt respect first-party isolation
+   * Bug 26561: .onion images are not displayed
+   * Bug 21787: Spoof en-US for date picker
+   * Bug 21607: Disable WebVR for now until it is properly audited
+   * Bug 21549: Disable wasm for now until it is properly audited
+   * Bug 26614: Disable Web Authentication API until it is properly audited
+   * Bug 27281: Enable Reader View mode again
+   * Bug 26114: Don't expose navigator.mozAddonManager to websites
+   * Bug 26048: Fix potentially confusing "restart to update" message
+   * Bug 27221: Purge startup cache if Tor Browser version changed
+   * Bug 26049: Reduce delay for showing update prompt to 1 hour
+   * Bug 25405: Cannot use Moat if a meek bridge is configured
+   * Bug 27268+27257+27262+26603 : Preferences clean-up
+ * Windows
+   * Bug 26381: Work around endless loop during page load and about:tor not loading
+   * Bug 27411: Fix broken security slider and NoScript interaction on Windows
+ * Build System
+   * All Platforms
+     * Bug 27061: Enable verification of langpacks checksums
+     * Bug 27178+27179: Add support for xz compression in mar files
+
 Tor Browser 8.0 -- September 5 2018
  * All platforms
    * Update Firefox to 60.2.0esr
@@ -131,13 +178,13 @@ Tor Browser 8.0 -- September 5 2018
    * Bug 20283: Tor Browser should run without a `/proc` filesystem.
    * Bug 26354: Set SSE2 support as minimal requirement for Tor Browser 8
  * Build System
-   * All
+   * All Platforms
      * Bug 26362+26410: Use old MAR format for first ESR60-based stable
      * Bug 27020: RBM build fails with runc version 1.0.1
      * Bug 26949: Use GitHub repository for STIX
      * Bug 26773: Add --verbose to the ./mach build flag for firefox
      * Bug 26319: Don't package up Tor Browser in the `mach package` step
-     * Bug 27178: add support for xz compression in mar files
+     * Bug 27178: Add support for xz compression in mar files
      * Clean up
    * Windows
      * Bug 26203: Adapt tor-browser-build/tor-browser for Windows
@@ -232,7 +279,7 @@ Tor Browser 8.0a10 -- August 20 2018
    * Bug 26951+18022: Fix execdesktop argument passing
    * Bug 26795: Bump snowflake to 6077141f4a for bug 25600
  * Build System
-   * All
+   * All Platforms
      * Bug 26410: Stop using old MAR format in the alpha series
      * Bug 27020: RBM build fails with runc version 1.0.1
      * Bug 26949: Use GitHub repository for STIX
@@ -303,7 +350,7 @@ Tor Browser 8.0a9 -- June 27 2018
    * Bug 22242: Remove RUNPATH in Linux binaries embedded by selfrando
    * Bug 26354: Set SSE2 support as minimal requirement for Tor Browser 8
  * Build System
-  * All
+  * All Platforms
     * Bug 26362: Use old MAR format for first ESR60-based alpha
     * Clean up
   * Windows
