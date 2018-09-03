@@ -48,6 +48,7 @@ versions:
         win64:
             minSupportedOSVersion: 6.1
 [% IF c("var/release") -%]
+        mar_compression: xz
 mar_compression: bzip2
 [% ELSE -%]
 mar_compression: xz
