@@ -3,10 +3,20 @@ filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/buil
 version: 1.26.1
 var:
   prev_version: 1.25.0
+  rust_arch: '[% c("arch") %]'
   container:
     use_container: 1
 
 targets:
+  android-armv7:
+    var:
+      rust_arch: x86_64
+      arch_deps:
+        - libssl-dev
+        - pkg-config
+        - zlib1g-dev
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=armv7-linux-androideabi --set=target.armv7-linux-androideabi.ar=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-ar --set=target.armv7-linux-androideabi.linker=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-clang --set=target.armv7-linux-androideabi.cc=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-gcc
+
   linux:
     var:
       arch_deps:
@@ -66,7 +76,7 @@ input_files:
     sig_ext: asc
     file_gpg_id: 1
     gpg_keyring: rust.gpg
-  - URL: 'https://static.rust-lang.org/dist/rust-[% c("var/prev_version") %]-[% c("arch") %]-unknown-linux-gnu.tar.xz'
+  - URL: 'https://static.rust-lang.org/dist/rust-[% c("var/prev_version") %]-[% c("var/rust_arch") %]-unknown-linux-gnu.tar.xz'
     name: prev_rust
     sig_ext: asc
     file_gpg_id: 1

@@ -6,7 +6,7 @@ mkdir -p /var/tmp/dist
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
 export PATH="/var/tmp/dist/cmake/bin:$PATH"
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/prev_rust') %]
-cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('arch') %]-unknown-linux-gnu
+cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('var/rust_arch') %]-unknown-linux-gnu
 ./install.sh --prefix=$distdir-rust-old
 export PATH="$distdir-rust-old/bin:$PATH"
 
