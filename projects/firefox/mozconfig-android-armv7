@@ -1,0 +1,49 @@
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-arm-linux-androideabi
+mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
+export MOZILLA_OFFICIAL=1
+
+ac_add_options --enable-optimize
+ac_add_options --enable-official-branding
+
+ac_add_options --enable-application=mobile/android
+ac_add_options --target=arm-linux-androideabi
+ac_add_options --with-android-ndk=/var/tmp/dist/android-toolchain/android-ndk
+ac_add_options --with-android-sdk=/var/tmp/dist/android-toolchain/android-sdk-linux
+ac_add_options --with-gradle=/var/tmp/dist/android-toolchain/gradle/gradle-4.1/bin/gradle
+ac_add_options --with-android-version=16
+ac_add_options --with-branding=mobile/android/branding/torbrowser
+
+# Android NDK does not contain llvm-config so set clang path in options
+ac_add_options --with-libclang-path=/var/tmp/dist/android-toolchain/android-ndk/arm/lib64
+ac_add_options --with-clang-path=/var/tmp/dist/android-toolchain/android-ndk/arm/bin/clang
+
+if [ -n "${TB_BUILD_WITH_DISTRIBUTION}" ]; then
+    ac_add_options --with-android-distribution-directory=@TOPSRCDIR@/mobile/android/torbrowser
+fi
+
+if [ -z "${TB_BUILD_WITH_UPDATER}" ]; then
+# Because Google Play will likely be the primary distribution medium,
+# we disable updating and rely on Google Play by default. The
+# Developer Policy explicitly prohibits in-app updating:
+#    An app distributed via Google Play may not modify, replace, or
+#    update itself using any method other than Google Plays update
+#    mechanism.
+# https://play.google.com/about/privacy-security-deception/malicious-behavior/
+
+    ac_add_options --disable-tor-browser-update
+    ac_add_options --disable-signmar
+    ac_add_options --disable-verify-mar
+fi
+
+ac_add_options --enable-strip
+ac_add_options --disable-tests
+ac_add_options --disable-debug
+ac_add_options --disable-rust-debug
+ac_add_options --disable-maintenance-service
+ac_add_options --disable-crashreporter
+ac_add_options --disable-webrtc
+
+ac_add_options --without-google-play-services
+
+# Let's make sure no preference is enabling either Adobe's or Google's CDM.
+ac_add_options --disable-eme

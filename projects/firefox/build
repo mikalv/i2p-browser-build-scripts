@@ -1,6 +1,10 @@
 #!/bin/bash
 [% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
+[% IF c("var/android") %]
+  export GRADLE_MAVEN_REPOSITORIES="file://$rootdir/[% c('input_files_by_name/gradle-dependencies') %]"
+[% END -%]
+
 [% IF c("var/windows") -%]
   [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc') }) %]
   # We need a link to our GCC, otherwise the system cc gets used which points to
@@ -10,6 +14,7 @@
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
+mkdir -p [% dest_dir _ '/' _ c('filename') %]
 
 [% IF c("var/windows") -%]
   mingwdir=/var/tmp/dist/mingw-w64
@@ -143,6 +148,13 @@ rm -f js/src/configure
 
 ./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts
 ./mach build --verbose
+
+[% IF c("var/android") %]
+  ./mach package
+  cp obj-*/dist/*unsigned-unaligned.apk [% dest_dir _ '/' _ c('filename') %]/tor-browser-unsigned-unaligned.apk
+  [% RETURN %]
+[% END %]
+
 ./mach build stage-package
 
 [% IF c("var/osx") %]
@@ -256,8 +268,6 @@ cd $distdir
   [% c("var/rezip", { rezip_file => '"Tor Browser.app/Contents/Resources/omni.ja"' }) %]
   [% c("var/rezip", { rezip_file => '"Tor Browser.app/Contents/Resources/browser/omni.ja"' }) %]
 [% END %]
-
-mkdir -p [% dest_dir _ '/' _ c('filename') %]
 
 [%
 IF c("var/osx");

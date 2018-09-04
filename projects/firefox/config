@@ -4,6 +4,7 @@ filename: 'firefox-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id")
 git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build1'
 tag_gpg_id: 1
 git_url: https://git.torproject.org/tor-browser.git
+git_submodule: 1
 gpg_keyring: torbutton.gpg
 
 var:
@@ -21,6 +22,8 @@ var:
     - python
   container:
     use_container: 1
+  # this should be updated when the list of gradle dependencies is changed
+  gradle_dependencies_version: 2
 
 targets:
   release:
@@ -32,6 +35,11 @@ targets:
     tag_gpg_id: 0
     var:
       torbrowser_update_channel: default
+
+  android-armv7:
+    var:
+      arch_deps:
+        - openjdk-8-jdk
 
   linux:
     var:
@@ -120,3 +128,7 @@ input_files:
     enable: '[% c("var/linux") %]'
   - filename: start-firefox
     enable: '[% c("var/linux") %]'
+  - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
+    name: gradle-dependencies
+    exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
+    enable: '[% c("var/android") %]'
