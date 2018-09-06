@@ -36,7 +36,7 @@ Tor Browser 8.5a1 -- September 5 2018
    * Bug 27221: Purge startup cache if Tor Browser version changed
    * Bug 26049: Reduce delay for showing update prompt to 1 hour
    * Bug 25405: Cannot use Moat if a meek bridge is configured
-   * Bug 27268+27257+27262+26603 : Preferences clean-up
+   * Bug 27268+27257+27262+26603: Preferences clean-up
  * Windows
    * Bug 26381: Work around endless loop during page load and about:tor not loading
    * Bug 27411: Fix broken security slider and NoScript interaction on Windows
