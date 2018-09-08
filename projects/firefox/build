@@ -195,6 +195,9 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 [% IF c("var/linux") %]
   cp -p obj-*/modules/libmar/tool/signmar $MARTOOLS/
   cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/modutil/modutil_modutil/modutil $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/pk12util/pk12util_pk12util/pk12util $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/shlibsign/shlibsign_shlibsign/shlibsign $MARTOOLS/
   NSS_LIBS="libfreeblpriv3.so libmozsqlite3.so libnss3.so libnssckbi.so libnssdbm3.so libnssutil3.so libsmime3.so libsoftokn3.so libssl3.so"
   NSPR_LIBS="libnspr4.so libplc4.so libplds4.so"
   for LIB in $NSS_LIBS $NSPR_LIBS; do
@@ -204,6 +207,9 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 [% IF c("var/osx") %]
   cp -p obj-*/modules/libmar/tool/signmar $MARTOOLS/
   cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/modutil/modutil_modutil/modutil $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/pk12util/pk12util_pk12util/pk12util $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/shlibsign/shlibsign_shlibsign/shlibsign $MARTOOLS/
   NSS_LIBS="libfreebl3.dylib libmozglue.dylib libnss3.dylib libnssckbi.dylib libnssdbm3.dylib libsoftokn3.dylib"
   for LIB in $NSS_LIBS; do
       cp -p obj-*/dist/bin/$LIB $MARTOOLS/
@@ -212,6 +218,9 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 [% IF c("var/windows") %]
   cp -p obj-*/modules/libmar/tool/signmar.exe $MARTOOLS/
   cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil.exe $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/modutil/modutil_modutil/modutil.exe $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/pk12util/pk12util_pk12util/pk12util.exe $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/shlibsign/shlibsign_shlibsign/shlibsign.exe $MARTOOLS/
   NSS_LIBS="freebl3.dll mozglue.dll nss3.dll nssckbi.dll nssdbm3.dll softokn3.dll"
   for LIB in $NSS_LIBS; do
       cp -p obj-*/dist/bin/$LIB $MARTOOLS/
