@@ -240,7 +240,7 @@ fi
 # canonical version if it was changed by the updater.
 cp start-tor-browser.desktop ../
 sed -i -e "s,^Name=.*,Name=Tor Browser,g" ../start-tor-browser.desktop
-sed -i -e "s,^Icon=.*,Icon=$PWD/browser/icons/mozicon128.png,g" ../start-tor-browser.desktop
+sed -i -e "s,^Icon=.*,Icon=$PWD/browser/chrome/icons/default/default128.png,g" ../start-tor-browser.desktop
 sed -i -e "s,^Exec=.*,Exec=sh -c '\"$PWD/start-tor-browser\" --detach || ([ !  -x \"$PWD/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" ../start-tor-browser.desktop
 
 if [ "$register_desktop_app" -eq 1 ]; then
