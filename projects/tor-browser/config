@@ -74,6 +74,8 @@ input_files:
     enable: '[% c("var/linux") %]'
   - filename: 'RelativeLink/execdesktop'
     enable: '[% c("var/linux") %]'
+  - filename: 'gtk3-settings.ini'
+    enable: '[% c("var/linux") %]'
   - project: libdmg-hfsplus
     name: libdmg
     enable: '[% c("var/osx") %]'
