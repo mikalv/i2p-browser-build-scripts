@@ -1,6 +1,6 @@
 Tor Browser 8.5a2 -- September 24 2018
  * All platforms
-   * Update Tor to 0.3.5.1-alpha
+   * Update Tor to 0.3.5.2-alpha
    * Update Torbutton to 2.1
      * Bug 27097: Tor News signup banner
      * Bug 27663: Add New Identity menuitem again
