@@ -3,7 +3,7 @@ filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/ar
 pkg_type: build
 
 var:
-  ubuntu_version: 16.04.3
+  ubuntu_version: 18.04.1
 
   container:
     use_container: 1
@@ -44,9 +44,13 @@ targets:
       container:
         suite: buster
         arch: amd64
+  stretch-amd64:
+    var:
+      container:
+        suite: stretch
+        arch: amd64
 
 input_files:
   - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
     filename: 'container-image_ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
-    sha256sum: 353b01ac60c43574c4977b1a9b7fe09a43298cb572de1a2090a8f09c5133b4d2
-
+    sha256sum: ed76e649f65548a80b361b68011085ec4dde7bb762d667657acbef87765e1a12
