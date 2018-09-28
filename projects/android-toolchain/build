@@ -1,0 +1,43 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+export PROJECT_PATH=/var/tmp/dist/[% project %]
+export SDK_HOME=$PROJECT_PATH/android-sdk-linux
+export NDK_HOME=$PROJECT_PATH/android-ndk
+export GRADLE_HOME=$PROJECT_PATH/gradle
+
+#Make directories
+mkdir -p $NDK_HOME $SDK_HOME $GRADLE_HOME
+
+# Compiler Archives
+unzip -qq [% c("input_files_by_name/android_sdk_tools") %] -d $SDK_HOME
+unzip -qq [% c("input_files_by_name/android_ndk_compiler")%] -d $NDK_HOME
+unzip -qq [% c("input_files_by_name/gradle_bin") %] -d $GRADLE_HOME
+
+# NDK Archive
+cd $NDK_HOME
+mv android-ndk-r15c/* .
+rm -fR android-ndk-r15c
+./build/tools/make_standalone_toolchain.py --api 26 --arch arm --install-dir=./arm
+
+# Tool Archives
+cd $SDK_HOME
+unzip -qq $HOME/[% c("input_files_by_name/build_tools_26") %] -d $SDK_HOME
+mkdir -p build-tools/26.0.2
+mv android-8.1.0/* build-tools/26.0.2
+
+unzip -qq $HOME/[% c("input_files_by_name/platform_26") %] -d $SDK_HOME
+mkdir -p platforms/android-26
+mv android-8.0.0/* platforms/android-26
+
+unzip -qq $HOME/[% c("input_files_by_name/platform_tools_26") %] -d $SDK_HOME
+
+# Cleanup
+rm -fR android-8.1.0
+rm -fR android-8.0.0
+
+# Archive dist directory
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+        }) %]
