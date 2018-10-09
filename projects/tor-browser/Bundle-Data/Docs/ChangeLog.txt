@@ -7,6 +7,13 @@ Tor Browser 8.5a3 -- October 4 2018
  * OS X
    * Backport fix for Mozilla bug 1489785 for macOS 10.14 compatibility
 
+Tor Browser 8.0.2 -- October 2 2018
+ * All platforms
+   * Update Firefox to 60.2.1esr
+   * Backport fix for Mozilla bug 1493900 and 1493903
+ * OS X
+   * Backport fix for Mozilla bug 1489785 for macOS 10.14 compatibility
+
 Tor Browser 8.5a2 -- September 24 2018
  * All platforms
    * Update Tor to 0.3.5.2-alpha
@@ -39,6 +46,35 @@ Tor Browser 8.5a2 -- September 24 2018
  * Linux:
    * Bug 27546: Fix vertical scrollbar behavior in Tor Browser 8 with Gtk3
    * Bug 27552: Use bundled dir on CentOS/RHEL 6
+   * Bug 26556: Fix broken Tor Browser icon path on Linux
+
+Tor Browser 8.0.1 -- September 24 2018
+ * All platforms
+   * Update Tor to 0.3.4.8
+   * Update Torbutton to 2.0.7
+     * Bug 27097: Tor News signup banner
+     * Bug 27663: Add New Identity menuitem again
+     * Bug 26624: Only block OBJECT on highest slider level
+     * Bug 26555: Don't show IP address for meek or snowflake
+     * Bug 27478: Torbutton icons for dark theme
+     * Bug 27506+14520: Move status version to upper left corner for RTL locales
+     * Bug 27427: Fix NoScript IPC for about:blank by whitelisting messages
+     * Bug 27558: Update the link to "Your Guard note may not change" text
+     * Translations update
+   * Update Tor Launcher to 0.2.16.6
+     * Bug 27469: Adapt Moat URLs
+     * Translations update
+     * Clean-up
+   * Update NoScript to 10.1.9.6
+   * Bug 27763: Restrict Torbutton signing exemption to mobile
+   * Bug 26146: Spoof HTTP User-Agent header for desktop platforms
+   * Bug 27543: QR code is broken on web.whatsapp.com
+   * Bug 27264: Bookmark items are not visible on the boomark toolbar
+   * Bug 27535: Enable TLS 1.3 draft version
+   * Backport of Mozilla bug 1490585, 1475775, and 1489744
+ * OS X
+   * Bug 27482: Fix crash during start-up on macOS 10.9.x systems
+ * Linux
    * Bug 26556: Fix broken Tor Browser icon path on Linux
 
 Tor Browser 8.5a1 -- September 5 2018
