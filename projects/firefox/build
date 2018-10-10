@@ -201,6 +201,15 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
       cp -p obj-*/dist/bin/$LIB $MARTOOLS/
   done
 [% END %]
+[% IF c("var/windows") %]
+  cp -p obj-*/modules/libmar/tool/signmar.exe $MARTOOLS/
+  cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil.exe $MARTOOLS/
+  NSS_LIBS="freebl3.dll mozglue.dll nss3.dll nssdbm3.dll softokn3.dll"
+  for LIB in $NSS_LIBS; do
+      cp -p obj-*/dist/bin/$LIB $MARTOOLS/
+  done
+  cp -a $rootdir/msvcr100.dll $MARTOOLS/
+[% END %]
 
 cd $distdir
 
