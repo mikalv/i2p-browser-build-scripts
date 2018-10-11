@@ -294,8 +294,8 @@ cd $distdir
         dmg_out => '$OUTDIR/TorBrowser-' _ c("var/torbrowser_version") _ '-osx64_${PKG_LOCALE}.dmg',
     }) %]
 [% ELSIF c("var/windows") %]
-  find "${TB_STAGE_DIR}" -exec [% c("var/touch") %] {} \;
-  pushd "${TB_STAGE_DIR}"
+  find "$PKG_DIR" -exec [% c("var/touch") %] {} \;
+  pushd "$PKG_DIR"
   makensis torbrowser.nsi
   # Working around NSIS braindamage
   mv torbrowser-install.exe torbrowser-install-tmp.exe
