@@ -65,6 +65,16 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
 mkdir build
 cd build
 ../configure --prefix=$distdir [% c("var/configure_opt") %]
+
+# We need to disable Thin LTO due to reproducibility issues on macOS and
+# probably Linux. Alas, there is no direct option available in the config.toml
+# in 1.26.1 yet, so we need to toggle this indirectly via `codegen-units`.
+[% IF c("var/osx") || c("var/linux") %]
+  # It seems hard to pass the proper value via ./configure so we resort to our
+  # old friend `sed`.
+  sed -i 's/#codegen-units = 1/codegen-units = 1/' config.toml
+[% END %]
+
 make -j[% c("buildconf/num_procs") %]
 make install
 cd /var/tmp/dist
