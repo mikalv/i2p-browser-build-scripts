@@ -5,6 +5,9 @@ export TORBROWSER_VERSION='[% c("version") %]'
 
 mkdir -p $distdir
 
+scripts_dir=/var/tmp/build_scripts
+mkdir -p "$scripts_dir"
+
 OUTDIR='[% dest_dir _ "/" _ c("filename") %]'
 mkdir -p $OUTDIR
 
@@ -260,8 +263,6 @@ popd
   mv $distdir/tbb-windows-installer ${TB_STAGE_DIR}
 [% END %]
 
-cp -a ${TB_STAGE_DIR} $distdir/$PKG_DIR
-
 [% IF c("var/windows") %]
   TBDIR="$distdir/$PKG_DIR/Tor Browser/Browser"
 [% ELSIF c("var/osx") %]
@@ -269,6 +270,11 @@ cp -a ${TB_STAGE_DIR} $distdir/$PKG_DIR
 [% ELSE %]
   TBDIR="$distdir/$PKG_DIR/Browser"
 [% END %]
+
+cat > "$scripts_dir/create-$PKG_DIR" << SCRIPT_EOF
+#!/bin/bash
+set -e
+cp -a ${TB_STAGE_DIR} $distdir/$PKG_DIR
 
 pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]"
 rm -f precomplete
@@ -279,8 +285,8 @@ cd $distdir
 
 [% IF c("var/build_mar") -%]
   # Create full MAR file and compressed package.
-  MAR_FILE=tor-browser-[% c("var/mar_osname") %]-[% c("var/torbrowser_version") %]_${PKG_LOCALE}.mar
-  MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/$MAR_FILE "$TBDIR"
+  [% SET mar_file = 'tor-browser-' _ c("var/mar_osname") _ '-' _ c("var/torbrowser_version") _ '_${PKG_LOCALE}.mar' %]
+  MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/[% mar_file %] "$TBDIR"
 [% END -%]
 
 [% IF c("var/linux") %]
@@ -306,6 +312,7 @@ cd $distdir
   popd
 [% END %]
 rm -rf $distdir/${PKG_DIR}
+SCRIPT_EOF
 
 cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
 [% IF c("var/linux-x86_64") -%]
@@ -322,6 +329,7 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
     [% SET lang = tmpl(lang);
        SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
        SET tbdir = '$distdir/tor-browser_' _ lang;
+       SET mar_file = 'tor-browser-' _ c("var/mar_osname") _ '-' _ c("var/torbrowser_version") _ '_' _ lang _ '.mar';
        IF c("var/osx");
          SET browserdir = tbdir _ '/Tor Browser.app';
        ELSIF c("var/windows");
@@ -330,6 +338,9 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
          SET browserdir = tbdir _ '/Browser';
        END;
     %]
+      cat > "$scripts_dir/create-tor-browser_[% lang %]" << SCRIPT_EOF
+#!/bin/bash
+      set -e
       cp -a ${TB_STAGE_DIR} [% tbdir %]
       cp [% xpi %] "[% browserdir %]/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
 
@@ -357,9 +368,10 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
       python $MARTOOLS/createprecomplete.py
       popd
 
+      cd $distdir
+
       # Create full MAR file and compressed package for this locale.
-      MAR_FILE=tor-browser-[% c("var/mar_osname") %]-[% c("var/torbrowser_version") %]_[% lang %].mar
-      MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/$MAR_FILE "[% browserdir %]"
+      MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/[% mar_file %] "[% browserdir %]"
       [% IF c("var/linux") %]
         [% SET tardir = 'tor-browser_' _ lang;
           c('tar', {
@@ -388,5 +400,9 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
         popd
       [% END %]
       rm -rf [% tbdir %]
+SCRIPT_EOF
   [% END %]
 [% END %]
+
+chmod 775 $rootdir/run_scripts "$scripts_dir"/*
+$rootdir/run_scripts [% c("buildconf/num_procs") %] "$scripts_dir"

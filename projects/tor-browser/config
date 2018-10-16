@@ -6,6 +6,14 @@ var:
   container:
     use_container: 1
   ddmg: '[% INCLUDE ddmg.sh %]'
+  deps:
+    - python
+    - libparallel-forkmanager-perl
+    - libfile-slurp-perl
+    - zip
+    - unzip
+    - bzip2
+    - xz-utils
 
 targets:
   linux-i686:
@@ -17,14 +25,9 @@ targets:
   osx-x86_64:
     var:
       mar_osname: osx64
-      deps:
+      arch_deps:
         - genisoimage
-        - zip
-        - unzip
-        - python
-        - bzip2
         - faketime
-        - xz-utils
   windows:
     var:
       arch_deps:
@@ -41,6 +44,7 @@ targets:
 
 input_files:
   - project: container-image
+  - filename: run_scripts
   - project: firefox
     name: firefox
   - project: tor

@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+use strict;
+
+use Parallel::ForkManager;
+use File::Slurp;
+
+sub exit_error {
+    print STDERR "Error: ", $_[0], "\n";
+    chdir '/';
+    exit (exists $_[1] ? $_[1] : 1);
+}
+
+exit_error "Wrong number of arguments" unless @ARGV == 2;
+my ($nb_threads, $scripts_dir) = @ARGV;
+exit_error "Could not enter $scripts_dir" unless chdir $scripts_dir;
+my $pm = Parallel::ForkManager->new($nb_threads);
+$pm->run_on_finish(
+    sub {
+        my ($pid, $exit, $id) = @_;
+        exit_error "Error running $id" unless $exit == 0;
+        print "Finished $id\n";
+    }
+);
+foreach my $script (sort(read_dir($scripts_dir))) {
+    $pm->start($script) and next;
+    print "Running $script\n";
+    exit_error "Error running $script" unless system("./$script") == 0;
+    $pm->finish;
+}
+$pm->wait_all_children;
