@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 0.4
+version: 0.5
 git_url: https://github.com/moba/tbb-windows-installer.git
 git_hash: 'v[% c("version") %]'
 tag_gpg_id: 1
