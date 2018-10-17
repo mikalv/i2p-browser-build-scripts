@@ -30,31 +30,12 @@ cd client
 [% IF c("var/osx") -%]
   # Without faketime, snowflake-client would contain the timestamp of the
   # temporary client.a file created during "go build".
-  [% c("var/faketime") %] go build -ldflags '-s'
+  # The -tmpdir flag overrides what would otherwise be a randomly generated
+  # path, /tmp/go-link-RANDOMNUM/go.o.
+  mkdir -p /var/tmp/go-link.tmpdir
+  [% c("var/faketime") %] go build -ldflags '-s -tmpdir /var/tmp/go-link.tmpdir'
 [% ELSE -%]
   go build -ldflags '-s'
-[% END -%]
-[% IF c("var/osx") -%]
-  # Hack: Overwrite variable absolute paths embedded in the binary. clang 3.8.0
-  # on Darwin embeds such paths and the issue is unsolved in upstream Go as of
-  # 2016-06-28:
-  # https://github.com/golang/go/issues/9206#issuecomment-310476743
-  # The two kinds of paths are ("000000000" stands for 9 random digits):
-  #   /tmp/go-build000000000
-  #   /tmp/go-link-000000000
-  # Such paths are the output of ioutil.TempDir("", "go-build") and
-  # ioutil.TempDir("", "go-link-").
-  cp -a client client.stomped
-  sed -i -E -e 's#(/tmp/go-build|/tmp/go-link-)[0-9]{9}/#\1XXXXXXXXX/#g' client.stomped
-  # Sanity check: make sure the file actually changed. If it did not, it could
-  # mean that a change in go or clang has made this step unnecessary.
-  if cmp client client.stomped
-  then
-    echo "No paths replaced in snowflake-client. Maybe the replacement failed or is no longer needed."
-    echo "Check projects/snowflake/build"
-    exit 1
-  fi
-  mv -f client.stomped client
 [% END -%]
 cp -a client[% IF c("var/windows") %].exe[% END %] $PTDIR/snowflake-client[% IF c("var/windows") %].exe[% END %]
 
