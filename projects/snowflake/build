@@ -5,6 +5,11 @@
 [% IF c("var/linux") %]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
   export PATH="/var/tmp/dist/binutils/bin:$PATH"
+  # The go-webrtc package sets _GLIBCXX_USE_CXX11_ABI=0 for compatibility with
+  # the prebuilt libwebrtc-magic.a libraries. Since we build our own
+  # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
+  # using CGO_CXXFLAGS.
+  export CGO_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=1"
 [% END -%]
 distdir=/var/tmp/dist/[% project %]
 [% c("var/set_PTDIR_DOCSDIR") -%]
