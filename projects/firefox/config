@@ -7,7 +7,7 @@ git_url: https://git.torproject.org/tor-browser.git
 gpg_keyring: torbutton.gpg
 
 var:
-  firefox_platform_version: 60.2.1
+  firefox_platform_version: 60.3.0
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   torbrowser_branch: 8.5
   torbrowser_update_channel: alpha

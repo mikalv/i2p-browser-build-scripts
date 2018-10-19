@@ -1,3 +1,41 @@
+Tor Browser 8.5a4 -- October 23 2018
+ * All Platforms
+   * Update Firefox to 60.3.0esr
+   * Update Tor to 0.3.5.3-alpha
+   * Update Torbutton to 2.1.1
+     * Bug 23925+27959: Donation banner for year end 2018 campaign
+     * Bug 24172: Donation banner clobbers Tor Browser version string
+     * Bug 28082: Add locales cs, el, hu, ka
+     * Translations update
+   * Update Tor Launcher to 0.2.17
+     * Bug 27994+25151: Use the new Tor Browser logo
+     * Bug 28082: Add locales cs, el, hu, ka
+     * Translations update
+   * Update HTTPS Everywhere to 2018.9.19
+   * Update NoScript to 10.1.9.9
+   * Bug 1623: Block protocol handler enumeration (backport of fix for #680300)
+   * Bug 27905: Fix many occurrences of "Firefox" in about:preferences
+   * Bug 28082: Add locales cs, el, hu, ka
+ * Windows
+   * Bug 21704: Abort install if CPU is missing SSE2 support
+   * Bug 28002: Fix the precomplete file in the en-US installer
+ * OS X
+   * Bug 26263: App icon positioned incorrectly in macOS DMG installer window
+   * Bug 27827: Fix snowflake reproducibility issues
+   * Bug 26475: Fix Stylo related reproducibilitiy issue
+ * Linux
+   * Bug 26475: Fix Stylo related reproducibilitiy issue
+   * Bug 28022: Use `/usr/bin/env bash` for bash invocation
+ * Android
+   * Backport of fixes for bug 1448014, 1458905, 1441345, and 1448305
+ * Build System
+   * All Platforms
+     * Bug 27218: Generate multiple bundles in parallel
+   * Windows
+     * Bug 27320: Build certutil for Windows
+   * OS X
+     * Bug 27320: Build certutil for macOS
+
 Tor Browser 8.5a3 -- October 4 2018
  * All platforms
    * Update Firefox to 60.2.1esr
