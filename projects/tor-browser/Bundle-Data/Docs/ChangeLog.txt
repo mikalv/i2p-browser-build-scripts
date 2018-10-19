@@ -30,7 +30,7 @@ Tor Browser 8.5a4 -- October 23 2018
    * Backport of fixes for bug 1448014, 1458905, 1441345, and 1448305
  * Build System
    * All Platforms
-     * Bug 27218: Generate multiple bundles in parallel
+     * Bug 27218: Generate multiple Tor Browser bundles in parallel
    * Windows
      * Bug 27320: Build certutil for Windows
    * OS X
