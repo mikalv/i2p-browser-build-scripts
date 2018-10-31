@@ -60,4 +60,9 @@ input_files:
     project: '[% c("var/compiler") %]'
   - name: rust
     project: rust
+    # Tor needs rust >= 1.28.0
+    # See bug 28260
+    input_file_var:
+      rust_version: 1.28.0
+      prev_version: 1.27.2
     enable: '[% c("var/linux") && c("var/nightly") %]'

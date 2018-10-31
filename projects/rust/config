@@ -1,8 +1,15 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
-version: 1.26.1
-var:
+version: '[% c("input_file_var/rust_version") %]'
+
+# those values can be changed from the input_files section of other
+# projects. See projects/tor/config and bug 28260.
+input_file_var:
+  rust_version: 1.26.1
   prev_version: 1.25.0
+
+var:
+  prev_version: '[% c("input_file_var/prev_version") %]'
   rust_arch: '[% c("arch") %]'
   container:
     use_container: 1
