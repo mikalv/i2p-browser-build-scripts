@@ -146,7 +146,7 @@ mkdir -p include lib
 cp -f $builddir/libwebrtc-magic.a [% c("var/webrtc/lib_path") %]
 INCLUDE_DIR="$PWD/include"
 cd $builddir
-for h in $(find talk/ webrtc/ -type f -name '*.h');
+for h in $(find webrtc/ -type f -name '*.h');
 do
   mkdir -p "$INCLUDE_DIR/$(dirname $h)"
   cp -f "$h" "$INCLUDE_DIR/$h"
