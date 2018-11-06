@@ -35,6 +35,20 @@ Tor Browser 8.5a4 -- October 23 2018
    * OS X
      * Bug 27320: Build certutil for macOS
 
+Tor Browser 8.0.3 -- October 23 2018
+ * All platforms
+   * Update Firefox to 60.3.0esr
+   * Update Torbutton to 2.0.8
+     * Bug 23925+27959: Donation banner for year end 2018 campaign
+     * Bug 24172: Donation banner clobbers Tor Browser version string
+     * Bug 27760: Use new NoScript API for IPC and fix about:blank issue
+     * Translations update
+   * Update HTTPS Everywhere to 2018.9.19
+   * Update NoScript to 10.1.9.9
+ * Linux
+   * Bug 27546: Fix vertical scrollbar behavior in Tor Browser 8 with Gtk3
+   * Bug 27552: Use bundled dir on CentOS/RHEL 6
+
 Tor Browser 8.5a3 -- October 4 2018
  * All platforms
    * Update Firefox to 60.2.1esr
