@@ -1,0 +1,18 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+ext_dir=assets/distribution/extensions
+qa_apk=[% dest_dir %]/[% c('filename') %]/tor-browser-[% c("version") %]-[% c("var/osname") %]-qa.apk
+apk=$rootdir/[% c('input_files_by_name/firefox') %]/tor-browser-unsigned-unaligned.apk
+
+mkdir -p /var/tmp/build/$ext_dir [% dest_dir _ '/' _ c('filename') %]
+cd /var/tmp/build
+
+mv $rootdir/[% c('input_files_by_name/https-everywhere') %] $ext_dir/https-everywhere-eff@eff.org.xpi
+mv $rootdir/[% c('input_files_by_name/noscript') %] $ext_dir/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi
+
+zip -d $apk META-INF/\*
+zip -r $apk $ext_dir
+
+# Sign a QA build. This apk is not a debug version and doesn't contain a debug flag in the manifest
+keytool -genkey -v -keystore qa.keystore -storepass android -alias androidqakey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Tor QA,O=Tor,C=US"
+jarsigner -verbose -digestalg SHA1 -sigalg MD5withRSA -keystore qa.keystore -signedjar $qa_apk $apk androidqakey -storepass android -keypass android
