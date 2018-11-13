@@ -92,7 +92,7 @@ EOF
 
 export GN_ARGS=""
 # For a list of all possible GN args, do "gn gen out/Release; gn args --list out/Release".
-# https://chromium.googlesource.com/chromium/src/+/master/tools/gn/docs/cross_compiles.md
+# https://gn.googlesource.com/gn/+/master/docs/cross_compiles.md
 # Not debug.
 GN_ARGS+=" is_debug=false"
 # There are warnings from unused returns.
