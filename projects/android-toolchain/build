@@ -17,7 +17,8 @@ unzip -qq [% c("input_files_by_name/gradle_bin") %] -d $GRADLE_HOME
 cd $NDK_HOME
 mv android-ndk-r15c/* .
 rm -fR android-ndk-r15c
-./build/tools/make_standalone_toolchain.py --api 26 --arch arm --install-dir=./arm
+# API 16 is the minimum we currently support for Tor Browser on Android
+./build/tools/make_standalone_toolchain.py --api 16 --arch arm --install-dir=./arm
 
 # Tool Archives
 cd $SDK_HOME
