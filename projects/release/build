@@ -4,6 +4,10 @@
 [% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
 destdir="[% dest_dir _ '/' _ c("var/publish_dir") %]"
 mkdir -p "$destdir"
+[% IF c("var/torbrowser-android-armv7") -%]
+  mv [% c('input_files_by_name/android-armv7') %]/* "$destdir"/
+  [% RETURN %]
+[% END -%]
 [% IF c("var/torbrowser-windows-i686") -%]
   mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
   mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/

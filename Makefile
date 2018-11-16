@@ -5,6 +5,9 @@ all: release
 release: submodule-update
 	$(rbm) build release --target release --target torbrowser-all
 
+release-android-armv7: submodule-update
+	$(rbm) build release --target release --target torbrowser-android-armv7
+
 release-linux-x86_64: submodule-update
 	$(rbm) build release --target release --target torbrowser-linux-x86_64
 
@@ -25,6 +28,9 @@ release-osx-x86_64: submodule-update
 
 alpha: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-all
+
+alpha-android-armv7: submodule-update
+	$(rbm) build release --target alpha --target torbrowser-android-armv7
 
 alpha-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-linux-x86_64
@@ -47,6 +53,9 @@ alpha-osx-x86_64: submodule-update
 nightly: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-all
 
+nightly-android-armv7: submodule-update
+	$(rbm) build release --target nightly --target torbrowser-android-armv7
+
 nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-linux-x86_64
 
@@ -68,6 +77,9 @@ nightly-osx-x86_64: submodule-update
 alpha_nightly: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-all
 
+alpha_nightly-android-armv7: submodule-update
+	$(rbm) build release --target alpha_nightly --target torbrowser-android-armv7
+
 alpha_nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-linux-x86_64
 
@@ -85,6 +97,9 @@ alpha_nightly-osx-x86_64: submodule-update
 
 testbuild: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-all
+
+testbuild-android-armv7: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-android-armv7
 
 testbuild-linux-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64

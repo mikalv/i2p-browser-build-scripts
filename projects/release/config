@@ -14,6 +14,10 @@ targets:
     - torbrowser-windows-i686
     - torbrowser-windows-x86_64
     - torbrowser-osx-x86_64
+    - torbrowser-android-armv7
+  torbrowser-android-armv7:
+    var:
+      torbrowser-android-armv7: 1
   torbrowser-linux-x86_64:
     var:
       torbrowser-linux-x86_64: 1
@@ -80,6 +84,13 @@ targets:
 input_files:
 
 # Release
+ - name: android-armv7
+   project: tor-browser
+   enable: '[% c("var/torbrowser-android-armv7") %]'
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-android-armv7
+
  - name: linux-x86_64
    project: tor-browser
    enable: '[% c("var/torbrowser-linux-x86_64") %]'
