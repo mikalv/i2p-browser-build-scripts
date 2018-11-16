@@ -62,6 +62,11 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
   patch -p1 < $rootdir/unwind.patch
 [% END %]
 
+[% IF c("var/android") %]
+  patch -p1 < $rootdir/0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
+  patch -p1 < $rootdir/replace_pagesize_in_mmap.patch
+[% END %]
+
 mkdir build
 cd build
 ../configure --prefix=$distdir [% c("var/configure_opt") %]

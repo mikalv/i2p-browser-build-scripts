@@ -1,0 +1,34 @@
+From 4fa67c8a014ac10558be71edec9048851ca7a02d Mon Sep 17 00:00:00 2001
+From: Georg Koppen <gk@torproject.org>
+Date: Thu, 15 Nov 2018 19:04:46 +0000
+Subject: [PATCH] Make sure `dl_iterate_phdr` is undefined on Android
+
+If we build with API < 21 we'll run into undefined reference errors.
+We follow the Rust people who ran into similar issues when
+upgrading libbacktrace for 1.28.0 in making sure `dl_iterate_phdr` is
+not defined for Android.
+
+diff --git a/src/libbacktrace/configure b/src/libbacktrace/configure
+index 8bdb29d256..8941fcd2b0 100755
+--- a/src/libbacktrace/configure
++++ b/src/libbacktrace/configure
+@@ -12397,7 +12397,15 @@ rm -f conftest*
+ 	have_dl_iterate_phdr=no ;;
+     esac
+   else
+-    ac_fn_c_check_func "$LINENO" "dl_iterate_phdr" "ac_cv_func_dl_iterate_phdr"
++    case "${host}" in
++    *-*-androideabi*)
++        # Avoid dl_iterate_phdr on older Android API (which we use),
++        # as defining it causes undefined reference errors when
++        # compiling Firefox later on.
++        have_dl_iterate_phdr=no ;;
++    *) ac_fn_c_check_func "$LINENO" "dl_iterate_phdr" "ac_cv_func_dl_iterate_phdr" ;;
++    esac
++
+ if test "x$ac_cv_func_dl_iterate_phdr" = x""yes; then :
+   have_dl_iterate_phdr=yes
+ else
+-- 
+2.19.1
+
