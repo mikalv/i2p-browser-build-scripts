@@ -44,15 +44,15 @@ In each of those places, an option can be defined:
 The targets are usually used to select:
 
 - the platform: torbrowser-linux-x86_64, torbrowser-linux-i686,
-  torbrowser-windows-i686, torbrowser-osx-x86_64
+  torbrowser-windows-i686, torbrowser-windows-x86_64, torbrowser-osx-x86_64
 - the channel: release, nightly, alpha
 
 The targets torbrowser-linux-x86_64, torbrowser-linux-i686,
-torbrowser-windows-i686, torbrowser-osx-x86_64 are special cases. They
-do not contain options directly, instead they contain a list of other
-targets. For instance, the torbrowser-linux-x86_64 target is pointing
-to the linux-x86_64 and linux targets. You should define an option under
-the linux target if it applies to Linux on both architectures, or under
+torbrowser-windows-i686, torbrowser-windows-x86_64, torbrowser-osx-x86_64 are
+special cases. They do not contain options directly, instead they contain a
+list of other targets. For instance, the torbrowser-linux-x86_64 target is
+pointing to the linux-x86_64 and linux targets. You should define an option
+under the linux target if it applies to Linux on both architectures, or under
 the linux-x86_64 if it only applies to the x86_64 architecture.
 
 An option that is defined at the root of rbm.conf can be overridden by
@@ -148,6 +148,8 @@ $platform should be one of the following:
 
  - torbrowser-windows-i686
 
+ - torbrowser-windows-x86_64
+
  - torbrowser-osx-x86_64
 
 For example, to see tor's build script for linux x86_64 on the alpha
@@ -242,6 +244,16 @@ Remember that the git_hash option has different definitions for alpha
 and nightly builds, so you should modify the right one depending on
 what type of build you are doing (see also the "Types of builds" section).
 
+The first alternative is not working in case patches contain binary diffs,
+which the patch command can't handle. However, working with submodules can
+make the git branch alternative tricky to use. In that case you can resort
+to a third option by installing git in the build container (via var/deps in
+the respective config file). Then you can change to the submodule directory
+in the build script and do a
+
+  git apply patch-for-XXXX.patch
+
+after adding the patch to the project's config file (see above).
 
 The Firefox mozconfig files
 ---------------------------
@@ -298,8 +310,8 @@ For example, if you want to try a Linux x86_64 alpha build, you can run:
                                                 torbrowser-linux-x86_64
 
 
-Types of builds: nightly, alpha, release and testbuild
-------------------------------------------------------
+Types of builds: nightly, alpha, release, and testbuild
+-------------------------------------------------------
 
 The testbuild makefile target allows you to do a build quickly in the
 testbuild directory, skipping the generation of all the locales and the
@@ -313,4 +325,3 @@ builds in order to point to the master branch.
 If you want your testbuild target to create builds based on nightly
 rather than alpha, you can edit your rbm.local.conf file and uncomment
 the targets/torbrowser-testbuild definition.
-
