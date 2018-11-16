@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+# Bug 28117: setting LC_ALL=C is causing wget to fail downloading some URLs
+unset LC_ALL
+cd "[% dest_dir %]"
+m2dir="$(mktemp -d)"
+[% USE artifacts = datafile(c('basedir') _ '/projects/' _ project _ '/gradle-dependencies-list.txt', delim = '|') %]
+[% FOREACH artifact = artifacts %]
+    artifact_path=$(echo "[% artifact.url %]" | sed 's|^https://[^/]\+/||')
+    artifact_filename=$(basename "$artifact_path")
+    artifact_dirname=$(dirname "$artifact_path")
+    [% GET c("urlget", { filename => 'downloaded_file', URL => artifact.url}); %]
+    echo "[% artifact.sha256sum %]  downloaded_file" | sha256sum -c
+    mkdir -p "$m2dir/$artifact_dirname"
+    mv -f downloaded_file "$m2dir/$artifact_dirname/$artifact_filename"
+[% END -%]
+echo "Finished downloading gradle dependencies"
+mkdir -p "[% dest_dir %]"
+mv -f "$m2dir" "[% dest_dir %]/gradle-dependencies-[% c("var/gradle_dependencies_version") %]"
