@@ -1,0 +1,53 @@
+From a700bbe8356b4ab0a56460018e82cff1ded66c0b Mon Sep 17 00:00:00 2001
+From: Matthew Finkel <Matthew.Finkel@gmail.com>
+Date: Sat, 24 Nov 2018 04:48:27 +0000
+Subject: [PATCH 07/13] Bug 28051 - Rename Orbot's preferences so they don't
+ conflict with Fennec's
+
+---
+ .../org/torproject/android/settings/SettingsPreferences.java   | 3 ++-
+ .../main/res/xml-fa/{preferences.xml => orbot_preferences.xml} | 0
+ .../main/res/xml/{preferences.xml => orbot_preferences.xml}    | 0
+ docs/WALKTHROUGH                                               | 2 +-
+ 4 files changed, 3 insertions(+), 2 deletions(-)
+ rename app/src/main/res/xml-fa/{preferences.xml => orbot_preferences.xml} (100%)
+ rename app/src/main/res/xml/{preferences.xml => orbot_preferences.xml} (100%)
+
+diff --git a/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java b/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
+index df85a9f6..0e7edcd8 100644
+--- a/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
++++ b/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
+@@ -24,7 +24,8 @@ public class SettingsPreferences
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+ 
+-        addPreferencesFromResource(R.xml.preferences);
++        // Rename preferences so it doesn't conflict with Fennec
++        addPreferencesFromResource(R.xml.orbot_preferences);
+         getPreferenceManager().setSharedPreferencesMode(Context.MODE_MULTI_PROCESS);
+ 
+         prefLocale = (ListPreference) findPreference("pref_default_locale");
+diff --git a/app/src/main/res/xml-fa/preferences.xml b/app/src/main/res/xml-fa/orbot_preferences.xml
+similarity index 100%
+rename from app/src/main/res/xml-fa/preferences.xml
+rename to app/src/main/res/xml-fa/orbot_preferences.xml
+diff --git a/app/src/main/res/xml/preferences.xml b/app/src/main/res/xml/orbot_preferences.xml
+similarity index 100%
+rename from app/src/main/res/xml/preferences.xml
+rename to app/src/main/res/xml/orbot_preferences.xml
+diff --git a/docs/WALKTHROUGH b/docs/WALKTHROUGH
+index 55a356b5..8e432b04 100644
+--- a/docs/WALKTHROUGH
++++ b/docs/WALKTHROUGH
+@@ -30,7 +30,7 @@
+                     //for this type of non-time critical function you just want to happen in the background at some point soon-ish
+             
+             ├── SettingsPreferences.java
+-                    // Settings activity that loads the res/xml/preferences.xml resource up 
++                    // Settings activity that loads the res/xml/orbot_preferences.xml resource up
+                     // has some custom event handlng, onActivityResult callback result code's as well
+                     // basically meant to tell Orbot activity if critical settings have been modified and whether
+                     // those new settings should be applied (like iptables/transproxy changes)
+-- 
+2.17.1
+

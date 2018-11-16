@@ -1,0 +1,308 @@
+From b8ce28e8487772deaa9655245c3b43055e32937d Mon Sep 17 00:00:00 2001
+From: Matthew Finkel <Matthew.Finkel@gmail.com>
+Date: Sat, 24 Nov 2018 04:40:57 +0000
+Subject: [PATCH 04/13] Bug 28051 - Rename the Hidden Service content provider
+
+---
+ app/src/main/AndroidManifest.xml                  | 13 ++++++++-----
+ .../org/torproject/android/OrbotMainActivity.java |  2 +-
+ .../ui/hiddenservices/ClientCookiesActivity.java  |  2 +-
+ .../ui/hiddenservices/HiddenServicesActivity.java |  2 +-
+ .../adapters/ClientCookiesAdapter.java            |  2 +-
+ .../hiddenservices/adapters/OnionListAdapter.java |  2 +-
+ .../ui/hiddenservices/backup/BackupUtils.java     |  4 ++--
+ .../hiddenservices/dialogs/AddCookieDialog.java   |  2 +-
+ .../dialogs/CookieDeleteDialog.java               |  2 +-
+ .../ui/hiddenservices/dialogs/HSCookieDialog.java |  2 +-
+ .../ui/hiddenservices/dialogs/HSDataDialog.java   |  2 +-
+ .../ui/hiddenservices/dialogs/HSDeleteDialog.java |  2 +-
+ .../providers/CookieContentProvider.java          |  4 ++--
+ .../providers/HSContentProvider.java              |  4 ++--
+ app/src/minimalperm/AndroidManifest.xml           | 15 +++++++++------
+ .../torproject/android/service/TorService.java    |  6 ++++--
+ 16 files changed, 37 insertions(+), 29 deletions(-)
+
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 2cd00888..3c6262c2 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -135,13 +135,15 @@
+                 android:value=".OrbotMainActivity" />
+         </activity>
+ 
++        <!-- Modify the Content Provider name so it doesn't collide with Orbot (when Orbot is installed, too).
++             TBA fails while starting when this happens -->
+         <provider
+-            android:name=".ui.hiddenservices.providers.HSContentProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.providers"
++            android:name="org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.providers"
+             android:exported="false" />
+         <provider
+             android:name="android.support.v4.content.FileProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.storage"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.storage"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <meta-data
+@@ -163,9 +165,10 @@
+         <!--<activity android:name=".ui.onboarding.OnboardingActivity"/>-->
+         <activity android:name=".ui.onboarding.BridgeWizardActivity"/>
+ 
++        <!-- Modify the Content Provider name -->
+         <provider
+-            android:name=".ui.hiddenservices.providers.CookieContentProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.providers.cookie"
++            android:name="org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.providers.cookie"
+             android:exported="false" />
+     </application>
+ 
+diff --git a/app/src/main/java/org/torproject/android/OrbotMainActivity.java b/app/src/main/java/org/torproject/android/OrbotMainActivity.java
+index 7ad979ff..ff5dd120 100644
+--- a/app/src/main/java/org/torproject/android/OrbotMainActivity.java
++++ b/app/src/main/java/org/torproject/android/OrbotMainActivity.java
+@@ -33,7 +33,7 @@ import org.torproject.android.ui.hiddenservices.ClientCookiesActivity;
+ import org.torproject.android.ui.hiddenservices.HiddenServicesActivity;
+ import org.torproject.android.ui.hiddenservices.backup.BackupUtils;
+ import org.torproject.android.ui.hiddenservices.permissions.PermissionManager;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ import org.torproject.android.vpn.VPNEnableActivity;
+ 
+ import android.annotation.SuppressLint;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
+index e6939800..933915d0 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
+@@ -31,7 +31,7 @@ import org.torproject.android.ui.hiddenservices.dialogs.AddCookieDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.CookieActionsDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.SelectCookieBackupDialog;
+ import org.torproject.android.ui.hiddenservices.permissions.PermissionManager;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
+ 
+ public class ClientCookiesActivity extends AppCompatActivity {
+     public final int WRITE_EXTERNAL_STORAGE_FROM_COOKIE_ACTIONBAR = 3;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
+index d7c1f313..3e2d9c3c 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
+@@ -28,7 +28,7 @@ import org.torproject.android.ui.hiddenservices.dialogs.HSActionsDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.HSDataDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.SelectHSBackupDialog;
+ import org.torproject.android.ui.hiddenservices.permissions.PermissionManager;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ 
+ public class HiddenServicesActivity extends AppCompatActivity {
+     public final int WRITE_EXTERNAL_STORAGE_FROM_ACTIONBAR = 1;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/ClientCookiesAdapter.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/ClientCookiesAdapter.java
+index bbc317a6..670c108a 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/ClientCookiesAdapter.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/ClientCookiesAdapter.java
+@@ -14,7 +14,7 @@ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
+ 
+ public class ClientCookiesAdapter extends CursorAdapter {
+     private LayoutInflater cursorInflater;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/OnionListAdapter.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/OnionListAdapter.java
+index 9824c773..0079bce3 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/OnionListAdapter.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/adapters/OnionListAdapter.java
+@@ -14,7 +14,7 @@ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ 
+ public class OnionListAdapter extends CursorAdapter {
+     private LayoutInflater cursorInflater;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/backup/BackupUtils.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/backup/BackupUtils.java
+index a4790dd8..06606039 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/backup/BackupUtils.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/backup/BackupUtils.java
+@@ -12,8 +12,8 @@ import org.json.JSONException;
+ import org.json.JSONObject;
+ import org.torproject.android.R;
+ import org.torproject.android.service.TorServiceConstants;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ import org.torproject.android.ui.hiddenservices.storage.ExternalStorage;
+ 
+ import java.io.File;
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/AddCookieDialog.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/AddCookieDialog.java
+index 75663648..d6e280db 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/AddCookieDialog.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/AddCookieDialog.java
+@@ -14,7 +14,7 @@ import android.widget.EditText;
+ import android.widget.Toast;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
+ 
+ public class AddCookieDialog extends DialogFragment {
+ 
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/CookieDeleteDialog.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/CookieDeleteDialog.java
+index 60c4d8e3..fc183981 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/CookieDeleteDialog.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/CookieDeleteDialog.java
+@@ -10,7 +10,7 @@ import android.support.v4.app.DialogFragment;
+ import android.support.v7.app.AlertDialog;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
+ 
+ public class CookieDeleteDialog extends DialogFragment {
+ 
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSCookieDialog.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSCookieDialog.java
+index 39c1b510..0ae7dae5 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSCookieDialog.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSCookieDialog.java
+@@ -18,7 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
+ import org.json.JSONException;
+ import org.json.JSONObject;
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.CookieContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider;
+ 
+ public class HSCookieDialog extends DialogFragment {
+ 
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDataDialog.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDataDialog.java
+index 98255604..bc1754b9 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDataDialog.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDataDialog.java
+@@ -15,7 +15,7 @@ import android.widget.EditText;
+ import android.widget.Toast;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ 
+ public class HSDataDialog extends DialogFragment {
+ 
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDeleteDialog.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDeleteDialog.java
+index ac5df743..0a60f22b 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDeleteDialog.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/dialogs/HSDeleteDialog.java
+@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog;
+ 
+ import org.torproject.android.R;
+ import org.torproject.android.service.TorServiceConstants;
+-import org.torproject.android.ui.hiddenservices.providers.HSContentProvider;
++import org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider;
+ 
+ import java.io.File;
+ 
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/CookieContentProvider.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/CookieContentProvider.java
+index f420a6d8..4a371933 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/CookieContentProvider.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/CookieContentProvider.java
+@@ -1,4 +1,4 @@
+-package org.torproject.android.ui.hiddenservices.providers;
++package org.torproject.torbrowser.ui.hiddenservices.providers;
+ 
+ import android.content.ContentProvider;
+ import android.content.ContentUris;
+@@ -22,7 +22,7 @@ public class CookieContentProvider extends ContentProvider {
+             ClientCookie.AUTH_COOKIE_VALUE,
+             ClientCookie.ENABLED
+     };
+-    private static final String AUTH = "org.torproject.android.ui.hiddenservices.providers.cookie";
++    private static final String AUTH = "org.torproject.torbrowser.ui.hiddenservices.providers.cookie";
+     public static final Uri CONTENT_URI =
+             Uri.parse("content://" + AUTH + "/cookie");
+     //UriMatcher
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/HSContentProvider.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/HSContentProvider.java
+index d7b558fd..be7d2de2 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/HSContentProvider.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/providers/HSContentProvider.java
+@@ -1,4 +1,4 @@
+-package org.torproject.android.ui.hiddenservices.providers;
++package org.torproject.torbrowser.ui.hiddenservices.providers;
+ 
+ import android.content.ContentProvider;
+ import android.content.ContentUris;
+@@ -27,7 +27,7 @@ public class HSContentProvider extends ContentProvider {
+             HiddenService.CREATED_BY_USER,
+             HiddenService.ENABLED
+     };
+-    private static final String AUTH = "org.torproject.android.ui.hiddenservices.providers";
++    private static final String AUTH = "org.torproject.torbrowser.ui.hiddenservices.providers";
+     public static final Uri CONTENT_URI =
+             Uri.parse("content://" + AUTH + "/hs");
+     //UriMatcher
+diff --git a/app/src/minimalperm/AndroidManifest.xml b/app/src/minimalperm/AndroidManifest.xml
+index adf74209..fedadd9b 100644
+--- a/app/src/minimalperm/AndroidManifest.xml
++++ b/app/src/minimalperm/AndroidManifest.xml
+@@ -122,8 +122,10 @@
+             </intent-filter>
+         </receiver>
+ 
++        <!-- Modify the Content Provider name so it doesn't collide with Orbot (when Orbot is installed, too).
++             TBA fails while starting when this happens -->
+         <activity
+-            android:name=".ui.hiddenservices.HiddenServicesActivity"
++            android:name="org.torproject.torbrowser.ui.hiddenservices.HiddenServicesActivity"
+             android:label="@string/title_activity_hidden_services"
+             android:theme="@style/DefaultTheme">
+             <meta-data
+@@ -132,12 +134,12 @@
+         </activity>
+ 
+         <provider
+-            android:name=".ui.hiddenservices.providers.HSContentProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.providers"
++            android:name="org.torproject.torbrowser.ui.hiddenservices.providers.HSContentProvider"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.providers"
+             android:exported="false" />
+         <provider
+             android:name="android.support.v4.content.FileProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.storage"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.storage"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <meta-data
+@@ -154,9 +156,10 @@
+                 android:value=".OrbotMainActivity" />
+         </activity>
+ 
++        <!-- Modify the Content Provider name -->
+         <provider
+-            android:name=".ui.hiddenservices.providers.CookieContentProvider"
+-            android:authorities="org.torproject.android.ui.hiddenservices.providers.cookie"
++            android:name="org.torproject.torbrowser.ui.hiddenservices.providers.CookieContentProvider"
++            android:authorities="org.torproject.torbrowser.ui.hiddenservices.providers.cookie"
+             android:exported="false" />
+     </application>
+ 
+diff --git a/orbotservice/src/main/java/org/torproject/android/service/TorService.java b/orbotservice/src/main/java/org/torproject/android/service/TorService.java
+index fec88b1f..edd0e3d5 100644
+--- a/orbotservice/src/main/java/org/torproject/android/service/TorService.java
++++ b/orbotservice/src/main/java/org/torproject/android/service/TorService.java
+@@ -138,8 +138,10 @@ public class TorService extends Service implements TorServiceConstants, OrbotCon
+ 
+     private ArrayList<Bridge> alBridges = null;
+ 
+-    private static final Uri HS_CONTENT_URI = Uri.parse("content://org.torproject.android.ui.hiddenservices.providers/hs");
+-    private static final Uri COOKIE_CONTENT_URI = Uri.parse("content://org.torproject.android.ui.hiddenservices.providers.cookie/cookie");
++    // Modify the Content Provider name so it doesn't collide with Orbot (when Orbot is installed, too).
++    // TBA fails while starting when this happens
++    private static final Uri HS_CONTENT_URI = Uri.parse("content://org.torproject.torbrowser.ui.hiddenservices.providers/hs");
++    private static final Uri COOKIE_CONTENT_URI = Uri.parse("content://org.torproject.torbrowser.ui.hiddenservices.providers.cookie/cookie");
+ 
+     public static final class HiddenService implements BaseColumns {
+         public static final String NAME = "name";
+-- 
+2.17.1
+

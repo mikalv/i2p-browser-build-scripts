@@ -1,0 +1,129 @@
+From 4b33256dc2f3f626cca70880069a94074e312132 Mon Sep 17 00:00:00 2001
+From: Matthew Finkel <Matthew.Finkel@gmail.com>
+Date: Sat, 24 Nov 2018 04:46:49 +0000
+Subject: [PATCH 06/13] Bug 28051 - Don't use Orbot's LocaleHelper for locale
+ selection
+
+---
+ .../main/java/org/torproject/android/OrbotMainActivity.java | 6 ------
+ .../torproject/android/settings/SettingsPreferences.java    | 5 -----
+ .../android/ui/hiddenservices/ClientCookiesActivity.java    | 6 ------
+ .../android/ui/hiddenservices/HiddenServicesActivity.java   | 6 ------
+ .../android/ui/onboarding/BridgeWizardActivity.java         | 6 ------
+ 5 files changed, 29 deletions(-)
+
+diff --git a/app/src/main/java/org/torproject/android/OrbotMainActivity.java b/app/src/main/java/org/torproject/android/OrbotMainActivity.java
+index ff5dd120..044b957f 100644
+--- a/app/src/main/java/org/torproject/android/OrbotMainActivity.java
++++ b/app/src/main/java/org/torproject/android/OrbotMainActivity.java
+@@ -24,7 +24,6 @@ import org.torproject.android.service.TorService;
+ import org.torproject.android.service.TorServiceConstants;
+ import org.torproject.android.service.util.TorServiceUtils;
+ import org.torproject.android.settings.Languages;
+-import org.torproject.android.settings.LocaleHelper;
+ import org.torproject.android.settings.SettingsPreferences;
+ import org.torproject.android.ui.AppManagerActivity;
+ import org.torproject.android.ui.Rotate3dAnimation;
+@@ -427,11 +426,6 @@ public class OrbotMainActivity extends AppCompatActivity
+         }
+     }
+ 
+-    @Override
+-    protected void attachBaseContext(Context base) {
+-        super.attachBaseContext(LocaleHelper.onAttach(base));
+-    }
+-
+    /*
+     * Create the UI Options Menu (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+diff --git a/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java b/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
+index c3b5189d..df85a9f6 100644
+--- a/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
++++ b/app/src/main/java/org/torproject/android/settings/SettingsPreferences.java
+@@ -47,11 +47,6 @@ public class SettingsPreferences
+         });
+     }
+ 
+-    @Override
+-    protected void attachBaseContext(Context base) {
+-        super.attachBaseContext(LocaleHelper.onAttach(base));
+-    }
+-
+     @Override
+     protected void onPause() {
+         //Language.setFromPreference(this, "pref_default_locale", true);
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
+index 933915d0..dd3a54e0 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/ClientCookiesActivity.java
+@@ -25,7 +25,6 @@ import com.google.zxing.integration.android.IntentResult;
+ import org.json.JSONException;
+ import org.json.JSONObject;
+ import org.torproject.android.R;
+-import org.torproject.android.settings.LocaleHelper;
+ import org.torproject.android.ui.hiddenservices.adapters.ClientCookiesAdapter;
+ import org.torproject.android.ui.hiddenservices.dialogs.AddCookieDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.CookieActionsDialog;
+@@ -103,11 +102,6 @@ public class ClientCookiesActivity extends AppCompatActivity {
+     }
+ 
+ 
+-    @Override
+-    protected void attachBaseContext(Context base) {
+-        super.attachBaseContext(LocaleHelper.onAttach(base));
+-    }
+-
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         getMenuInflater().inflate(R.menu.cookie_menu, menu);
+diff --git a/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java b/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
+index 3e2d9c3c..75aefd14 100644
+--- a/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
++++ b/app/src/main/java/org/torproject/android/ui/hiddenservices/HiddenServicesActivity.java
+@@ -22,7 +22,6 @@ import android.widget.Spinner;
+ import android.widget.Toast;
+ 
+ import org.torproject.android.R;
+-import org.torproject.android.settings.LocaleHelper;
+ import org.torproject.android.ui.hiddenservices.adapters.OnionListAdapter;
+ import org.torproject.android.ui.hiddenservices.dialogs.HSActionsDialog;
+ import org.torproject.android.ui.hiddenservices.dialogs.HSDataDialog;
+@@ -108,11 +107,6 @@ public class HiddenServicesActivity extends AppCompatActivity {
+     }
+ 
+ 
+-    @Override
+-    protected void attachBaseContext(Context base) {
+-        super.attachBaseContext(LocaleHelper.onAttach(base));
+-    }
+-
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         getMenuInflater().inflate(R.menu.hs_menu, menu);
+diff --git a/app/src/main/java/org/torproject/android/ui/onboarding/BridgeWizardActivity.java b/app/src/main/java/org/torproject/android/ui/onboarding/BridgeWizardActivity.java
+index e047e58f..47778a32 100644
+--- a/app/src/main/java/org/torproject/android/ui/onboarding/BridgeWizardActivity.java
++++ b/app/src/main/java/org/torproject/android/ui/onboarding/BridgeWizardActivity.java
+@@ -19,7 +19,6 @@ import android.widget.TextView;
+ import org.torproject.android.R;
+ import org.torproject.android.service.OrbotConstants;
+ import org.torproject.android.service.util.Prefs;
+-import org.torproject.android.settings.LocaleHelper;
+ 
+ import java.io.IOException;
+ import java.net.InetSocketAddress;
+@@ -92,11 +91,6 @@ public class BridgeWizardActivity extends AppCompatActivity {
+ 
+     }
+ 
+-    @Override
+-    protected void attachBaseContext(Context base) {
+-        super.attachBaseContext(LocaleHelper.onAttach(base));
+-    }
+-
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+         if (item.getItemId() == android.R.id.home) {
+-- 
+2.17.1
+

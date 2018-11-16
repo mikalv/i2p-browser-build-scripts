@@ -1,0 +1,39 @@
+From 4a5480df8f23ccc96af794a2194d6a6c33513dc7 Mon Sep 17 00:00:00 2001
+From: Matthew Finkel <Matthew.Finkel@gmail.com>
+Date: Sat, 24 Nov 2018 04:34:52 +0000
+Subject: [PATCH 02/13] Bug 28051 - Exclude the AppUpdater
+
+---
+ app/src/main/java/org/torproject/android/OrbotApp.java | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/app/src/main/java/org/torproject/android/OrbotApp.java b/app/src/main/java/org/torproject/android/OrbotApp.java
+index 7279c8e2..291b0456 100644
+--- a/app/src/main/java/org/torproject/android/OrbotApp.java
++++ b/app/src/main/java/org/torproject/android/OrbotApp.java
+@@ -18,10 +18,6 @@ import android.support.v4.app.NotificationCompat;
+ import android.util.Log;
+ import android.widget.RemoteViews;
+ 
+-import com.github.javiersantos.appupdater.AppUpdater;
+-import com.github.javiersantos.appupdater.enums.Display;
+-import com.github.javiersantos.appupdater.enums.UpdateFrom;
+-
+ import org.torproject.android.service.OrbotConstants;
+ import org.torproject.android.service.TorEventHandler;
+ import org.torproject.android.service.TorService;
+@@ -49,11 +45,6 @@ public class OrbotApp extends Application implements OrbotConstants
+ 
+         //Language.setFromPreference(this, "pref_default_locale");
+ 
+-        //check for updates via github, since it is unlikely to be blocked; notify the user of places where upgrades can be found
+-        new AppUpdater(this)
+-                .setUpdateFrom(UpdateFrom.JSON)
+-                .setUpdateJSON("https://raw.githubusercontent.com/n8fr8/orbot/master/update.json")
+-                .setDisplay(Display.NOTIFICATION).start();
+     }
+ 
+     @Override
+-- 
+2.17.1
+

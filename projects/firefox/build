@@ -101,6 +101,10 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
   export ASAN_OPTIONS="detect_leaks=0"
 [% END -%]
 
+[% IF c("var/android") %]
+  cp $rootdir/[% c('input_files_by_name/orbot') %]/* mobile/android/app
+[% END %]
+
 eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] $(cat browser/config/version.txt))
 if [ -z $MOZ_BUILD_DATE ]
 then

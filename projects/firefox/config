@@ -23,7 +23,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 2
+  gradle_dependencies_version: 3
 
 targets:
   release:
@@ -131,4 +131,7 @@ input_files:
   - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
     name: gradle-dependencies
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
+    enable: '[% c("var/android") %]'
+  - project: orbot
+    name: orbot
     enable: '[% c("var/android") %]'
