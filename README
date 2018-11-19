@@ -14,8 +14,10 @@ to extract container file systems, start containers and copy files to and
 from containers.
 
 The sources of most components are downloaded using git, which needs to
-be installed. The sources of webrtc are downloaded using gclient, which
-requires GTK+ 2.0 development files and curl to be installed.
+be installed. Some components are downloaded using mercurial which also
+needs to be installed. The sources of webrtc are downloaded using
+gclient, which requires GTK+ 2.0 development files and curl to be
+installed.
 
 You also need a few perl modules installed:
 - YAML::XS
@@ -41,7 +43,8 @@ If you are running Debian or Ubuntu, you can install them with:
                   libio-captureoutput-perl libpath-tiny-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
-                  libfile-copy-recursive-perl git libgtk2.0-dev curl runc
+                  libfile-copy-recursive-perl git libgtk2.0-dev curl runc \
+                  mercurial
 
 The build system is based on rbm, which is included as a git submodule
 in the rbm/ directory. You can fetch the rbm git submodule by running

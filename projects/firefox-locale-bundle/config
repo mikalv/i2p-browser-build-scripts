@@ -1,0 +1,12 @@
+# vim: filetype=yaml sw=2
+version: '[% c("var/ff_version") %]-[% c("var/ff_build") %]'
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  use_container: 0
+  ff_version: '[% pc("firefox", "var/firefox_version") %]'
+  ff_build: build1
+
+input_files:
+  - name: firefox_json
+    URL: 'https://product-details.mozilla.org/1.0/l10n/Firefox-[% c("var/ff_version") %]-[% c("var/ff_build") %].json'

@@ -1,0 +1,21 @@
+#!/usr/bin/perl -w
+use strict;
+use File::Slurp;
+use JSON;
+
+sub exit_error {
+    print STDERR "Error: ", $_[0], "\n";
+    exit (exists $_[1] ? $_[1] : 1);
+}
+
+exit_error("Wrong number of arguments", 1) unless @ARGV == 2;
+
+my ($file, $locale) = @ARGV;
+my $json_text = read_file($file);
+exit_error("Error reading $file", 2) unless defined $json_text;
+
+my $data = decode_json($json_text);
+
+my $changeset = $data->{locales}{$locale}{changeset};
+exit_error("Can't find locale $locale in $file", 3) unless $changeset;
+print "$changeset\n";
