@@ -5,7 +5,7 @@ nightly_build_cron_minute: 20
 nightly_build_keep_builds: 2
 testsuite_dir: "/home/{{ nightly_build_user }}/tbb-testsuite"
 testsuite_git_url: https://git.torproject.org/user/boklm/tor-browser-bundle-testsuite.git
-testsuite_git_commit: 348ad855711382089c4fbf1badfec58e31a6c148
+testsuite_git_commit: 7b0dcd9f21bfde6b097b687c63f84fa579296804
 nightly_build_wwwdir: "/home/{{ nightly_build_user }}/www"
 nightly_build_nginx_enable: true
 nightly_build_nginx_listen: 127.0.0.1:80
