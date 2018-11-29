@@ -9,9 +9,8 @@ pref("extensions.torlauncher.default_bridge.obfs3.4", "obfs3 109.105.109.163:389
 pref("extensions.torlauncher.default_bridge.obfs3.5", "obfs3 109.105.109.163:47779 4C331FA9B3D1D6D8FB0D8FBBF0C259C360D97E6A");
 
 pref("extensions.torlauncher.default_bridge.fte.1", "fte 131.252.210.150:8080 0E858AC201BF0F3FA3C462F64844CBFFC7297A42");
-pref("extensions.torlauncher.default_bridge.fte.2", "fte 128.105.214.161:8080 1E326AAFB3FCB515015250D8FCCC8E37F91A153B");
-pref("extensions.torlauncher.default_bridge.fte.3", "fte 128.105.214.162:8080 FC562097E1951DCC41B7D7F324D88157119BB56D");
-pref("extensions.torlauncher.default_bridge.fte.4", "fte 128.105.214.163:8080 A17A40775FBD2CA1184BF80BFC330A77ECF9D0E9");
+pref("extensions.torlauncher.default_bridge.fte.2", "fte 128.105.214.162:8080 FC562097E1951DCC41B7D7F324D88157119BB56D");
+pref("extensions.torlauncher.default_bridge.fte.3", "fte 128.105.214.163:8080 A17A40775FBD2CA1184BF80BFC330A77ECF9D0E9");
 
 pref("extensions.torlauncher.default_bridge.obfs4.1", "obfs4 154.35.22.10:15937 8FB9F4319E89E5C6223052AA525A192AFBC85D55 cert=GGGS1TX4R81m3r0HBl79wKy1OtPPNR2CZUIrHjkRg65Vc2VR8fOyo64f9kmT1UAFG7j0HQ iat-mode=0");
 pref("extensions.torlauncher.default_bridge.obfs4.2", "obfs4 192.99.11.54:443 7B126FAB960E5AC6A629C729434FF84FB5074EC2 cert=VW5f8+IBUWpPFxF+rsiVy2wXkyTQG7vEd+rHeN2jV5LIDNu8wMNEOqZXPwHdwMVEBdqXEw iat-mode=0");
