@@ -303,7 +303,7 @@ cd $distdir
 [% ELSIF c("var/windows") %]
   find "$PKG_DIR" -exec [% c("var/touch") %] {} \;
   pushd "$PKG_DIR"
-  makensis torbrowser.nsi
+  makensis -DCHANNEL=[% c("var/channel") %] torbrowser.nsi
   # Working around NSIS braindamage
   mv torbrowser-install.exe torbrowser-install-tmp.exe
   python $rootdir/pe_checksum_fix.py
@@ -392,7 +392,7 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
       [% ELSIF c("var/windows") %]
         find "[% tbdir %]" -exec [% c("var/touch") %] {} \;
         pushd "[% tbdir %]"
-        makensis torbrowser.nsi
+        makensis -DCHANNEL=[% c("var/channel") %] torbrowser.nsi
         # Working around NSIS braindamage
         mv torbrowser-install.exe torbrowser-install-tmp.exe
         python $rootdir/pe_checksum_fix.py
