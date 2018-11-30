@@ -1,3 +1,61 @@
+Tor Browser 8.5a5 -- December 3 2018
+ * All Platforms
+   * Update Torbutton to 2.1.2
+     * Bug 25013: Integrate Torbutton into tor-browser for Android
+     * Bug 27111: Update about:tor desktop version to work on mobile
+     * Bug 28093: Update donation banner style to make it fit in small screens
+     * Bug 28543: about:tor has scroll bar between widths 900px and 1000px
+     * Bug 28039: Enable dump() if log method is 0
+     * Bug 27701: Don't show App Blocker dialog on Android
+     * Bug 28187: Change tor circuit icon to torbutton.svg
+     * Bug 28515: Use en-US for english Torbutton strings
+     * Translations update
+   * Update Tor Launcher to 0.2.18
+     * Bug 28039: Enable dump() if log method is 0
+     * Translations update
+   * Update HTTPS Everywhere to 2018.10.31
+   * Update NoScript to 10.2.0
+   * Bug 22343: Make 'Save Page As' obey first-party isolation
+   * Bug 26540: Enabling pdfjs disableRange option prevents pdfs from loading
+ * Windows
+   * Update Tor to 0.3.5.5-alpha
+   * Bug 28310: Don't build obfs4 with module versioning support
+   * Bug 27827: Update Go to 1.11.1
+   * Bug 28185: Add smallerRichard to Tor Browser
+   * Bug 28657: Remove broken FTE bridge from Tor Browser
+ * OS X
+   * Update Tor to 0.3.5.5-alpha
+   * Bug 28310: Don't build obfs4 with module versioning support
+   * Bug 27827: Update Go to 1.11.1
+   * Bug 27827: Build snowflake reproducibly
+   * Bug 28258: Don't look for webrtc headers under talk/
+   * Bug 28185: Add smallerRichard to Tor Browser
+ * Linux
+   * Update Tor to 0.3.5.5-alpha
+   * Bug 28310: Don't build obfs4 with module versioning support
+   * Bug 27827: Update Go to 1.11.1
+   * Bug 27827: Build snowflake reproducibly
+   * Bug 28258: Don't look for webrtc headers under talk/
+   * Bug 28185: Add smallerRichard to Tor Browser
+   * Bug 28657: Remove broken FTE bridge from Tor Browser
+ * Android
+   * Bug 28051: Fix up Orbot for inclusion into Tor Browser
+   * Bug 26690+25765: Port padlock states for .onion serices to mobile
+   * Bug 28507: Delete private data in the browser startup
+   * Bug 27111+25013: Configure Tor Browser for mobile to load about:tor
+   * Bug 27256: Enable TouchEvents on Android
+   * Bug 28640: Use system add-on and distributed preferences
+ * Build System
+   * Bug 27977: Build Orbot inside tor-browser-build
+   * Bug 27443: Update Firefox RBM config and build for Android
+   * Bug 27439: Add android target for rust compiler
+   * Bug 28469: Fix unsupported libbacktrace in Rust 1.26
+   * Bug 28468: Modify Android toolchain to support Orbot
+   * Bug 28483: Modify Android Toolchain API Version
+   * Bug 28472: Add Android Makefile Rules
+   * Bug 28470: Add fetch gradle dependency script to common project
+   * Bug 28144: Update projects/tor-browser for Android
+
 Tor Browser 8.5a4 -- October 23 2018
  * All Platforms
    * Update Firefox to 60.3.0esr
