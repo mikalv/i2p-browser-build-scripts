@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
-git_hash: 28216cd14b44716db5c83634afbdc6e90492652b
+git_hash: 7d9d9233cb657e968831238346917b0b64abb4c1
 git_url: https://chromium.googlesource.com/chromium/tools/depot_tools.git
 filename: '[% project %]-[% c("version") %].tar.gz'

@@ -5,7 +5,7 @@ filename: 'webrtc-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") 
 var:
   container:
     use_container: 1
-  webrtc_tag: c279861207c5b15fc51069e96595782350e0ac12
+  webrtc_tag: 88f5d9180eae78a6162cccd78850ff416eb82483
 
 input_files:
   - project: container-image
@@ -33,6 +33,7 @@ targets:
         - libexpat1-dev
         - libglib2.0-dev
         - libgtk2.0-dev
+        - libgtk-3-dev
         - libudev-dev
         - libx11-dev
         - libxext-dev
@@ -101,6 +102,9 @@ steps:
         git config diff.ignoreSubmodules all
         cd ..
       fi
+      # Delete the unversioned gmock and gtest directories, which cause "gclient sync"
+      # to fail when upgrading between webrtc branch-heads/58 and branch-heads/64.
+      rm -rf src/testing/gmock src/testing/gtest
       # "gclient" is part of depot_tools. This download takes a long time the first time.
       gclient sync --no-history --with_branch_heads -r [% c("var/webrtc_tag") %]
       cd ..

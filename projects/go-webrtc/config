@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://github.com/keroserene/go-webrtc.git
-git_hash: 90ac15ae07cc6e820cd922a239dd892598986622
+git_hash: dcbfc825aa33471253a5da1834d499257e05d557
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 build: '[% c("projects/go/var/build_go_lib") %]'
@@ -21,12 +21,8 @@ var:
     rm -rf include/ lib/
     cp -a /var/tmp/dist/webrtc/{include,lib} .
     [% IF c("var/linux") -%]
-      # The go-webrtc package sets _GLIBCXX_USE_CXX11_ABI=0 for compatibility with
-      # the prebuilt libwebrtc-magic.a libraries. Since we build our own
-      # libwebrtc-magic.a with the C++11 ABI, we have to undo that setting here,
-      # using CGO_CXXFLAGS.
       # __STDC_FORMAT_MACROS is needed for a definition of PRIxPTR from inttypes.h.
-      export CGO_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=1 -D__STDC_FORMAT_MACROS=1"
+      export CGO_CXXFLAGS="-D__STDC_FORMAT_MACROS=1"
       export CGO_LDFLAGS=-latomic
     [% END -%]
     [% IF c("var/osx") -%]

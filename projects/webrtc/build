@@ -101,6 +101,8 @@ GN_ARGS+=" treat_warnings_as_errors=false"
 GN_ARGS+=" is_component_build=false"
 # Do not use bundled utilities.
 GN_ARGS+=" is_clang=false use_sysroot=false"
+# Use libstdc++, not libc++.
+GN_ARGS+=" use_custom_libcxx=false"
 [% IF c("var/linux") -%]
   GN_ARGS+=" target_os=\"linux\" target_cpu=\"[% IF c("var/linux-i686") %]x86[% ELSE %]x64[% END %]\""
   GN_ARGS+=" gold_path=\"$INSTDIR/binutils/bin\""
@@ -116,6 +118,8 @@ GN_ARGS+=" is_clang=false use_sysroot=false"
   GN_ARGS+=" target_os=\"mac\" target_cpu=\"x64\" mac_deployment_target=\"10.7\""
   GN_ARGS+=" clang_use_chrome_plugins=false"
   GN_ARGS+=" clang_base_path=\"$clangdir\""
+  # No lld in our toolchain currently.
+  GN_ARGS+=" use_lld=false"
   # Avoid some dependencies.
   GN_ARGS+=" rtc_include_opus=false rtc_include_ilbc=false rtc_include_internal_audio_device=false"
   # Tests are needed for field_trial, metrics_default, and pc_test_utils targets
@@ -147,7 +151,7 @@ mkdir -p include lib
 cp -f $builddir/libwebrtc-magic.a [% c("var/webrtc/lib_path") %]
 INCLUDE_DIR="$PWD/include"
 cd $builddir
-find webrtc/ -type f -name '*.h' -print0 | while IFS= read -r -d '' h;
+find . -type f -name '*.h' -print0 | while IFS= read -r -d '' h;
 do
   mkdir -p "$INCLUDE_DIR/$(dirname "$h")"
   cp -f "$h" "$INCLUDE_DIR/$h"

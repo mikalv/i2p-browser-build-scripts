@@ -1,7 +1,7 @@
-From bd27c327f72ea231353983aa35a0c3e6ae8055d5 Mon Sep 17 00:00:00 2001
+From df1a0923f1534a238e9773000dd03dd7b55e2c72 Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:26:55 -0700
-Subject: [PATCH 1/8] Disable assertions that prevent cross-compiling for mac.
+Date: Mon, 3 Dec 2018 21:03:16 -0700
+Subject: [PATCH 1/6] Disable assertions that prevent cross-compiling for mac.
 
 ---
  config/BUILDCONFIG.gn  | 4 ++--
@@ -9,10 +9,10 @@ Subject: [PATCH 1/8] Disable assertions that prevent cross-compiling for mac.
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index d055e705..78a2023a 100644
+index 48ed140c7..15e06808c 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -232,8 +232,8 @@ if (target_os == "android") {
+@@ -238,8 +238,8 @@ if (target_os == "android") {
  } else if (target_os == "ios") {
    _default_toolchain = "//build/toolchain/mac:ios_clang_$target_cpu"
  } else if (target_os == "mac") {
@@ -22,9 +22,9 @@ index d055e705..78a2023a 100644
 +  _default_toolchain = "//build/toolchain/mac:clang_$host_cpu"
  } else if (target_os == "win") {
    # On Windows we use the same toolchain for host and target by default.
-   assert(target_os == host_os, "Win cross-compiles only work on win hosts.")
+   # Beware, win cross builds mostly don't work yet, see docs/win_cross.md
 diff --git a/build/toolchain/mac/BUILD.gn b/build/toolchain/mac/BUILD.gn
-index b417e76a..5f48927d 100644
+index fc113d6a3..7a0171700 100644
 --- a/build/toolchain/mac/BUILD.gn
 +++ b/build/toolchain/mac/BUILD.gn
 @@ -14,7 +14,7 @@ if (is_ios) {
@@ -36,13 +36,13 @@ index b417e76a..5f48927d 100644
  
  import("//build/toolchain/cc_wrapper.gni")
  import("//build/toolchain/clang_static_analyzer.gni")
---
+-- 
 2.11.0
 
-From a58bb43ea406939fcc978aa808714d04802074ac Mon Sep 17 00:00:00 2001
+From c9cdc59ebb986392367115105ecbc1f5b511130d Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:29:14 -0700
-Subject: [PATCH 2/8] Hardcode cross-compiling flags in config/mac/BUILD.gn.
+Date: Mon, 3 Dec 2018 21:04:26 -0700
+Subject: [PATCH 2/6] Hardcode cross-compiling flags in config/mac/BUILD.gn.
 
 The build system doesn't provide a general way to set flags externally.
 "No way to provide extra CFLAGS/CXXFLAGS/LDFLAGS"
@@ -52,12 +52,12 @@ https://bugs.chromium.org/p/chromium/issues/detail?id=595653
  1 file changed, 5 insertions(+)
 
 diff --git a/build/config/mac/BUILD.gn b/build/config/mac/BUILD.gn
-index 84180e6a..2054b46f 100644
+index 4c681e88c..26fbcac2b 100644
 --- a/build/config/mac/BUILD.gn
 +++ b/build/config/mac/BUILD.gn
-@@ -83,6 +83,11 @@ config("runtime_library") {
+@@ -57,6 +57,11 @@ config("runtime_library") {
      "-isysroot",
-     sysroot,
+     rebase_path(sysroot, root_build_dir),
      "-mmacosx-version-min=$mac_deployment_target",
 +    "-target",
 +    "x86_64-apple-darwin11",
@@ -67,13 +67,47 @@ index 84180e6a..2054b46f 100644
    ]
  
    asmflags = common_flags
---
+-- 
 2.11.0
 
-From 4c57d854280a0f0a4f55cba0457ae44f6369ca08 Mon Sep 17 00:00:00 2001
+From 86d0882084c8b0595d693cce43e96b01182814b7 Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:30:28 -0700
-Subject: [PATCH 3/8] Port build/config/mac/plist_util.py to biplist.
+Date: Tue, 4 Dec 2018 07:37:42 +0000
+Subject: [PATCH 3/6] Remove -instcombine-lower-dbg-declare=0 from cflags.
+
+Not supported in our current version of llvm:
+clang (LLVM option parsing): Unknown command line argument '-instcombine-lower-dbg-declare=0'.  Try: 'clang (LLVM option parsing) -help'
+clang (LLVM option parsing): Did you mean '-combiner-use-tbaa=0'?
+---
+ config/compiler/BUILD.gn | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/config/compiler/BUILD.gn b/config/compiler/BUILD.gn
+index a6ba4ea6..e775f9f5 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -427,10 +427,10 @@ config("compiler") {
+   if (is_clang && !is_nacl && current_toolchain == host_toolchain &&
+       target_os != "chromeos") {
+     cflags += [
+-      "-Xclang",
+-      "-mllvm",
+-      "-Xclang",
+-      "-instcombine-lower-dbg-declare=0",
++      # "-Xclang",
++      # "-mllvm",
++      # "-Xclang",
++      # "-instcombine-lower-dbg-declare=0",
+     ]
+   }
+ 
+-- 
+2.11.0
+
+From 96d243466006263e99b08ebf8b6085c60b736ccc Mon Sep 17 00:00:00 2001
+From: David Fifield <david@bamsoftware.com>
+Date: Mon, 3 Dec 2018 21:06:06 -0700
+Subject: [PATCH 4/6] Port build/config/mac/plist_util.py to biplist.
 
 So as not to require the plutil command. plutil was only being used to
 convert between XML and binary plist formats, because versions of the
@@ -105,7 +139,7 @@ OSError: [Errno 2] No such file or directory
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/build/config/mac/plist_util.py b/build/config/mac/plist_util.py
-index 0928fa13..898edc1a 100644
+index bba0208a5..019dcf918 100644
 --- a/build/config/mac/plist_util.py
 +++ b/build/config/mac/plist_util.py
 @@ -3,7 +3,7 @@
@@ -117,7 +151,7 @@ index 0928fa13..898edc1a 100644
  import os
  import re
  import subprocess
-@@ -116,6 +116,7 @@ def Interpolate(plist, substitutions):
+@@ -89,6 +89,7 @@ def Interpolate(value, substitutions):
  
  def LoadPList(path):
    """Loads Plist at |path| and returns it as a dictionary."""
@@ -125,133 +159,55 @@ index 0928fa13..898edc1a 100644
    fd, name = tempfile.mkstemp()
    try:
      subprocess.check_call(['plutil', '-convert', 'xml1', '-o', name, path])
-@@ -127,6 +128,7 @@ def LoadPList(path):
+@@ -100,6 +101,7 @@ def LoadPList(path):
  
  def SavePList(path, format, data):
    """Saves |data| as a Plist to |path| in the specified |format|."""
 +  return biplist.writePlist(data, path, {"xml1": False, "binary1": True}[format]) # doesn't handle "json" format
    fd, name = tempfile.mkstemp()
    try:
-     with os.fdopen(fd, 'w') as f:
---
-2.11.0
-
-From 62a6fa6376194ce673c220eef19fefeebe58fee1 Mon Sep 17 00:00:00 2001
-From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:41:16 -0700
-Subject: [PATCH 5/8] Include <sys/socket.h> in macifaddrs_converter.cc.
-
-Without this, when built against MacOSX10.7.sdk, there are errors:
-
-In file included from ../../webrtc/base/macifaddrs_converter.cc:13:
-/home/debian/build/MacOSX10.7.sdk/usr/include/net/if.h:300:19: error: field has incomplete type 'struct sockaddr'
-                struct  sockaddr ifru_addr;
-
-Related references:
-https://trac.macports.org/ticket/49012
-https://trac.macports.org/browser/trunk/dports/gnome/gstreamer1/files/patch-struct-sockadr.diff?rev=140712
----
- webrtc/base/macifaddrs_converter.cc | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/webrtc/base/macifaddrs_converter.cc b/webrtc/base/macifaddrs_converter.cc
-index 2ad070e8e..1995f1940 100644
---- a/webrtc/base/macifaddrs_converter.cc
-+++ b/webrtc/base/macifaddrs_converter.cc
-@@ -10,6 +10,7 @@
- 
- #include <memory>
- 
-+#include <sys/socket.h>
- #include <net/if.h>
- #include <sys/ioctl.h>
- #include <unistd.h>
+     # "plutil" does not replace the destination file but update it in place,
 -- 
 2.11.0
 
-
-From e6a421534723408fb1292ce25051a1970f750a4a Mon Sep 17 00:00:00 2001
+From eb3787dd670900cc2c3020c9323a9d95983c8887 Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:42:34 -0700
-Subject: [PATCH 6/8] Provide definitions of NS_ENUM and NS_OPTIONS.
+Date: Tue, 4 Dec 2018 05:16:04 +0000
+Subject: [PATCH 5/6] Override use_system_xcode=true.
 
 ---
- webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ build_overrides/build.gni | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h b/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
-index f9f15c37d..277676d85 100644
---- a/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
-+++ b/webrtc/sdk/objc/Framework/Headers/WebRTC/RTCMacros.h
-@@ -25,4 +25,17 @@
- #define RTC_FWD_DECL_OBJC_CLASS(classname) typedef struct objc_object classname
- #endif
- 
-+// http://iamthewalr.us/blog/2012/11/ns_enum-and-ns_options/
-+#if (__cplusplus && __cplusplus >= 201103L && (__has_extension(cxx_strong_enums) || __has_feature(objc_fixed_enum))) || (!__cplusplus && __has_feature(objc_fixed_enum))
-+#define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
-+#if (__cplusplus)
-+#define NS_OPTIONS(_type, _name) _type _name; enum : _type
-+#else
-+#define NS_OPTIONS(_type, _name) enum _name : _type _name; enum _name : _type
-+#endif
-+#else
-+#define NS_ENUM(_type, _name) _type _name; enum
-+#define NS_OPTIONS(_type, _name) _type _name; enum
-+#endif
+diff --git a/build_overrides/build.gni b/build_overrides/build.gni
+index 81cb3e73ae..b683ea850c 100644
+--- a/build_overrides/build.gni
++++ b/build_overrides/build.gni
+@@ -46,3 +46,5 @@ if (host_os == "mac") {
+              "hermetic toolchain if the minimum OS version is not met.")
+   use_system_xcode = _result == 0
+ }
 +
- #endif  // WEBRTC_BASE_OBJC_RTC_MACROS_H_
++use_system_xcode = true
 -- 
 2.11.0
 
-
-From baf5ddbd1e1281cd7c4cdda709e2ea7e07903727 Mon Sep 17 00:00:00 2001
+From 5df71ea8f31fd25a05c6b6b881c8126b25b5475c Mon Sep 17 00:00:00 2001
 From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:43:05 -0700
-Subject: [PATCH 7/8] Replace firstObject with objectAtIndex:0.
-
-firstObject doesn't exist in our version of the SDK.
-
-The two method calls are not exactly the same; on an empty array,
-firstObject returns nil while objectAtIndex:0 raises an exception. Let's
-hope that doesn't matter.
----
- webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm b/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
-index 182056228..93bea08f9 100644
---- a/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
-+++ b/webrtc/modules/video_capture/objc/rtc_video_capture_objc.mm
-@@ -176,7 +176,7 @@ using namespace webrtc::videocapturemodule;
- }
- 
- - (AVCaptureVideoDataOutput*)currentOutput {
--  return [[_captureSession outputs] firstObject];
-+  return [[_captureSession outputs] objectAtIndex:0];
- }
- 
- - (void)startCaptureInBackgroundWithOutput:
--- 
-2.11.0
-
-
-From 0b5f86af5bc4b7697ee60adf7e1e057a023438e0 Mon Sep 17 00:00:00 2001
-From: David Fifield <david@bamsoftware.com>
-Date: Mon, 26 Jun 2017 11:43:51 -0700
-Subject: [PATCH 8/8] Disable the desktop_capture module.
+Date: Mon, 3 Dec 2018 21:11:14 -0700
+Subject: [PATCH 6/6] Disable the desktop_capture module.
 
 It's causing an error related to CoreGraphics.h and hopefully we don't
 need it.
 ---
- webrtc/modules/BUILD.gn | 1 -
+ modules/BUILD.gn | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/webrtc/modules/BUILD.gn b/webrtc/modules/BUILD.gn
-index e750a8109..590f34275 100644
---- a/webrtc/modules/BUILD.gn
-+++ b/webrtc/modules/BUILD.gn
-@@ -18,7 +18,6 @@ group("modules") {
+diff --git a/modules/BUILD.gn b/modules/BUILD.gn
+index 465f32d3c4..578cdbd57e 100644
+--- a/modules/BUILD.gn
++++ b/modules/BUILD.gn
+@@ -17,7 +17,6 @@ group("modules") {
      "audio_processing",
      "bitrate_controller",
      "congestion_controller",
