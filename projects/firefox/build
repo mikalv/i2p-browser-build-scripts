@@ -1,13 +1,6 @@
 #!/bin/bash
 [% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
-[% IF c("var/android") %]
-  export GRADLE_MAVEN_REPOSITORIES="file://$rootdir/[% c('input_files_by_name/gradle-dependencies') %]"
-  # Prepare building the multi-locale .apk
-  mkdir -p /var/tmp/dist/locales
-  tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]
-[% END -%]
-
 [% IF c("var/windows") -%]
   [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc') }) %]
   # We need a link to our GCC, otherwise the system cc gets used which points to
@@ -105,7 +98,14 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
 [% END -%]
 
 [% IF c("var/android") %]
+  export GRADLE_MAVEN_REPOSITORIES="file:///var/tmp/gradle-dependencies"
+  # Move Gradle Repo to hard-coded location. This location is embedded in the file
+  # chrome/toolkit/content/global/buildconfig.html so needs to be standard for reproducibility
+  mv $rootdir/[% c('input_files_by_name/gradle-dependencies') %] /var/tmp/gradle-dependencies
   cp $rootdir/[% c('input_files_by_name/orbot') %]/* mobile/android/app
+  # Prepare building the multi-locale .apk
+  mkdir -p /var/tmp/dist/locales
+  tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]
 [% END %]
 
 eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] $(cat browser/config/version.txt))
