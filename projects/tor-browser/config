@@ -46,6 +46,7 @@ targets:
     var:
       arch_deps:
         - openjdk-8-jdk
+        - faketime
 
 input_files:
   - project: container-image
@@ -108,3 +109,6 @@ input_files:
     URL: https://files.pythonhosted.org/packages/7e/9b/f99171190f04cd23768547dd34533b4016bd582842f53cd9fe9585a74c74/pefile-2017.11.5.tar.gz
     sha256sum: 675c35ee0e1677db9e80d2f48d8a7ff2cf38e6207e8cd5e2a2c6d126db025854
     enable: '[% c("var/windows") %]'
+  # To generate a new keystore, see how-to-generate-keystore.txt
+  - filename: android-qa.keystore
+    enable: '[% c("var/android") %]'

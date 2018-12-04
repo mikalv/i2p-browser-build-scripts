@@ -9,10 +9,10 @@ cd /var/tmp/build
 
 mv $rootdir/[% c('input_files_by_name/https-everywhere') %] $ext_dir/https-everywhere-eff@eff.org.xpi
 mv $rootdir/[% c('input_files_by_name/noscript') %] $ext_dir/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi
+[% c("var/touch") %] $ext_dir $ext_dir/*
 
 zip -d $apk META-INF/\*
-zip -r $apk $ext_dir
+zip -r -X $apk $ext_dir
 
 # Sign a QA build. This apk is not a debug version and doesn't contain a debug flag in the manifest
-keytool -genkey -v -keystore qa.keystore -storepass android -alias androidqakey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Tor QA,O=Tor,C=US"
-jarsigner -verbose -digestalg SHA1 -sigalg MD5withRSA -keystore qa.keystore -signedjar $qa_apk $apk androidqakey -storepass android -keypass android
+[% c("var/faketime") %] jarsigner -verbose -digestalg SHA1 -sigalg MD5withRSA -keystore $rootdir/android-qa.keystore -signedjar $qa_apk $apk androidqakey -storepass android -keypass android
