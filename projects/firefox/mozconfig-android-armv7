@@ -18,6 +18,7 @@ ac_add_options --with-libclang-path=/var/tmp/dist/android-toolchain/android-ndk/
 ac_add_options --with-clang-path=/var/tmp/dist/android-toolchain/android-ndk/arm/bin/clang
 
 ac_add_options --with-android-distribution-directory=@TOPSRCDIR@/mobile/android/torbrowser
+ac_add_options --with-l10n-base=/var/tmp/dist/locales
 
 if [ -z "${TB_BUILD_WITH_UPDATER}" ]; then
 # Because Google Play will likely be the primary distribution medium,

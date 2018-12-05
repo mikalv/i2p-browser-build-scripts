@@ -3,6 +3,9 @@
 [% c("var/set_default_env") -%]
 [% IF c("var/android") %]
   export GRADLE_MAVEN_REPOSITORIES="file://$rootdir/[% c('input_files_by_name/gradle-dependencies') %]"
+  # Prepare building the multi-locale .apk
+  mkdir -p /var/tmp/dist/locales
+  tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]
 [% END -%]
 
 [% IF c("var/windows") -%]
@@ -154,7 +157,14 @@ rm -f js/src/configure
 ./mach build --verbose
 
 [% IF c("var/android") %]
-  ./mach package
+  # Building a multi-locale .apk
+  [% FOREACH lang = c('var/locales') %]
+    [% SET lang = tmpl(lang) %]
+    ./mach build chrome-[% lang %];
+  [% END %]
+  export MOZ_CHROME_MULTILOCALE='[% tmpl(c('var/locales').join(' ')) %]'
+  AB_CD=multi ./mach package
+  # Copy the result over and return. There is nothing more to do for mobile.
   cp obj-*/dist/*unsigned-unaligned.apk [% dest_dir _ '/' _ c('filename') %]/tor-browser-unsigned-unaligned.apk
   [% RETURN %]
 [% END %]

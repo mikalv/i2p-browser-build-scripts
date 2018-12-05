@@ -135,3 +135,6 @@ input_files:
   - project: orbot
     name: orbot
     enable: '[% c("var/android") %]'
+  - project: firefox-locale-bundle
+    name: firefox-locale-bundle
+    enable: '[% c("var/android") %]'
