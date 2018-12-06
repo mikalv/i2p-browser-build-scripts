@@ -209,7 +209,8 @@ popd
 
 # Prepare our language packs for using the proper search engines and embed
 # our default bookmarks. See bugs 18915 and 21879 for more details.
-[% FOREACH lang = c('var/locales') %]
+[% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
+[% FOREACH lang = locales %]
 [% SET lang = tmpl(lang);
    SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
    %]
@@ -325,7 +326,8 @@ cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
 # If we did not create a multi-lingual package above, create a package for
 # each locale.
 [% IF ! c("var/multi_lingual") %]
-  [% FOREACH lang = c('var/locales') %]
+  [% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
+  [% FOREACH lang = locales %]
     [% SET lang = tmpl(lang);
        SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
        SET tbdir = '$distdir/tor-browser_' _ lang;

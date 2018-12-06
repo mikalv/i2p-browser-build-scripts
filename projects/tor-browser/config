@@ -58,7 +58,7 @@ input_files:
     enable: '[% ! c("var/android") %]'
   - project: firefox-langpacks
     name: firefox-langpacks
-    enable: '[% c("var/locales").size && ! c("var/android") %]'
+    enable: '[% ! c("var/testbuild") && ! c("var/android") %]'
   - project: tor-launcher
     name: tor-launcher
     enable: '[% ! c("var/android") %]'

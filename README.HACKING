@@ -319,7 +319,15 @@ Types of builds: nightly, alpha, release, and testbuild
 
 The testbuild makefile target allows you to do a build quickly in the
 testbuild directory, skipping the generation of all the locales and the
-mar files. This is useful during development.
+.mar files. This is useful during development.
+
+In the case of Android builds, we are generating a multi-locale apk,
+contrary to the desktop builds where we have one bundle for each locale.
+Removing locales in a multi-locale bundle does not make a significant
+difference in build time, therefore we still include all the locales in
+the Android testbuild. There are also no .mar files generated in the
+Android builds, so currently, in the Android case, the only difference
+introduced by the testbuild target is the output directory.
 
 By default the testbuild is based on the alpha build. All the options
 can have a different definition for the alpha, release and nightly builds.
