@@ -16,6 +16,6 @@ exit_error("Error reading $file", 2) unless defined $json_text;
 
 my $data = decode_json($json_text);
 
-my $changeset = $data->{locales}{$locale}{changeset};
+my $changeset = $data->{$locale}{revision};
 exit_error("Can't find locale $locale in $file", 3) unless $changeset;
 print "$changeset\n";

@@ -2,6 +2,10 @@
 
 [% c("var/set_default_env") -%]
 
+cat > l10n-changesets.json << 'EOF_CHANGESETS'
+[% pc('firefox', 'var/l10n-changesets.json') %]
+EOF_CHANGESETS
+
 clone_dir='[% c("basedir") %]/hg_clones/[% project %]'
 mkdir -p "$clone_dir"
 cd "$clone_dir"
@@ -19,7 +23,7 @@ tmpdir=$(mktemp -d)
       cd [% lang %]
   fi
   hg_hash=$([% c("basedir") %]/projects/firefox-locale-bundle/get_hg_hash \
-                $rootdir/[% c('input_files_by_name/firefox_json') %] \
+                $rootdir/l10n-changesets.json \
                 [% lang %])
   [% c("hg") %] archive -r "$hg_hash" -t files "$tmpdir"/[% lang %]
   cd ..
