@@ -138,7 +138,8 @@ ninja -C out/Release webrtc field_trial metrics_default pc_test_utils
 # like that, not necessarily of the target architecture, and anyway are not
 # needed.
 # https://bugs.torproject.org/22832
-[% IF c("var/osx") %]ZERO_AR_DATE=1 [% END %]"$AR" crs libwebrtc-magic.a $(find out/Release/obj -name '*.o' | sort)
+find out/Release/obj -name '*.o' -print0 | sort -z \
+	| [% IF c("var/osx") %]ZERO_AR_DATE=1 [% END %] xargs -0 -- "$AR" crs libwebrtc-magic.a
 
 mkdir -p $distdir
 cd $distdir
@@ -146,9 +147,9 @@ mkdir -p include lib
 cp -f $builddir/libwebrtc-magic.a [% c("var/webrtc/lib_path") %]
 INCLUDE_DIR="$PWD/include"
 cd $builddir
-for h in $(find webrtc/ -type f -name '*.h');
+find webrtc/ -type f -name '*.h' -print0 | while IFS= read -r -d '' h;
 do
-  mkdir -p "$INCLUDE_DIR/$(dirname $h)"
+  mkdir -p "$INCLUDE_DIR/$(dirname "$h")"
   cp -f "$h" "$INCLUDE_DIR/$h"
 done
 
