@@ -47,6 +47,11 @@ targets:
       arch_deps:
         - openjdk-8-jdk
         - faketime
+      # On some machines using faketime with Stretch to make the debug signature
+      # leads to a stalled build. Work around this by switching to Buster.
+      container:
+        suite: buster
+        arch: amd64
 
 input_files:
   - project: container-image
