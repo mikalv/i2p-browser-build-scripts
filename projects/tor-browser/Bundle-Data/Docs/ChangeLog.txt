@@ -1,3 +1,27 @@
+Tor Browser 8.5a6 -- December 11 2018
+ * All Platforms
+   * Update Firefox to 60.4.0esr
+   * Update OpenSSL to 1.0.2q
+   * Update Torbutton to 2.1.3
+     * Bug 28540: Use new text for 2018 donation banner
+     * Bug 27290: Remove WebGL pref for min capability mode
+     * Bug 28075: Tone down missing SOCKS credential warning
+     * Bug 28747: Remove NoScript (XPCOM) related unused code
+     * Translations update
+   * Bug 28608: Disable background HTTP response throttling
+   * Bug 28695: Set default security.pki.name_matching_mode to enforce (3)
+   * Bug 27290: Remove WebGL pref for min capability mode
+   * Bug 27919: Backport SSL status API
+ * Windows
+   * Bug 28740: Adapt Windows navigator.platform value on 64-bit systems
+ * Android
+   * Bug 26843: Multi-locale support for Tor Browser on Android
+ * Build System
+   * Android
+     * Bug 25164: Add .apk to our sha256sums unsigned build file
+     * Bug 28696: Make path to Gradle dependencies reproducible
+     * Bug 28697: Use pregenerated keystore and fix timestamp issues
+
 Tor Browser 8.5a5 -- December 3 2018
  * All Platforms
    * Update Torbutton to 2.1.2
