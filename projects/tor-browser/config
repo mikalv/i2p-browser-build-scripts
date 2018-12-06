@@ -51,7 +51,6 @@ targets:
       # leads to a stalled build. Work around this by switching to Buster.
       container:
         suite: buster
-        arch: amd64
 
 input_files:
   - project: container-image
