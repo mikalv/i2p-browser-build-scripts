@@ -26,6 +26,7 @@ You also need a few perl modules installed:
 - Template
 - IO::Handle
 - IO::CaptureOutput
+- JSON
 - File::Temp
 - Path::Tiny
 - File::Path
@@ -40,7 +41,7 @@ If you are running Debian or Ubuntu, you can install them with:
 
 # apt-get install libyaml-libyaml-perl libtemplate-perl \
                   libio-handle-util-perl libio-all-perl \
-                  libio-captureoutput-perl libpath-tiny-perl \
+                  libio-captureoutput-perl libjson-perl libpath-tiny-perl \
                   libstring-shellquote-perl libsort-versions-perl \
                   libdigest-sha-perl libdata-uuid-perl libdata-dump-perl \
                   libfile-copy-recursive-perl git libgtk2.0-dev curl runc \

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-use File::Slurp;
+use Path::Tiny;
 use JSON;
 
 sub exit_error {
@@ -11,7 +11,7 @@ sub exit_error {
 exit_error("Wrong number of arguments", 1) unless @ARGV == 2;
 
 my ($file, $locale) = @ARGV;
-my $json_text = read_file($file);
+my $json_text = path($file)->slurp_raw;
 exit_error("Error reading $file", 2) unless defined $json_text;
 
 my $data = decode_json($json_text);
