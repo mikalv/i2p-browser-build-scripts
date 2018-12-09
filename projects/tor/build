@@ -11,6 +11,10 @@ mkdir -p /var/tmp/build
 [% END %]
 
 [% IF c("var/osx") %]
+  [% IF ("var/nightly") %]
+    # We are compiling Tor with Rust enabled for nightlies.
+    export TOR_RUST_TARGET=x86_64-apple-darwin
+  [% END %]
   TORBINDIR="$distdir/Contents/MacOS/Tor"
   TORCONFIGDIR="$distdir/Contents/Resources/TorBrowser/Tor"
   mkdir -p $distdir/bin
@@ -20,7 +24,7 @@ mkdir -p /var/tmp/build
 
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/openssl') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/libevent') %]
-[% IF c("var/linux") && c("var/nightly") %]
+[% IF (c("var/linux") || c("var/osx")) && c("var/nightly") %]
   tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
   export PATH=/var/tmp/dist/rust/bin:$PATH
 [% END %]
@@ -70,11 +74,11 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 echo '"[% c("abbrev", { abbrev_length => 16 }) %]"' > micro-revision.i
 ./autogen.sh
 find -type f -print0 | xargs -0 [% c("var/touch") %]
-[% IF c("var/linux") && c("var/nightly") %]TOR_RUST_DEPENDENCIES=`pwd`/src/ext/rust/crates[% END %] ./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
+[% IF (c("var/linux") || c("var/osx")) && c("var/nightly") %]TOR_RUST_DEPENDENCIES=`pwd`/src/ext/rust/crates[% END %] ./configure --disable-asciidoc --with-libevent-dir="$libeventdir" --with-openssl-dir="$openssldir" \
     [% IF c("var/asan") %]--enable-fragile-hardening[% END %] \
     [% IF c("var/windows") %]--with-zlib-dir="$zlibdir"[% END %] \
     [% IF c("var/osx") %]--enable-static-openssl[% END %] \
-    [% IF c("var/linux") && c("var/nightly") %]--enable-rust[% END %] \
+    [% IF (c("var/linux") || c("var/osx")) && c("var/nightly") %]--enable-rust[% END %] \
     --prefix="$distdir" [% c("var/configure_opt") %]
 [% IF c("var/osx") || c("var/windows") -%]
   export LD_PRELOAD=[% c("var/faketime_path") %]
