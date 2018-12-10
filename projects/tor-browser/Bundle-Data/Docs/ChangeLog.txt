@@ -64,7 +64,7 @@ Tor Browser 8.5a5 -- December 3 2018
    * Bug 28657: Remove broken FTE bridge from Tor Browser
  * Android
    * Bug 28051: Fix up Orbot for inclusion into Tor Browser
-   * Bug 26690+25765: Port padlock states for .onion serices to mobile
+   * Bug 26690+25765: Port padlock states for .onion services to mobile
    * Bug 28507: Delete private data in the browser startup
    * Bug 27111+25013: Configure Tor Browser for mobile to load about:tor
    * Bug 27256: Enable TouchEvents on Android
