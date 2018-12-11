@@ -103,9 +103,9 @@ Tor Browser 8.5a4 -- October 23 2018
    * Bug 28002: Fix the precomplete file in the en-US installer
  * OS X
    * Bug 26263: App icon positioned incorrectly in macOS DMG installer window
-   * Bug 26475: Fix Stylo related reproducibilitiy issue
+   * Bug 26475: Fix Stylo related reproducibility issue
  * Linux
-   * Bug 26475: Fix Stylo related reproducibilitiy issue
+   * Bug 26475: Fix Stylo related reproducibility issue
    * Bug 28022: Use `/usr/bin/env bash` for bash invocation
  * Android
    * Backport of fixes for bug 1448014, 1458905, 1441345, and 1448305
