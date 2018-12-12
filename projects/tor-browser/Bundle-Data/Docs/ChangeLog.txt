@@ -27,6 +27,34 @@ Tor Browser 8.5a6 -- December 11 2018
      * Bug 28696: Make path to Gradle dependencies reproducible
      * Bug 28697: Use pregenerated keystore and fix timestamp issues
 
+Tor Browser 8.0.4 -- December 11 2018
+ * All platforms
+   * Update Firefox to 60.4.0esr
+   * Update Tor to 0.3.4.9
+   * Update OpenSSL to 1.0.2q
+   * Update Torbutton to 2.0.9
+     * Bug 28540: Use new text for 2018 donation banner
+     * Bug 28515: Use en-US for english Torbutton strings
+     * Translations update
+   * Update HTTPS Everywhere to 2018.10.31
+   * Update NoScript to 10.2.0
+ * Bug 1623: Block protocol handler enumeration (backport of fix for #680300)
+ * Bug 25794: Disable pointer events
+ * Bug 28608: Disable background HTTP response throttling
+ * Bug 28185: Add smallerRichard to Tor Browser
+ * Windows
+   * Bug 26381: about:tor page does not load on first start on Windows
+   * Bug 28657: Remove broken FTE bridge from Tor Browser
+ * OS X
+   * Bug 26263: App icon positioned incorrectly in macOS DMG installer window
+   * Bug 26475: Fix Stylo related reproducibility issue
+ * Linux
+   * Bug 26475: Fix Stylo related reproducibility issue
+   * Bug 28657: Remove broken FTE bridge from Tor Browser
+ * Build System
+   * All Platforms
+     * Bug 27218: Generate multiple Tor Browser bundles in parallel
+
 Tor Browser 8.5a5 -- December 3 2018
  * All Platforms
    * Update Torbutton to 2.1.2
