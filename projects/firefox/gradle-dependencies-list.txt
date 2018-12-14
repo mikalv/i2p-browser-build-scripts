@@ -8,7 +8,7 @@ d46777ad3ea8bca73491b2e02fc85b3664486abf5314cc4dc6740908bd855330 | https://jcent
 ee041b3beb682e8bbf2dc16b6edc233483cbc36bde27fd13996617a667b615a5 | https://maven.google.com/com/android/tools/external/com-intellij/intellij-core/26.0.1/intellij-core-26.0.1.pom
 536c45e8804de01321c478cfb994377f81f1e32897636616fa21b877fd137c6f | https://jcenter.bintray.com/org/eclipse/jdt/core/compiler/ecj/4.6.1/ecj-4.6.1.pom
 32c797717189ffd0dcc2fcb2e804ab5a0d0c8dfa78b2aa78037f61d4a572f62c | https://raw.githubusercontent.com/guardianproject/gpmaven/master/org/torproject/tor-android-binary/0.3.4.9/tor-android-binary-0.3.4.9.pom
-2ec779741f72313fc6623d0f0e42b2450dd2425dd6ad319697e658aae9ae177b | https://jcenter.bintray.com/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.pom
+2ec779741f72313fc6623d0f0e42b2450dd2425dd6ad319697e658aae9ae177b | https://maven.google.com/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.pom
 8d4006178fedef4255797b806167cf4a6774158eedabf96420693afbbd00fee3 | https://maven.google.com/com/android/tools/analytics-library/protos/26.0.1/protos-26.0.1.pom
 c3fb02564ca173e45548d7a91aca1efe341db11da2656199d559773e7ae15edf | https://jcenter.bintray.com/org/ow2/asm/asm-commons/5.0.1/asm-commons-5.0.1.pom
 ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d | https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom
@@ -18,7 +18,7 @@ f09330e83f0e3a3f6648ee43a6814ee3a91df699adf7446d6f1f38e95e34cd88 | https://raw.g
 8c6191e0dd8bfdc862332cb79b08185ac5b63565d405dac2605be4c2b19774bd | https://jcenter.bintray.com/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.pom
 8b0aa8a74e990ca8d633ab7bd1938530e921548df13fd4020224a61065378876 | https://maven.google.com/com/android/tools/build/builder-test-api/3.0.1/builder-test-api-3.0.1.pom
 363cc83767b760d7a564d5301e09467e6d48fc1c1c1664b1e18c50815ce19076 | https://jcenter.bintray.com/com/google/guava/guava/20.0/guava-20.0.pom
-bede73084ec812b916f686cc6e47625bd0756154bef589a4c2b419e54a393bf5 | https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.0.1/manifest-merger-26.0.1.jar
+bede73084ec812b916f686cc6e47625bd0756154bef589a4c2b419e54a393bf5 | https://maven.google.com/com/android/tools/build/manifest-merger/26.0.1/manifest-merger-26.0.1.jar
 f6775dc981540ffa10f33bd831f14608517ce38b90628e045707dd5bb5d1348e | https://jcenter.bintray.com/org/apache/maven/wagon/wagon-http-shared/1.0-beta-6/wagon-http-shared-1.0-beta-6.pom
 9f85ff2fd7d6cb3097aa47fb419ee7f0ebe869109f98aba9f4eca3f49e74a40e | https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom
 e5e82da4cc66c8d917bbf743e3c0752efe8522735e7fc9dbddb65bccea81cfe9 | https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.2.5/httpcore-4.2.5.jar
@@ -32,7 +32,7 @@ e824935c264b041e847b67808aee704f8cd47d698203259057e42f473e1f6f30 | https://maven
 0a640f956f4cdde8b5d3458a67ca67599eeb6f47349167a3f1afce7d60978027 | https://maven.google.com/com/android/tools/build/gradle-core/3.0.1/gradle-core-3.0.1.jar
 e6d920d5a1a34aaaebab1e6a82c36bbfd61f1eeaabc4534ee05d4faad56f1b7a | https://jcenter.bintray.com/org/apache/ant/ant/1.8.0/ant-1.8.0.pom
 401877d5e70ad599e9b6cff18434ea0332f637b51f8ec68352646c836f9bb2a4 | https://jcenter.bintray.com/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom
-b27bbb9d269a97be8ff0ac480c0f09c9a953f62e6ff05d90fcbb0ddb4de97c77 | https://jcenter.bintray.com/com/android/tools/common/26.0.1/common-26.0.1.jar
+b27bbb9d269a97be8ff0ac480c0f09c9a953f62e6ff05d90fcbb0ddb4de97c77 | https://maven.google.com/com/android/tools/common/26.0.1/common-26.0.1.jar
 58aa4df8faae90e484c0bc47494a1ec97dc51fe53eae2b4a70d60ea7489cdf8c | https://maven.google.com/com/android/tools/external/com-intellij/intellij-core/26.0.1/intellij-core-26.0.1.jar
 965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397 | https://jcenter.bintray.com/org/jetbrains/annotations/13.0/annotations-13.0.pom
 cf149955279b07d4f11e817985c1164a69e930d73db7441b43a6ef53bbd286c4 | https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.0.18/error_prone_parent-2.0.18.pom
@@ -60,7 +60,7 @@ d125b3ade9f694ae60ef835f5ae000b6ba35fba8c34bafd8b40a1961375e63fa | https://jcent
 15d4b252c5aa3aeb8d634ae5aaf348ac6ce183b6b5e3615364e6c083715c1133 | https://jcenter.bintray.com/com/getkeepsafe/dexcount/dexcount-gradle-plugin/0.8.2/dexcount-gradle-plugin-0.8.2.pom
 fcd77cba4ea3893429860b93da5d43f2e089f2ba8bdfa97ef724f410f404152a | https://maven.google.com/com/android/tools/build/gradle/3.0.1/gradle-3.0.1.jar
 e116f32edcb77067289a3148143f2c0c97b27cf9a1342f8108ee37dec4868861 | https://jcenter.bintray.com/org/apache/maven/wagon/wagon-provider-api/1.0-beta-6/wagon-provider-api-1.0-beta-6.jar
-70c458dcf6040317b41ddf50a7d53a02b8a85b0723b36cde9562c59e3cd11dae | https://jcenter.bintray.com/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.jar
+70c458dcf6040317b41ddf50a7d53a02b8a85b0723b36cde9562c59e3cd11dae | https://maven.google.com/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.jar
 95b8b357d19f63797dd7d67622fd3f18374d64acbc6584faba1c7759a31e8438 | https://jcenter.bintray.com/nekohtml/xercesMinimal/1.9.6.2/xercesMinimal-1.9.6.2.jar
 ee4e1227673b6ba0b462b567f011b88b6e4e4cd044e1c9734ffb1a2ff80d7ee7 | https://jcenter.bintray.com/org/robolectric/resources/3.5.1/resources-3.5.1.pom
 857db5645aaefbd7fbe9ba6454b072bc0518ebaba08a93d5eae89a9850e949c4 | https://jcenter.bintray.com/com/getkeepsafe/dexcount/dexcount-gradle-plugin/0.8.2/dexcount-gradle-plugin-0.8.2.jar
@@ -193,7 +193,7 @@ f095c882716d49269a806685dcb256fa6a36389b2713ac56bb758bf8693565a2 | https://jcent
 4a028c17c75cce301e13fdfbc0750ceb48a166dd1013ee516a49684472fcf0e5 | https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-android-extensions/1.1.51/kotlin-android-extensions-1.1.51.pom
 1e7f53fa5b8b5c807e986ba335665da03f18d660802d8bf061823089d1bee468 | https://jcenter.bintray.com/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1.jar
 70cc10a9e0b028dd98ca870354afc45eb61eebbd5c6b247b9dd00b4af2b9279a | https://jcenter.bintray.com/org/simpleframework/simple-common/6.0.1/simple-common-6.0.1.pom
-07f08b315c812406e9d497e1b592689742feb3950c1a713f95e2692d3e15b619 | https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.0.1/ddmlib-26.0.1.pom
+07f08b315c812406e9d497e1b592689742feb3950c1a713f95e2692d3e15b619 | https://maven.google.com/com/android/tools/ddms/ddmlib/26.0.1/ddmlib-26.0.1.pom
 2d9484f4c649f708f47f9a479465fc729770ee65617dca3011836602264f6439 | https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar
 db50fbb16778e5ff47eaf46a2b63891c546911e7bde06c068ecbe9806b02c672 | https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-gradle-plugin/1.1.51/kotlin-gradle-plugin-1.1.51.jar
 a0700d84efe7cc3103557bd0522f9443681b96ba9559c4bb7f9dc9bf35243485 | https://jcenter.bintray.com/com/ibm/icu/icu4j/53.1/icu4j-53.1.pom
@@ -254,7 +254,7 @@ bfadb3b40f65dd6de1666d6b29f8bb54031396c76eeef4146cf9f28255f8bf33 | https://jcent
 8ba35dd4ea1647b89a8ae082bb6c81d5695a1ec31e73aa57bfa3512069c4bee2 | https://jcenter.bintray.com/com/thoughtworks/xstream/xstream/1.4.8/xstream-1.4.8.pom
 91b9f17a54e6c340c8d3ea4b359401170706eb26a82d51909abe6ba80081aed8 | https://jcenter.bintray.com/com/google/code/gson/gson/2.8.2/gson-2.8.2.pom
 59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a | https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.jar
-052b0d2b58e5df4f30e4f64bdf5414473f6cfa10147f8f8d89cb0b63316ba8f3 | https://jcenter.bintray.com/com/android/tools/build/manifest-merger/26.0.1/manifest-merger-26.0.1.pom
+052b0d2b58e5df4f30e4f64bdf5414473f6cfa10147f8f8d89cb0b63316ba8f3 | https://maven.google.com/com/android/tools/build/manifest-merger/26.0.1/manifest-merger-26.0.1.pom
 258f12f1facc44d0b25b9fa2bde33a58f3de9eea412588ff47922c9cac910a5a | https://maven.google.com/com/android/support/cardview-v7/23.4.0/cardview-v7-23.4.0.pom
 90f163f78e3ffb6f1c7ad97de9e7eba4eea25807141b85d6d12be67ca25449c4 | https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.pom
 d135cff96dcbbc8a5fab30180e557cae620373cf26941d4c738a88896a2d98ed | https://jcenter.bintray.com/org/apache/maven/maven/2.2.1/maven-2.2.1.pom
@@ -264,7 +264,7 @@ d135cff96dcbbc8a5fab30180e557cae620373cf26941d4c738a88896a2d98ed | https://jcent
 f5655d331af6afcd4dbaedaa739b889380c771a7e83f7aea5c8544a05074cf0b | https://jcenter.bintray.com/nekohtml/nekohtml/1.9.6.2/nekohtml-1.9.6.2.pom
 30b09c7504768820bfd8572ffcf8c2c55a668ecff6ca3e125906d00bf393a082 | https://maven.google.com/com/android/support/test/espresso/espresso-idling-resource/2.2.2/espresso-idling-resource-2.2.2.pom
 7bc4c7f999b9c673c714f7f8adb6281b11b8f14d5821a2b860c3d60c24518c66 | https://jcenter.bintray.com/com/squareup/leakcanary/leakcanary-watcher/1.4-beta1/leakcanary-watcher-1.4-beta1.jar
-e30f1db6058f745f26112ef309f89becb27c617c7d9e4c6e02165a7620a92e6a | https://jcenter.bintray.com/com/android/tools/common/26.0.1/common-26.0.1.pom
+e30f1db6058f745f26112ef309f89becb27c617c7d9e4c6e02165a7620a92e6a | https://maven.google.com/com/android/tools/common/26.0.1/common-26.0.1.pom
 6422a1f272022e3153ed68af04e5a03548fe48061ed2846c044df84e02abb143 | https://jcenter.bintray.com/org/robolectric/junit/3.5.1/junit-3.5.1.pom
 9cddda75f4a1b4469e73f44e7b61a3e897d0f657df4797f9106ffe88c4eeade0 | https://jcenter.bintray.com/org/eclipse/jdt/core/compiler/ecj/4.6.1/ecj-4.6.1.jar
 5fe8a11e913086fb7ab505b930987f30cfa3f4b226d4bbbc68003ca4387ae40e | https://maven.google.com/com/android/tools/lint/lint-api/26.0.1/lint-api-26.0.1.jar
@@ -276,7 +276,7 @@ d7d77326867e6d903156ebb18c244819b26aebe3aa82a1c57081081a0b6c4f63 | https://jcent
 567ae5af5665bb445802ca650a4dc848737c9ee564f69f2ead5df1189d394304 | https://maven.google.com/com/android/support/recyclerview-v7/23.4.0/recyclerview-v7-23.4.0.pom
 66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9 | https://jcenter.bintray.com/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
 ddb0fc5402b4cd8f31d5f29c830793d3ec00fd8ce60786254e5f0f132f0bdd8d | https://maven.google.com/com/android/tools/lint/lint-api/26.0.1/lint-api-26.0.1.pom
-81f73f8b25b430f5a40a39727bbcef653a1d0868cc69233b44e4282ce5a94ff9 | https://jcenter.bintray.com/com/android/tools/ddms/ddmlib/26.0.1/ddmlib-26.0.1.jar
+81f73f8b25b430f5a40a39727bbcef653a1d0868cc69233b44e4282ce5a94ff9 | https://maven.google.com/com/android/tools/ddms/ddmlib/26.0.1/ddmlib-26.0.1.jar
 326ba49aa7a35e07b6cc592ad7a5b0f86f4667051a8e70e7639c54bc0c356dee | https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.1.60/kotlin-stdlib-1.1.60.jar
 a219a1abf948400b669d08be73a6f9209fb720d237e5ff74c223bffe5f9df93d | https://jcenter.bintray.com/com/thoughtworks/xstream/xstream/1.4.8/xstream-1.4.8.jar
 8f10ffd8df0d3e9819c8cc8402709c6b248bc53a954ef6e45470d9ae3a5735fb | https://jcenter.bintray.com/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.pom
