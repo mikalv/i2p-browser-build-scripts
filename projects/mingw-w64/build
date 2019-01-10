@@ -22,6 +22,10 @@ cd /var/tmp/build
 mkdir gcc
 cd gcc
 tar xJf $rootdir/gcc-[% c("var/gcc_version") %].tar.xz
+# https://gcc.gnu.org/ml/gcc-patches/2018-06/msg01115.html
+# From gcc commit 494c17dc2bf45b8155fb9a14178ab48f01bc12a8
+# libtool: Sort output of 'find' to enable deterministic builds.
+patch -p1 -d gcc-[% c("var/gcc_version") %] < $rootdir/libtool-sort.patch
 # We don't want to link against msvcrt.dll due to bug 9084 and want to use
 # pthreads, too, as this is needed for ESR60, at least due to bug 1406542.
 [% c("arch") %]-w64-mingw32-g++ -dumpspecs > $distdir/msvcr100.spec

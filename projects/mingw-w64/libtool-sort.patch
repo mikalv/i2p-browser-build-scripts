@@ -1,0 +1,67 @@
+From 494c17dc2bf45b8155fb9a14178ab48f01bc12a8 Mon Sep 17 00:00:00 2001
+From: law <law@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Thu, 5 Jul 2018 19:13:45 +0000
+Subject: [PATCH 1/1]         * libtool.m4: Sort output of 'find' to enable
+ deterministic builds. 	* ltmain.sh: Likewise.
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/trunk@262451 138bc75d-0d04-0410-961f-82ee72b054a4
+---
+ ChangeLog  | 5 +++++
+ libtool.m4 | 8 ++++----
+ ltmain.sh  | 4 ++--
+ 3 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/libtool.m4 b/libtool.m4
+index 24d13f3..940faaa 100644
+--- a/libtool.m4
++++ b/libtool.m4
+@@ -6005,20 +6005,20 @@ if test "$_lt_caught_CXX_error" != yes; then
+ 	      _LT_TAGVAR(prelink_cmds, $1)='tpldir=Template.dir~
+ 		rm -rf $tpldir~
+ 		$CC --prelink_objects --instantiation_dir $tpldir $objs $libobjs $compile_deplibs~
+-		compile_command="$compile_command `find $tpldir -name \*.o | $NL2SP`"'
++		compile_command="$compile_command `find $tpldir -name \*.o | sort | $NL2SP`"'
+ 	      _LT_TAGVAR(old_archive_cmds, $1)='tpldir=Template.dir~
+ 		rm -rf $tpldir~
+ 		$CC --prelink_objects --instantiation_dir $tpldir $oldobjs$old_deplibs~
+-		$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs `find $tpldir -name \*.o | $NL2SP`~
++		$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs `find $tpldir -name \*.o | sort | $NL2SP`~
+ 		$RANLIB $oldlib'
+ 	      _LT_TAGVAR(archive_cmds, $1)='tpldir=Template.dir~
+ 		rm -rf $tpldir~
+ 		$CC --prelink_objects --instantiation_dir $tpldir $predep_objects $libobjs $deplibs $convenience $postdep_objects~
+-		$CC -shared $pic_flag $predep_objects $libobjs $deplibs `find $tpldir -name \*.o | $NL2SP` $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
++		$CC -shared $pic_flag $predep_objects $libobjs $deplibs `find $tpldir -name \*.o | sort | $NL2SP` $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
+ 	      _LT_TAGVAR(archive_expsym_cmds, $1)='tpldir=Template.dir~
+ 		rm -rf $tpldir~
+ 		$CC --prelink_objects --instantiation_dir $tpldir $predep_objects $libobjs $deplibs $convenience $postdep_objects~
+-		$CC -shared $pic_flag $predep_objects $libobjs $deplibs `find $tpldir -name \*.o | $NL2SP` $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
++		$CC -shared $pic_flag $predep_objects $libobjs $deplibs `find $tpldir -name \*.o | sort | $NL2SP` $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
+ 	      ;;
+ 	    *) # Version 6 and above use weak symbols
+ 	      _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
+diff --git a/ltmain.sh b/ltmain.sh
+index 9503ec8..79f9ba8 100644
+--- a/ltmain.sh
++++ b/ltmain.sh
+@@ -2917,7 +2917,7 @@ func_extract_archives ()
+ 	    darwin_file=
+ 	    darwin_files=
+ 	    for darwin_file in $darwin_filelist; do
+-	      darwin_files=`find unfat-$$ -name $darwin_file -print | $NL2SP`
++	      darwin_files=`find unfat-$$ -name $darwin_file -print | sort | $NL2SP`
+ 	      $LIPO -create -output "$darwin_file" $darwin_files
+ 	    done # $darwin_filelist
+ 	    $RM -rf unfat-$$
+@@ -2932,7 +2932,7 @@ func_extract_archives ()
+         func_extract_an_archive "$my_xdir" "$my_xabs"
+ 	;;
+       esac
+-      my_oldobjs="$my_oldobjs "`find $my_xdir -name \*.$objext -print -o -name \*.lo -print | $NL2SP`
++      my_oldobjs="$my_oldobjs "`find $my_xdir -name \*.$objext -print -o -name \*.lo -print | sort | $NL2SP`
+     done
+ 
+     func_extract_archives_result="$my_oldobjs"
+-- 
+2.9.3
+

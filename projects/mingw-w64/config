@@ -34,3 +34,4 @@ input_files:
     sha256sum: 850bf21eafdfe5cd5f6827148184c08c4a0852a37ccf36ce69855334d2c914d4
   - name: binutils
     project: binutils
+  - filename: libtool-sort.patch

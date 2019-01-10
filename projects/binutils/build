@@ -16,18 +16,12 @@ distdir=/var/tmp/dist/binutils
   ln -s /usr/lib/gcc/x86_64-linux-gnu/4.7/libstdc++_pic.a libstdc++.a
   export LDFLAGS="-L$rootdir -lstdc++"
 [% END %]
-tar xf [% project %]-[% c("version") %].tar.bz2
+tar xf [% project %]-[% c("version") %].tar.xz
 cd [% project %]-[% c("version") %]
 [% IF c('var/windows') -%]
-  # XXX: This is needed due to bug 10102.
-  sed 's/= extern_rt_rel_d;/= extern_rt_rel_d;\n  memset (extern_rt_rel_d, 0, PE_IDATA5_SIZE);/' -i ld/pe-dll.c
-  # Zeroing timestamps in PE headers reliably, see bug 12753.
-  patch -p1 < ../peXXigen.patch
-  # Needed for the hardening...
+  # Needed for the hardening... The upstream ticket is:
+  # https://sourceware.org/bugzilla/show_bug.cgi?id=17321
   patch -p1 < ../enable-reloc-section-ld.patch
-  # fix build reproducibility of Windows builds by reverting commit 13e570f80c.
-  # See bug 16472.
-  patch -p1 < ../fix-windows-reproducibility.patch
 [% END -%]
 [% IF c('var/windows-x86_64') -%]
   patch -p1 < ../64bit-fixups.patch
