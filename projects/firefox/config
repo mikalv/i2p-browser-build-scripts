@@ -114,10 +114,6 @@ input_files:
     enable: '[% c("var/windows") %]'
   - filename: nsis-uninstall.patch
     enable: '[% c("var/windows") %]'
-  - filename: 1464084.patch
-    enable: '[% c("var/windows") %]'
-  - filename: 1467041.patch
-    enable: '[% c("var/windows") %]'
   - project: rust
     name: rust
   - project: llvm
