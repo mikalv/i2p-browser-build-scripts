@@ -10,7 +10,7 @@ var:
   # HTTPS Everywhere is expected to be the same on all platforms. To avoid
   # building the same thing 4 times, using 4 different container images
   # (each one with a different suite or architecture), we set the container
-  # to wheezy/amd64 for all platforms. This allows us to create only one
+  # to buster/amd64 for all platforms. This allows us to create only one
   # container image, and also build the extension only one time as the
   # filename does not contain the platform, and var/build_id should be
   # the same since there is now nothing platform specific in the build
