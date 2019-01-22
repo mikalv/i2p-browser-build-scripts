@@ -1,9 +1,7 @@
 # vim: filetype=yaml sw=2
-version: 0.5
-git_url: https://git.torproject.org/pluggable-transports/goptlib.git
-git_hash: '[% c("version") %]'
-tag_gpg_id: 1
-gpg_keyring: goptlib.gpg
+version: '[% c("abbrev") %]'
+git_url: https://github.com/golang/sys
+git_hash: 11f53e03133963fb11ae0588e08b5e0b85be8be5
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 build: '[% c("projects/go/var/build_go_lib") %]'
@@ -11,12 +9,9 @@ build: '[% c("projects/go/var/build_go_lib") %]'
 var:
   container:
     use_container: 1
-  go_lib: git.torproject.org/pluggable-transports/goptlib.git
-
-targets:
-  nightly:
-    version: master
-    tag_gpg_id: 0
+  go_lib: golang.org/x/sys
+  go_lib_install:
+    - golang.org/x/sys/cpu
 
 input_files:
   - project: container-image

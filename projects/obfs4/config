@@ -32,3 +32,9 @@ input_files:
     project: goxcrypto
   - name: goxnet
     project: goxnet
+  - name: goutls
+    project: goutls
+    enable: '[% c("var/nightly") %]'
+  - name: goxtext
+    project: goxtext
+    enable: '[% c("var/nightly") %]'

@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://go.googlesource.com/crypto
-git_hash: 4ed45ec682102c643324fae5dff8dab085b6c300
+git_hash: ff983b9c42bc9fbf91556e191cc8efb585c16908
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 build: '[% c("projects/go/var/build_go_lib") %]'
@@ -11,9 +11,13 @@ var:
     use_container: 1
   go_lib: golang.org/x/crypto
   go_lib_install:
+    - golang.org/x/crypto/chacha20poly1305
+    - golang.org/x/crypto/cryptobyte
     - golang.org/x/crypto/curve25519
     - golang.org/x/crypto/hkdf
     - golang.org/x/crypto/nacl/secretbox
+  go_lib_deps:
+    - goxsys
 
 targets:
   nightly:
@@ -23,3 +27,5 @@ input_files:
   - project: container-image
   - name: go
     project: go
+  - name: goxsys
+    project: goxsys
