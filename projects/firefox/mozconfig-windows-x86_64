@@ -26,5 +26,4 @@ ac_add_options --disable-maintenance-service
 ac_add_options --disable-webrtc
 ac_add_options --disable-tests
 ac_add_options --disable-stylo # Bugzilla 1390583
-ac_add_options --disable-accessibility # https://sourceforge.net/p/mingw-w64/bugs/648/
 ac_add_options --disable-jemalloc # Bugzilla 1466192
