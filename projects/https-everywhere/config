@@ -22,7 +22,6 @@ var:
   deps:
     - git
     - python3.6
-    - python3.6-lxml
     - libxslt1.1
     - libxml2-utils
     - sqlite3
