@@ -13,39 +13,102 @@ var:
 pre: |
   #!/bin/sh
   set -e
+  # Bug 29158: install fixed packages for apt vulnerability (CVE-2019-3462)
+  dpkg -i ./apt_1.6.6ubuntu0.1_amd64.deb ./libapt-pkg5.0_1.6.6ubuntu0.1_amd64.deb
   apt-get update -y
   apt-get install -y debian-archive-keyring ubuntu-keyring debootstrap
   debootstrap --arch=[% c("var/container/arch") %] [% c("var/container/debootstrap_opt") %] [% c("var/container/suite") %] base-image [% c("var/container/debootstrap_mirror") %]
+  [% IF c("var/apt_package_filename") || c("var/apt_utils_package_filename") || c("var/libapt_inst_package_filename") || c("var/libapt_pkg_package_filename") -%]
+    mkdir ./base-image/apt-update
+    mv [% c("var/apt_package_filename") %] [% c("var/apt_utils_package_filename") %] \
+       [% c("var/libapt_inst_package_filename") %] [% c("var/libapt_pkg_package_filename") %] \
+       ./base-image/apt-update
+    mount proc ./base-image/proc -t proc
+    mount sysfs ./base-image/sys -t sysfs
+    chroot ./base-image dpkg -i -R /apt-update
+    umount ./base-image/proc
+    umount ./base-image/sys
+  [% END -%]
+  [% IF c("var/minimal_apt_version") -%]
+    apt_version=$(dpkg --admindir=$(pwd)/base-image/var/lib/dpkg -s apt | grep '^Version: ' | cut -d ' ' -f 2)
+    echo "apt version: $apt_version"
+    dpkg --compare-versions "$apt_version" ge '[% c("var/minimal_apt_version") %]'
+  [% END -%]
   tar -C ./base-image -czf [% dest_dir %]/[% c("filename") %] .
 
 targets:
   wheezy-amd64:
     var:
+      minimal_apt_version: '0.9.7.9+deb7u8'
+      # https://deb.freexian.com/extended-lts/updates/ela-76-1-apt/
+      apt_packages_baseurl: http://deb.freexian.com/extended-lts/pool/main/a/apt
+      apt_package_filename: apt_0.9.7.9+deb7u8_amd64.deb
+      apt_package_sha256sum: 83dcdb3f9c11df28b30b85bbb9dec341effbf36ee881a04dece3390082080761
+      apt_utils_package_filename: apt-utils_0.9.7.9+deb7u8_amd64.deb
+      apt_utils_package_sha256sum: 91a4d0ec92a32f13e3acb37f71546d48c51a0df25f3b9eb6a96b73dfc93a11ed
+      libapt_inst_package_filename: libapt-inst1.5_0.9.7.9+deb7u8_amd64.deb
+      libapt_inst_package_sha256sum: 181c9c21e1b33496b251fc76ba8ed04acbb8e23006909d27795bbc287eddd027
+      libapt_pkg_package_filename: libapt-pkg4.12_0.9.7.9+deb7u8_amd64.deb
+      libapt_pkg_package_sha256sum: b360dfb5a65ac2f7b81a2551d8a520ba2265785537d6d669869a159888b81999
+
       container:
         suite: wheezy
         arch: amd64
+
   wheezy-i386:
     var:
+      # Missing apt packages for i386:
+      # http://deb.freexian.com/extended-lts/pool/main/a/apt/
       container:
         suite: wheezy
         arch: i386
+
   jessie-amd64:
     var:
+      minimal_apt_version: 1.0.9.8.5
+      # https://lists.debian.org/debian-lts-announce/2019/01/msg00014.html
+      apt_packages_baseurl: http://security.debian.org/debian-security/pool/updates/main/a/apt
+      apt_package_filename: apt_1.0.9.8.5_amd64.deb
+      apt_package_sha256sum: 4078748632abc19836d045f80f9d6933326065ca1d47367909a0cf7f29e7dfe8
+      apt_utils_package_filename: apt-utils_1.0.9.8.5_amd64.deb
+      apt_utils_package_sha256sum: 87c55d9ccadcabd59674873c221357c774020c116afd978fb9df6d2d0303abf2
+      libapt_inst_package_filename: libapt-inst1.5_1.0.9.8.5_amd64.deb
+      libapt_inst_package_sha256sum: f9615532b1577b3d1455fa51839ce91765f2860eb3a6810fb5e0de0c87253030
+      libapt_pkg_package_filename: libapt-pkg4.12_1.0.9.8.5_amd64.deb
+      libapt_pkg_package_sha256sum: 295d9c69854a4cfbcb46001b09b853f5a098a04c986fc5ae01a0124c1c27e6bd
+
       container:
         suite: jessie
         arch: amd64
+
   jessie-i386:
     var:
+      minimal_apt_version: 1.0.9.8.5
+      # https://lists.debian.org/debian-lts-announce/2019/01/msg00014.html
+      apt_packages_baseurl: http://security.debian.org/debian-security/pool/updates/main/a/apt
+      apt_package_filename: apt_1.0.9.8.5_i386.deb
+      apt_package_sha256sum: 13c230e9c544b1e67a8da413046bf1728526372170533b1a23e70cc99c40a228
+      apt_utils_package_filename: apt-utils_1.0.9.8.5_i386.deb
+      apt_utils_package_sha256sum: 1a74b12c8bb6b3968a721f3aa96739073e4fe2ced9302792c533e21535bc9cf4
+      libapt_inst_package_filename: libapt-inst1.5_1.0.9.8.5_i386.deb
+      libapt_inst_package_sha256sum: 5791661dd4ade72b61086fefdc209bd1f76ac7b7c812d6d4ba951b1a6232f0b9
+      libapt_pkg_package_filename: libapt-pkg4.12_1.0.9.8.5_i386.deb
+      libapt_pkg_package_sha256sum: 201b6cf4625ed175e6a024ac1f7ca6c526ca79d859753c125b02cd69e26c349d
+
       container:
         suite: jessie
         arch: i386
+
   buster-amd64:
     var:
+      minimal_apt_version: '1.8.0~alpha3.1'
       container:
         suite: buster
         arch: amd64
+
   stretch-amd64:
     var:
+      minimal_apt_version: 1.4.9
       container:
         suite: stretch
         arch: amd64
@@ -54,3 +117,19 @@ input_files:
   - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
     filename: 'container-image_ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
     sha256sum: ed76e649f65548a80b361b68011085ec4dde7bb762d667657acbef87765e1a12
+  - URL: http://security.ubuntu.com/ubuntu/pool/main/a/apt/apt_1.6.6ubuntu0.1_amd64.deb
+    sha256sum: df210f9e30cf9deba5fbe815203af854e5e77bdbbe0b96d0d1c0da46a6a8dd0a
+  - URL: http://security.ubuntu.com/ubuntu/pool/main/a/apt/libapt-pkg5.0_1.6.6ubuntu0.1_amd64.deb
+    sha256sum: 0a05a97b1e9b8d52ee8df040a14c5fabdebbb2c2235ac495db29df34f4c8cec3
+  - URL: '[% c("var/apt_packages_baseurl") %]/[% c("var/apt_package_filename") %]'
+    sha256sum: '[% c("var/apt_package_sha256sum") %]'
+    enable: '[% c("var/apt_package_filename") %]'
+  - URL: '[% c("var/apt_packages_baseurl") %]/[% c("var/apt_utils_package_filename") %]'
+    sha256sum: '[% c("var/apt_utils_package_sha256sum") %]'
+    enable: '[% c("var/apt_utils_package_filename") %]'
+  - URL: '[% c("var/apt_packages_baseurl") %]/[% c("var/libapt_inst_package_filename") %]'
+    sha256sum: '[% c("var/libapt_inst_package_sha256sum") %]'
+    enable: '[% c("var/libapt_inst_package_filename") %]'
+  - URL: '[% c("var/apt_packages_baseurl") %]/[% c("var/libapt_pkg_package_filename") %]'
+    sha256sum: '[% c("var/libapt_pkg_package_sha256sum") %]'
+    enable: '[% c("var/libapt_pkg_package_filename") %]'
