@@ -1,0 +1,10 @@
+#!/bin/sh
+basedir=$(dirname "$0")
+libdir=$(cd "$basedir"/fteproxy-lib ; pwd)
+if test -z "$LD_LIBRARY_PATH"
+then
+    export LD_LIBRARY_PATH="$libdir"
+else
+    export LD_LIBRARY_PATH="$libdir:$LD_LIBRARY_PATH"
+fi
+exec "$basedir/fteproxy.bin" "$@"

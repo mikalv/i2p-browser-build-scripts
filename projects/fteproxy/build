@@ -22,6 +22,8 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
   cp -a fteproxy/defs/*.json $PTDIR/fteproxy/defs
   rm -Rf $pydir
 [% ELSE -%]
+  cp -a $rootdir/fteproxy.wrapper $PTDIR/fteproxy.wrapper
+  chmod +x $PTDIR/fteproxy.wrapper
   cp -a bin/fteproxy $PTDIR/fteproxy.bin
   cp -ra fteproxy $PTDIR/
 [% END -%]

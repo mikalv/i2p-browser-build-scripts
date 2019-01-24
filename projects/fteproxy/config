@@ -28,3 +28,5 @@ input_files:
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
     enable: '[% c("var/windows") %]'
+  - filename: fteproxy.wrapper
+    enable: '[% c("var/linux") %]'
