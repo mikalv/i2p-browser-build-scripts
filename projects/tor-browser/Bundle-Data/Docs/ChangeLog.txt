@@ -1,3 +1,56 @@
+Tor Browser 8.5a7 -- January 29 2018
+ * All Platforms
+   * Update Firefox to 60.5.0esr
+   * Update Torbutton to 2.1.4
+     * Bug 25702: Update Tor Browser icon to follow design guidelines
+     * Bug 21805: Add click-to-play button for WebGL
+     * Bug 28836: Links on about:tor are not clickable
+     * Bug 29035: Clean up our donation campaign and add newsletter sign-up link
+     * Translations update
+     * Code clean-up
+   * Update HTTPS Everywhere to 2019.1.7
+   * Update NoScript to 10.2.1
+     * Bug 28873: Cascading of permissions is broken
+     * Bug 28720: Some videos are blocked outright on higher security levels
+   * Bug 29082: Backport patches for bug 1469916
+   * Bug 28711: Backport patches for bug 1474659
+   * Bug 27828: "Check for Tor Browser update" doesn't seem to do anything
+   * Bug 29028: Auto-decline most canvas warning prompts again
+   * Bug 27597: Fix our debug builds
+ * Windows
+   * Update Tor to 0.4.0.1-alpha
+   * Bug 25702: Activity 1.1 Update Tor Browser icon to follow design guidelines
+   * Bug 28111: Use Tor Browser icon in identity box
+   * Bug 22654: Firefox icon is shown for Tor Browser on Windows 10 start menu
+   * Bug 27503: Compile with accessibility support
+   * Bug 28874: Bump mingw-w64 commit to fix WebGL crash
+   * Bug 28546: Rebrand Tor Browser's Window's Installer
+   * Bug 12885: Windows Jump Lists fail for Tor Browser
+   * Bug 28618: Set MOZILLA_OFFICIAL for Windows build
+ * OS X
+   * Update Tor to 0.4.0.1-alpha
+   * Bug 25702: Activity 1.1 Update Tor Browser icon to follow design guidelines
+   * Bug 28111: Use Tor Browser icon in identity box
+ * Linux
+   * Update Tor to 0.4.0.1-alpha
+   * Bug 25702: Activity 1.1 Update Tor Browser icon to follow design guidelines
+   * Bug 28111: Use Tor Browser icon in identity box
+   * Bug 27531: Fix crashing print dialog
+ * Android
+   * Bug 28705: Fix download crash on newer Android devices
+   * Bug 28814: Backport 1480079 to allow installing downloaded apps
+ * Build System
+   * All Platforms
+     * Bug 29158: Install updated apt packages (CVE-2019-3462)
+     * Bug 29097: Don't try to install python3.6-lxml for HTTPS Everywhere
+   * Windows
+     * Bug 26148: Update binutils to 2.31.1
+     * Bug 29081: Harden libwinpthread
+   * Linux
+     * Bug 26148: Update binutils to 2.31.1
+   * Android
+     * Bug 28752: Don't download tor-android-binary resources during build
+
 Tor Browser 8.5a6 -- December 11 2018
  * All Platforms
    * Update Firefox to 60.4.0esr

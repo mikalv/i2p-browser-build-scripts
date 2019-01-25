@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2.1.3
+version: 2.1.4
 git_url: https://git.torproject.org/torbutton.git
 git_hash: '[% c("version") %]'
 gpg_keyring: torbutton.gpg
