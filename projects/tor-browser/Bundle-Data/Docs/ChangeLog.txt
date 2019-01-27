@@ -1,4 +1,4 @@
-Tor Browser 8.5a7 -- January 29 2018
+Tor Browser 8.5a7 -- January 29 2019
  * All Platforms
    * Update Firefox to 60.5.0esr
    * Update Torbutton to 2.1.4
