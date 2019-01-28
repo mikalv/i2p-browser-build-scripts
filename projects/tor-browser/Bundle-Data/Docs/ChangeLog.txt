@@ -24,7 +24,6 @@ Tor Browser 8.5a7 -- January 29 2019
    * Bug 22654: Firefox icon is shown for Tor Browser on Windows 10 start menu
    * Bug 27503: Compile with accessibility support
    * Bug 28874: Bump mingw-w64 commit to fix WebGL crash
-   * Bug 28546: Rebrand Tor Browser's Window's Installer
    * Bug 12885: Windows Jump Lists fail for Tor Browser
    * Bug 28618: Set MOZILLA_OFFICIAL for Windows build
  * OS X
