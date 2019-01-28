@@ -35,8 +35,6 @@ var:
     [% END -%]
 
 targets:
-  master:
-    git_hash: master
   linux:
     var:
       arch_deps:

@@ -13,10 +13,6 @@ var:
   go_lib_install:
     - golang.org/x/net/proxy
 
-targets:
-  nightly:
-    git_hash: master
-
 input_files:
   - project: container-image
   - name: go
