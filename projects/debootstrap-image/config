@@ -1,5 +1,6 @@
 # vim: filetype=yaml sw=2
-filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %].tar.gz'
+filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %]-[% c("version") %].tar.gz'
+version: 1
 pkg_type: build
 
 var:
