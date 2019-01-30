@@ -100,13 +100,6 @@ targets:
         suite: jessie
         arch: i386
 
-  buster-amd64:
-    var:
-      minimal_apt_version: '1.8.0~alpha3.1'
-      container:
-        suite: buster
-        arch: amd64
-
   stretch-amd64:
     var:
       minimal_apt_version: 1.4.9

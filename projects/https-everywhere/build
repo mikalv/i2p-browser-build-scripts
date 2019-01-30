@@ -1,5 +1,6 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
+[% pc('python', 'var/setup', { python_tarfile => c('input_files_by_name/python') }) %]
 tar xf [% project %]-[% c('version') %].tar.gz
 cd [% project %]-[% c('version') %]
 ./make.sh
