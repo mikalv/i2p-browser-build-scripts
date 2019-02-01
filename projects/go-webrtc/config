@@ -35,7 +35,12 @@ var:
     [% END -%]
 
 targets:
-  linux:
+  linux-i686:
+    var:
+      arch_deps:
+        - pkg-config
+        - libx11-dev:i386
+  linux-x86_64:
     var:
       arch_deps:
         - pkg-config

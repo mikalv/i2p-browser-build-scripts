@@ -7,11 +7,30 @@ var:
     use_container: 1
 
 targets:
-  linux:
+  linux-x86_64:
     var:
       arch_deps:
         - python-setuptools
         - python-dev
+
+  linux-i686:
+    var:
+      pre_pkginst: |
+        dpkg --add-architecture i386
+        # python2.7:i386 cannot be installed because the mime-support package
+        # in wheezy is not marked "Multi-Arch: foreign":
+        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=695357
+        # We fix this by installing the jessie mime-support package.
+        wget http://ftp.debian.org/debian/pool/main/m/mime-support/mime-support_3.58_all.deb
+        echo 'c05ebe8f38da4ff19d028c9f4680414149e5c7a746de13bc9db0a562796ed213  mime-support_3.58_all.deb' | sha256sum -c
+        dpkg -i mime-support_3.58_all.deb
+      post_pkginst: |
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get install -q -y libpython2.7:i386 python2.7:i386 python2.7-minimal:i386 python2.7-dev:i386
+        apt-get install -q -y hardening-wrapper
+        apt-get download -q -y python-setuptools python-pkg-resources
+        dpkg -i --force-depends python-setuptools*.deb python-pkg-resources*.deb
+
   windows-i686:
     var:
       compiler: winpython
@@ -26,4 +45,3 @@ input_files:
     sha256sum: 095175638c019ac7c0604f4c291724a16ff1acd062e181b01293bf4dcbc62cf3
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
-    enable: '[% c("var/windows") %]'

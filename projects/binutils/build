@@ -8,8 +8,6 @@ distdir=/var/tmp/dist/binutils
   export DEB_BUILD_HARDENING_FORTIFY=1
   export DEB_BUILD_HARDENING_FORMAT=1
   export DEB_BUILD_HARDENING_PIE=1
-[% END -%]
-[% IF c("var/linux-x86_64") %]
   # The libstdc++ shipped by default is non-PIC which breaks the binutils build
   # if we build with DEB_BUILD_HARDENING_PIE=1. We need to install a PIC one AND
   # make sure it gets used before the non-PIC one would.

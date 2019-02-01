@@ -12,11 +12,7 @@ var:
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
     export PATH="/var/tmp/dist/gcc/bin:$PATH"
-    [% IF c("var/osname") == "linux-i686" -%]
-    export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib
-    [% ELSE -%]
-    export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib64
-    [% END -%]
+    export LD_LIBRARY_PATH=/var/tmp/dist/gcc/lib64:/var/tmp/dist/gcc/lib32
 
     [% IF c("hardened_gcc") -%]
       # Config options for hardening-wrapper
@@ -47,19 +43,12 @@ targets:
         - zlib1g-dev
   linux:
     hardened_gcc: 1
-  linux-i686:
-    var:
-      configure_opt: --enable-multilib --enable-languages=c,c++ --with-system-zlib
-      arch_deps:
-        - hardening-wrapper
-        - libc6-dev
-        - zlib1g-dev
-  linux-x86_64:
     var:
       configure_opt: --enable-multilib --enable-languages=c,c++ --with-arch_32=i686
       arch_deps:
         - hardening-wrapper
         - libc6-dev-i386
+
 input_files:
   - project: container-image
   - URL: 'https://ftp.gnu.org/gnu/gcc/gcc-[% c("version") %]/gcc-[% c("version") %].tar.xz'

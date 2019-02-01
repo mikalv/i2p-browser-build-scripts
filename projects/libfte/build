@@ -12,6 +12,11 @@ tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/gmp') %]
 ln -s /var/tmp/dist/gmp thirdparty/gmp
 mkdir -p $distdir
 tar -C $distdir -xf $rootdir/[% c('input_files_by_name/obfsproxy') %]
+[% IF c("var/linux-i686") -%]
+  export CFLAGS=-m32
+  export CXXFLAGS=-m32
+  export LDFLAGS=-m32
+[% END -%]
 [% IF c("var/windows") -%]
   patch -p1 < $rootdir/bug20302.patch
   pydir=$distdir/python
@@ -25,7 +30,7 @@ tar -C $distdir -xf $rootdir/[% c('input_files_by_name/obfsproxy') %]
   $PYTHON setup.py install --prefix=$(wine winepath -w "$pydir")
   $PYTHON setup.py install
 [% ELSE -%]
-  export PYTHON=python2
+  export PYTHON=python2[% IF c("var/linux-i686") %].7[% END %]
   make
   cp -ra fte $PTDIR/
   mkdir -p $PTDIR/fteproxy-lib

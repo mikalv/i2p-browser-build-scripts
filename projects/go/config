@@ -15,6 +15,9 @@ var:
     export GOARCH=[% c("var/GOARCH") %]
     export GOPATH=/var/tmp/dist/gopath
     export PATH=/var/tmp/dist/go/bin:/var/tmp/dist/gopath/bin:"$PATH"
+    [% IF c("var/linux-i686") -%]
+      export CGO_ENABLED=1
+    [% END -%]
 
   # Template build script for building a go library.
   # This can be called as projects/go/var/build_go_lib.

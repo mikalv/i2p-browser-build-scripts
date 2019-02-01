@@ -29,9 +29,9 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
   $PYTHON setup.py build_ext -c mingw32
   $PYTHON setup.py install --prefix=$(wine winepath -w $pydir)
 [% ELSE -%]
-  export PYTHON=python2
+  export PYTHON=python2[% IF c("var/linux-i686") %].7[% END %]
   ./configure --build=i686-linux-gnu [% c("var/configure_opt") %]
-  python2 setup.py build --build-lib build
+  $PYTHON setup.py build --build-lib build
   cp -a build/Crypto $PTDIR/
 [% END -%]
 cd $distdir
