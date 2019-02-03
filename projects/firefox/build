@@ -61,7 +61,7 @@ EOF
 [% IF c("var/selfrando") -%]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/selfrando') %]
   # Selfrando wrapper
-  export PATH="/var/tmp/dist/selfrando/Tools/TorBrowser/tc-wrapper/:$PATH"
+  export PATH="/var/tmp/dist/selfrando/Tools/I2PBrowser/tc-wrapper/:$PATH"
   # We need to avoid the shuffling while building as this breaks compilation
   export SELFRANDO_skip_shuffle=
 [% END -%]
@@ -79,7 +79,7 @@ export PATH="/var/tmp/dist/rust/bin:$PATH"
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 
 [% IF c("var/osx") %]
-  mkdir -p "$distdir/Tor Browser.app/Contents/MacOS"
+  mkdir -p "$distdir/I2P Browser.app/Contents/MacOS"
 [% ELSE %]
   mkdir -p $distdir/Browser
 [% END %]
@@ -156,7 +156,7 @@ fi
 rm -f configure
 rm -f js/src/configure
 
-./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
+./mach configure --with-i2p-browser-version=[% c("var/i2pbrowser_version") %] --with-distribution-id=io.i2p --enable-update-channel=[% c("var/i2pbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
 ./mach build --verbose
 
 [% IF c("var/android") %]
@@ -168,7 +168,7 @@ rm -f js/src/configure
   export MOZ_CHROME_MULTILOCALE='[% tmpl(c('var/locales').join(' ')) %]'
   AB_CD=multi ./mach package
   # Copy the result over and return. There is nothing more to do for mobile.
-  cp obj-*/dist/*unsigned-unaligned.apk [% dest_dir _ '/' _ c('filename') %]/tor-browser-unsigned-unaligned.apk
+  cp obj-*/dist/*unsigned-unaligned.apk [% dest_dir _ '/' _ c('filename') %]/i2p-browser-unsigned-unaligned.apk
   [% RETURN %]
 [% END %]
 
@@ -177,12 +177,12 @@ rm -f js/src/configure
 [% IF c("var/osx") %]
   cp -a obj-macos/dist/firefox/* $distdir
   # Remove firefox-bin (we don't use it, see ticket #10126)
-  rm -f "$distdir/Tor Browser.app/Contents/MacOS/firefox-bin"
+  rm -f "$distdir/I2P Browser.app/Contents/MacOS/firefox-bin"
 
   # Adjust the Info.plist file
-  INFO_PLIST="$distdir/Tor Browser.app/Contents/Info.plist"
+  INFO_PLIST="$distdir/I2P Browser.app/Contents/Info.plist"
   mv "$INFO_PLIST" tmp.plist
-  python $rootdir/fix-info-plist.py '[% c("var/torbrowser_version") %]' '[% c("var/copyright_year") %]' < tmp.plist > "$INFO_PLIST"
+  python $rootdir/fix-info-plist.py '[% c("var/i2pbrowser_version") %]' '[% c("var/copyright_year") %]' < tmp.plist > "$INFO_PLIST"
   rm -f tmp.plist
 [% END %]
 
@@ -282,13 +282,13 @@ cd $distdir
   [% c("var/rezip", { rezip_file => 'Browser/omni.ja' }) %]
   [% c("var/rezip", { rezip_file => 'Browser/browser/omni.ja' }) %]
 [% ELSIF c("var/osx") %]
-  [% c("var/rezip", { rezip_file => '"Tor Browser.app/Contents/Resources/omni.ja"' }) %]
-  [% c("var/rezip", { rezip_file => '"Tor Browser.app/Contents/Resources/browser/omni.ja"' }) %]
+  [% c("var/rezip", { rezip_file => '"I2P Browser.app/Contents/Resources/omni.ja"' }) %]
+  [% c("var/rezip", { rezip_file => '"I2P Browser.app/Contents/Resources/browser/omni.ja"' }) %]
 [% END %]
 
 [%
 IF c("var/osx");
-  SET browserdir='"Tor Browser.app/Contents"';
+  SET browserdir='"I2P Browser.app/Contents"';
 ELSE;
   SET browserdir='Browser';
 END;
@@ -300,13 +300,13 @@ END;
 
 [% c('tar', {
         tar_src => [ browserdir ],
-        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/tor-browser.tar.gz',
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/i2p-browser.tar.gz',
     }) %]
 
 [% IF c("var/linux-x86_64") %]
 [% c('tar', {
         tar_src => [ 'Debug' ],
-        tar_args => '-cJf ' _ dest_dir _ '/' _ c('filename') _ '/tor-browser-debug.tar.xz',
+        tar_args => '-cJf ' _ dest_dir _ '/' _ c('filename') _ '/i2p-browser-debug.tar.xz',
     }) %]
 [% END %]
 

@@ -28,7 +28,7 @@ then
         add_LD_LIBRARY_PATH /usr/lib/firefox/bundled/lib
       else
         echo "Error: the firefox package (version 60 or more) is not installed." >&2
-        echo "On CentOS/RHEL 6, Tor Browser requires the firefox package to be installed." >&2
+        echo "On CentOS/RHEL 6, I2P Browser requires the firefox package to be installed." >&2
         exit 1
       fi
     fi
@@ -39,9 +39,9 @@ fi
 # that instead of the bundled version.
 "$basedir/abicheck" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-  add_LD_LIBRARY_PATH "$basedir/TorBrowser/Tor/libstdc++/"
+  add_LD_LIBRARY_PATH "$basedir/I2PBrowser/I2P/libstdc++/"
 fi
-add_LD_LIBRARY_PATH "$basedir/TorBrowser/Tor/"
+add_LD_LIBRARY_PATH "$basedir/I2PBrowser/I2P/"
 export LD_LIBRARY_PATH
 
 exec "$basedir/firefox.real" "$@"

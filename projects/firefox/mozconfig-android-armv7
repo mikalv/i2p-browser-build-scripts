@@ -1,5 +1,5 @@
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-arm-linux-androideabi
-mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
+mk_add_options MOZ_APP_DISPLAYNAME="I2P Browser"
 export MOZILLA_OFFICIAL=1
 
 ac_add_options --enable-optimize
@@ -11,13 +11,13 @@ ac_add_options --with-android-ndk=/var/tmp/dist/android-toolchain/android-ndk
 ac_add_options --with-android-sdk=/var/tmp/dist/android-toolchain/android-sdk-linux
 ac_add_options --with-gradle=/var/tmp/dist/android-toolchain/gradle/gradle-4.1/bin/gradle
 ac_add_options --with-android-version=16
-ac_add_options --with-branding=mobile/android/branding/torbrowser
+ac_add_options --with-branding=mobile/android/branding/i2pbrowser
 
 # Android NDK does not contain llvm-config so set clang path in options
 ac_add_options --with-libclang-path=/var/tmp/dist/android-toolchain/android-ndk/arm/lib64
 ac_add_options --with-clang-path=/var/tmp/dist/android-toolchain/android-ndk/arm/bin/clang
 
-ac_add_options --with-android-distribution-directory=@TOPSRCDIR@/mobile/android/torbrowser
+ac_add_options --with-android-distribution-directory=@TOPSRCDIR@/mobile/android/i2pbrowser
 ac_add_options --with-l10n-base=/var/tmp/dist/locales
 
 if [ -z "${TB_BUILD_WITH_UPDATER}" ]; then
@@ -29,7 +29,7 @@ if [ -z "${TB_BUILD_WITH_UPDATER}" ]; then
 #    mechanism.
 # https://play.google.com/about/privacy-security-deception/malicious-behavior/
 
-    ac_add_options --disable-tor-browser-update
+    ac_add_options --disable-i2p-browser-update
     ac_add_options --disable-signmar
     ac_add_options --disable-verify-mar
 fi

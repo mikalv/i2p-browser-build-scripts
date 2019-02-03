@@ -5,7 +5,7 @@ ac_add_options --target=x86_64-w64-mingw32
 ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
 ac_add_options --enable-default-toolkit=cairo-windows
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-mingw
-mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
+mk_add_options MOZ_APP_DISPLAYNAME="I2P Browser"
 mk_add_options MOZILLA_OFFICIAL=1
 export MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
@@ -15,7 +15,7 @@ ac_add_options --enable-optimize
 ac_add_options --enable-strip
 ac_add_options --enable-official-branding
 
-ac_add_options --enable-tor-browser-update
+ac_add_options --enable-i2p-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
