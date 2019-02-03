@@ -1,31 +1,14 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
 distdir="/var/tmp/dist/[% project %]"
-[% IF c("var/linux") -%]
-  [% c("var/set_PTDIR_DOCSDIR") -%]
-  mkdir -p $PTDIR
-[% END -%]
-[% IF c("var/windows") -%]
-  [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
-[% END -%]
+[% c("var/set_PTDIR_DOCSDIR") -%]
+mkdir -p $PTDIR
 mkdir -p /var/tmp/build
 unzip -d /var/tmp/build $rootdir/[% project %]-[% c('version') %].zip
 cd /var/tmp/build/[% project %]-[% c('version') %]
-[% IF c("var/windows") -%]
-  find -type f -print0 | xargs -0 [% c("var/touch") %]
-  pydir="$distdir/python"
-  mkdir -p $pydir/Lib/site-packages
-  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
-  export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
-  LD_PRELOAD= $PYTHON setup.py build_ext -c mingw32
-  $PYTHON setup.py install --single-version-externally-managed --record /dev/null --prefix=$(wine winepath -w $pydir)
-  # Must create this file in order for py2exe to find the package.
-  touch $pydir/Lib/site-packages/zope/__init__.py
-[% ELSE -%]
-  export PYTHON=python2
-  $PYTHON setup.py build --build-lib build
-  cp -a build/zope $PTDIR/
-[% END -%]
+export PYTHON=python2
+$PYTHON setup.py build --build-lib build
+cp -a build/zope $PTDIR/
 cd $distdir
 [% c('tar', {
         tar_src => [ '.' ],

@@ -17,11 +17,6 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
-  windows-i686:
-    var:
-      compiler: winpython
-      arch_deps:
-        - wine
 
 input_files:
   - project: container-image
@@ -41,6 +36,3 @@ input_files:
     name: txsocksx
   - project: zope.interface
     name: zope.interface
-  - name: '[% c("var/compiler") %]'
-    project: '[% c("var/compiler") %]'
-    enable: '[% c("var/windows") %]'

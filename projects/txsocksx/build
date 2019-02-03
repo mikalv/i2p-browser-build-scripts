@@ -1,12 +1,8 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
 distdir="/var/tmp/dist/[% project %]"
-[% IF c("var/windows") -%]
-  [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
-[% ELSE -%]
-  [% c("var/set_PTDIR_DOCSDIR") -%]
-  mkdir -p $PTDIR
-[% END -%]
+[% c("var/set_PTDIR_DOCSDIR") -%]
+mkdir -p $PTDIR
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
@@ -15,16 +11,9 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
 # dependency should be fine here as txsocksx catches the exception due to
 # missing __version__ and __sha__ .
 mkdir vcversioner-1.14.1.1-py2.7.egg
-[% IF c("var/windows") -%]
-  pydir="$distdir/python"
-  mkdir -p $pydir/Lib/site-packages
-  export PYTHONPATH="$(wine winepath -w $pydir)\\Lib\\site-packages"
-  $PYTHON setup.py install_lib --install-dir=$(wine winepath -w "$pydir/Lib/site-packages")
-[% ELSE -%]
-  export PYTHON=python2
-  $PYTHON setup.py build --build-lib build
-  cp -a build/txsocksx $PTDIR/
-[% END -%]
+export PYTHON=python2
+$PYTHON setup.py build --build-lib build
+cp -a build/txsocksx $PTDIR/
 cd $distdir
 [% c('tar', {
         tar_src => [ '.' ],
