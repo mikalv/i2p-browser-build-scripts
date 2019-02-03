@@ -43,16 +43,16 @@ In each of those places, an option can be defined:
 
 The targets are usually used to select:
 
-- the platform: torbrowser-linux-x86_64, torbrowser-linux-i686,
-  torbrowser-windows-i686, torbrowser-windows-x86_64, torbrowser-osx-x86_64,
-  torbrowser-android-armv7
+- the platform: i2pbrowser-linux-x86_64, i2pbrowser-linux-i686,
+  i2pbrowser-windows-i686, i2pbrowser-windows-x86_64, i2pbrowser-osx-x86_64,
+  i2pbrowser-android-armv7
 - the channel: release, nightly, alpha
 
-The targets torbrowser-linux-x86_64, torbrowser-linux-i686,
-torbrowser-windows-i686, torbrowser-windows-x86_64, torbrowser-osx-x86_64, and
-torbrowser-android-armv7 are special cases. They do not contain options
+The targets i2pbrowser-linux-x86_64, i2pbrowser-linux-i686,
+i2pbrowser-windows-i686, i2pbrowser-windows-x86_64, i2pbrowser-osx-x86_64, and
+i2pbrowser-android-armv7 are special cases. They do not contain options
 directly, instead they contain a list of other targets. For instance, the
-torbrowser-linux-x86_64 target is pointing to the linux-x86_64 and linux
+i2pbrowser-linux-x86_64 target is pointing to the linux-x86_64 and linux
 targets. You should define an option under the linux target if it applies to
 Linux on both architectures, or under the linux-x86_64 if it only applies to the
 x86_64 architecture.
@@ -144,23 +144,23 @@ $channel should be one of the following:
 
 $platform should be one of the following:
 
- - torbrowser-linux-x86_64
+ - i2pbrowser-linux-x86_64
 
- - torbrowser-linux-i686
+ - i2pbrowser-linux-i686
 
- - torbrowser-windows-i686
+ - i2pbrowser-windows-i686
 
- - torbrowser-windows-x86_64
+ - i2pbrowser-windows-x86_64
 
- - torbrowser-osx-x86_64
+ - i2pbrowser-osx-x86_64
 
- - torbrowser-android-armv7
+ - i2pbrowser-android-armv7
 
 For example, to see tor's build script for linux x86_64 on the alpha
 channel, you can use:
 
   $ ./rbm/rbm showconf tor build --target alpha --target \
-    torbrowser-linux-x86_64
+    i2pbrowser-linux-x86_64
 
 If the component you are looking at has many dependencies, the display
 can take some time as various build_id values need to be computed. If
@@ -170,7 +170,7 @@ want to look at the build script for the tor-browser component (which
 has a lot of dependencies), you can use:
 
   $ ./rbm/rbm showconf tor build --target alpha --target \
-     torbrowser-linux-x86_64 --target no_build_id
+     i2pbrowser-linux-x86_64 --target no_build_id
 
 The same type of commands can be used to look at any option values,
 replacing build with the name of the option you want to look at. For
@@ -178,7 +178,7 @@ instance, if you want to know the output filename of tor on linux-x86_64
 on the alpha channel, you can use:
 
   $ ./rbm/rbm showconf tor filename --target alpha --target \
-    torbrowser-linux-x86_64
+    i2pbrowser-linux-x86_64
 
 
 Building a single component
@@ -198,7 +198,7 @@ list of possible values for $channel and $platform.
 For instance, if you want to build tor for linux-x86_64 on the alpha
 channel, you can run:
 
-   $ ./rbm/rbm build tor --target alpha --target torbrowser-linux-x86_64
+   $ ./rbm/rbm build tor --target alpha --target i2pbrowser-linux-x86_64
 
 To find the resulting file from the build, you can use 'ls -ltr out/tor/'
 to find the file with the last modification time.
@@ -311,7 +311,7 @@ with the path to your patched rbm.
 
 For example, if you want to try a Linux x86_64 alpha build, you can run:
   $ /path_to_rbm/rbm build release --target alpha --target \
-                                                torbrowser-linux-x86_64
+                                                i2pbrowser-linux-x86_64
 
 
 Types of builds: nightly, alpha, release, and testbuild
@@ -336,4 +336,4 @@ builds in order to point to the master branch.
 
 If you want your testbuild target to create builds based on nightly
 rather than alpha, you can edit your rbm.local.conf file and uncomment
-the targets/torbrowser-testbuild definition.
+the targets/i2pbrowser-testbuild definition.
