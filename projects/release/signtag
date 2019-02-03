@@ -4,5 +4,5 @@
 [% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
 cd [% c("basedir") %]
 git tag [% c("buildconf/git_signtag_opt") %] -m \
-        'Tagging [% c("var/torbrowser_build") %] for [% c("var/torbrowser_version") %]' \
-        tbb-[% c("var/torbrowser_version") %]-[% c("var/torbrowser_build") %]
+        'Tagging [% c("var/i2pbrowser_build") %] for [% c("var/i2pbrowser_version") %]' \
+        tbb-[% c("var/i2pbrowser_version") %]-[% c("var/i2pbrowser_build") %]

@@ -2,7 +2,7 @@
 [% c("var/set_default_env") -%]
 [% shell_quote(c("basedir")) %]/tools/update-responses/update_responses
 mkdir -p [% shell_quote(path(dest_dir)) %]/update-responses
-[% SET channel = pc('firefox', 'var/torbrowser_update_channel') -%]
+[% SET channel = pc('firefox', 'var/i2pbrowser_update_channel') -%]
 mv [% shell_quote(c("basedir")) %]/tools/update-responses/htdocs/[% channel %] [% channel %]
 chmod 775 [% channel %]
 chmod 664 [% channel %]/.htaccess [% channel %]/*

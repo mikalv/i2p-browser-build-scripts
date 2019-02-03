@@ -1,4 +1,4 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
-cd [% shell_quote(path(dest_dir)) %]/[% c("var/signed_status") %]/[%  c("version") %]-[% c("var/torbrowser_build") %]
+cd [% shell_quote(path(dest_dir)) %]/[% c("var/signed_status") %]/[%  c("version") %]-[% c("var/i2pbrowser_build") %]
 sha256sum `ls -1 | grep '\.incremental\.mar$' | sort` > sha256sums-[% c("var/signed_status") %]-build.incrementals.txt
