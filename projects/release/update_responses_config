@@ -7,5 +7,5 @@ EOF
 # Update / create symlink $torbrowser_version -> $torbrowser_version-buildN
 versiondir=[% shell_quote(path(dest_dir)) _ '/' _ c("var/signed_status") _ '/' _ c("version") %]
 test -L "$versiondir" && rm -f "$versiondir"
-test -d "$versiondir" || ln -s [% shell_quote(c("version")) %]-[% shell_quote(c("var/torbrowser_build")) %] "$versiondir"
+test -d "$versiondir" || ln -s [% shell_quote(c("version")) %]-[% shell_quote(c("var/i2pbrowser_build")) %] "$versiondir"
 

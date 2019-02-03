@@ -1,46 +1,46 @@
 # vim: filetype=yaml sw=2
-version: '[% c("var/torbrowser_version") %]'
+version: '[% c("var/i2pbrowser_version") %]'
 output_dir: release
 
 var:
   signed_status: unsigned
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
-  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/torbrowser_build") %]'
+  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/i2pbrowser_build") %]'
 
 targets:
-  torbrowser-all:
-    - torbrowser-linux-x86_64
-    - torbrowser-linux-i686
-    - torbrowser-windows-i686
-    - torbrowser-windows-x86_64
-    - torbrowser-osx-x86_64
-    - torbrowser-android-armv7
-  torbrowser-android-armv7:
+  i2pbrowser-all:
+    - i2pbrowser-linux-x86_64
+    - i2pbrowser-linux-i686
+    - i2pbrowser-windows-i686
+    - i2pbrowser-windows-x86_64
+    - i2pbrowser-osx-x86_64
+    - i2pbrowser-android-armv7
+  i2pbrowser-android-armv7:
     var:
-      torbrowser-android-armv7: 1
-  torbrowser-linux-x86_64:
+      i2pbrowser-android-armv7: 1
+  i2pbrowser-linux-x86_64:
     var:
-      torbrowser-linux-x86_64: 1
-  torbrowser-linux-x86_64-debug:
+      i2pbrowser-linux-x86_64: 1
+  i2pbrowser-linux-x86_64-debug:
     var:
-      torbrowser-linux-x86_64: 1
+      i2pbrowser-linux-x86_64: 1
       debug-build: '-debug'
-  torbrowser-linux-i686:
+  i2pbrowser-linux-i686:
     var:
-      torbrowser-linux-i686: 1
-  torbrowser-windows-i686:
+      i2pbrowser-linux-i686: 1
+  i2pbrowser-windows-i686:
     var:
-      torbrowser-windows-i686: 1
-  torbrowser-windows-x86_64:
+      i2pbrowser-windows-i686: 1
+  i2pbrowser-windows-x86_64:
     var:
-      torbrowser-windows-x86_64: 1
-  torbrowser-osx-x86_64:
+      i2pbrowser-windows-x86_64: 1
+  i2pbrowser-osx-x86_64:
     var:
-      torbrowser-osx-x86_64: 1
+      i2pbrowser-osx-x86_64: 1
 
   notarget:
     - release
-    - torbrowser-all
+    - i2pbrowser-all
 
   noversiondir:
     var:
@@ -70,7 +70,7 @@ targets:
   testbuild:
     output_dir: 'testbuild'
     var:
-      build_target: torbrowser-testbuild
+      build_target: i2pbrowser-testbuild
       publish_dir: ''
 
   signed:
@@ -85,61 +85,61 @@ input_files:
 
 # Release
  - name: android-armv7
-   project: tor-browser
-   enable: '[% c("var/torbrowser-android-armv7") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-android-armv7") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-android-armv7
+     - i2pbrowser-android-armv7
 
  - name: linux-x86_64
-   project: tor-browser
-   enable: '[% c("var/torbrowser-linux-x86_64") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-linux-x86_64") %]'
    target:
      - '[% c("var/build_target") %]'
-     - 'torbrowser-linux-x86_64[% c("var/debug-build") %]'
+     - 'i2pbrowser-linux-x86_64[% c("var/debug-build") %]'
 
  - name: linux-i686
-   project: tor-browser
-   enable: '[% c("var/torbrowser-linux-i686") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-linux-i686") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-linux-i686
+     - i2pbrowser-linux-i686
 
  - name: windows-i686
-   project: tor-browser
-   enable: '[% c("var/torbrowser-windows-i686") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-windows-i686") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-windows-i686
+     - i2pbrowser-windows-i686
 
  - name: windows-x86_64
-   project: tor-browser
-   enable: '[% c("var/torbrowser-windows-x86_64") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-windows-x86_64") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-windows-x86_64
+     - i2pbrowser-windows-x86_64
 
  - name: osx-x86_64
-   project: tor-browser
-   enable: '[% c("var/torbrowser-osx-x86_64") %]'
+   project: i2p-browser
+   enable: '[% c("var/i2pbrowser-osx-x86_64") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-osx-x86_64
+     - i2pbrowser-osx-x86_64
 
  - name: windows-expert-bundle
    project: tor
-   enable: '[% c("var/torbrowser-windows-i686") %]'
+   enable: '[% c("var/i2pbrowser-windows-i686") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-windows-i686
+     - i2pbrowser-windows-i686
      - expert-bundle
 
  - name: windows64-expert-bundle
    project: tor
-   enable: '[% c("var/torbrowser-windows-x86_64") %]'
+   enable: '[% c("var/i2pbrowser-windows-x86_64") %]'
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-windows-x86_64
+     - i2pbrowser-windows-x86_64
      - expert-bundle
 
 steps:
