@@ -1,10 +1,10 @@
-Tor Browser Build
+I2P Browser Build
 =================
 
 Installing build dependencies
 -----------------------------
 
-To build Tor Browser, you need a Linux distribution that has support
+To build I2P Browser, you need a Linux distribution that has support
 for runc (such as Debian jessie, Ubuntu 16.04, Fedora 20, etc ...).
 On Debian jessie, the runc package is available in backports. On Debian
 stretch, the runc package is available in the main repository.
@@ -93,7 +93,7 @@ Updating git sources
 --------------------
 
 You can run "make fetch" to fetch the latest sources from git for all
-components included in Tor Browser. You should run this if you want to
+components included in I2P Browser. You should run this if you want to
 make a nightly build with the latest commits, and you disabled automatic
 fetching of new commits for nightly builds in rbm.local.conf.
 
@@ -125,24 +125,24 @@ Or set the debug option to 0 in the rbm.local.conf file.
 If you want to select the output directory, you can use rbm's --output-dir
 option. You can look at the Makefile to find the rbm command for what
 you want to build, and add the --output-dir option. For example, if you
-want to build Tor Browser nightly for linux-x86_64:
+want to build I2P Browser nightly for linux-x86_64:
 
    ./rbm/rbm build release --output-dir=/var/builds/nightly/2017-01-23 \
-                        --target nightly --target torbrowser-linux-x86_64
+                        --target nightly --target i2pbrowser-linux-x86_64
 
 The files will be put in the directory selected by --output-dir in a
 subdirectory named as the version number (or current date for nightly).
 To remove this version subdirectory, add the noversiondir target:
 
    ./rbm/rbm build release --output-dir=/var/builds/nightly/2017-01-23 \
-                        --target nightly --target torbrowser-linux-x86_64 \
+                        --target nightly --target i2pbrowser-linux-x86_64 \
                         --target noversiondir
 
 
 Automated builds using tbb-testsuite
 ------------------------------------
 
-The Tor Browser testsuite scripts can also be used to do nightly builds
+The I2P Browser testsuite scripts can also be used to do nightly builds
 and publish the build logs. The recommended way to do that is to use
 the ansible roles from the tools/ansible directory. See next section
 for details.
@@ -188,11 +188,11 @@ You can look at the README.BUILD_ERRORS file for a list of common build
 errors and their solutions.
 
 
-Hacking on the Tor Browser build
+Hacking on the I2P Browser build
 --------------------------------
 
 The file README.HACKING tries to list the main things to know when
-making changes to the Tor Browser build.
+making changes to the I2P Browser build.
 
 Description of makefile rules
 -----------------------------
