@@ -24,11 +24,11 @@
 
 [Desktop Entry]
 Type=Application
-Name=Tor Browser Setup
+Name=I2P Browser Setup
 GenericName=Web Browser
-Comment=Tor Browser is +1 for privacy and -1 for mass surveillance
+Comment=I2P Browser is +1 for privacy and -1 for mass surveillance
 Categories=Network;WebBrowser;Security;
-Exec=sh -c '"$(dirname "$*")"/Browser/start-tor-browser --detach || ([ ! -x "$(dirname "$*")"/Browser/start-tor-browser ] && "$(dirname "$*")"/start-tor-browser --detach)' dummy %k
-X-TorBrowser-ExecShell=./Browser/start-tor-browser --detach
+Exec=sh -c '"$(dirname "$*")"/Browser/start-i2p-browser --detach || ([ ! -x "$(dirname "$*")"/Browser/start-i2p-browser ] && "$(dirname "$*")"/start-i2p-browser --detach)' dummy %k
+X-I2PBrowser-ExecShell=./Browser/start-i2p-browser --detach
 Icon=web-browser
-StartupWMClass=Tor Browser
+StartupWMClass=I2P Browser

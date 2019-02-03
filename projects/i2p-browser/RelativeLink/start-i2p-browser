@@ -5,7 +5,7 @@
 #
 # Copyright 2017 The Tor Project.  See LICENSE for licensing information.
 
-complain_dialog_title="Tor Browser"
+complain_dialog_title="I2P Browser"
 
 # First, make sure DISPLAY is set.  If it isn't, we're hosed; scream
 # at stderr and die.
@@ -18,7 +18,7 @@ fi
 # Second, make sure this script wasn't started as 'sh start-tor-browser' or
 # similar.
 if [ "x$BASH" = "x" ]; then
-    echo "$complain_dialog_title should be started as './start-tor-browser'"
+    echo "$complain_dialog_title should be started as './start-i2p-browser'"
     echo "Exiting." >&2
     exit 1;
 fi
@@ -92,22 +92,22 @@ complain () {
 }
 
 if [ "`id -u`" -eq 0 ]; then
-	complain "The Tor Browser Bundle should not be run as root.  Exiting."
+	complain "The I2P Browser Bundle should not be run as root.  Exiting."
 	exit 1
 fi
 
 if ! grep -q '^flags\s*:.* sse2' /proc/cpuinfo; then
-        complain "Tor Browser requires a CPU with SSE2 support.  Exiting."
+        complain "I2P Browser requires a CPU with SSE2 support.  Exiting."
         exit 1
 fi
 
 tbb_usage () {
-    printf "\nTor Browser Script Options\n"
-    printf "  --verbose         Display Tor and Firefox output in the terminal\n"
-    printf "  --log [file]      Record Tor and Firefox output in file (default: tor-browser.log)\n"
-    printf "  --detach          Detach from terminal and run Tor Browser in the background.\n"
-    printf "  --register-app    Register Tor Browser as a desktop app for this user\n"
-    printf "  --unregister-app  Unregister Tor Browser as a desktop app for this user\n"
+    printf "\nI2P Browser Script Options\n"
+    printf "  --verbose         Display I2P and Firefox output in the terminal\n"
+    printf "  --log [file]      Record I2P and Firefox output in file (default: i2p-browser.log)\n"
+    printf "  --detach          Detach from terminal and run I2P Browser in the background.\n"
+    printf "  --register-app    Register I2P Browser as a desktop app for this user\n"
+    printf "  --unregister-app  Unregister I2P Browser as a desktop app for this user\n"
 }
 log_output=0
 show_output=0
@@ -134,14 +134,14 @@ do
           ;;
       -l | --log)
           if [ -z "$2" -o "${2:0:1}" == "-" ]; then
-             printf "Logging Tor Browser debug information to tor-browser.log\n"
-             logfile="../tor-browser.log"
+             printf "Logging I2P Browser debug information to i2p-browser.log\n"
+             logfile="../i2p-browser.log"
           elif [ "${2:0:1}" == "/" -o "${2:0:1}" == "~" ]; then
-             printf "Logging Tor Browser debug information to %s\n" "$2"
+             printf "Logging I2P Browser debug information to %s\n" "$2"
              logfile="$2"
              shift
           else
-             printf "Logging Tor Browser debug information to %s\n" "$2"
+             printf "Logging I2P Browser debug information to %s\n" "$2"
              logfile="../$2"
              shift
           fi
@@ -212,7 +212,7 @@ if [ -L "$myname" ]; then
 		myname="`readlink -f "$myname" 2>/dev/null`"
 		if [ "$?" -ne 0 ]; then
 			# Ugh.
-			complain "start-tor-browser cannot be run using a symlink on this operating system."
+			complain "start-i2p-browser cannot be run using a symlink on this operating system."
 		fi
 	fi
 fi
@@ -238,26 +238,26 @@ fi
 
 # Fix up .desktop Icon and Exec Paths, and update the .desktop file from the
 # canonical version if it was changed by the updater.
-cp start-tor-browser.desktop ../
-sed -i -e "s,^Name=.*,Name=Tor Browser,g" ../start-tor-browser.desktop
-sed -i -e "s,^Icon=.*,Icon=$PWD/browser/chrome/icons/default/default128.png,g" ../start-tor-browser.desktop
-sed -i -e "s,^Exec=.*,Exec=sh -c '\"$PWD/start-tor-browser\" --detach || ([ !  -x \"$PWD/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" ../start-tor-browser.desktop
+cp start-i2p-browser.desktop ../
+sed -i -e "s,^Name=.*,Name=I2P Browser,g" ../start-i2p-browser.desktop
+sed -i -e "s,^Icon=.*,Icon=$PWD/browser/chrome/icons/default/default128.png,g" ../start-i2p-browser.desktop
+sed -i -e "s,^Exec=.*,Exec=sh -c '\"$PWD/start-i2p-browser\" --detach || ([ !  -x \"$PWD/start-i2p-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-i2p-browser --detach)' dummy %k,g" ../start-i2p-browser.desktop
 
 if [ "$register_desktop_app" -eq 1 ]; then
 	mkdir -p "$HOME/.local/share/applications/"
-	cp ../start-tor-browser.desktop "$HOME/.local/share/applications/"
+	cp ../start-i2p-browser.desktop "$HOME/.local/share/applications/"
 	update-desktop-database "$HOME/.local/share/applications/"
-	printf "Tor Browser has been registered as a desktop app for this user in ~/.local/share/applications/\n"
+	printf "I2P Browser has been registered as a desktop app for this user in ~/.local/share/applications/\n"
 	exit 0
 fi
 
 if [ "$register_desktop_app" -eq -1 ]; then
-	if [ -e "$HOME/.local/share/applications/start-tor-browser.desktop" ]; then
-		rm -f "$HOME/.local/share/applications/start-tor-browser.desktop"
+	if [ -e "$HOME/.local/share/applications/start-i2p-browser.desktop" ]; then
+		rm -f "$HOME/.local/share/applications/start-i2p-browser.desktop"
 		update-desktop-database "$HOME/.local/share/applications/"
-		printf "Tor Browser has been removed as a user desktop app (from ~/.local/share/applications/)\n"
+		printf "I2P Browser has been removed as a user desktop app (from ~/.local/share/applications/)\n"
 	else
-		printf "Tor Browser does not appear to be a desktop app (not present in ~/.local/share/applications/)\n"
+		printf "I2P Browser does not appear to be a desktop app (not present in ~/.local/share/applications/)\n"
 	fi
 	exit 0
 fi
@@ -266,7 +266,7 @@ HOME="${PWD}"
 export HOME
 
 SYSARCHITECTURE=$(getconf LONG_BIT)
-TORARCHITECTURE=$(expr "$(file TorBrowser/Tor/tor)" : '.*ELF \([[:digit:]]*\)')
+TORARCHITECTURE=$(expr "$(file I2PBrowser/I2P/i2p)" : '.*ELF \([[:digit:]]*\)')
 
 if [ $SYSARCHITECTURE -ne $TORARCHITECTURE ]; then
    complain "Wrong architecture? 32-bit vs. 64-bit."
@@ -350,7 +350,7 @@ EOF
 setControlPortPasswd ${TOR_CONTROL_PASSWD:='"secret"'}
 
 # Set up custom bundled fonts. See fonts-conf(5).
-export FONTCONFIG_PATH="${HOME}/TorBrowser/Data/fontconfig"
+export FONTCONFIG_PATH="${HOME}/I2PBrowser/Data/fontconfig"
 export FONTCONFIG_FILE="fonts.conf"
 
 cd "${HOME}"
@@ -361,23 +361,23 @@ cd "${HOME}"
 
 if [ "$show_usage" -eq 1 ]; then
     # Display Firefox help, then our help
-    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "Tor Browser" \
-        -profile TorBrowser/Data/Browser/profile.default --help 2>/dev/null
+    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "I2P Browser" \
+        -profile I2PBrowser/Data/Browser/profile.default --help 2>/dev/null
     tbb_usage
 elif [ "$detach" -eq 1 ] ; then
-    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "Tor Browser" \
-       -profile TorBrowser/Data/Browser/profile.default "${@}" > "$logfile" 2>&1 </dev/null &
+    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "I2P Browser" \
+       -profile I2PBrowser/Data/Browser/profile.default "${@}" > "$logfile" 2>&1 </dev/null &
     disown "$!"
 elif [ "$log_output" -eq 1 -a "$show_output" -eq 1 ]; then
-    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "Tor Browser" \
-        -profile TorBrowser/Data/Browser/profile.default "${@}" 2>&1 </dev/null | \
+    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "I2P Browser" \
+        -profile I2PBrowser/Data/Browser/profile.default "${@}" 2>&1 </dev/null | \
         tee "$logfile"
 elif [ "$show_output" -eq 1 ]; then
-    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "Tor Browser" \
-        -profile TorBrowser/Data/Browser/profile.default "${@}" < /dev/null
+    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "I2P Browser" \
+        -profile I2PBrowser/Data/Browser/profile.default "${@}" < /dev/null
 else
-    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "Tor Browser" \
-        -profile TorBrowser/Data/Browser/profile.default "${@}" > "$logfile" 2>&1 </dev/null
+    TOR_CONTROL_PASSWD=${TOR_CONTROL_PASSWD} ./firefox --class "I2P Browser" \
+        -profile I2PBrowser/Data/Browser/profile.default "${@}" > "$logfile" 2>&1 </dev/null
 fi
 
 exit $?
