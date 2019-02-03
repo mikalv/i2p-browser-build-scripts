@@ -1,0 +1,13 @@
+This directory contains a special headless configuration of the Tor
+Browser app, intended for use by meek-client-torbrowser and the
+meek-http-helper extension. It should not be run directly.
+
+All files in the Contents directory, other than Info.plist, are simply
+symlinked to their counterparts in ../../../../../Contents. Info.plist
+contains an additional configuration directive that prevents the
+headless browser from opening a useless second dock icon:
+	<key>LSBackgroundOnly</key><true/>
+
+For background on this matter, see the ticket:
+	meek-http-helper opens up a second dock icon
+	https://trac.torproject.org/projects/tor/ticket/11429

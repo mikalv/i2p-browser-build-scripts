@@ -1,0 +1,361 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+distdir=/var/tmp/dist/[% project %]
+export I2PBROWSER_VERSION='[% c("version") %]'
+# TODO: Remove when refactoring is done
+export TORBROWSER_VERSION=$I2PBROWSER_VERSION
+
+mkdir -p $distdir
+
+scripts_dir=/var/tmp/build_scripts
+mkdir -p "$scripts_dir"
+
+OUTDIR='[% dest_dir _ "/" _ c("filename") %]'
+mkdir -p $OUTDIR
+
+# When we build with MULTI_LINGUAL=1, the browser will be packaged inside a
+# directory named tor-browser (instead of tor-browser_en-US). Therefore we
+# stage everything under tor-browser-stage to avoid a conflict.
+TB_STAGE_DIR=$distdir/i2p-browser-stage
+GENERATEDPREFSPATH=$rootdir/Bundle-Data/PTConfigs/generated-prefs.js
+# Create initially empty prefs file where we can dump our conditionally included/genetered prefs
+touch "$GENERATEDPREFSPATH"
+
+[% IF c("var/osx") %]
+  TBDIR="$TB_STAGE_DIR/I2P Browser.app"
+
+  DOCSPATH=Contents/Resources/I2PBrowser/Docs
+  EXTSPATH=Contents/Resources/distribution/extensions
+
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/libdmg') %]
+  export PATH=/var/tmp/dist/libdmg-hfsplus:$PATH
+[% ELSE %]
+  TBDIR=$TB_STAGE_DIR/Browser
+
+  DOCSPATH=I2PBrowser/Docs
+  EXTSPATH=I2PBrowser/Data/Browser/profile.default/extensions
+
+  mkdir -p "$TBDIR/I2PBrowser/Data/Browser/Caches"
+[% END %]
+
+mkdir -p "$TBDIR/$EXTSPATH"
+mkdir -p "$TBDIR/$MEEKPROFILEPATH/extensions"
+
+# Extract the MAR tools.
+unzip -d $rootdir $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip
+MARTOOLS=$rootdir/mar-tools
+
+mv [% c('input_files_by_name/https-everywhere') %] "$TBDIR/$EXTSPATH/https-everywhere-eff@eff.org.xpi"
+mv [% c('input_files_by_name/noscript') %] "$TBDIR/$EXTSPATH/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi"
+
+tar -C "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]" -xf [% c('input_files_by_name/fonts') %]
+
+[% IF c("var/linux") %]
+  cp RelativeLink/* ${TB_STAGE_DIR}/Browser/
+  cp RelativeLink/start-i2p-browser.desktop ${TB_STAGE_DIR}/
+  cat > ${TB_STAGE_DIR}/Browser/start-i2p-browser << 'RBM_TB_EOF'
+[% INCLUDE 'RelativeLink/start-i2p-browser' -%]
+RBM_TB_EOF
+  chmod +x ${TB_STAGE_DIR}/Browser/start-i2p-browser
+[% END %]
+
+tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/i2p-browser.tar.gz
+tar -C "$TBDIR[% IF ! c("var/osx") %]/I2PBrowser[% END %]" -xf [% c('input_files_by_name/i2p') %]/i2p.tar.gz
+
+[% IF c("var/linux");
+     SET bundledata_osname = 'linux';
+   ELSIF c("var/osx");
+     SET bundledata_osname = 'mac';
+   ELSIF c("var/windows");
+     SET bundledata_osname = 'windows';
+   END; %]
+
+[% IF c("var/osx") %]
+  # The Bundle-Data is designed for embedded data, so we need to modify
+  # the structure when we want the data to be outside the app directory.
+  # We also create an override.ini file to disable the profile migrator.
+  SKELETON_TMP=$rootdir/Bundle-Data/mac-skeleton-tmp
+  SKELETON_TMP_RESOURCES=$SKELETON_TMP/Contents/Resources
+  mkdir -p $SKELETON_TMP_RESOURCES/browser
+  echo "[XRE]" > $SKELETON_TMP_RESOURCES/browser/override.ini
+  echo "EnableProfileMigrator=0" >> $SKELETON_TMP_RESOURCES/browser/override.ini
+  mkdir -p $SKELETON_TMP_RESOURCES/I2PBrowser/I2P
+  cp -p Bundle-Data/mac/I2PBrowser/Data/I2P/router.config $SKELETON_TMP_RESOURCES/I2PBrowser/I2P/
+  # Place a copy of the bookmarks.html file at the top. It will be moved into
+  # browser/omni.ja later
+  cp -p Bundle-Data/mac/I2PBrowser/Data/Browser/profile.default/bookmarks.html $rootdir
+  rm -Rf Bundle-Data/mac
+  mv $SKELETON_TMP Bundle-Data/mac
+
+  tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
+[% END %]
+
+mkdir -p "$TBDIR/$DOCSPATH"
+cp -a Bundle-Data/Docs/* "$TBDIR/$DOCSPATH"
+tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C "$TBDIR[% IF ! c("var/osx") %]/I2PBrowser[% END %]" -x
+
+[% IF c("var/osx") %]
+  pushd "$TBDIR"
+  # Create the meek-template-sha256sum.txt file by generating a list
+  # of hashes (one for each file within the meek-http-helper profile) and
+  # and then generating one final hash from the contents of the list.
+  sha256sum `find $MEEKPROFILEPATH -type f | sort` | sha256sum | sed -e 's/ *-$//' > $MEEKPROFILEPATH/meek-template-sha256sum.txt
+  popd
+[% END %]
+
+# For platforms for which we need to ship a Moat helper profile in addition
+# to a meek one, create it by duplicating the meek one that we just finished
+# creating.
+if [ ! -z "$MOATPROFILEPATH" ]; then
+  cp -pR $TBDIR/$MEEKPROFILEPATH $TBDIR/$MOATPROFILEPATH
+fi
+
+[% IF ! c("var/multi_lingual") %]
+  echo 'pref("extensions.i2plauncher.prompt_for_locale", false);' >> "$GENERATEDPREFSPATH"
+[% END %]
+
+[% IF c("var/linux") %]
+  chmod 700 ${TB_STAGE_DIR}/Browser/I2PBrowser/Data/Browser
+  chmod 700 ${TB_STAGE_DIR}/Browser/I2PBrowser/Data/I2P
+[% END %]
+
+[% IF c("var/multi_lingual") %]
+  # If we are building a multi-lingual package, use "ALL" in the package name
+  # and as the locale for update purposes. We do not include "ALL" in the name
+  # of the directory that is inside the package (in other words, users will
+  # not see tor-browser_ALL after they install Tor Browser).
+  PKG_LOCALE="ALL"
+  PKG_DIR="i2p-browser"
+[% ELSE %]
+  PKG_LOCALE="en-US"
+  PKG_DIR="i2p-browser_${PKG_LOCALE}"
+[% END %]
+
+
+pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]/browser/"
+# For the proper search engines in our language packs
+unzip omni.ja chrome/en-US/locale/browser/searchplugins* || [ $? -lt 3 ]
+mv chrome/en-US/locale/browser/searchplugins $rootdir
+rm -rf chrome/en-US
+unzip omni.ja defaults/preferences/000-i2p-browser.js || [ $? -lt 3 ]
+# Append our built extension-overrides.js to 000-tor-browser.js
+cat "$GENERATEDPREFSPATH" >> defaults/preferences/000-i2p-browser.js
+cp defaults/preferences/000-i2p-browser.js $rootdir
+[% IF c("var/osx") %]
+  # Embed our default bookmarks within the en-US locale.
+  mkdir -p chrome/en-US/locale/browser
+  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
+  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
+  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
+  rm -rf chrome
+[% END %]
+# Set the locale of the bundle.
+echo "pref(\"intl.locale.requested\", \"en-US\");" >> defaults/preferences/000-i2p-browser.js
+[% c("var/touch") %] defaults/preferences/000-i2p-browser.js
+zip -Xm omni.ja defaults/preferences/000-i2p-browser.js
+rm -rf defaults
+# create tbb_version.json file for #25020
+echo '{"version":"[% c("var/i2pbrowser_version") %]","architecture":"[% c("var/mar_osname") %]","channel":"[% c("var/channel") %]","locale":"en-US"}' > ../i2bb_version.json
+popd
+
+# Prepare our language packs for using the proper search engines and embed
+# our default bookmarks. See bugs 18915 and 21879 for more details.
+[% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
+[% FOREACH lang = locales %]
+[% SET lang = tmpl(lang);
+   SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
+   %]
+  unzip -d prep_[% lang %] [% xpi %]
+  search_plugins_path=prep_[% lang %]/browser/chrome/[% lang %]/locale/browser
+  rm -rf $search_plugins_path/searchplugins
+  cp -rf $rootdir/searchplugins $search_plugins_path
+  [% IF c("var/osx") -%]
+    cp $rootdir/bookmarks.html prep_[% lang %]/browser/chrome/[% lang %]/locale/browser/
+  [% END -%]
+  rm [% xpi %]
+  cd prep_[% lang %]
+  [% c('zip', {
+          zip_src => [ '.' ],
+          zip_args => xpi,
+      }) %]
+  # If we are building a multi-lingual package, add all of the language packs.
+  [% IF c("var/multi_lingual") %]
+    cp [% xpi %] "$TBDIR/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
+  [% END %]
+  cd ..
+  rm -rf prep_[% lang %]
+[% END %]
+
+[% IF c("var/multi_lingual") %]
+  # Set the update.locale (it is used to replace %LOCALE% within
+  # app.update.url).
+  pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]"
+  echo ${PKG_LOCALE} > update.locale
+  [% c("var/touch") %] update.locale
+  zip -Xm omni.ja update.locale
+  popd
+[% END %]
+
+
+[% IF c("var/windows") %]
+  # We need to install a recent version of python-pefile so that it works
+  # in a x86_64 container:
+  # https://github.com/TheTorProject/tor-messenger-build/pull/10
+  tar xf $rootdir/[% c('input_files_by_name/python-pefile') %]
+  cd $(echo [% c('input_files_by_name/python-pefile') %] | sed s/\.tar\.gz$//)
+  python setup.py install --user
+  cd ..
+
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/nsis') %]
+  export PATH="/var/tmp/dist/nsis/bin:$PATH"
+
+  tar -C $distdir -xf $rootdir/[% c('input_files_by_name/i2bb-windows-installer') %]
+
+  mv ${TB_STAGE_DIR} $distdir/i2bb-windows-installer/"I2P Browser"
+  mv $distdir/i2bb-windows-installer ${TB_STAGE_DIR}
+[% END %]
+
+[% IF c("var/windows") %]
+  TBDIR="$distdir/$PKG_DIR/I2P Browser/Browser"
+[% ELSIF c("var/osx") %]
+  TBDIR="$distdir/$PKG_DIR/I2P Browser.app"
+[% ELSE %]
+  TBDIR="$distdir/$PKG_DIR/Browser"
+[% END %]
+
+cat > "$scripts_dir/create-$PKG_DIR" << SCRIPT_EOF
+#!/bin/bash
+set -e
+cp -a ${TB_STAGE_DIR} $distdir/$PKG_DIR
+
+pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources/[% END %]"
+rm -f precomplete
+python $MARTOOLS/createprecomplete.py
+popd
+
+cd $distdir
+
+[% IF c("var/build_mar") -%]
+  # Create full MAR file and compressed package.
+  [% SET mar_file = 'i2p-browser-' _ c("var/mar_osname") _ '-' _ c("var/i2pbrowser_version") _ '_${PKG_LOCALE}.mar' %]
+  MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/[% mar_file %] "$TBDIR"
+[% END -%]
+
+[% IF c("var/linux") %]
+  [% c('tar', {
+        tar_src => [ '$PKG_DIR' ],
+        tar_args => '-cJf $OUTDIR/i2p-browser-' _ c("var/mar_osname") _ '-' _ c("var/i2pbrowser_version") _ '_${PKG_LOCALE}.tar.xz',
+    }) %]
+[% ELSIF c("var/osx") %]
+  [% c('var/ddmg', {
+        dmg_src => '"$PKG_DIR"',
+        dmg_out => '$OUTDIR/I2PBrowser-' _ c("var/i2pbrowser_version") _ '-osx64_${PKG_LOCALE}.dmg',
+    }) %]
+[% ELSIF c("var/windows") %]
+  find "$PKG_DIR" -exec [% c("var/touch") %] {} \;
+  pushd "$PKG_DIR"
+  makensis i2pbrowser.nsi
+  # Working around NSIS braindamage
+  mv i2pbrowser-install.exe i2pbrowser-install-tmp.exe
+  python $rootdir/pe_checksum_fix.py
+  mv i2pbrowser-install-tmp2.exe i2pbrowser-install.exe
+  rm i2pbrowser-install-tmp.exe
+  mv i2pbrowser-install.exe $OUTDIR/i2pbrowser-install[% IF c("var/windows-x86_64") %]-win64[% END %]-[% c("var/i2pbrowser_version") %]_${PKG_LOCALE}.exe
+  popd
+[% END %]
+rm -rf $distdir/${PKG_DIR}
+SCRIPT_EOF
+
+cp $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip "$OUTDIR"/
+[% IF c("var/linux-x86_64") -%]
+  cp $rootdir/[% c('input_files_by_name/firefox') %]/i2p-browser-debug.tar.xz "$OUTDIR"/i2p-browser-[% c("var/mar_osname") %]-debug.tar.xz
+[% END -%]
+[% IF c("var/linux") -%]
+  cp $rootdir/[% c('input_files_by_name/i2p') %]/i2p-debug.tar.xz "$OUTDIR"/i2p-[% c("var/mar_osname") %]-debug.tar.xz
+[% END -%]
+
+# If we did not create a multi-lingual package above, create a package for
+# each locale.
+[% IF ! c("var/multi_lingual") %]
+  [% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
+  [% FOREACH lang = locales %]
+    [% SET lang = tmpl(lang);
+       SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
+       SET tbdir = '$distdir/i2p-browser_' _ lang;
+       SET mar_file = 'i2p-browser-' _ c("var/mar_osname") _ '-' _ c("var/i2pbrowser_version") _ '_' _ lang _ '.mar';
+       IF c("var/osx");
+         SET browserdir = tbdir _ '/I2P Browser.app';
+       ELSIF c("var/windows");
+         SET browserdir = tbdir _ '/I2P Browser/Browser';
+       ELSE;
+         SET browserdir = tbdir _ '/Browser';
+       END;
+    %]
+      cat > "$scripts_dir/create-i2p-browser_[% lang %]" << SCRIPT_EOF
+#!/bin/bash
+      set -e
+      cp -a ${TB_STAGE_DIR} [% tbdir %]
+      cp [% xpi %] "[% browserdir %]/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
+
+      pushd "[% browserdir %]/[% IF c("var/osx") %]Contents/Resources/[% END %]browser/"
+      mkdir -p defaults/preferences
+      cp $rootdir/000-i2p-browser.js defaults/preferences/
+      # Set the locale of the bundle.
+      echo "pref(\"intl.locale.requested\", \"[% lang %]\");" >> defaults/preferences/000-i2p-browser.js
+      [% c("var/touch") %] defaults/preferences/000-i2p-browser.js
+      zip -Xm omni.ja defaults/preferences/000-i2p-browser.js
+      rm -rf defaults
+      # create i2bb_version.json file for #25020
+      echo '{"version":"[% c("var/i2pbrowser_version") %]","architecture":"[% c("var/mar_osname") %]","channel":"[% c("var/channel") %]","locale":"[% lang %]"}' > ../i2bb_version.json
+      popd
+
+      # Set the update.locale (it is used to replace %LOCALE% within
+      # app.update.url), remove the en-US spellchecking dictionary, and
+      # recreate precomplete file (needs to be accurate for full MAR updates).
+      pushd "[% browserdir %]/[% IF c("var/osx") %]Contents/Resources/[% END %]"
+      echo "[% lang %]" > update.locale
+      [% c("var/touch") %] update.locale
+      zip -Xm omni.ja update.locale
+      rm -rf dictionaries
+      rm -f precomplete
+      python $MARTOOLS/createprecomplete.py
+      popd
+
+      cd $distdir
+
+      # Create full MAR file and compressed package for this locale.
+      MAR=$MARTOOLS/mar MBSDIFF=$MARTOOLS/mbsdiff $MARTOOLS/make_full_update.sh -q $OUTDIR/[% mar_file %] "[% browserdir %]"
+      [% IF c("var/linux") %]
+        [% SET tardir = 'i2p-browser_' _ lang;
+          c('tar', {
+                tar_src => [ tardir ],
+                tar_args => '-cJf $OUTDIR/i2p-browser-' _ c("var/mar_osname") _ '-' _ c("var/i2pbrowser_version") _ '_' _ lang _ '.tar.xz',
+            }) %]
+      [% ELSIF c("var/osx") %]
+        [% # Rename the Japanese bundle to not confuse users
+           IF lang == 'ja-JP-mac';
+             SET lang = 'ja';
+           END; -%]
+        [% c('var/ddmg', {
+          dmg_src => tbdir,
+          dmg_out => '$OUTDIR/I2PBrowser-' _ c("var/i2pbrowser_version") _ '-osx64_' _ lang _ '.dmg',
+        }) %]
+      [% ELSIF c("var/windows") %]
+        find "[% tbdir %]" -exec [% c("var/touch") %] {} \;
+        pushd "[% tbdir %]"
+        makensis i2pbrowser.nsi
+        # Working around NSIS braindamage
+        mv i2pbrowser-install.exe i2pbrowser-install-tmp.exe
+        python $rootdir/pe_checksum_fix.py
+        mv i2pbrowser-install-tmp2.exe i2pbrowser-install.exe
+        rm i2pbrowser-install-tmp.exe
+        mv i2pbrowser-install.exe $OUTDIR/i2pbrowser-install[% IF c("var/windows-x86_64") %]-win64[% END %]-[% c("var/i2pbrowser_version") %]_[% lang %].exe
+        popd
+      [% END %]
+      rm -rf [% tbdir %]
+SCRIPT_EOF
+  [% END %]
+[% END %]
+
+chmod 775 $rootdir/run_scripts "$scripts_dir"/*
+$rootdir/run_scripts [% c("buildconf/num_procs") %] "$scripts_dir"
