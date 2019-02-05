@@ -16,7 +16,7 @@ pre: |
   # Bug 29158: install fixed packages for apt vulnerability (CVE-2019-3462)
   dpkg -i ./apt_1.6.6ubuntu0.1_amd64.deb ./libapt-pkg5.0_1.6.6ubuntu0.1_amd64.deb
   apt-get update -y
-  apt-get install -y debian-archive-keyring ubuntu-keyring debootstrap
+  DEBIAN_FRONTEND=noninteractive apt-get install -yq debian-archive-keyring ubuntu-keyring debootstrap
   debootstrap --arch=[% c("var/container/arch") %] [% c("var/container/debootstrap_opt") %] [% c("var/container/suite") %] base-image [% c("var/container/debootstrap_mirror") %]
   [% IF c("var/apt_package_filename") || c("var/apt_utils_package_filename") || c("var/libapt_inst_package_filename") || c("var/libapt_pkg_package_filename") -%]
     mkdir ./base-image/apt-update

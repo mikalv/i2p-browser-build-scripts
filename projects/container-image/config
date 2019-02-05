@@ -21,7 +21,7 @@ pre: |
   [% pc(c('origin_project'), 'var/pre_pkginst') %]
   [% END -%]
   apt-get update -y
-  apt-get upgrade -y
+  DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq
   [%
      deps = [];
      IF pc(c('origin_project'), 'var/deps');
