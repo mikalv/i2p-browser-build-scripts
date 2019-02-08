@@ -50,6 +50,21 @@ Tor Browser 8.5a7 -- January 29 2019
    * Android
      * Bug 28752: Don't download tor-android-binary resources during build
 
+Tor Browser 8.0.5 -- January 29 2019
+ * All platforms
+   * Update Firefox to 60.5.0esr
+   * Update Tor to 0.3.5.7
+   * Update Torbutton to 2.0.10
+     * Bug 29035: Clean up our donation campaign and add newsletter sign-up link
+     * Bug 27175: Add pref to allow users to persist custom noscript settings
+   * Update HTTPS Everywhere to 2019.1.7
+   * Update NoScript to 10.2.1
+     * Bug 28873: Cascading of permissions is broken
+     * Bug 28720: Some videos are blocked outright on higher security levels
+   * Bug 26540: Enabling pdfjs disableRange option prevents pdfs from loading
+   * Bug 28740: Adapt Windows navigator.platform value on 64-bit systems
+   * Bug 28695: Set default security.pki.name_matching_mode to enforce (3)
+
 Tor Browser 8.5a6 -- December 11 2018
  * All Platforms
    * Update Firefox to 60.4.0esr
