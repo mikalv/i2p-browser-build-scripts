@@ -41,7 +41,7 @@ targets:
       torbrowser_update_channel: default
       branding_directory: browser/branding/nightly
 
-  android-armv7:
+  android:
     var:
       arch_deps:
         - openjdk-8-jdk
