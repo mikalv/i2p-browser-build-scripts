@@ -130,9 +130,9 @@ input_files:
     name: gradle-dependencies
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
     enable: '[% c("var/android") %]'
-  - project: orbot
-    name: orbot
-    enable: '[% c("var/android") %]'
+#  - project: orbot
+#    name: orbot
+#    enable: '[% c("var/android") %]'
   - project: firefox-locale-bundle
     name: firefox-locale-bundle
     enable: '[% c("var/android") %]'

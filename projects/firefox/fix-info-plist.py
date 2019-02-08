@@ -18,7 +18,7 @@ _, args = getopt.gnu_getopt(sys.argv[1:], "")
 if len(args) != 2:
     usage()
 
-TORBROWSER_VERSION = args[0]
+I2PBROWSER_VERSION = args[0]
 YEAR = args[1]
 
 COPYRIGHT = "I2P Browser %s Copyright %s The Invisible Internet Project" % (I2PBROWSER_VERSION, YEAR)

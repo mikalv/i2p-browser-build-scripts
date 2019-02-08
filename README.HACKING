@@ -12,6 +12,13 @@ If you go to directory rbm/doc, you can find the rbm documentation. You
 can build it with 'make html' or 'make man'.
 
 
+Wonder wtf perl does?
+-----------------------
+
+Install Devel::Trace (`cpan install Devel::Trace`) and then run the rbm file with `perl -d:Trace`
+That will give you somewhat bash -x experience. The `Devel::DumpTrace` package also seem to be a good choise.
+
+
 Using and defining options
 --------------------------
 

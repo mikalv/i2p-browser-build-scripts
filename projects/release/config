@@ -10,11 +10,11 @@ var:
 targets:
   i2pbrowser-all:
     - i2pbrowser-linux-x86_64
-    - i2pbrowser-linux-i686
-    - i2pbrowser-windows-i686
+#    - i2pbrowser-linux-i686
+#    - i2pbrowser-windows-i686
     - i2pbrowser-windows-x86_64
     - i2pbrowser-osx-x86_64
-    - i2pbrowser-android-armv7
+#    - i2pbrowser-android-armv7
   i2pbrowser-android-armv7:
     var:
       i2pbrowser-android-armv7: 1
@@ -70,12 +70,13 @@ targets:
   testbuild:
     output_dir: 'testbuild'
     var:
-      build_target: i2pbrowser-testbuild
+      #build_target: i2pbrowser-testbuild
+      build_target: alpha
       publish_dir: ''
 
   signed:
     var:
-      signed_status: signed
+      signed_status: unsigned
 
   create_unsigned_incrementals:
     var:

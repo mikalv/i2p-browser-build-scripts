@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 [% c("var/set_default_env") -%]
 # reset HOME which was changed by var/set_default_env, for gpg
 [% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]

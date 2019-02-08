@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
+export I2PBROWSER_VERSION='[% c("version") %]'
+# TODO: Remove when refactoring is done
+export TORBROWSER_VERSION=$I2PBROWSER_VERSION
 [% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
 [% IF c("var/windows") -%]

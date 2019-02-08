@@ -2,6 +2,7 @@
 [% c("var/set_default_env") -%]
 tar xf [% project %]-[% c('version') %].tar.gz
 cd [% project %]-[% c('version') %]
+perl -p -i -e "s/python3\.6/python3/g" *
 ./make.sh
 # Since 5.0.2 a .xpi for AMO is built, too. We don't need it.
 rm pkg/*-amo.xpi
