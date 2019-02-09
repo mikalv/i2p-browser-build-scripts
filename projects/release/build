@@ -4,13 +4,13 @@
 [% IF ENV.HOME %]export HOME="[% ENV.HOME %]"[% END %]
 destdir="[% dest_dir _ '/' _ c("var/publish_dir") %]"
 mkdir -p "$destdir"
-[% IF c("var/i2pbrowser-android-armv7") -%]
-  mv [% c('input_files_by_name/android-armv7') %]/* "$destdir"/
-[% END -%]
-[% IF c("var/i2pbrowser-windows-i686") -%]
-  mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
-  mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/
-[% END -%]
+#[% IF c("var/i2pbrowser-android-armv7") -%]
+#  mv [% c('input_files_by_name/android-armv7') %]/* "$destdir"/
+#[% END -%]
+#[% IF c("var/i2pbrowser-windows-i686") -%]
+#  mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
+#  mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/
+#[% END -%]
 [% IF c("var/i2pbrowser-windows-x86_64") -%]
   mv [% c('input_files_by_name/windows-x86_64') %]/* "$destdir"/
   mv [% c('input_files_by_name/windows64-expert-bundle') %]/* "$destdir"/
@@ -18,9 +18,9 @@ mkdir -p "$destdir"
 [% IF c("var/i2pbrowser-osx-x86_64") -%]
   mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
 [% END -%]
-[% IF c("var/i2pbrowser-linux-i686") -%]
-  mv [% c('input_files_by_name/linux-i686') %]/* "$destdir"/
-[% END -%]
+#[% IF c("var/i2pbrowser-linux-i686") -%]
+#  mv [% c('input_files_by_name/linux-i686') %]/* "$destdir"/
+#[% END -%]
 [% IF c("var/i2pbrowser-linux-x86_64") -%]
   mv [% c('input_files_by_name/linux-x86_64') %]/* "$destdir"/
 [% END -%]
