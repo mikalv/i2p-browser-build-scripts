@@ -65,4 +65,5 @@ input_files:
     input_file_var:
       rust_version: 1.28.0
       prev_version: 1.27.2
-    enable: '[% (c("var/linux") || c("var/osx")) && c("var/nightly") %]'
+      unwind_128: '[% c("var/windows-i686") %]'
+    enable: '[% !c("var/android") && c("var/nightly") %]'
