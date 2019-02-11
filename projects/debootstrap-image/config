@@ -100,6 +100,14 @@ targets:
         suite: jessie
         arch: i386
 
+  # Still needed to fix faketime issues in tor-browser for Android, see: #29453
+  buster-amd64:
+    var:
+      minimal_apt_version: '1.8.0~alpha3.1'
+      container:
+        suite: buster
+        arch: amd64
+
   stretch-amd64:
     var:
       minimal_apt_version: 1.4.9
