@@ -8,7 +8,7 @@ git_submodule: 1
 gpg_keyring: torbutton.gpg
 
 var:
-  firefox_platform_version: 60.5.0
+  firefox_platform_version: 60.5.1
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   torbrowser_branch: 8.5
   torbrowser_update_channel: alpha

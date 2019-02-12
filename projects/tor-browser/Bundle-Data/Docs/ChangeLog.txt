@@ -1,3 +1,16 @@
+Tor Browser 8.5a8 -- February 13 2019
+ * All platforms
+   * Update Firefox to 60.5.1esr
+   * Update HTTPS Everywhere to 2019.1.31
+   * Bug 29378: Remove 83.212.101.3 from default bridges
+   * Bug 29349: Remove network.http.spdy.* overrides from meek helper user.js
+ * Build System
+   * All Platforms
+     * Bug 29235: Build our own version of python3.6 for HTTPS Everywhere
+     * Bug 29167: Upgrade go to 1.11.5
+   * Linux
+     * Bug 29183: Use linux-x86_64 langpacks on linux-x86_64
+
 Tor Browser 8.5a7 -- January 29 2019
  * All Platforms
    * Update Firefox to 60.5.0esr
