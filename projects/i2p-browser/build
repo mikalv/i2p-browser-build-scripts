@@ -60,6 +60,19 @@ RBM_TB_EOF
   chmod +x ${TB_STAGE_DIR}/Browser/start-i2p-browser
 [% END %]
 
+[% IF c("var/linux") %]
+  cp RelativeLink/* ${TB_STAGE_DIR}/Browser/
+  cp RelativeLink/start-tor-browser.desktop ${TB_STAGE_DIR}/
+  cat > ${TB_STAGE_DIR}/Browser/start-tor-browser << 'RBM_TB_EOF'
+[% INCLUDE 'RelativeLink/start-i2p-browser' -%]
+RBM_TB_EOF
+  chmod +x ${TB_STAGE_DIR}/Browser/start-i2p-browser
+  # Make sure we get the desired scrollbar behavior with Gtk3, see bug 27546.
+  GTK_SETTINGS_DIR=${TB_STAGE_DIR}/Browser/.config/gtk-3.0
+  mkdir -p $GTK_SETTINGS_DIR
+  cp $rootdir/gtk3-settings.ini $GTK_SETTINGS_DIR/settings.ini
+[% END %]
+
 tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/i2p-browser.tar.gz
 #tar -C "$TBDIR[% IF ! c("var/osx") %]/I2PBrowser[% END %]" -xf [% c('input_files_by_name/i2p') %]/i2p.tar.gz
 
@@ -144,11 +157,11 @@ cat "$GENERATEDPREFSPATH" >> defaults/preferences/000-i2p-browser.js
 cp defaults/preferences/000-i2p-browser.js $rootdir
 [% IF c("var/osx") %]
   # Embed our default bookmarks within the en-US locale.
-#  mkdir -p chrome/en-US/locale/browser
-#  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
-#  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
-#  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
-#  rm -rf chrome
+  mkdir -p chrome/en-US/locale/browser
+  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
+  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
+  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
+  rm -rf chrome
 [% END %]
 # Set the locale of the bundle.
 echo "pref(\"intl.locale.requested\", \"en-US\");" >> defaults/preferences/000-i2p-browser.js

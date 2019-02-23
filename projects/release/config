@@ -127,21 +127,21 @@ input_files:
      - '[% c("var/build_target") %]'
      - i2pbrowser-osx-x86_64
 
- - name: windows-expert-bundle
-   project: tor
-   enable: '[% c("var/i2pbrowser-windows-i686") %]'
-   target:
-     - '[% c("var/build_target") %]'
-     - i2pbrowser-windows-i686
-     - expert-bundle
-
- - name: windows64-expert-bundle
-   project: tor
-   enable: '[% c("var/i2pbrowser-windows-x86_64") %]'
-   target:
-     - '[% c("var/build_target") %]'
-     - i2pbrowser-windows-x86_64
-     - expert-bundle
+# - name: windows-expert-bundle
+#   project: i2p
+#   enable: '[% c("var/i2pbrowser-windows-i686") %]'
+#   target:
+#     - '[% c("var/build_target") %]'
+#     - i2pbrowser-windows-i686
+#     - expert-bundle
+#
+# - name: windows64-expert-bundle
+#   project: i2p
+#   enable: '[% c("var/i2pbrowser-windows-x86_64") %]'
+#   target:
+#     - '[% c("var/build_target") %]'
+#     - i2pbrowser-windows-x86_64
+#     - expert-bundle
 
 steps:
   signtag:

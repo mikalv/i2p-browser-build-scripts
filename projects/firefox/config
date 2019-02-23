@@ -2,7 +2,7 @@
 version: '[% c("abbrev") %]'
 filename: 'firefox-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
 git_hash: 'i2p-browser-[% c("var/firefox_version") %]-[% c("var/i2pbrowser_branch") %]-1-build2'
-tag_gpg_id: 1
+#tag_gpg_id: 1
 git_url: https://github.com/mikalv/test-i2p-browser.git
 git_submodule: 1
 #gpg_keyring: torbutton.gpg
