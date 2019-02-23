@@ -12,6 +12,7 @@ Collection of useful links:
 * https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Mozilla_Release_Checklist
 * https://developer.mozilla.org/en-US/docs/Mozilla/Setting_up_an_update_server
 * https://developer.mozilla.org/en-US/docs/Mozilla/Chrome_Registration
+* https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules
 
 ## Edit omni.ja without recompile
 
