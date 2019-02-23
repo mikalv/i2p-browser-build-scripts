@@ -155,14 +155,14 @@ unzip omni.ja defaults/preferences/000-i2p-browser.js || [ $? -lt 3 ]
 # Append our built extension-overrides.js to 000-tor-browser.js
 cat "$GENERATEDPREFSPATH" >> defaults/preferences/000-i2p-browser.js
 cp defaults/preferences/000-i2p-browser.js $rootdir
-[% IF c("var/osx") %]
-  # Embed our default bookmarks within the en-US locale.
-  mkdir -p chrome/en-US/locale/browser
-  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
-  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
-  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
-  rm -rf chrome
-[% END %]
+#[% IF c("var/osx") %]
+#  # Embed our default bookmarks within the en-US locale.
+#  mkdir -p chrome/en-US/locale/browser
+#  cp -p $rootdir/bookmarks.html chrome/en-US/locale/browser/
+#  [% c("var/touch") %] chrome/en-US/locale/browser/bookmarks.html
+#  zip -Xm omni.ja chrome/en-US/locale/browser/bookmarks.html
+#  rm -rf chrome
+#[% END %]
 # Set the locale of the bundle.
 echo "pref(\"intl.locale.requested\", \"en-US\");" >> defaults/preferences/000-i2p-browser.js
 [% c("var/touch") %] defaults/preferences/000-i2p-browser.js
