@@ -13,7 +13,7 @@ mkdir -p "$destdir"
 #[% END -%]
 [% IF c("var/i2pbrowser-windows-x86_64") -%]
   mv [% c('input_files_by_name/windows-x86_64') %]/* "$destdir"/
-  mv [% c('input_files_by_name/windows64-expert-bundle') %]/* "$destdir"/
+#  mv [% c('input_files_by_name/windows64-expert-bundle') %]/* "$destdir"/
 [% END -%]
 [% IF c("var/i2pbrowser-osx-x86_64") -%]
   mv [% c('input_files_by_name/osx-x86_64') %]/* "$destdir"/
