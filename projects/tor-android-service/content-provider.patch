@@ -1,0 +1,13 @@
+diff --git a/service/src/main/java/org/torproject/android/service/DataService.java b/service/src/main/java/org/torproject/android/service/DataService.java
+index 8f802ea..07e52f3 100644
+--- a/service/src/main/java/org/torproject/android/service/DataService.java
++++ b/service/src/main/java/org/torproject/android/service/DataService.java
+@@ -28,7 +28,7 @@ final class DataService {
+         this.torService = torService;
+         this.eventBroadcaster = eventBroadcaster;
+         this.torConfig = torConfig;
+-        String packageName = context.getApplicationInfo().packageName;
++        String packageName = "org.torproject.torbrowser";
+         COOKIE_CONTENT_URI = Uri.parse("content://" + packageName + ".ui.hiddenservices.providers.cookie/cookie");
+         HS_CONTENT_URI = Uri.parse("content://" + packageName + ".ui.hiddenservices.providers/hs");
+     }

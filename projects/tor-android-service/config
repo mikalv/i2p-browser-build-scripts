@@ -1,0 +1,33 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+git_hash: 6a9314aff4418a4edac33ff39fae266b097cf000
+git_url: https://github.com/sisbell/tor-android-service.git
+git_submodule: 1
+
+var:
+  deps:
+    - build-essential
+  container:
+    use_container: 1
+  # this should be updated when the list of gradle dependencies is changed
+  gradle_dependencies_version: 1
+
+targets:
+  android:
+    var:
+      arch_deps:
+        - openjdk-8-jdk
+
+input_files:
+  - project: container-image
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
+    name: gradle-dependencies
+    exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
+  - filename: gradle.patch
+  - filename: content-provider.patch
+  - filename: require-api.patch
+  - project: tor-onion-proxy-library
+    name: topl

@@ -1,0 +1,28 @@
+diff --git a/service/src/main/java/org/torproject/android/service/TorService.java b/service/src/main/java/org/torproject/android/service/TorService.java
+index d280a29..beb2b02 100644
+--- a/service/src/main/java/org/torproject/android/service/TorService.java
++++ b/service/src/main/java/org/torproject/android/service/TorService.java
+@@ -12,7 +12,10 @@ import android.net.ConnectivityManager;
+ import android.net.NetworkInfo;
+ import android.os.Build;
+ import android.os.IBinder;
+-import android.support.annotation.RequiresApi;
++// Not available in 23.4.0
++// https://developer.android.com/reference/android/support/annotation/RequiresApi
++//import android.support.annotation.RequiresApi;
++import android.annotation.TargetApi;
+ import android.text.TextUtils;
+ import android.util.Log;
+ import com.msopentech.thali.android.toronionproxy.AndroidOnionProxyManager;
+@@ -93,7 +96,10 @@ public final class TorService extends Service implements TorServiceConstants, Or
+         startService(intentVpn);
+     }
+ 
+-    @RequiresApi(api = Build.VERSION_CODES.O)
++    // Use TargetApi until we use a support library version that adds the
++    // RequriesApi annotation
++    //@RequiresApi(api = Build.VERSION_CODES.O)
++    @TargetApi(value = Build.VERSION_CODES.O)
+     private void createNotificationChannel(String appName, String appDescription) {
+         int importance = NotificationManager.IMPORTANCE_LOW;
+         NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, appName,

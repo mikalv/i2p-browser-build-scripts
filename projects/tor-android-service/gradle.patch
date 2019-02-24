@@ -1,0 +1,38 @@
+diff --git a/build.gradle b/build.gradle
+index 178278e..d80d0b5 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -4,6 +4,7 @@ buildscript {
+     repositories {
+         google()
+         jcenter()
++        maven { url System.getenv("GRADLE_MAVEN_REPO") }
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:${androidplugin}"
+@@ -19,6 +20,7 @@ allprojects {
+         jcenter()
+         maven { url "https://jitpack.io" }
+         maven { url "https://raw.githubusercontent.com/guardianproject/gpmaven/master" }
++        maven { url System.getenv("GRADLE_MAVEN_REPO") }
+     }
+ }
+ 
+diff --git a/service/build.gradle b/service/build.gradle
+index b414557..f57d9b3 100644
+--- a/service/build.gradle
++++ b/service/build.gradle
+@@ -16,13 +16,6 @@ android {
+         }
+     }
+ 
+-    externalNativeBuild {
+-        ndkBuild {
+-            path "src/main/jni/Android.mk"
+-            buildStagingDirectory "./outputs/ndk-build"
+-        }
+-    }
+-
+     lintOptions {
+         abortOnError false
+     }
