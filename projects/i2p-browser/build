@@ -62,8 +62,8 @@ RBM_TB_EOF
 
 [% IF c("var/linux") %]
   cp RelativeLink/* ${TB_STAGE_DIR}/Browser/
-  cp RelativeLink/start-tor-browser.desktop ${TB_STAGE_DIR}/
-  cat > ${TB_STAGE_DIR}/Browser/start-tor-browser << 'RBM_TB_EOF'
+  cp RelativeLink/start-i2p-browser.desktop ${TB_STAGE_DIR}/
+  cat > ${TB_STAGE_DIR}/Browser/start-i2p-browser << 'RBM_TB_EOF'
 [% INCLUDE 'RelativeLink/start-i2p-browser' -%]
 RBM_TB_EOF
   chmod +x ${TB_STAGE_DIR}/Browser/start-i2p-browser
