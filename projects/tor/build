@@ -11,7 +11,7 @@ mkdir -p /var/tmp/build
 [% END %]
 
 [% IF c("var/osx") %]
-  [% IF ("var/nightly") %]
+  [% IF c("var/nightly") %]
     # We are compiling Tor with Rust enabled for nightlies.
     export TOR_RUST_TARGET=x86_64-apple-darwin
   [% END %]
@@ -33,7 +33,7 @@ libeventdir=/var/tmp/dist/libevent
 openssldir=/var/tmp/dist/openssl
 
 [% IF c("var/windows") %]
-  [% IF ("var/nightly") %]
+  [% IF c("var/nightly") %]
     # We are compiling Tor with Rust enabled for nightlies.
     export TOR_RUST_TARGET=[% c("arch") %]-pc-windows-gnu
   [% END %]
