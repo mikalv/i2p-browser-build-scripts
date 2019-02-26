@@ -1,12 +1,8 @@
 #!/bin/bash
 [% c("var/set_default_env") -%]
 tar xvf [% project %]-[% c('version') %].tar.gz
-cd [% project %]-[% c('version') %]
-make package
-mkdir pkg/tmp
-cd pkg/tmp
-unzip ../*.xpi
-[% c('zip', {
-        zip_src => [ '.' ],
-        zip_args => dest_dir _ '/' _ c('filename'),
+mv [% project %]-[% c("version") %] [% project %]
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
     }) %]

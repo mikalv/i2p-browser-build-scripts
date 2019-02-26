@@ -151,6 +151,11 @@ fi
   patch -p1 < $rootdir/1527534.patch
 [% END -%]
 
+[% IF ! c("var/android") %]
+  # Place a copy of the Tor Launcher sources under browser/extensions
+  tar -C browser/extensions -xf $rootdir/[% c('input_files_by_name/tor-launcher') %]
+[% END -%]
+
 rm -f configure
 rm -f js/src/configure
 

@@ -149,6 +149,9 @@ input_files:
     enable: '[% c("var/linux") %]'
   - filename: start-firefox
     enable: '[% c("var/linux") %]'
+  - project: tor-launcher
+    name: tor-launcher
+    enable: '[% ! c("var/android") %]'
   - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
     name: gradle-dependencies
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
