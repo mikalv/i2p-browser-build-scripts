@@ -17,11 +17,12 @@ pre: |
   #!/bin/sh
   # [% c('var/container/suite') %]
   set -e
+  export DEBIAN_FRONTEND=noninteractive
   [% IF pc(c('origin_project'), 'var/pre_pkginst') -%]
   [% pc(c('origin_project'), 'var/pre_pkginst') %]
   [% END -%]
-  apt-get update -y
-  apt-get upgrade -y
+  apt-get update -y -q
+  apt-get upgrade -y -q
   [%
      deps = [];
      IF pc(c('origin_project'), 'var/deps');
