@@ -15,14 +15,20 @@ var:
     use_container: 1
 
 targets:
-  android-armv7:
+  android:
     var:
       rust_arch: x86_64
       arch_deps:
         - libssl-dev
         - pkg-config
         - zlib1g-dev
+  android-armv7:
+    var:
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=armv7-linux-androideabi --set=target.armv7-linux-androideabi.cc=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-gcc
+
+  android-x86:
+    var:
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=i686-linux-android --set=target.i686-linux-android.cc=$ANDROID_NDK_HOME/x86/bin/i686-linux-android-gcc
 
   linux:
     var:
@@ -92,7 +98,7 @@ input_files:
     enable: '[% c("var/windows-i686") && !c("input_file_var/unwind_128") %]'
   - filename: unwind_128.patch
     enable: '[% c("input_file_var/unwind_128") %]'
-  - filename: 0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
-    enable: '[% c("var/android") %]'
   - filename: replace_pagesize_in_mmap.patch
     enable: '[% c("var/android") %]'
+  - filename: 0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
+    enable: '[% c("var/android-armv7") %]'

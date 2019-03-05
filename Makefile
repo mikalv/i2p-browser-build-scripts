@@ -8,6 +8,9 @@ release: submodule-update
 release-android-armv7: submodule-update
 	$(rbm) build release --target release --target torbrowser-android-armv7
 
+release-android-x86: submodule-update
+	$(rbm) build release --target release --target torbrowser-android-x86
+
 release-linux-x86_64: submodule-update
 	$(rbm) build release --target release --target torbrowser-linux-x86_64
 
@@ -31,6 +34,9 @@ alpha: submodule-update
 
 alpha-android-armv7: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-android-armv7
+
+alpha-android-x86: submodule-update
+	$(rbm) build release --target alpha --target torbrowser-android-x86
 
 alpha-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-linux-x86_64
@@ -56,6 +62,9 @@ nightly: submodule-update
 nightly-android-armv7: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-android-armv7
 
+nightly-android-x86: submodule-update
+	$(rbm) build release --target nightly --target torbrowser-android-x86
+
 nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-linux-x86_64
 
@@ -80,6 +89,9 @@ alpha_nightly: submodule-update
 alpha_nightly-android-armv7: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-android-armv7
 
+alpha_nightly-android-x86: submodule-update
+	$(rbm) build release --target alpha_nightly --target torbrowser-android-x86
+
 alpha_nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-linux-x86_64
 
@@ -100,6 +112,9 @@ testbuild: submodule-update
 
 testbuild-android-armv7: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-android-armv7
+
+testbuild-android-x86: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-android-x86
 
 testbuild-linux-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64

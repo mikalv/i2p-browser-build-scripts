@@ -41,7 +41,7 @@ targets:
   windows-x86_64:
     var:
       mar_osname: win64
-  android-armv7:
+  android:
     build: '[% INCLUDE build.android %]'
     var:
       arch_deps:
