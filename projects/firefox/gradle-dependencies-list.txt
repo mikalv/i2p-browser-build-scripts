@@ -7,14 +7,12 @@ cd6db17a11a31ede794ccbd1df0e4d9750f640234731f21cff885a9997277e81 | https://jcent
 d46777ad3ea8bca73491b2e02fc85b3664486abf5314cc4dc6740908bd855330 | https://jcenter.bintray.com/com/google/android/apps/common/testing/accessibility/framework/accessibility-test-framework/2.1/accessibility-test-framework-2.1.pom
 ee041b3beb682e8bbf2dc16b6edc233483cbc36bde27fd13996617a667b615a5 | https://maven.google.com/com/android/tools/external/com-intellij/intellij-core/26.0.1/intellij-core-26.0.1.pom
 536c45e8804de01321c478cfb994377f81f1e32897636616fa21b877fd137c6f | https://jcenter.bintray.com/org/eclipse/jdt/core/compiler/ecj/4.6.1/ecj-4.6.1.pom
-32c797717189ffd0dcc2fcb2e804ab5a0d0c8dfa78b2aa78037f61d4a572f62c | https://raw.githubusercontent.com/guardianproject/gpmaven/master/org/torproject/tor-android-binary/0.3.4.9/tor-android-binary-0.3.4.9.pom
 2ec779741f72313fc6623d0f0e42b2450dd2425dd6ad319697e658aae9ae177b | https://maven.google.com/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.pom
 8d4006178fedef4255797b806167cf4a6774158eedabf96420693afbbd00fee3 | https://maven.google.com/com/android/tools/analytics-library/protos/26.0.1/protos-26.0.1.pom
 c3fb02564ca173e45548d7a91aca1efe341db11da2656199d559773e7ae15edf | https://jcenter.bintray.com/org/ow2/asm/asm-commons/5.0.1/asm-commons-5.0.1.pom
 ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d | https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom
 8b870b3f2ee38bf15681acbc8b628df1ccf7c533190b5c79af9934b6cd66d451 | https://maven.google.com/com/android/databinding/baseLibrary/3.0.1/baseLibrary-3.0.1.pom
 c0de2bbc4cb8297419659813ecd4ed1d077ed1dd5c1f5544cc5143e493e84c10 | https://jcenter.bintray.com/org/ow2/asm/asm-tree/5.1/asm-tree-5.1.jar
-f09330e83f0e3a3f6648ee43a6814ee3a91df699adf7446d6f1f38e95e34cd88 | https://raw.githubusercontent.com/guardianproject/gpmaven/master/org/torproject/tor-android-binary/0.3.4.9/tor-android-binary-0.3.4.9.aar
 8c6191e0dd8bfdc862332cb79b08185ac5b63565d405dac2605be4c2b19774bd | https://jcenter.bintray.com/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.pom
 8b0aa8a74e990ca8d633ab7bd1938530e921548df13fd4020224a61065378876 | https://maven.google.com/com/android/tools/build/builder-test-api/3.0.1/builder-test-api-3.0.1.pom
 363cc83767b760d7a564d5301e09467e6d48fc1c1c1664b1e18c50815ce19076 | https://jcenter.bintray.com/com/google/guava/guava/20.0/guava-20.0.pom
@@ -366,3 +364,11 @@ e767a1248adb4843110457e839e504c2511649ee78f05a6a311ea7f23578894d | https://maven
 cf5c43860b53ba5a95c19bc6525cc43d3488a6fe3df2f649c0099a613a0640e3 | https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.2/gson-parent-2.8.2.pom
 9619e68f7eb36da3a28a60315f34320972badbad43749cc66712bb95b96a4ef3 | https://maven.google.com/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.pom
 bcb7ce66a9c629fa7c723a767b6430e1a383e8d4dd543d603dcb0ad1b855b8b2 | https://maven.google.com/com/android/support/animated-vector-drawable/23.4.0/animated-vector-drawable-23.4.0.aar
+3369726ca2b0e3736c741ff3c22e06f707a1007ff20ccc5b5ba5d0d9a01ead30 | https://jcenter.bintray.com/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.pom
+18c4a0095d5c1da6b817592e767bb23d29dd2f560ad74df75ff3961dbde25b79 | https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+fbd7b254e02d8aef60c418a5f0e14a783b38a16162caffb2d2a16ccd5d2c09b4 | https://jcenter.bintray.com/org/slf4j/slf4j-android/1.7.25/slf4j-android-1.7.25.jar
+ec3a75bebddbf19ff56a281cf5d1ad146169dcaa0e69d7b14f4aaba2e7775f34 | https://jcenter.bintray.com/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.jar
+bd9b9cb1a3987b1427f7a18babe7f92078e32bbe2e1dca6dced00cc0e3a077a9 | https://jcenter.bintray.com/org/slf4j/slf4j-android/1.7.25/slf4j-android-1.7.25.pom
+7cd9d7a0b5d93dfd461a148891b43509cf403a9c7f9fb49060d3554df1c81e1e | https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.pom
+18f5c52120db036e88d6136f8839c832d074bdda95c756c6f429249d2db54ac6 | https://jcenter.bintray.com/org/slf4j/slf4j-parent/1.7.25/slf4j-parent-1.7.25.pom
+

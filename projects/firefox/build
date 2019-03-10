@@ -103,11 +103,13 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
   # Move Gradle Repo to hard-coded location. This location is embedded in the file
   # chrome/toolkit/content/global/buildconfig.html so needs to be standard for reproducibility
   mv $rootdir/[% c('input_files_by_name/gradle-dependencies') %] $gradle_repo
-  # The download script assumes the artifact package name is the complete URL path.
-  # In some cases this is incorrect, so copy those artifacts to the correct location
-  cp -r $gradle_repo/guardianproject/gpmaven/master/* $gradle_repo
   # Move orbot files so they will be included in the apk during the build
   cp $rootdir/[% c('input_files_by_name/orbot') %]/* mobile/android/app
+  cp $rootdir/[% c('input_files_by_name/topl') %]/* mobile/android/app
+  cp $rootdir/[% c('input_files_by_name/tor-android-service') %]/* mobile/android/app
+  # Apply patches
+  patch -p1 < $rootdir/android-dependencies.patch
+
   # Prepare building the multi-locale .apk including our own strings
   mkdir -p /var/tmp/dist/locales
   tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]

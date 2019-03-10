@@ -13,16 +13,18 @@ mv $rootdir/[% c('input_files_by_name/noscript') %] $ext_dir/{73a6fe31-595d-460b
 
 zip -d $apk META-INF/\*
 zip -r -X $apk $ext_dir
-
-zip -d $apk lib/armeabi/tor.so
+unzip $apk lib/*
+zip -d $apk lib/\*
 
 [% IF c("var/android-x86") %]
-    zip -d $apk lib/armeabi-v7a/tor.so
+    zip $apk lib/x86/*
 [% END %]
 
 [% IF c("var/android-armv7") %]
-    zip -d $apk lib/x86/tor.so
+    zip $apk lib/armeabi-v7a/*
 [% END %]
+
+rm -fR lib
 
 # Sign a QA build. This apk is not a debug version and doesn't contain a debug flag in the manifest
 java -jar /usr/share/apksigner/apksigner.jar sign --verbose --min-sdk-version [% c("var/android_min_api") %] --ks $rootdir/android-qa.keystore --out $qa_apk --in $apk --ks-key-alias androidqakey --key-pass pass:android --ks-pass pass:android

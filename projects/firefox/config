@@ -24,7 +24,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 3
+  gradle_dependencies_version: 4
   # used by projects/firefox-locale-bundle
   l10n-changesets.json: '[% exec("cat mobile/locales/l10n-changesets.json") %]'
 
@@ -162,6 +162,14 @@ input_files:
     enable: '[% c("var/android") %]'
   - project: orbot
     name: orbot
+    enable: '[% c("var/android") %]'
+  - project: tor-android-service
+    name: tor-android-service
+    enable: '[% c("var/android") %]'
+  - project: tor-onion-proxy-library
+    name: topl
+    enable: '[% c("var/android") %]'
+  - filename: android-dependencies.patch
     enable: '[% c("var/android") %]'
   - project: firefox-locale-bundle
     name: firefox-locale-bundle
