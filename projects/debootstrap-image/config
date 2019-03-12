@@ -57,14 +57,6 @@ targets:
         suite: wheezy
         arch: amd64
 
-  wheezy-i386:
-    var:
-      # Missing apt packages for i386:
-      # http://deb.freexian.com/extended-lts/pool/main/a/apt/
-      container:
-        suite: wheezy
-        arch: i386
-
   jessie-amd64:
     var:
       minimal_apt_version: 1.0.9.8.5
