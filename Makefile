@@ -29,6 +29,9 @@ release-windows-x86_64: submodule-update
 release-osx-x86_64: submodule-update
 	$(rbm) build release --target release --target torbrowser-osx-x86_64
 
+release-src: submodule-update
+	$(rbm) build release --target release --target torbrowser-src
+
 alpha: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-all
 
@@ -55,6 +58,9 @@ alpha-windows-x86_64: submodule-update
 
 alpha-osx-x86_64: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-osx-x86_64
+
+alpha-src: submodule-update
+	$(rbm) build release --target alpha --target torbrowser-src
 
 nightly: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-all
@@ -83,6 +89,9 @@ nightly-windows-x86_64: submodule-update
 nightly-osx-x86_64: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-osx-x86_64
 
+nightly-src: submodule-update
+	$(rbm) build release --target nightly --target torbrowser-src
+
 alpha_nightly: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-all
 
@@ -106,6 +115,9 @@ alpha_nightly-windows-x86_64: submodule-update
 
 alpha_nightly-osx-x86_64: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-osx-x86_64
+
+alpha_nightly-src: submodule-update
+	$(rbm) build release --target alpha_nightly --target torbrowser-src
 
 testbuild: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-all
@@ -133,6 +145,9 @@ testbuild-windows-i686: submodule-update
 
 testbuild-osx-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-osx-x86_64
+
+testbuild-src: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-src-testbuild
 
 signtag-release: submodule-update
 	$(rbm) build release --step signtag --target release

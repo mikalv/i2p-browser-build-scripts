@@ -28,6 +28,18 @@ var:
   # used by projects/firefox-locale-bundle
   l10n-changesets.json: '[% exec("cat mobile/locales/l10n-changesets.json") %]'
 
+steps:
+  src-tarballs:
+    filename: 'src-[% project %]-[% c("version") %].tar.xz'
+    version: '[% c("git_hash") %]'
+    input_files: []
+    var:
+      container:
+        use_container: 0
+    targets:
+      nightly:
+        version: '[% c("abbrev") %]'
+
 targets:
   release:
     var:
