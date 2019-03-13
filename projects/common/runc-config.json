@@ -238,6 +238,12 @@
 			{
 				"type": "uts"
 			},
+[% IF c("var/container/disable_network/" _ c("exec_name")) -%]
+			{
+				"type": "network",
+				"path": "/var/run/netns/rbm-[% sha256(c("build_id", { error_if_undef => 1 })) %]"
+			},
+[% END -%]
 			{
 				"type": "mount"
 			}
