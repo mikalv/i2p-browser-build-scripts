@@ -27,9 +27,10 @@ ac_add_options --enable-tor-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
+ac_add_options --disable-strip
+ac_add_options --disable-install-strip
 ac_add_options --disable-tests
 ac_add_options --disable-debug
-ac_add_options --disable-debug-symbols
 ac_add_options --disable-maintenance-service
 ac_add_options --disable-crashreporter
 ac_add_options --disable-webrtc
