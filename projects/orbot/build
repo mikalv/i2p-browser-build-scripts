@@ -20,6 +20,16 @@ for p in $rootdir/*.patch
   do patch -p1 < $p
 done
 
+# Use Orbot's PT capabilities
+[% IF c("var/android-armv7") %]
+  arch=armeabi-v7a
+[% ELSE %]
+  arch=x86
+[% END %]
+obfs4dir=orbotservice/src/main/libs/$arch
+mkdir -p $obfs4dir
+mv external/pluto/bin/$arch/obfs4proxy $obfs4dir/obfs4proxy.so
+
 # Build Android Libraries and Apps
 $GRADLE_HOME/gradle-4.1/bin/gradle --offline assembleRelease -x lint
 
