@@ -1,9 +1,59 @@
+Tor Browser 8.5a9 -- March 19 2019
+ * All platforms
+   * Update Firefox to 60.6.0esr
+   * Update Torbutton to 2.1.5
+     * Bug 25658: Replace security slider with security level UI
+     * Bug 28628: Change onboarding Security panel to open new Security Level panel
+     * Bug 29440: Update about:tor when Tor Browser is updated
+     * Bug 27478: Improved Torbutton icons for dark theme
+     * Bug 29021: Tell NoScript it is running within Tor Browser
+     * Bug 29239: Don't ship the Torbutton .xpi on mobile
+     * Translations update
+   * Bug 29120: Enable media cache in memory
+   * Bug 29445: Enable support for enterprise policies
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.0.2-alpha
+     * Bug 29660: XMPP can not connect to SOCKS5 anymore
+   * Update OpenSSL to 1.0.2r
+   * Update Tor Launcher to 0.2.18.1
+     * Bug 29328: Account for Tor 0.4.0.x's revised bootstrap status reporting
+     * Bug 22402: Improve "For assistance" link
+     * Translations update
+   * Bug 25658+29554: Replace security slider with security level UI
+   * Bug 28885: notify users that update is downloading
+   * Bug 29180: MAR download stalls when about dialog is opened
+   * Bug 27485: Users are not taught how to open security-slider dialog
+   * Bug 27486: Avoid about:blank tabs when opening onboarding pages
+   * Bug 29440: Update about:tor when Tor Browser is updated
+   * Bug 23359: WebExtensions icons are not shown on first start
+   * Bug 28628: Change onboarding Security panel to open new Security Level panel
+ * Android
+   * Bug 28329: Design Tor Browser for Android configuration UI
+   * Bug 28802: Support PTs in Tor Browser for Android
+   * Bug 29794: Update TBA built-in bridges
+   * Bug 27210: Add support for x86 on Android
+   * Bug 29633: Don't ship pdnsd anymore
+   * Bug 28708: about:tor is not the default homepage after upgrade
+   * Bug 29626: Application name is now "Always-On Notifications"
+   * Bug 29467: Backport fix for arc4random_buf bustage
+ * Build System
+   * All platforms
+     * Bug 25876: Generate source tarballs during build
+     * Bug 28685: Set Build ID based on Tor Browser version
+     * Bug 29194: Set DEBIAN_FRONTEND=noninteractive
+   * Linux
+     * Bug 26323: Build 32bit Linux bundles on 64bit Debian Wheezy
+     * Bug 29758: Build firefox debug symbols for linux-i686
+   * Android
+     * Bug 29632: Use HTTPS for downloading Gradle
+
 Tor Browser 8.5a8 -- February 13 2019
  * All platforms
    * Update Firefox to 60.5.1esr
    * Update HTTPS Everywhere to 2019.1.31
    * Bug 29378: Remove 83.212.101.3 from default bridges
    * Bug 29349: Remove network.http.spdy.* overrides from meek helper user.js
+   * Bug 29327: TypeError: hostName is null on about:tor page
  * Build System
    * All Platforms
      * Bug 29235: Build our own version of python3.6 for HTTPS Everywhere
