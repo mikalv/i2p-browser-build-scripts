@@ -46,6 +46,7 @@ input_files:
   - filename: 0011-Bug-28051-Tell-Proguard-it-should-keep-an-unused-met.patch
   - filename: 0012-Bug-28051-Escape-the-apostrophe-correctly.patch
   - filename: 0013-Bug-28051-Add-a-notification-compatibility-class.patch
+  - filename: 0014-Bug-29794-Update-built-in-bridges.patch
   - filename: set_gradle_repo_to_local.patch
   - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
     name: gradle-dependencies
