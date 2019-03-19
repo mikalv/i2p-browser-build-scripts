@@ -1,4 +1,4 @@
-Tor Browser 8.5a9 -- March 19 2019
+Tor Browser 8.5a9 -- March 20 2019
  * All platforms
    * Update Firefox to 60.6.0esr
    * Update Torbutton to 2.1.5
@@ -32,6 +32,7 @@ Tor Browser 8.5a9 -- March 19 2019
    * Bug 28802: Support PTs in Tor Browser for Android
    * Bug 29794: Update TBA built-in bridges
    * Bug 27210: Add support for x86 on Android
+   * Bug 29809: Only ship tor binary for .apk architecture
    * Bug 29633: Don't ship pdnsd anymore
    * Bug 28708: about:tor is not the default homepage after upgrade
    * Bug 29626: Application name is now "Always-On Notifications"
@@ -42,7 +43,7 @@ Tor Browser 8.5a9 -- March 19 2019
      * Bug 28685: Set Build ID based on Tor Browser version
      * Bug 29194: Set DEBIAN_FRONTEND=noninteractive
    * Linux
-     * Bug 26323: Build 32bit Linux bundles on 64bit Debian Wheezy
+     * Bug 26323+29812: Build 32bit Linux bundles on 64bit Debian Wheezy
      * Bug 29758: Build firefox debug symbols for linux-i686
    * Android
      * Bug 29632: Use HTTPS for downloading Gradle
