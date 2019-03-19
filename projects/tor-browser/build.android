@@ -14,5 +14,15 @@ mv $rootdir/[% c('input_files_by_name/noscript') %] $ext_dir/{73a6fe31-595d-460b
 zip -d $apk META-INF/\*
 zip -r -X $apk $ext_dir
 
+zip -d $apk lib/armeabi/tor.so
+
+[% IF c("var/android-x86") %]
+    zip -d $apk lib/armeabi-v7a/tor.so
+[% END %]
+
+[% IF c("var/android-armv7") %]
+    zip -d $apk lib/x86/tor.so
+[% END %]
+
 # Sign a QA build. This apk is not a debug version and doesn't contain a debug flag in the manifest
 [% c("var/faketime") %] jarsigner -verbose -digestalg SHA1 -sigalg MD5withRSA -keystore $rootdir/android-qa.keystore -signedjar $qa_apk $apk androidqakey -storepass android -keypass android
