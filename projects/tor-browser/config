@@ -19,6 +19,9 @@ targets:
   linux-i686:
     var:
       mar_osname: linux32
+      arch_deps:
+        # Install libc6-i386 to be able to run 32bit mar tools (bug 29812)
+        - libc6-i386
   linux-x86_64:
     var:
       mar_osname: linux64
