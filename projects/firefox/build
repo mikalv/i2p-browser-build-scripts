@@ -153,6 +153,12 @@ fi
   patch -p1 < $rootdir/nsis-uninstall.patch
 [% END -%]
 
+# Backporting a sec-high bugfix to ESR 60, but making sure it is only applied to
+# mobile, as desktop ESR has not seen any testing with this mobile-related patch
+[% IF c("var/android") %]
+  patch -p1 < $rootdir/1527534.patch
+[% END -%]
+
 rm -f configure
 rm -f js/src/configure
 
