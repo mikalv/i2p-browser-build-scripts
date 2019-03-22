@@ -48,6 +48,18 @@ Tor Browser 8.5a9 -- March 20 2019
    * Android
      * Bug 29632: Use HTTPS for downloading Gradle
 
+Tor Browser 8.0.7 -- March 19 2019
+ * All platforms
+   * Update Firefox to 60.6.0esr
+   * Update Tor to 0.3.5.8
+     * Bug 29660: XMPP can not connect to SOCKS5 anymore
+   * Update Torbutton to 2.0.11
+     * Bug 29021: Tell NoScript it is running within Tor Browser
+ * Windows
+   * Bug 29081: Harden libwinpthread
+ * Linux
+   * Bug 27531: Add separate LD_LIBRARY_PATH for fteproxy
+
 Tor Browser 8.5a8 -- February 13 2019
  * All platforms
    * Update Firefox to 60.5.1esr
