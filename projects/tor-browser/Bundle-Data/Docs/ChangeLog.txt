@@ -1,3 +1,9 @@
+Tor Browser 8.5a10 -- March 24 2019
+ * All platforms
+   * Update Firefox to 60.6.1esr
+   * Update NoScript to 10.2.4
+     * Bug 29733: Work around Mozilla's bug 1532530
+
 Tor Browser 8.5a9 -- March 20 2019
  * All platforms
    * Update Firefox to 60.6.0esr
