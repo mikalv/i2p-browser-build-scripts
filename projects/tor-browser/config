@@ -32,12 +32,15 @@ targets:
         - genisoimage
         - faketime
   windows:
+    pre: |
+      # Bug 29868: jessie-backports don't exist anymore, so we download the
+      # package we need from snapshot.debian.org
+      # We can remove this when we switch to Stretch (bug 29307)
+      DEBIAN_FRONTEND=noninteractive dpkg -i python-future_*_all.deb
     var:
       arch_deps:
-        - python-future
-      pre_pkginst: |
-        # enable jessie-backports for python-future
-        echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
+        # python-configparser is required by python-future
+        - python-configparser
   windows-i686:
     var:
       mar_osname: win32
@@ -115,6 +118,13 @@ input_files:
   - name: python-pefile
     URL: https://files.pythonhosted.org/packages/7e/9b/f99171190f04cd23768547dd34533b4016bd582842f53cd9fe9585a74c74/pefile-2017.11.5.tar.gz
     sha256sum: 675c35ee0e1677db9e80d2f48d8a7ff2cf38e6207e8cd5e2a2c6d126db025854
+    enable: '[% c("var/windows") %]'
+  # Bug 29868: jessie-backports don't exist anymore, so we download the
+  # package we need from snapshot.debian.org
+  # We can remove this when we switch to Stretch (bug 29307)
+  - name: python-future
+    URL: https://snapshot.debian.org/archive/debian/20190104T031048Z/pool/main/p/python-future/python-future_0.15.2-4%7Ebpo8%2B1_all.deb
+    sha256sum: da39bbc41a6143f68eb7b8d774aad8fe2483947c4e567c9b27f6a8455981450d
     enable: '[% c("var/windows") %]'
   # To generate a new keystore, see how-to-generate-keystore.txt
   - filename: android-qa.keystore
