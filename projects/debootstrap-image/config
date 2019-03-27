@@ -76,30 +76,19 @@ targets:
         suite: jessie
         arch: amd64
 
-  jessie-i386:
-    var:
-      minimal_apt_version: 1.0.9.8.5
-      # https://lists.debian.org/debian-lts-announce/2019/01/msg00014.html
-      apt_packages_baseurl: http://security.debian.org/debian-security/pool/updates/main/a/apt
-      apt_package_filename: apt_1.0.9.8.5_i386.deb
-      apt_package_sha256sum: 13c230e9c544b1e67a8da413046bf1728526372170533b1a23e70cc99c40a228
-      apt_utils_package_filename: apt-utils_1.0.9.8.5_i386.deb
-      apt_utils_package_sha256sum: 1a74b12c8bb6b3968a721f3aa96739073e4fe2ced9302792c533e21535bc9cf4
-      libapt_inst_package_filename: libapt-inst1.5_1.0.9.8.5_i386.deb
-      libapt_inst_package_sha256sum: 5791661dd4ade72b61086fefdc209bd1f76ac7b7c812d6d4ba951b1a6232f0b9
-      libapt_pkg_package_filename: libapt-pkg4.12_1.0.9.8.5_i386.deb
-      libapt_pkg_package_sha256sum: 201b6cf4625ed175e6a024ac1f7ca6c526ca79d859753c125b02cd69e26c349d
-
-      container:
-        suite: jessie
-        arch: i386
-
   stretch-amd64:
     var:
       minimal_apt_version: 1.4.9
       container:
         suite: stretch
         arch: amd64
+
+  stretch-i386:
+    var:
+      minimal_apt_version: 1.4.9
+      container:
+        suite: stretch
+        arch: i386
 
 input_files:
   - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'

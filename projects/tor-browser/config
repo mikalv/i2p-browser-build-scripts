@@ -35,9 +35,6 @@ targets:
     var:
       arch_deps:
         - python-future
-      pre_pkginst: |
-        # enable jessie-backports for python-future
-        echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
   windows-i686:
     var:
       mar_osname: win32
