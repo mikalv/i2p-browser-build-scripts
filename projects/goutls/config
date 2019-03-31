@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 git_url: https://gitlab.com/yawning/utls.git
-version: 0.0.9-2
+version: 0.0.10-1
 git_hash: 'v[% c("version") %]'
 tag_gpg_id: 1
 gpg_keyring: yawning.gpg
@@ -15,6 +15,7 @@ var:
   go_lib_deps:
     - goxcrypto
     - gocompress
+    - gobsaes
 
 input_files:
   - project: container-image
@@ -24,3 +25,5 @@ input_files:
     project: goxcrypto
   - name: gocompress
     project: gocompress
+  - name: gobsaes
+    project: gobsaes
