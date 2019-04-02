@@ -81,6 +81,7 @@ name to the makefile target:
   $ make nightly-windows-i686
   $ make nightly-osx-x86_64
   $ make nightly-android-armv7
+  $ make nightly-android-x86
 
 When you want to quickly do a build to test a change, you can use the
 testbuild makefile target, and find the build in the testbuild directory.

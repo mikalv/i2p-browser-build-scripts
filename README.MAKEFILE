@@ -7,7 +7,8 @@ release
 Build Tor Browser for the release channel, for all supported platforms.
 The resulting build can be found in directory release/$version.
 
-release-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+release-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+         android-x86}
 -----------------------------------------------------------------------
 Same as release, for the selected platform only.
 
@@ -16,7 +17,8 @@ alpha
 Build Tor Browser for the alpha channel, for all supported platforms.
 The resulting build can be found in directory alpha/$version.
 
-alpha-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+alpha-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+       android-x86}
 ---------------------------------------------------------------------
 Same as alpha, for the selected platform only.
 
@@ -29,7 +31,8 @@ components.
 
 The resulting build can be found in directory nightly/$date
 
-nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+         android-x86}
 -----------------------------------------------------------------------
 Same as nightly, for the selected platform only.
 
@@ -39,7 +42,8 @@ Build Tor Browser for the alpha channel, for all supported platforms.
 This is the same as 'make alpha', but the output directory is different.
 The resulting build can be found in directory alpha_nightly/$date
 
-alpha_nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+alpha_nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+               android-x86}
 -----------------------------------------------------------------------------
 The same as alpha_nightly, for the selected platform only.
 
