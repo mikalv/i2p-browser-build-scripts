@@ -6,6 +6,7 @@ var:
   signed_status: unsigned
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
   publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/torbrowser_build") %]'
+  containers_target: with_containers
 
 targets:
   torbrowser-all:
@@ -85,6 +86,10 @@ targets:
       build_target: torbrowser-testbuild
       publish_dir: ''
 
+  no_containers:
+    var:
+      containers_target: no_containers
+
   signed:
     var:
       signed_status: signed
@@ -100,6 +105,7 @@ input_files:
    project: tor-browser
    enable: '[% c("var/torbrowser-android-armv7") %]'
    target:
+     - '[% c("var/containers_target") %]'
      - '[% c("var/build_target") %]'
      - torbrowser-android-armv7
 
@@ -107,6 +113,7 @@ input_files:
    project: tor-browser
    enable: '[% c("var/torbrowser-android-x86") %]'
    target:
+     - '[% c("var/containers_target") %]'
      - '[% c("var/build_target") %]'
      - torbrowser-android-x86
 

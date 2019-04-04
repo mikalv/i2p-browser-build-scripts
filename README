@@ -182,6 +182,35 @@ of files and containers that would be removed without doing it, you can
 use 'make clean-dry-run'.
 
 
+Building without containers (Android builds only)
+-------------------------------------------------
+
+By default the build is done inside containers. Adding the no_containers
+target will disable the use of containers. The following commands can
+be used to build the alpha version for android-armv7 and android-x86:
+
+  ./rbm/rbm build release --target no_containers --target testbuild \
+                          --target torbrowser-android-armv7
+  ./rbm/rbm build release --target no_containers --target testbuild \
+                          --target torbrowser-android-x86
+
+Note: the logs will still show the use and creation of a container image
+called "containers_disabled". This is due to the way we disable the use
+of containers: the container-image project is still called, but it will
+just create an empty file instead of a real container image.
+
+The build without containers is currently only supported for the Android
+builds, and will require that you run Debian Stretch and install build
+dependencies for all the components that are built. This can be done
+with the following command:
+
+  # apt-get install build-essential python automake libtool zip unzip
+            autoconf2.13 openjdk-8-jdk gettext-base autotools-dev \
+            automake autoconf libtool autopoint libssl-dev \
+            pkg-config zlib1g-dev libparallel-forkmanager-perl \
+            libfile-slurp-perl bzip2 xz-utils apksigner
+
+
 Common Build Errors
 -------------------
 
