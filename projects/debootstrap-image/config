@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %]-[% c("version") %].tar.gz'
-version: 1
+version: 2
 pkg_type: build
 
 var:
@@ -56,6 +56,7 @@ targets:
       container:
         suite: wheezy
         arch: amd64
+        debootstrap_mirror: "http://archive.debian.org/debian/"
 
   jessie-amd64:
     var:
