@@ -15,7 +15,9 @@ var:
 
 targets:
   nightly:
-    git_hash: master
+    # Nightly version of obfs4 requires a more recent version of goxnet
+    # See bug 29193
+    git_hash: ed066c81e75eba56dd9bd2139ade88125b855585
 
 input_files:
   - project: container-image

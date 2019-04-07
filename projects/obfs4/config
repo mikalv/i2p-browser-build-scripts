@@ -1,0 +1,40 @@
+# vim: filetype=yaml sw=2
+version: 0.0.7
+git_url: https://git.torproject.org/pluggable-transports/obfs4.git
+git_hash: 'obfs4proxy-[% c("version") %]'
+tag_gpg_id: 1
+gpg_keyring: yawning.gpg
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+
+targets:
+  nightly:
+    git_hash: master
+    version: '[% c("abbrev") %]'
+    tag_gpg_id: 0
+
+input_files:
+  - project: container-image
+  - name: go
+    project: go
+  - name: goptlib
+    project: goptlib
+  - name: ed25519
+    project: ed25519
+  - name: siphash
+    project: siphash
+  - name: uniuri
+    project: uniuri
+  - name: goxcrypto
+    project: goxcrypto
+  - name: goxnet
+    project: goxnet
+  - name: goutls
+    project: goutls
+    enable: '[% c("var/nightly") %]'
+  - name: goxtext
+    project: goxtext
+    enable: '[% c("var/nightly") %]'

@@ -1,5 +1,6 @@
 # vim: filetype=yaml sw=2
-filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %].tar.gz'
+filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %]-[% c("version") %].tar.gz'
+version: 1
 pkg_type: build
 
 var:
@@ -99,6 +100,7 @@ targets:
         suite: jessie
         arch: i386
 
+  # Still needed to fix faketime issues in tor-browser for Android, see: #29453
   buster-amd64:
     var:
       minimal_apt_version: '1.8.0~alpha3.1'

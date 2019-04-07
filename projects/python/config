@@ -1,0 +1,25 @@
+# vim: filetype=yaml sw=2
+version: 3.6.8
+filename: 'python-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("var/build_id") %].tar.gz'
+var:
+  container:
+    use_container: 1
+  deps:
+    - xz-utils
+    - build-essential
+    - python-all
+    - zlib1g-dev
+    - libssl-dev
+
+  setup: |
+    mkdir -p /var/tmp/dist
+    tar -C /var/tmp/dist -xf $rootdir/[% c("python_tarfile") %]
+    export PATH=/var/tmp/dist/python/bin:"$PATH"
+
+input_files:
+  - project: container-image
+  - name: python
+    URL: 'https://www.python.org/ftp/python/[% c("version") %]/Python-[% c("version") %].tar.xz'
+    gpg_keyring: python.gpg
+    sig_ext: asc
+    file_gpg_id: 1

@@ -4,11 +4,13 @@ filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/buil
 
 var:
   ff_version: '[% pc("firefox", "var/firefox_version") %]'
-  ff_build: build2
-  ff_arch: linux-i686
+  ff_build: build1
   input_filename: 'dl-langpack-[% c("var/ff_arch") %]-[% c("version") %]'
 
 targets:
+  linux:
+    var:
+      ff_arch: 'linux-[% c("arch") %]'
   windows-i686:
     var:
       ff_arch: win32

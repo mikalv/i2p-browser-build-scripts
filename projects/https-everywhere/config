@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2019.1.7
+version: 2019.1.31
 git_url: https://git.torproject.org/https-everywhere.git
 git_hash: '[% c("version") %]'
 git_submodule: 1
@@ -10,18 +10,17 @@ var:
   # HTTPS Everywhere is expected to be the same on all platforms. To avoid
   # building the same thing 4 times, using 4 different container images
   # (each one with a different suite or architecture), we set the container
-  # to buster/amd64 for all platforms. This allows us to create only one
+  # to stretch/amd64 for all platforms. This allows us to create only one
   # container image, and also build the extension only one time as the
   # filename does not contain the platform, and var/build_id should be
   # the same since there is now nothing platform specific in the build
   # inputs. This allows us to save a little time and disk space.
   container:
     use_container: 1
-    suite: buster
+    suite: stretch
     arch: amd64
   deps:
     - git
-    - python3.6
     - libxslt1.1
     - libxml2-utils
     - sqlite3
@@ -31,3 +30,7 @@ var:
 
 input_files:
   - project: container-image
+  - project: python
+    name: python
+    target:
+      - common-stretch
