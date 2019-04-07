@@ -166,3 +166,6 @@ input_files:
   - project: firefox-locale-bundle
     name: firefox-locale-bundle
     enable: '[% c("var/android") %]'
+  - project: tba-translation
+    name: tba-translation
+    enable: '[% c("var/android") %]'

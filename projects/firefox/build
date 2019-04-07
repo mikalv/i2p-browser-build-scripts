@@ -108,9 +108,10 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
   cp -r $gradle_repo/guardianproject/gpmaven/master/* $gradle_repo
   # Move orbot files so they will be included in the apk during the build
   cp $rootdir/[% c('input_files_by_name/orbot') %]/* mobile/android/app
-  # Prepare building the multi-locale .apk
+  # Prepare building the multi-locale .apk including our own strings
   mkdir -p /var/tmp/dist/locales
   tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/tba-translation') %]
 [% END %]
 
 eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] [% c("var/torbrowser_version") %])
@@ -163,6 +164,8 @@ rm -f js/src/configure
   # Building a multi-locale .apk
   [% FOREACH lang = c('var/locales') %]
     [% SET lang = tmpl(lang) %]
+    # Copy our torbrowser_strings.dtd at the right place
+    cp /var/tmp/dist/tba-translation/[% lang %]/torbrowser_strings.dtd /var/tmp/dist/locales/[% lang %]/mobile/android/base/
     ./mach build chrome-[% lang %];
   [% END %]
   export MOZ_CHROME_MULTILOCALE='[% tmpl(c('var/locales').join(' ')) %]'
