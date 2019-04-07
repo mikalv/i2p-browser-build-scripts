@@ -6,7 +6,7 @@ fi
 temp_dir=$(mktemp -d)
 cd $temp_dir
 unzip $omnija_file
-$EDITOR $(pwd)
+$EDITOR $temp_dir
 rm -f $omnija_file
 zip -qr9XD $omnija_file *
 cd -
