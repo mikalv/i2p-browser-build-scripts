@@ -59,7 +59,11 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
   # See: https://github.com/rust-lang/rust/issues/12859 for discussion about
   # that and https://github.com/rust-lang/rust/pull/49633 for a newer attempt to
   # fix this problem. We apply the patch from neersighted.
-  patch -p1 < $rootdir/unwind.patch
+  [% IF !c("input_file_var/unwind_128") %]
+    patch -p1 < $rootdir/unwind.patch
+  [% ELSE %]
+    patch -p1 < $rootdir/unwind_128.patch
+  [% END %]
 [% END %]
 
 [% IF c("var/android") %]

@@ -1,7 +1,9 @@
 # vim: filetype=yaml sw=2
-version: '[% c("abbrev") %]'
-git_url: https://github.com/refraction-networking/utls
-git_hash: a89e7e6da482a5a0db02578fc606ace9ccfbea62
+git_url: https://gitlab.com/yawning/utls.git
+version: 0.0.9-2
+git_hash: 'v[% c("version") %]'
+tag_gpg_id: 1
+gpg_keyring: yawning.gpg
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 build: '[% c("projects/go/var/build_go_lib") %]'
@@ -9,9 +11,10 @@ build: '[% c("projects/go/var/build_go_lib") %]'
 var:
   container:
     use_container: 1
-  go_lib: github.com/refraction-networking/utls
+  go_lib: gitlab.com/yawning/utls.git
   go_lib_deps:
     - goxcrypto
+    - gocompress
 
 input_files:
   - project: container-image
@@ -19,3 +22,5 @@ input_files:
     project: go
   - name: goxcrypto
     project: goxcrypto
+  - name: gocompress
+    project: gocompress
