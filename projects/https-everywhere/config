@@ -32,5 +32,5 @@ input_files:
   - project: container-image
   - project: python
     name: python
-    target:
+    target_prepend:
       - common-stretch
