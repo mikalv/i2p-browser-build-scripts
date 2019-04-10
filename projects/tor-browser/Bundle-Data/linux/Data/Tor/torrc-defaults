@@ -12,3 +12,4 @@ AvoidDiskWrites 1
 # (stderr|stdout|syslog|file FILENAME).
 Log notice stdout
 CookieAuthentication 1
+DormantCanceledByStartup 1
