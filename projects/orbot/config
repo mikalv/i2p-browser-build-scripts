@@ -3,7 +3,6 @@ version: '[% c("abbrev") %]'
 filename: 'orbot-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
 git_hash: '[% c("var/orbot_version") %]-tor-[% c("var/tor_version") %]'
 git_url: https://git.torproject.org/orbot.git
-git_submodule: 1
 
 var:
   tor_version: 0.3.4.9
@@ -13,15 +12,10 @@ var:
     - autotools-dev
     - unzip
     - zip
-    - automake
-    - autoconf
-    - libtool
-    - gettext-base
-    - autopoint
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 1
+  gradle_dependencies_version: 2
 
 targets:
   android:
@@ -33,6 +27,10 @@ input_files:
   - project: container-image
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
+  - project: tor-android-service
+    name: tor-android-service
+  - project: tor-onion-proxy-library
+    name: topl
   - filename: 0001-Bug-28051-Build-Orbot-as-a-library.patch
   - filename: 0002-Bug-28051-Exclude-the-AppUpdater.patch
   - filename: 0003-Bug-28051-Delete-the-Onboarding-activity.patch
@@ -47,6 +45,7 @@ input_files:
   - filename: 0012-Bug-28051-Escape-the-apostrophe-correctly.patch
   - filename: 0013-Bug-28051-Add-a-notification-compatibility-class.patch
   - filename: 0014-Bug-29794-Update-built-in-bridges.patch
+  - filename: 0015-dependencies.patch
   - filename: set_gradle_repo_to_local.patch
   - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
     name: gradle-dependencies
