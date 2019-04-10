@@ -12,16 +12,25 @@ mv $rootdir/[% c('input_files_by_name/noscript') %] $ext_dir/{73a6fe31-595d-460b
 [% c("var/touch") %] $ext_dir $ext_dir/*
 
 zip -d $apk META-INF/\*
-zip -r -X $apk $ext_dir
+[% c('zip', {
+        zip_src => [ '$ext_dir' ],
+        zip_args => '$apk',
+    }) %]
 unzip $apk lib/*
 zip -d $apk lib/\*
 
 [% IF c("var/android-x86") %]
-    zip $apk lib/x86/*
+    [% c('zip', {
+          zip_src => [ 'lib/x86/*' ],
+          zip_args => '$apk',
+       }) %]
 [% END %]
 
 [% IF c("var/android-armv7") %]
-    zip $apk lib/armeabi-v7a/*
+    [% c('zip', {
+          zip_src => [ 'lib/armeabi-v7a/*' ],
+          zip_args => '$apk',
+       }) %]
 [% END %]
 
 rm -fR lib
