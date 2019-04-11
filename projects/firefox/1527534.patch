@@ -1,0 +1,139 @@
+From dcd5a0e59bef209aa8301a427b749830876cdada Mon Sep 17 00:00:00 2001
+From: Jeff Gilbert <jgilbert@mozilla.com>
+Date: Tue, 19 Feb 2019 15:43:39 -0800
+Subject: [PATCH] Bug 1527534 - Reuse LoadApitraceLibrary. r=lsalzman a=lizzard
+
+Differential Revision: https://phabricator.services.mozilla.com/D20418
+
+diff --git a/gfx/gl/GLContextProviderEGL.cpp b/gfx/gl/GLContextProviderEGL.cpp
+index d91d03aee6a9..f4d8c1f80176 100644
+--- a/gfx/gl/GLContextProviderEGL.cpp
++++ b/gfx/gl/GLContextProviderEGL.cpp
+@@ -265,11 +265,8 @@ GLContextEGL::~GLContextEGL() {
+ }
+ 
+ bool GLContextEGL::Init() {
+-#if defined(ANDROID)
+-  // We can't use LoadApitraceLibrary here because the GLContext
+-  // expects its own handle to the GL library
+-  if (!OpenLibrary(APITRACE_LIB))
+-#endif
++  mLibrary = LoadApitraceLibrary();
++  if (!mLibrary) {
+     if (!OpenLibrary(GLES2_LIB)) {
+ #if defined(XP_UNIX)
+       if (!OpenLibrary(GLES2_LIB2)) {
+@@ -278,6 +275,7 @@ bool GLContextEGL::Init() {
+       }
+ #endif
+     }
++  }
+ 
+   SetupLookupFunction();
+   if (!InitWithPrefix("gl", true)) return false;
+diff --git a/gfx/gl/GLLibraryEGL.cpp b/gfx/gl/GLLibraryEGL.cpp
+index fe4bd9811949..ef693e283968 100644
+--- a/gfx/gl/GLLibraryEGL.cpp
++++ b/gfx/gl/GLLibraryEGL.cpp
+@@ -63,9 +63,18 @@ static const char* sEGLExtensionNames[] = {
+     "EGL_ANGLE_device_creation_d3d11",
+ };
+ 
+-#if defined(ANDROID)
++PRLibrary* LoadApitraceLibrary() {
++  const char* path = nullptr;
++
++#ifdef ANDROID
++  // We only need to explicitly dlopen egltrace
++  // on android as we can use LD_PRELOAD or other tricks
++  // on other platforms. We look for it in /data/local
++  // as that's writeable by all users.
++  path = "/data/local/tmp/egltrace.so";
++#endif
++  if (!path) return nullptr;
+ 
+-static PRLibrary* LoadApitraceLibrary() {
+   // Initialization of gfx prefs here is only needed during the unit tests...
+   gfxPrefs::GetSingleton();
+   if (!gfxPrefs::UseApitrace()) {
+@@ -73,7 +82,6 @@ static PRLibrary* LoadApitraceLibrary() {
+   }
+ 
+   static PRLibrary* sApitraceLibrary = nullptr;
+-
+   if (sApitraceLibrary) return sApitraceLibrary;
+ 
+   nsAutoCString logFile;
+@@ -87,20 +95,19 @@ static PRLibrary* LoadApitraceLibrary() {
+   nsAutoCString logPath;
+   logPath.AppendPrintf("%s/%s", getenv("GRE_HOME"), logFile.get());
+ 
++#ifndef XP_WIN  // Windows is missing setenv and forbids PR_LoadLibrary.
+   // apitrace uses the TRACE_FILE environment variable to determine where
+   // to log trace output to
+   printf_stderr("Logging GL tracing output to %s", logPath.get());
+   setenv("TRACE_FILE", logPath.get(), false);
+ 
+-  printf_stderr("Attempting load of %s\n", APITRACE_LIB);
+-
+-  sApitraceLibrary = PR_LoadLibrary(APITRACE_LIB);
++  printf_stderr("Attempting load of %s\n", path);
++  sApitraceLibrary = PR_LoadLibrary(path);
++#endif
+ 
+   return sApitraceLibrary;
+ }
+ 
+-#endif  // ANDROID
+-
+ #ifdef XP_WIN
+ // see the comment in GLLibraryEGL::EnsureInitialized() for the rationale here.
+ static PRLibrary* LoadLibraryForEGLOnWindows(const nsAString& filename) {
+diff --git a/gfx/gl/GLLibraryEGL.h b/gfx/gl/GLLibraryEGL.h
+index 069a2f0908d7..3f200bf76b3f 100644
+--- a/gfx/gl/GLLibraryEGL.h
++++ b/gfx/gl/GLLibraryEGL.h
+@@ -18,18 +18,6 @@
+ #include <bitset>
+ #include <vector>
+ 
+-#ifdef ANDROID
+-// We only need to explicitly dlopen egltrace
+-// on android as we can use LD_PRELOAD or other tricks
+-// on other platforms. We look for it in /data/local
+-// as that's writeable by all users
+-//
+-// This should really go in GLLibraryEGL.cpp but we currently reference
+-// APITRACE_LIB in GLContextProviderEGL.cpp. Further refactoring
+-// will come in subsequent patches on Bug 732865
+-#define APITRACE_LIB "/data/local/tmp/egltrace.so"
+-#endif
+-
+ #if defined(MOZ_X11)
+ #define EGL_DEFAULT_DISPLAY ((EGLNativeDisplayType)mozilla::DefaultXDisplay())
+ #else
+@@ -49,6 +37,7 @@ class DataSourceSurface;
+ namespace gl {
+ 
+ class GLContext;
++PRLibrary* LoadApitraceLibrary();
+ 
+ void BeforeEGLCall(const char* funcName);
+ void AfterEGLCall(const char* funcName);
+diff --git a/gfx/thebes/gfxPrefs.h b/gfx/thebes/gfxPrefs.h
+index b2e094672b59..fae5bec1e78e 100644
+--- a/gfx/thebes/gfxPrefs.h
++++ b/gfx/thebes/gfxPrefs.h
+@@ -433,9 +433,7 @@ class gfxPrefs final {
+                 SmoothScrollMSDPhysicsRegularSpringConstant, int32_t, 1000);
+ 
+   DECL_GFX_PREF(Once, "gfx.android.rgb16.force",               AndroidRGB16Force, bool, false);
+-#if defined(ANDROID)
+   DECL_GFX_PREF(Once, "gfx.apitrace.enabled",                  UseApitrace, bool, false);
+-#endif
+ #if defined(RELEASE_OR_BETA)
+   // "Skip" means this is locked to the default value in beta and release.
+   DECL_GFX_PREF(Skip, "gfx.blocklist.all",                     BlocklistAll, int32_t, 0);
+-- 
+2.20.1
+
