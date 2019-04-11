@@ -12,7 +12,7 @@ var:
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   torbrowser_branch: 8.5
   torbrowser_update_channel: alpha
-  branding_directory: browser/branding/alpha
+  branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/alpha'
   copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'
   deps:
     - build-essential
@@ -44,14 +44,14 @@ targets:
   release:
     var:
       torbrowser_update_channel: release
-      branding_directory: browser/branding/official
+      branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/official'
 
   nightly:
     git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1'
     tag_gpg_id: 0
     var:
       torbrowser_update_channel: default
-      branding_directory: browser/branding/nightly
+      branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/nightly'
 
   android:
     var:
