@@ -1,0 +1,31 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+git_hash: be7206bba357bda11455b012bfcc0d42cc16c99d
+git_url: https://github.com/sisbell/Tor_Onion_Proxy_Library.git
+git_submodule: 1
+
+var:
+  deps:
+    - build-essential
+    - unzip
+    - zip
+  container:
+    use_container: 1
+  # this should be updated when the list of gradle dependencies is changed
+  gradle_dependencies_version: 1
+
+targets:
+  android:
+    var:
+      arch_deps:
+        - openjdk-8-jdk
+
+input_files:
+  - project: container-image
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+  - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
+    name: gradle-dependencies
+    exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
+  - filename: maven-repo.patch

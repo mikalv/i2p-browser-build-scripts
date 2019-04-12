@@ -1,0 +1,35 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 1549581..ab919cf 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -8,6 +8,7 @@ buildscript {
+         mavenCentral()
+         google()
+         jcenter()
++        maven { url System.getenv("GRADLE_MAVEN_REPO") }
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:${androidplugin}"
+diff --git a/android_tor_installer/build.gradle b/android_tor_installer/build.gradle
+index d2c02cf..d846254 100644
+--- a/android_tor_installer/build.gradle
++++ b/android_tor_installer/build.gradle
+@@ -8,6 +8,7 @@ buildscript {
+         mavenCentral()
+         google()
+         jcenter()
++        maven { url System.getenv("GRADLE_MAVEN_REPO") }
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:${androidplugin}"
+diff --git a/build.gradle b/build.gradle
+index 43b9e13..8087ab7 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -9,6 +9,7 @@ subprojects {
+     mavenLocal()
+     mavenCentral()
+     jcenter()
++    maven { url System.getenv("GRADLE_MAVEN_REPO") }
+   }
+ }
