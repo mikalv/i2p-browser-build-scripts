@@ -1,3 +1,49 @@
+Tor Browser 8.5a11 -- April 16 2019
+ * All platforms
+   * Update Torbutton to 2.1.6
+     * Bug 22538+22513: Fix new circuit button for error pages
+     * Bug 29825: Intelligently add new Security Level button to taskbar
+     * Bug 29903: No WebGL click-to-play on the standard security level
+     * Bug 27484: Improve navigation within onboarding (strings)
+     * Bug 29768: Introduce new features to users (strings)
+     * Bug 29943: Use locales in AB-CD scheme to match Mozilla
+     * Bug 26498: Add locale: es-AR
+     * Bug 29973: Remove remaining stopOpenSecuritySettingsObserver() pieces
+     * Translations update
+   * Update NoScript to 10.6.1 XXX
+     * Bug 29872: XSS popup with DuckDuckGo search on about:tor
+   * Bug 29916: Make sure enterprise policies are disabled
+   * Bug 26498: Add locale: es-AR
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.0.4-rc
+   * Update Tor Launcher to 0.2.18.2
+     * Bug 26498: Add locale es-AR
+     * Translations update
+   * Bug 29768: Introduce new features to users
+   * Bug 27484: Improve navigation within onboarding
+   * Bug 25658: Improve toolbar layout for new security settings
+ * Windows
+   * Bug 27503: Improve screen reader accessibility
+ * Android
+   * Bug 27609 (and child bugs): Use Tor Onion Proxy Library
+   * Bug 29312: Bump Tor to 0.3.5.8
+   * Bug 29859: Disable HLS support for now
+   * Bug 28622: Update Tor Browser icon for mobile
+   * Bug 29238: Prevent crash on Android after update
+   * Bug 29982: Add additional safe guards against crashes during bootstrap
+   * Bug 29906: Fix crash on older devices due to missing API
+   * Bug 29858: Load onboarding panels after bootstrapping is done
+   * Bug 28329: Improve bootstrapping experience
+   * Bug 30016: Localize bootstrap-/bridge-related strings for mobile
+ * Build System
+   * All platforms
+     * Bug 29868: Fix installation of python-future package
+     * Bug 25623: Disable network during build
+   * Linux
+     * Bug 29966: Use archive.debian.org for Wheezy images
+   * Android:
+     * Bug 30089: Use apksigner instead of jarsigner
+
 Tor Browser 8.5a10 -- March 24 2019
  * All platforms
    * Update Firefox to 60.6.1esr
