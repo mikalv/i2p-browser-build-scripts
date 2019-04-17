@@ -10,7 +10,7 @@ Tor Browser 8.5a11 -- April 16 2019
      * Bug 26498: Add locale: es-AR
      * Bug 29973: Remove remaining stopOpenSecuritySettingsObserver() pieces
      * Translations update
-   * Update NoScript to 10.6.1 XXX
+   * Update NoScript to 10.6.1
      * Bug 29872: XSS popup with DuckDuckGo search on about:tor
    * Bug 29916: Make sure enterprise policies are disabled
    * Bug 26498: Add locale: es-AR
@@ -41,7 +41,7 @@ Tor Browser 8.5a11 -- April 16 2019
      * Bug 25623: Disable network during build
    * Linux
      * Bug 29966: Use archive.debian.org for Wheezy images
-   * Android:
+   * Android
      * Bug 30089: Use apksigner instead of jarsigner
 
 Tor Browser 8.5a10 -- March 24 2019
