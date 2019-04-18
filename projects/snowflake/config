@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://git.torproject.org/pluggable-transports/snowflake.git
-git_hash: 6077141f4affdab9b7ce97a9b1c6859825eaaa29
+git_hash: d11e55aabe3753dbddca18ae084c80ad09e282d3
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 var:
