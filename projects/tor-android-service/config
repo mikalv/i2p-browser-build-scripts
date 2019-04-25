@@ -11,7 +11,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 1
+  gradle_dependencies_version: 2
 
 targets:
   android:

@@ -7,6 +7,8 @@ export GRADLE_MAVEN_REPO="file://$gradle_repo"
 # The download script assumes artifact package name is the complete URL path.
 # In some cases this is incorrect, so copy those artifacts to correct location
 cp -r $gradle_repo/dl/android/maven2/* $gradle_repo
+cp -r $gradle_repo/plugins-release/* $gradle_repo
+cp -r $gradle_repo/maven2/* $gradle_repo
 
 mkdir -p /var/tmp/build $output_dir
 

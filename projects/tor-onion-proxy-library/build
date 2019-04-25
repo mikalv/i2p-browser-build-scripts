@@ -9,6 +9,7 @@ export GRADLE_MAVEN_REPO="file://$gradle_repo"
 cp -r $gradle_repo/guardianproject/gpmaven/master/* $gradle_repo
 cp -r $gradle_repo/dl/android/maven2/* $gradle_repo
 cp -r $gradle_repo/maven2/* $gradle_repo
+cp -r $gradle_repo/plugins-release/* $gradle_repo
 
 mkdir -p /var/tmp/build $output_dir
 

@@ -24,7 +24,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 4
+  gradle_dependencies_version: 5
   # used by projects/firefox-locale-bundle
   l10n-changesets.json: '[% exec("cat mobile/locales/l10n-changesets.json") %]'
 

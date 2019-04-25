@@ -57,7 +57,7 @@ d0f2e16d054e8bb97add9ca26525eb2346f692809fcd2a28787da8ceb3c35ee8 | https://repo1
 86bf301a20ad0cd0a391e22a52e6fbf90575c096ff83233fa9fd0d52b3219121 | https://dl.google.com/dl/android/maven2/android/arch/lifecycle/common/1.0.0/common-1.0.0.jar
 536c45e8804de01321c478cfb994377f81f1e32897636616fa21b877fd137c6f | https://repo1.maven.org/maven2/org/eclipse/jdt/core/compiler/ecj/4.6.1/ecj-4.6.1.pom
 d49d179f707d3f3a00b2a7d36136b54aa8d44fa22770703cd82fe52fb39e22eb | https://repo1.maven.org/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom
-ec3a75bebddbf19ff56a281cf5d1ad146169dcaa0e69d7b14f4aaba2e7775f34 | https://jcenter.bintray.com/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.jar
+ec3a75bebddbf19ff56a281cf5d1ad146169dcaa0e69d7b14f4aaba2e7775f34 | https://repo.spring.io/plugins-release/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.jar
 953b116521a73575eee990e3f2c36a892fb088bb2d9a3027c82193cb7a013ef7 | https://repo1.maven.org/maven2/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom
 fb40265f982548212ff82e362e59732b2187ec6f0d80182885c14ef1f982827a | https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom
 f056ed61a281b3e230a63e4abf510c0d2f9bf7ff513cacb65a29538ba90ab177 | https://repo1.maven.org/maven2/org/jacoco/org.jacoco.build/0.7.4.201502262128/org.jacoco.build-0.7.4.201502262128.pom
@@ -130,7 +130,7 @@ e7a7a5810829dee924cec654a569a48301fcedd487f7b88710e816d127385f51 | https://dl.go
 ecd46dc69f5212b35eb21d64db68072f956c000083030ff53e09d1f81487c580 | https://dl.google.com/dl/android/maven2/com/android/tools/external/org-jetbrains/uast/26.0.1/uast-26.0.1.jar
 2ec779741f72313fc6623d0f0e42b2450dd2425dd6ad319697e658aae9ae177b | https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.0.1/dvlib-26.0.1.pom
 e4e34e5d02bd102e8d39ddbc29f9ead8a15a61e367993d02238196ac48509ad8 | https://dl.google.com/dl/android/maven2/android/arch/lifecycle/runtime/1.0.0/runtime-1.0.0.aar
-1917871c8deb468307a584680c87a44572f5a8b0b98c6d397fc0f5f86596dbe7 | https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar
+1917871c8deb468307a584680c87a44572f5a8b0b98c6d397fc0f5f86596dbe7 | https://repo.spring.io/plugins-release/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.jar
 a9660f8b64b74f474226c70a50187d8efcac448d32ce97756f408975aa52cdaa | https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.0.1/sdk-common-26.0.1.pom
 0ee5f691cbbedb69969b48374d27412f821959af5d2dffbabc424b607cdbbdf6 | https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-reflect/1.1.3-2/kotlin-reflect-1.1.3-2.jar
 e824935c264b041e847b67808aee704f8cd47d698203259057e42f473e1f6f30 | https://dl.google.com/dl/android/maven2/com/android/databinding/compilerCommon/3.0.1/compilerCommon-3.0.1.jar
@@ -183,11 +183,11 @@ a06e35d3fff3a6b813d94894ebf3e498f9540c864c5b39ae783907e3a6c72889 | https://repo1
 8d4006178fedef4255797b806167cf4a6774158eedabf96420693afbbd00fee3 | https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.0.1/protos-26.0.1.pom
 2994a7eb78f2710bd3d3bfb639b2c94e219cedac0d4d084d516e78c16dddecf6 | https://repo1.maven.org/maven2/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar
 bfadb3b40f65dd6de1666d6b29f8bb54031396c76eeef4146cf9f28255f8bf33 | https://repo1.maven.org/maven2/com/google/guava/guava/22.0/guava-22.0.pom
-3369726ca2b0e3736c741ff3c22e06f707a1007ff20ccc5b5ba5d0d9a01ead30 | https://jcenter.bintray.com/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.pom
+3369726ca2b0e3736c741ff3c22e06f707a1007ff20ccc5b5ba5d0d9a01ead30 | https://repo.spring.io/plugins-release/net/freehaven/tor/control/jtorctl/0.2/jtorctl-0.2.pom
 949246020c08a0543389082af38268cdce4ee7a7a8218097369b9845752866cb | https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-checks/26.0.1/lint-checks-26.0.1.jar
 6d079b5abf39f323baaccc68463beef5cf2e9574f333dd749ae96753f00eb205 | https://repo1.maven.org/maven2/org/ow2/asm/asm/5.1/asm-5.1.pom
 82f538051599335ea881ec264407547cab52be750f16ce099cfb27754fc755ff | https://dl.google.com/dl/android/maven2/com/android/support/support-core-ui/26.1.0/support-core-ui-26.1.0.aar
-5c415a9d8585200de4be1947e15291cc79f599b06249375f5c9ea22d4b2d090f | https://jcenter.bintray.com/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom
+5c415a9d8585200de4be1947e15291cc79f599b06249375f5c9ea22d4b2d090f | https://repo.spring.io/plugins-release/org/jetbrains/trove4j/trove4j/20160824/trove4j-20160824.pom
 9144127192d6f612c2366825dceaeb23b0d53130b83e0bf1ffe107d1470a8487 | https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.0.18/error_prone_annotations-2.0.18.pom
 e2b4935e76d91b5abec44de309f2c8bb8d1d2e6cc0b8790b43cb654f1e22c722 | https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.0.1/layoutlib-api-26.0.1.pom
 fbd7b254e02d8aef60c418a5f0e14a783b38a16162caffb2d2a16ccd5d2c09b4 | https://repo1.maven.org/maven2/org/slf4j/slf4j-android/1.7.25/slf4j-android-1.7.25.jar
