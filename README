@@ -208,7 +208,7 @@ with the following command:
             autoconf2.13 openjdk-8-jdk gettext-base autotools-dev \
             automake autoconf libtool autopoint libssl-dev \
             pkg-config zlib1g-dev libparallel-forkmanager-perl \
-            libfile-slurp-perl bzip2 xz-utils apksigner
+            libfile-slurp-perl bzip2 xz-utils apksigner yasm
 
 
 Common Build Errors
