@@ -85,7 +85,7 @@ find -type f -print0 | xargs -0 [% c("var/touch") %]
     [% IF c("var/osx") %]--enable-static-openssl[% END %] \
     [% IF !c("var/android") && c("var/nightly") %]--enable-rust[% END %] \
     --prefix="$distdir" [% c("var/configure_opt") %]
-[% IF c("var/osx") || c("var/windows") -%]
+[% IF c("var/osx") -%]
   export LD_PRELOAD=[% c("var/faketime_path") %]
   export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
 [% END -%]
