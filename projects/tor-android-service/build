@@ -18,7 +18,6 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 # Patch projects
 cd /var/tmp/build/[% project %]-[% c('version') %]
 patch -p1 < $rootdir/gradle.patch
-patch -p1 < $rootdir/content-provider.patch
 patch -p1 < $rootdir/require-api.patch
 
 # Remove native files, otherwise build will fail after gradle.patch
