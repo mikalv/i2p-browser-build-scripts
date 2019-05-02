@@ -2,7 +2,7 @@
 version: '[% c("abbrev") %]'
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 git_hash: 6a9314aff4418a4edac33ff39fae266b097cf000
-git_url: https://github.com/sisbell/tor-android-service.git
+git_url: https://git.torproject.org/tor-android-service.git
 git_submodule: 1
 
 var:
