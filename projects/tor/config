@@ -41,10 +41,6 @@ targets:
     var:
       arch_deps:
         - faketime
-  windows:
-    var:
-      arch_deps:
-        - faketime
   expert-bundle:
     var:
       expert_bundle: 1
