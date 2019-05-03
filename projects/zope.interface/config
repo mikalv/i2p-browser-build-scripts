@@ -12,17 +12,8 @@ targets:
       arch_deps:
         - python-setuptools
         - python-dev
-  windows-i686:
-    var:
-      compiler: winpython
-      arch_deps:
-        - faketime
-        - wine
 
 input_files:
   - project: container-image
   - URL: 'https://pypi.python.org/packages/source/z/zope.interface/zope.interface-[% c("version") %].zip'
     sha256sum: 1a7c84716bbd9981915b64a81d8a3f076a5934a8c8df4224655469b3564940cc
-  - name: '[% c("var/compiler") %]'
-    project: '[% c("var/compiler") %]'
-    enable: '[% c("var/windows") %]'

@@ -82,6 +82,7 @@ targets:
       arch_deps:
         - libssl-dev
         - pkg-config
+        - zlib1g-dev
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=[% c("arch") %]-pc-windows-gnu
 
 input_files:

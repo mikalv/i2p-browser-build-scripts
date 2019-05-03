@@ -4,10 +4,8 @@ set -e
 [% c("var/setarch") -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir="/var/tmp/dist/[% project %]"
-[% IF c("var/linux") -%]
-  [% c("var/set_PTDIR_DOCSDIR") -%]
-  mkdir -p $PTDIR
-[% END -%]
+[% c("var/set_PTDIR_DOCSDIR") -%]
+mkdir -p $PTDIR
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf $rootdir/[% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
@@ -16,24 +14,10 @@ cd /var/tmp/build/[% project %]-[% c('version') %]
   export CXXFLAGS=-m32
   export LDFLAGS=-m32
 [% END -%]
-[% IF c("var/windows") -%]
-  pydir="$distdir/python"
-  mkdir -p "$pydir"
-  export FAKETIME="[% USE date; GET date.format(c('timestamp'), format = '%Y-%m-%d %H:%M:%S') %]"
-  export LD_PRELOAD=[% c("var/faketime_path") %]
-  # This is bogus, that we run the configure script in the build environment,
-  # but it seems to work. https://bugs.launchpad.net/pycrypto/+bug/1096207 for
-  # ac_cv_func_malloc_0_nonnull.
-  ac_cv_func_malloc_0_nonnull=yes sh configure --host=i686-w64-mingw32
-  export LD_PRELOAD=
-  $PYTHON setup.py build_ext -c mingw32
-  $PYTHON setup.py install --prefix=$(wine winepath -w $pydir)
-[% ELSE -%]
-  export PYTHON=python2[% IF c("var/linux-i686") %].7[% END %]
-  ./configure --build=i686-linux-gnu [% c("var/configure_opt") %]
-  $PYTHON setup.py build --build-lib build
-  cp -a build/Crypto $PTDIR/
-[% END -%]
+export PYTHON=python2[% IF c("var/linux-i686") %].7[% END %]
+./configure --build=i686-linux-gnu [% c("var/configure_opt") %]
+$PYTHON setup.py build --build-lib build
+cp -a build/Crypto $PTDIR/
 cd $distdir
 [% c('tar', {
         tar_src => [ '.' ],

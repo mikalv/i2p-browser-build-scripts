@@ -30,13 +30,6 @@ targets:
         apt-get download -q -y python-setuptools python-pkg-resources
         dpkg -i --force-depends python-setuptools*.deb python-pkg-resources*.deb
 
-  windows-i686:
-    var:
-      compiler: winpython
-      arch_deps:
-        - faketime
-        - wine
-
 input_files:
   - project: container-image
   - name: '[% c("var/compiler") %]'
