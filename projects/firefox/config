@@ -160,9 +160,6 @@ input_files:
     name: gradle-dependencies
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
     enable: '[% c("var/android") %]'
-  - project: orbot
-    name: orbot
-    enable: '[% c("var/android") %]'
   - project: tor-android-service
     name: tor-android-service
     enable: '[% c("var/android") %]'
