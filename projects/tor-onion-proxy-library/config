@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-git_hash: be7206bba357bda11455b012bfcc0d42cc16c99d
+git_hash: 27df20a5cb107a009db009df4aaef000a6e78e2e
 git_url: https://github.com/sisbell/Tor_Onion_Proxy_Library.git
 git_submodule: 1
 
