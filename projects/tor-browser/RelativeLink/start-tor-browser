@@ -273,10 +273,6 @@ if [ $SYSARCHITECTURE -ne $TORARCHITECTURE ]; then
    exit 1
 fi
 
-[% IF ! c("var/release") %]
-export SELFRANDO_write_layout_file=
-[% END %]
-
 [% IF c("var/asan") -%]
 # We need to disable LSan which is enabled by default now. Otherwise we'll get
 # a crash during shutdown: https://bugs.torproject.org/10599#comment:59
