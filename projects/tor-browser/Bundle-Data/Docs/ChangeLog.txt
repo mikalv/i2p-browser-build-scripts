@@ -1,3 +1,19 @@
+Tor Browser 8.5a12 -- May 7 2019
+ * All platforms
+   * Update Torbutton to 2.1.7
+     * Bug 30388: Make sure the updated intermediate certificate keeps working
+   * Backport fixes for bug 1549010 and bug 1549061
+     * Bug 30388: Make sure the updated intermediate certificate keeps working
+
+Tor Browser 8.0.9 -- May 7 2019
+* All platforms
+  * Update Torbutton to 2.0.13
+    * Bug 30388: Make sure the updated intermediate certificate keeps working
+  * Backport fixes for bug 1549010 and bug 1549061
+    * Bug 30388: Make sure the updated intermediate certificate keeps working
+  * Update NoScript to 10.6.1
+     * Bug 29872: XSS popup with DuckDuckGo search on about:tor
+
 Tor Browser 8.5a11 -- April 16 2019
  * All platforms
    * Update Torbutton to 2.1.6
