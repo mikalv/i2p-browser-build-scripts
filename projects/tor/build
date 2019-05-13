@@ -61,8 +61,8 @@ openssldir=/var/tmp/dist/openssl
   mkdir -p "$distdir/Tor/libstdc++"
   cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libstdc++.so.6 "$distdir/Tor/libstdc++/"
   [% IF c("var/asan") -%]
-    cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libasan.so.3 "$distdir/Tor/"
-    cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libubsan.so.0 "$distdir/Tor/"
+    cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libasan.so.5 "$distdir/Tor/"
+    cp /var/tmp/dist/gcc/[% c("var/libdir") %]/libubsan.so.1 "$distdir/Tor/"
   [% END -%]
   chmod 700 "$distdir"/Tor/*.so*
   chmod 700 "$distdir"/Tor/libstdc++/*.so*
