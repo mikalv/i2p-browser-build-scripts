@@ -15,6 +15,10 @@ var:
     export GOARCH=[% c("var/GOARCH") %]
     export GOPATH=/var/tmp/dist/gopath
     export PATH=/var/tmp/dist/go/bin:/var/tmp/dist/gopath/bin:"$PATH"
+    [% IF c("var/linux") -%]
+      export CGO_LDFLAGS_ALLOW="-z|noexecstack"
+      export CGO_LDFLAGS="-z noexecstack"
+    [% END -%]
     [% IF c("var/linux-i686") -%]
       export CGO_ENABLED=1
     [% END -%]

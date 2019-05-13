@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://github.com/keroserene/go-webrtc.git
-git_hash: dcbfc825aa33471253a5da1834d499257e05d557
+git_hash: ed20e74ef428d6149a95bab8e63afb47af55c204
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 build: '[% c("projects/go/var/build_go_lib") %]'
