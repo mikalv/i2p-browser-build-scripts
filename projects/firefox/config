@@ -10,7 +10,7 @@ gpg_keyring: torbutton.gpg
 var:
   firefox_platform_version: 60.6.1
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
-  torbrowser_branch: 8.5
+  torbrowser_branch: 9.0
   torbrowser_update_channel: alpha
   branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/alpha'
   copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'
