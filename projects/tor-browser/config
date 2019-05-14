@@ -74,9 +74,6 @@ input_files:
   - project: obfs4
     name: obfs4
     enable: '[% ! c("var/android") %]'
-  - project: fteproxy
-    name: fteproxy
-    enable: '[% c("var/fteproxy") %]'
   - project: snowflake
     name: snowflake
     enable: '[% c("var/snowflake") %]'

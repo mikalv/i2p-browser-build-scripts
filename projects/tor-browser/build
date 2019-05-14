@@ -60,10 +60,6 @@ mv "$TBDIR/meek-http-helper@bamsoftware.com.xpi" "$TBDIR/$MEEKPROFILEPATH/extens
   tar -C "$TBDIR" -xf [% c('input_files_by_name/snowflake') -%]
 [% END -%]
 
-[% IF c("var/fteproxy") -%]
-  tar -C "$TBDIR" -xf [% c('input_files_by_name/fteproxy') %]
-[% END -%]
-
 tar -C "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]" -xf [% c('input_files_by_name/fonts') %]
 
 [% IF c("var/linux") %]
@@ -119,24 +115,18 @@ cp -a Bundle-Data/Docs/* "$TBDIR/$DOCSPATH"
 tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C "$TBDIR[% IF ! c("var/osx") %]/TorBrowser[% END %]" -x
 
 cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> "$TBDIR/$TORCONFIGPATH/torrc-defaults"
-[% IF c("var/linux") -%]
+[% IF c("var/linux") || c("var/osx") -%]
   [% IF ! c("var/snowflake") %]
     grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
-       >> "$GENERATEDPREFSPATH"
+      >> "$GENERATEDPREFSPATH"
   [% ELSE %]
     cat Bundle-Data/PTConfigs/bridge_prefs.js >> "$GENERATEDPREFSPATH"
   [% END %]
 [% END -%]
 [% IF c("var/windows") -%]
-  # We don't have snowflake and FTE available on Windows (yet).
-  grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js | \
-  grep -v 'default_bridge\.fte' >> "$GENERATEDPREFSPATH"
-[% END -%]
-[% IF c("var/osx") -%]
-  # FTE is temporarily removed due to bug 18495.
-  grep -Ev 'default_bridge\.fte' Bundle-Data/PTConfigs/bridge_prefs.js \
-  [% IF ! c("var/snowflake") %]| grep -v 'default_bridge\.snowflake' [% END %] \
-      >> "$GENERATEDPREFSPATH"
+  # We don't have snowflake available on Windows (yet).
+  grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
+    >> "$GENERATEDPREFSPATH"
 [% END -%]
 cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/user.js"
 
