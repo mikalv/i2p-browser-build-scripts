@@ -20,6 +20,7 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 patch -p1 < $rootdir/maven-repo.patch
 patch -p1 < $rootdir/add_socks_port_flags.patch
+patch -p1 < $rootdir/30284.patch
 
 # Build Android Libraries and Apps
 $GRADLE_HOME/gradle-4.1/bin/gradle --offline -P androidplugin=3.0.1 assembleRelease -x lint

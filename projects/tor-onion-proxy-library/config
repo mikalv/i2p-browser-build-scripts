@@ -30,3 +30,4 @@ input_files:
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
   - filename: maven-repo.patch
   - filename: add_socks_port_flags.patch
+  - filename: 30284.patch
