@@ -1,3 +1,63 @@
+Tor Browser 9.0a1 -- May 21 2019
+ * All platforms
+   * Update Firefox to 60.7.0esr
+   * Update Torbutton to 2.1.9
+     * Bug 30069: Use slider and about:tor localizations
+     * Bug 30115+27449+25145: Map browser + domain -> credentials to fix UI issues
+     * Bug 30171: Don't sync cookie.cookieBehavior and firstparty.isolate
+     * Bug 30425: Revert armagadd-on-2.0 changes
+     * Bug 30497: Add Donate link to about:tor
+     * Bug 30464: Add WebGL to safer descriptions
+     * Translations update
+   * Update HTTPS Everywhere to 2019.5.6.1
+   * Bug 24622: Proper first-party isolation of s3.amazonaws.com
+   * Bug 30425: Revert armagadd-on-2.0 changes
+ * Windows + OS X + Linux
+   * Update Tor Launcher to 0.2.19
+     * Bug 28044: Integrate Tor Launcher into tor-browser
+     * Bug 29627: Moat: add support for obfsproxy's meek_lite
+     * Bug 30139: Remove FTE bits
+     * Translations update
+   * Bug 28044: Integrate Tor Launcher into tor-browser
+   * Bug 30372: Backport letterboxing (bug 1538130)
+   * Bug 28369: Stop shipping pingsender executable
+   * Bug 30457: Remove defunct default bridges
+   * Bug 29045: Ensure that tor does not start up in dormant mode
+   * Bug 29641: Try to connect over IPv6 if needed
+ * Windows
+   * Bug 30319: Drop FTE releated bits
+   * Bug 29319: Remove FTE support for Windows
+ * OS X
+   * Bug 30241: Bump snowflake version to d11e55aabe
+ * Linux
+   * Bug 30319: Drop FTE releated bits
+   * Bug 30241: Bump snowflake version to d11e55aabe
+ * Android
+   * Bug 29982: Force single-pane UI on Tor Preferences
+   * Bug 30086: Prevent Sync-related crashes on Android
+   * Bug 30214: Kill background thread when Activity is null
+   * Bug 30239: Render Fragments after crash
+   * Bug 30136: Use 'Tor Browser' as brand name on mobile, too
+   * Bug 30069: Use slider and about:tor localizations
+   * Bug 30371: Stop hard-coding the content provider name in tor-android-service
+   * Bug 30162: Tor Browser bootstrap process got stuck after interrupting it
+   * Bug 30166: If specified, only use custom bridges for connecting
+   * Bug 30518: Add SocksPort flags for consistency across platforms
+   * Bug 30284: Fix broken start-up on KitKat devices
+   * Bug 30489: Remove Unused Resources from tor-android-service
+ * Build System
+   * Windows
+     * Bug 29307: Use Stretch for cross-compiling for Windows
+     * Bug 29731: Remove faketime for Windows builds
+   * Linux
+     * Bug 30377: Remove selfrando from our build system
+     * Bug 30448: Strip Browser/gtk2/libmozgtk.so
+   * Android
+     * Bug 29981: Add option to build without using containers
+     * Bug 30169: Switch to our tor-android-service repo
+     * Bug 30404: Remove Orbot Project
+     * Bug 30280: Wrong SHA-256 sum for j2objc-annotations-1.1.jar
+
 Tor Browser 8.5a12 -- May 7 2019
  * All platforms
    * Update Torbutton to 2.1.7

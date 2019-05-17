@@ -5,4 +5,4 @@ filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 var:
   use_container: 0
   ff_version: '[% pc("firefox", "var/firefox_version") %]'
-  ff_build: build2
+  ff_build: build1

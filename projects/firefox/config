@@ -1,14 +1,14 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 filename: 'firefox-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
-git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build2'
+git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build1'
 tag_gpg_id: 1
 git_url: https://git.torproject.org/tor-browser.git
 git_submodule: 1
 gpg_keyring: torbutton.gpg
 
 var:
-  firefox_platform_version: 60.6.1
+  firefox_platform_version: 60.7.0
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   torbrowser_branch: 9.0
   torbrowser_update_channel: alpha
