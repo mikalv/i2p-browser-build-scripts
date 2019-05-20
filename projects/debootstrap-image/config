@@ -58,24 +58,6 @@ targets:
         arch: amd64
         debootstrap_mirror: "http://archive.debian.org/debian/"
 
-  jessie-amd64:
-    var:
-      minimal_apt_version: 1.0.9.8.5
-      # https://lists.debian.org/debian-lts-announce/2019/01/msg00014.html
-      apt_packages_baseurl: http://security.debian.org/debian-security/pool/updates/main/a/apt
-      apt_package_filename: apt_1.0.9.8.5_amd64.deb
-      apt_package_sha256sum: 4078748632abc19836d045f80f9d6933326065ca1d47367909a0cf7f29e7dfe8
-      apt_utils_package_filename: apt-utils_1.0.9.8.5_amd64.deb
-      apt_utils_package_sha256sum: 87c55d9ccadcabd59674873c221357c774020c116afd978fb9df6d2d0303abf2
-      libapt_inst_package_filename: libapt-inst1.5_1.0.9.8.5_amd64.deb
-      libapt_inst_package_sha256sum: f9615532b1577b3d1455fa51839ce91765f2860eb3a6810fb5e0de0c87253030
-      libapt_pkg_package_filename: libapt-pkg4.12_1.0.9.8.5_amd64.deb
-      libapt_pkg_package_sha256sum: 295d9c69854a4cfbcb46001b09b853f5a098a04c986fc5ae01a0124c1c27e6bd
-
-      container:
-        suite: jessie
-        arch: amd64
-
   stretch-amd64:
     var:
       minimal_apt_version: 1.4.9
