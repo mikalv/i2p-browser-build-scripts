@@ -162,11 +162,11 @@ input_files:
 
  - name: src-firefox
    project: firefox
-   enable: '[% c("var/torbrowser-src") %]'
+   enable: '[% c("var/i2pbrowser-src") %]'
    pkg_type: src-tarballs
    target:
      - '[% c("var/build_target") %]'
-     - torbrowser-src
+     - i2pbrowser-src
 
 steps:
   signtag:
