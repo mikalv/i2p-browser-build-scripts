@@ -19,6 +19,7 @@ mkdir -p $OUTDIR
 TB_STAGE_DIR=$distdir/i2p-browser-stage
 GENERATEDPREFSPATH=$rootdir/Bundle-Data/PTConfigs/generated-prefs.js
 # Create initially empty prefs file where we can dump our conditionally included/genetered prefs
+mkdir -p $rootdir/Bundle-Data/PTConfigs
 touch "$GENERATEDPREFSPATH"
 
 [% IF c("var/osx") %]
