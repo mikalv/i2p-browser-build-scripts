@@ -150,14 +150,14 @@ fi
 
 # Backporting a sec-high bugfix to ESR 60, but making sure it is only applied to
 # mobile, as desktop ESR has not seen any testing with this mobile-related patch
-[% IF c("var/android") %]
-  patch -p1 < $rootdir/1527534.patch
-[% END -%]
-
-[% IF ! c("var/android") %]
-  # Place a copy of the Tor Launcher sources under browser/extensions
-  tar -C browser/extensions -xf $rootdir/[% c('input_files_by_name/tor-launcher') %]
-[% END -%]
+#[% IF c("var/android") %]
+#  patch -p1 < $rootdir/1527534.patch
+#[% END -%]
+#
+#[% IF ! c("var/android") %]
+#  # Place a copy of the Tor Launcher sources under browser/extensions
+#  tar -C browser/extensions -xf $rootdir/[% c('input_files_by_name/tor-launcher') %]
+#[% END -%]
 
 rm -f configure
 rm -f js/src/configure
