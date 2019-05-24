@@ -18,18 +18,22 @@ var:
 targets:
   linux-i686:
     var:
+      android: 0
       mar_osname: linux32
   linux-x86_64:
     var:
+      android: 0
       mar_osname: linux64
   osx-x86_64:
     var:
+      android: 0
       mar_osname: osx64
       arch_deps:
         - genisoimage
         - faketime
   windows:
     var:
+      android: 0
       arch_deps:
         - python-future
       pre_pkginst: |
@@ -37,9 +41,11 @@ targets:
         echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
   windows-i686:
     var:
+      android: 0
       mar_osname: win32
   windows-x86_64:
     var:
+      android: 0
       mar_osname: win64
   android-armv7:
     build: '[% INCLUDE build.android %]'
