@@ -38,7 +38,7 @@ targets:
         - python-future
       pre_pkginst: |
         # enable jessie-backports for python-future
-        echo 'deb http://ftp.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
+        echo 'deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
   windows-i686:
     var:
       android: 0
