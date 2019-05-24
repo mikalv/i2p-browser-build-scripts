@@ -106,7 +106,7 @@ tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/i2p-browser.ta
 [% END %]
 
 mkdir -p "$TBDIR/$DOCSPATH"
-cp -a Bundle-Data/Docs/* "$TBDIR/$DOCSPATH"
+#cp -a Bundle-Data/Docs/* "$TBDIR/$DOCSPATH"
 tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C "$TBDIR[% IF ! c("var/osx") %]/I2PBrowser[% END %]" -x
 
 #[% IF c("var/osx") %]
