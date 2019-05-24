@@ -58,6 +58,132 @@ Tor Browser 9.0a1 -- May 21 2019
      * Bug 30404: Remove Orbot Project
      * Bug 30280: Wrong SHA-256 sum for j2objc-annotations-1.1.jar
 
+Tor Browser 8.5 -- May 21 2019
+ * All platforms
+   * Update Firefox to 60.7.0esr
+   * Update Torbutton to 2.1.8
+     * Bug 25013: Integrate Torbutton into tor-browser for Android
+     * Bug 27111: Update about:tor desktop version to work on mobile
+     * Bug 22538+22513: Fix new circuit button for error pages
+     * Bug 25145: Update circuit display when back button is pressed
+     * Bug 27749: Opening about:config shows circuit from previous website
+     * Bug 30115+27449+25145: Map browser+domain to credentials to fix circuit display
+     * Bug 25702: Update Tor Browser icon to follow design guidelines
+     * Bug 21805: Add click-to-play button for WebGL
+     * Bug 28836: Links on about:tor are not clickable
+     * Bug 30171: Don't sync cookie.cookieBehavior and firstparty.isolate
+     * Bug 29825: Intelligently add new Security Level button to taskbar
+     * Bug 29903: No WebGL click-to-play on the standard security level
+     * Bug 27290: Remove WebGL pref for min capability mode
+     * Bug 25658: Replace security slider with security level UI
+     * Bug 28628: Change onboarding Security panel to open new Security Level panel
+     * Bug 29440: Update about:tor when Tor Browser is updated
+     * Bug 27478: Improved Torbutton icons for dark theme
+     * Bug 29239: Don't ship the Torbutton .xpi on mobile
+     * Bug 27484: Improve navigation within onboarding (strings)
+     * Bug 29768: Introduce new features to users (strings)
+     * Bug 28093: Update donation banner style to make it fit in small screens
+     * Bug 28543: about:tor has scroll bar between widths 900px and 1000px
+     * Bug 28039: Enable dump() if log method is 0
+     * Bug 27701: Don't show App Blocker dialog on Android
+     * Bug 28187: Change tor circuit icon to torbutton.svg
+     * Bug 29943: Use locales in AB-CD scheme to match Mozilla
+     * Bug 26498: Add locale: es-AR
+     * Bug 28082: Add locales cs, el, hu, ka
+     * Bug 29973: Remove remaining stopOpenSecuritySettingsObserver() pieces
+     * Bug 28075: Tone down missing SOCKS credential warning
+     * Bug 30425: Revert armagadd-on-2.0 changes
+     * Bug 30497: Add Donate link to about:tor
+     * Bug 30069: Use slider and about:tor localizations on mobile
+     * Bug 21263: Remove outdated information from the README
+     * Bug 28747: Remove NoScript (XPCOM) related unused code
+     * Translations update
+     * Code clean-up
+   * Update HTTPS Everywhere to 2019.5.6.1
+   * Bug 27290: Remove WebGL pref for min capability mode
+   * Bug 29120: Enable media cache in memory
+   * Bug 24622: Proper first-party isolation of s3.amazonaws.com
+   * Bug 29082: Backport patches for bug 1469916
+   * Bug 28711: Backport patches for bug 1474659
+   * Bug 27828: "Check for Tor Browser update" doesn't seem to do anything
+   * Bug 29028: Auto-decline most canvas warning prompts again
+   * Bug 27919: Backport SSL status API
+   * Bug 27597: Fix our debug builds
+   * Bug 28082: Add locales cs, el, hu, ka
+   * Bug 26498: Add locale: es-AR
+   * Bug 29916: Make sure enterprise policies are disabled
+   * Bug 29349: Remove network.http.spdy.* overrides from meek helper user.js
+   * Bug 29327: TypeError: hostName is null on about:tor page
+   * Bug 30425: Revert armagadd-on-2.0 changes
+ * Windows + OS X + Linux
+   * Update OpenSSL to 1.0.2r
+   * Update Tor Launcher to 0.2.18.3
+     * Bug 27994+25151: Use the new Tor Browser logo
+     * Bug 29328: Account for Tor 0.4.0.x's revised bootstrap status reporting
+     * Bug 22402: Improve "For assistance" link
+     * Bug 27994: Use the new Tor Browser logo
+     * Bug 25405: Cannot use Moat if a meek bridge is configured
+     * Bug 27392: Update Moat URLs
+     * Bug 28082: Add locales cs, el, hu, ka
+     * Bug 26498: Add locale es-AR
+     * Bug 28039: Enable dump() if log method is 0
+     * Translations update
+   * Bug 25702: Activity 1.1 Update Tor Browser icon to follow design guidelines
+   * Bug 28111: Use Tor Browser icon in identity box
+   * Bug 22343: Make 'Save Page As' obey first-party isolation
+   * Bug 29768: Introduce new features to users
+   * Bug 27484: Improve navigation within onboarding
+   * Bug 25658+29554: Replace security slider with security level UI
+   * Bug 25405: Cannot use Moat if a meek bridge is configured
+   * Bug 28885: Notify users that update is downloading
+   * Bug 29180: MAR download stalls when about dialog is opened
+   * Bug 27485: Users are not taught how to open security-slider dialog
+   * Bug 27486: Avoid about:blank tabs when opening onboarding pages
+   * Bug 29440: Update about:tor when Tor Browser is updated
+   * Bug 23359: WebExtensions icons are not shown on first start
+   * Bug 28628: Change onboarding Security panel to open new Security Level panel
+   * Bug 27905: Fix many occurrences of "Firefox" in about:preferences
+   * Bug 28369: Stop shipping pingsender executable
+   * Bug 30457: Remove defunct default bridges
+ * Windows
+   * Bug 27503: Improve screen reader accessibility
+   * Bug 27865: Tor Browser 8.5a2 is crashing on Windows
+   * Bug 22654: Firefox icon is shown for Tor Browser on Windows 10 start menu
+   * Bug 28874: Bump mingw-w64 commit to fix WebGL crash
+   * Bug 12885: Windows Jump Lists fail for Tor Browser
+   * Bug 28618: Set MOZILLA_OFFICIAL for Windows build
+   * Bug 21704: Abort install if CPU is missing SSE2 support
+ * OS X
+   * Bug 27623: Use MOZILLA_OFFICIAL for our builds
+ * Linux
+   * Bug 28022: Use `/usr/bin/env bash` for bash invocation
+   * Bug 27623: Use MOZILLA_OFFICIAL for our builds
+ * Android
+   * Bug 5709: Ship Tor Browser for Android
+ * Build System
+   * All platforms
+     * Bug 25623: Disable network during build
+     * Bug 25876: Generate source tarballs during build
+     * Bug 28685: Set Build ID based on Tor Browser version
+     * Bug 29194: Set DEBIAN_FRONTEND=noninteractive
+     * Bug 29167: Upgrade go to 1.11.5
+     * Bug 29158: Install updated apt packages (CVE-2019-3462)
+     * Bug 29097: Don't try to install python3.6-lxml for HTTPS Everywhere
+     * Bug 27061: Enable verification of langpacks checksums
+   * Windows
+     * Bug 26148: Update binutils to 2.31.1
+     * Bug 27320: Build certutil for Windows
+   * OS X
+     * Bug 27320: Build certutil for macOS
+   * Linux
+     * Bug 26323+29812: Build 32bit Linux bundles on 64bit Debian Wheezy
+     * Bug 26148: Update binutils to 2.31.1
+     * Bug 29758: Build firefox debug symbols for linux-i686
+     * Bug 29966: Use archive.debian.org for Wheezy images
+     * Bug 29183: Use linux-x86_64 langpacks on linux-x86_64
+   * Android
+     * Bug 29981: Add option to build without using containers
+
 Tor Browser 8.5a12 -- May 7 2019
  * All platforms
    * Update Torbutton to 2.1.7
