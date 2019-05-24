@@ -55,10 +55,10 @@ targets:
 input_files:
   - project: container-image
   - filename: run_scripts
-    enable: '[% ! c("var/android") %]'
+    enable: 'true'#'[% ! c("var/android") %]'
   - project: firefox
     name: firefox
-    enable: '[% ! c("var/android") %]'
+    enable: 'true'#'[% ! c("var/android") %]'
   - project: firefox-langpacks
     name: firefox-langpacks
     enable: '[% ! c("var/testbuild") && ! c("var/android") %]'
