@@ -1,6 +1,7 @@
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-i386-linux-android
 mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
 export MOZILLA_OFFICIAL=1
+export TOR_BROWSER_DISABLE_TOR_LAUNCHER=true
 
 ac_add_options --enable-optimize
 ac_add_options --enable-official-branding
