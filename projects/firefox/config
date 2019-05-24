@@ -10,6 +10,7 @@ git_submodule: 1
 var:
   firefox_platform_version: 60.7.0
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
+  i2pbrowser_version: 2.0
   torbrowser_branch: 9.0
   torbrowser_update_channel: alpha
   branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/alpha'

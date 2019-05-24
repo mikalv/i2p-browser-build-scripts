@@ -162,7 +162,7 @@ fi
 rm -f configure
 rm -f js/src/configure
 
-./mach configure --with-i2p-browser-version=[% c("var/i2pbrowser_version") %] --with-distribution-id=io.i2p --enable-update-channel=[% c("var/i2pbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
+./mach configure --with-tor-browser-version=[% c("var/i2pbrowser_version") %] --with-distribution-id=io.i2p --enable-update-channel=[% c("var/i2pbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
 ./mach build --verbose
 
 [% IF c("var/android") %]
