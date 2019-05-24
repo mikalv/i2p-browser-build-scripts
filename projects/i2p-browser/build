@@ -102,7 +102,7 @@ tar -C ${TB_STAGE_DIR} -xf [% c('input_files_by_name/firefox') %]/i2p-browser.ta
   rm -Rf Bundle-Data/mac
   mv $SKELETON_TMP Bundle-Data/mac
 
-  tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
+  #tar -C Bundle-Data/mac-applications.dmg -c . | tar -C $TB_STAGE_DIR -x
 [% END %]
 
 mkdir -p "$TBDIR/$DOCSPATH"
