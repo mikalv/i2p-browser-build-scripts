@@ -32,7 +32,7 @@ if [ -z "${TB_BUILD_WITH_UPDATER}" ]; then
 #    mechanism.
 # https://play.google.com/about/privacy-security-deception/malicious-behavior/
 
-    ac_add_options --disable-i2p-browser-update
+    ac_add_options --disable-tor-browser-update
     ac_add_options --disable-signmar
     ac_add_options --disable-verify-mar
 fi
