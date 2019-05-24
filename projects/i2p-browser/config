@@ -72,15 +72,17 @@ input_files:
 #    name: https-everywhere
   - project: fonts
     name: fonts
-    enable: '[% ! c("var/android") %]'
-#  - filename: Bundle-Data
-#    enable: '[% ! c("var/android") %]'
-#  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.2.1-fx.xpi
-#    name: noscript
-#    sha256sum: 3c16519f834863e74711950db386f326501a4bed79b55c24cc731df130443877
+    enable: 1 # '[% ! c("var/android") %]'
+  - filename: Bundle-Data
+    enable: 1 # '[% ! c("var/android") %]'
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.2.1-fx.xpi
+    name: noscript
+    sha256sum: 3c16519f834863e74711950db386f326501a4bed79b55c24cc731df130443877
   - filename: 'RelativeLink/start-i2p-browser.desktop'
     enable: '[% c("var/linux") %]'
   - filename: 'RelativeLink/execdesktop'
+    enable: '[% c("var/linux") %]'
+  - filename: 'gtk3-settings.ini'
     enable: '[% c("var/linux") %]'
   - project: libdmg-hfsplus
     name: libdmg
