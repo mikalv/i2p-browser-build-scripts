@@ -149,10 +149,10 @@ tar -C Bundle-Data/[% bundledata_osname %] -c . | tar -C "$TBDIR[% IF ! c("var/o
 
 pushd "$TBDIR[% IF c("var/osx") %]/Contents/Resources[% END %]/browser/"
 # For the proper search engines in our language packs
-unzip omni.ja chrome/en-US/locale/browser/searchplugins* || [ $? -lt 3 ]
+unzip omni.ja chrome/en-US/locale/browser/searchplugins* #|| [ $? -lt 3 ]
 mv chrome/en-US/locale/browser/searchplugins $rootdir
 rm -rf chrome/en-US
-unzip omni.ja defaults/preferences/000-i2p-browser.js || [ $? -lt 3 ]
+unzip omni.ja defaults/preferences/000-i2p-browser.js #|| [ $? -lt 3 ]
 # Append our built extension-overrides.js to 000-tor-browser.js
 cat "$GENERATEDPREFSPATH" >> defaults/preferences/000-i2p-browser.js
 cp defaults/preferences/000-i2p-browser.js $rootdir
