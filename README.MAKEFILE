@@ -7,7 +7,8 @@ release
 Build Tor Browser for the release channel, for all supported platforms.
 The resulting build can be found in directory release/$version.
 
-release-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+release-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+         android-x86}
 -----------------------------------------------------------------------
 Same as release, for the selected platform only.
 
@@ -16,7 +17,8 @@ alpha
 Build Tor Browser for the alpha channel, for all supported platforms.
 The resulting build can be found in directory alpha/$version.
 
-alpha-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+alpha-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+       android-x86}
 ---------------------------------------------------------------------
 Same as alpha, for the selected platform only.
 
@@ -29,7 +31,8 @@ components.
 
 The resulting build can be found in directory nightly/$date
 
-nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+         android-x86}
 -----------------------------------------------------------------------
 Same as nightly, for the selected platform only.
 
@@ -39,20 +42,26 @@ Build Tor Browser for the alpha channel, for all supported platforms.
 This is the same as 'make alpha', but the output directory is different.
 The resulting build can be found in directory alpha_nightly/$date
 
-alpha_nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7}
+alpha_nightly-{linux-x86_64,linux-i686,windows-i686,osx-x86_64,android-armv7,
+               android-x86}
 -----------------------------------------------------------------------------
 The same as alpha_nightly, for the selected platform only.
 
 testbuild
 ---------
 Build a Tor Browser test build. To make the build faster, only the en-US
-locale is created, without mar files. By default it is based on the
-alpha channel, but you can change that by editing rbm.local.conf.
-The resulting build can be found in directory testbuild.
+locale is created, without mar files, and without the source tarballs.
+By default it is based on the alpha channel, but you can change that by
+editing rbm.local.conf. The resulting build can be found in directory
+testbuild.
 
 {release,alpha,nightly,testbuild}-linux-x86_64-debug
 ----------------------------------------------------
 Create a debug build for Linux x86_64 with debug features such as ASan.
+
+{release,alpha,nightly,testbuild}-src
+-------------------------------------
+Create source tarballs for firefox, torbutton and tor-launcher.
 
 fetch
 -----

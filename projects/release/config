@@ -5,19 +5,17 @@ output_dir: release
 var:
   signed_status: unsigned
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
-  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/i2pbrowser_build") %]'
+  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/torbrowser_build") %]'
+  containers_target: with_containers
 
 targets:
   i2pbrowser-all:
     - i2pbrowser-linux-x86_64
-#    - i2pbrowser-linux-i686
-#    - i2pbrowser-windows-i686
+    - i2pbrowser-linux-i686
+    - i2pbrowser-windows-i686
     - i2pbrowser-windows-x86_64
     - i2pbrowser-osx-x86_64
-#    - i2pbrowser-android-armv7
-  i2pbrowser-android-armv7:
-    var:
-      i2pbrowser-android-armv7: 1
+    - i2pbrowser-src
   i2pbrowser-linux-x86_64:
     var:
       i2pbrowser-linux-x86_64: 1
@@ -37,6 +35,12 @@ targets:
   i2pbrowser-osx-x86_64:
     var:
       i2pbrowser-osx-x86_64: 1
+  i2pbrowser-src:
+    var:
+      i2pbrowser-src: '[% ! c("var/testbuild") %]'
+  i2pbrowser-src-testbuild:
+    var:
+      i2pbrowser-src: 1
 
   notarget:
     - release
@@ -70,9 +74,13 @@ targets:
   testbuild:
     output_dir: 'testbuild'
     var:
-      #build_target: i2pbrowser-testbuild
-      build_target: alpha
+      testbuild: 1
+      build_target: i2pbrowser-testbuild
       publish_dir: ''
+
+  no_containers:
+    var:
+      containers_target: no_containers
 
   signed:
     var:
@@ -89,8 +97,17 @@ input_files:
    project: i2p-browser
    enable: '[% c("var/i2pbrowser-android-armv7") %]'
    target:
+     - '[% c("var/containers_target") %]'
      - '[% c("var/build_target") %]'
      - i2pbrowser-android-armv7
+
+ - name: android-x86
+   project: tor-browser
+   enable: '[% c("var/torbrowser-android-x86") %]'
+   target:
+     - '[% c("var/containers_target") %]'
+     - '[% c("var/build_target") %]'
+     - torbrowser-android-x86
 
  - name: linux-x86_64
    project: i2p-browser
@@ -142,6 +159,30 @@ input_files:
 #     - '[% c("var/build_target") %]'
 #     - i2pbrowser-windows-x86_64
 #     - expert-bundle
+
+ - name: src-firefox
+   project: firefox
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
+
+ - name: src-torbutton
+   project: torbutton
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
+
+ - name: src-tor-launcher
+   project: tor-launcher
+   enable: '[% c("var/torbrowser-src") %]'
+   pkg_type: src-tarballs
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-src
 
 steps:
   signtag:

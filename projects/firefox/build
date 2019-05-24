@@ -79,10 +79,6 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
   mkdir -p $distdir/Browser
 [% END %]
 
-[% IF c("var/linux") %]
-  mkdir -p $distdir/Debug/Browser/
-[% END %]
-
 cd /var/tmp/build/[% project %]-[% c("version") %]
 mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
 [% IF c("var/asan") -%]
@@ -93,22 +89,26 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
 [% END -%]
 
 [% IF c("var/android") %]
-  export GRADLE_MAVEN_REPOSITORIES="file:///var/tmp/gradle-dependencies"
-  gradle_repo=/var/tmp/gradle-dependencies
+  gradle_repo=/var/tmp/dist/gradle-dependencies
+  export GRADLE_MAVEN_REPOSITORIES="file://$gradle_repo"
   # Move Gradle Repo to hard-coded location. This location is embedded in the file
   # chrome/toolkit/content/global/buildconfig.html so needs to be standard for reproducibility
   mv $rootdir/[% c('input_files_by_name/gradle-dependencies') %] $gradle_repo
-  # The download script assumes the artifact package name is the complete URL path.
-  # In some cases this is incorrect, so copy those artifacts to the correct location
-  cp -r $gradle_repo/guardianproject/gpmaven/master/* $gradle_repo
-  # Move orbot files so they will be included in the apk during the build
-  cp $rootdir/[% c('input_files_by_name/orbot') %]/* mobile/android/app
-  # Prepare building the multi-locale .apk
+  cp -r $gradle_repo/plugins-release/* $gradle_repo
+  cp -r $gradle_repo/maven2/* $gradle_repo
+  # Move Android library dependencies so they will be included in the apk during the build
+  cp $rootdir/[% c('input_files_by_name/topl') %]/* mobile/android/app
+  cp $rootdir/[% c('input_files_by_name/tor-android-service') %]/* mobile/android/app
+  # Apply patches
+  patch -p1 < $rootdir/android-dependencies.patch
+
+  # Prepare building the multi-locale .apk including our own strings
   mkdir -p /var/tmp/dist/locales
   tar -C /var/tmp/dist/locales -xf $rootdir/[% c('input_files_by_name/firefox-locale-bundle') %]
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/tba-translation') %]
 [% END %]
 
-eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] $(cat browser/config/version.txt))
+eval $(perl $rootdir/get-moz-build-date [% c("var/copyright_year") %] [% c("var/torbrowser_version") %])
 if [ -z $MOZ_BUILD_DATE ]
 then
     echo "MOZ_BUILD_DATE is not set"
@@ -148,6 +148,17 @@ fi
   patch -p1 < $rootdir/nsis-uninstall.patch
 [% END -%]
 
+# Backporting a sec-high bugfix to ESR 60, but making sure it is only applied to
+# mobile, as desktop ESR has not seen any testing with this mobile-related patch
+[% IF c("var/android") %]
+  patch -p1 < $rootdir/1527534.patch
+[% END -%]
+
+[% IF ! c("var/android") %]
+  # Place a copy of the Tor Launcher sources under browser/extensions
+  tar -C browser/extensions -xf $rootdir/[% c('input_files_by_name/tor-launcher') %]
+[% END -%]
+
 rm -f configure
 rm -f js/src/configure
 
@@ -158,6 +169,8 @@ rm -f js/src/configure
   # Building a multi-locale .apk
   [% FOREACH lang = c('var/locales') %]
     [% SET lang = tmpl(lang) %]
+    # Copy our torbrowser_strings.dtd at the right place
+    cp /var/tmp/dist/tba-translation/[% lang %]/torbrowser_strings.dtd /var/tmp/dist/locales/[% lang %]/mobile/android/base/
     ./mach build chrome-[% lang %];
   [% END %]
   export MOZ_CHROME_MULTILOCALE='[% tmpl(c('var/locales').join(' ')) %]'
@@ -254,10 +267,11 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 
 cd $distdir
 
-[% IF c("var/linux-x86_64") %]
+[% IF c("var/linux") %]
+  mkdir -p $distdir/Debug/Browser/gtk2
   # Strip and generate debuginfo for the firefox binary that we keep, all *.so
   # files, the plugin-container, and the updater (see ticket #10126)
-  for LIB in Browser/*.so Browser/firefox.real Browser/plugin-container Browser/updater
+  for LIB in Browser/*.so Browser/gtk2/*.so Browser/firefox.real Browser/plugin-container Browser/updater
   do
       objcopy --only-keep-debug $LIB Debug/$LIB
       strip $LIB
@@ -294,7 +308,7 @@ END;
         tar_args => '-czf ' _ dest_dir _ '/' _ c('filename') _ '/i2p-browser.tar.gz',
     }) %]
 
-[% IF c("var/linux-x86_64") %]
+[% IF c("var/linux") %]
 [% c('tar', {
         tar_src => [ 'Debug' ],
         tar_args => '-cJf ' _ dest_dir _ '/' _ c('filename') _ '/i2p-browser-debug.tar.xz',

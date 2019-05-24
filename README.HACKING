@@ -163,6 +163,8 @@ $platform should be one of the following:
 
  - i2pbrowser-android-armv7
 
+ - torbrowser-android-x86
+
 For example, to see tor's build script for linux x86_64 on the alpha
 channel, you can use:
 

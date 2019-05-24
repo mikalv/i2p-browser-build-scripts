@@ -6,7 +6,8 @@ file:
 
    export GRADLE_MAVEN_REPOSITORIES="file://$rootdir/[% c('input_files_by_name/gradle-dependencies') %]"
 
-and rerun the build.
+then allow network access during the build by setting
+var/container/disable_network/build to 0 in rbm.conf, and rerun the build.
 
 Dependent artifacts will show up as downloads in the logs. You can pull out
 these dependencies into a list with the following command (replacing

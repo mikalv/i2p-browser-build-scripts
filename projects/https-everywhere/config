@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 2019.1.31
+version: 2019.5.6.1
 git_url: https://git.torproject.org/https-everywhere.git
 git_hash: '[% c("version") %]'
 git_submodule: 1
@@ -32,5 +32,5 @@ input_files:
   - project: container-image
   - project: python
     name: python
-    target:
+    target_prepend:
       - common-stretch

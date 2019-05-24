@@ -33,6 +33,6 @@ input_files:
   - URL: '[% c("var/google_repo") %]/android-ndk-r15c-linux-x86_64.zip'
     name: android_ndk_compiler
     sha256sum: f01788946733bf6294a36727b99366a18369904eb068a599dde8cca2c1d2ba3c
-  - URL: http://services.gradle.org/distributions/gradle-4.1-bin.zip
+  - URL: https://services.gradle.org/distributions/gradle-4.1-bin.zip
     name: gradle_bin
     sha256sum: d55dfa9cfb5a3da86a1c9e75bb0b9507f9a8c8c100793ccec7beb6e259f9ed43

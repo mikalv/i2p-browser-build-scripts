@@ -13,10 +13,20 @@ lsb_release:
   codename: wheezy
   release: 7.11
 
+targets:
+  no_containers:
+    filename: containers_disabled
+    pre: ''
+    input_files: []
+    build: |
+      mkdir -p [% dest_dir %]
+      touch [% dest_dir _ '/' _ c('filename') %]
+
 pre: |
   #!/bin/sh
   # [% c('var/container/suite') %]
   set -e
+  export DEBIAN_FRONTEND=noninteractive
   [% IF pc(c('origin_project'), 'var/pre_pkginst') -%]
   [% pc(c('origin_project'), 'var/pre_pkginst') %]
   [% END -%]

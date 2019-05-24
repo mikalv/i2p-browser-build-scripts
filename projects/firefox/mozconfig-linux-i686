@@ -11,7 +11,9 @@ export CXXFLAGS=-m32
 export LDFLAGS=-m32
 export XLDOPTS=-m32
 export ASFLAGS=-m32
+export BINDGEN_CFLAGS='-m32 --gcc-toolchain=/var/tmp/dist/gcc'
 
+ac_add_options --target=i686-linux-gnu
 ac_add_options --host=i686-linux-gnu
 
 ac_add_options --enable-optimize
@@ -25,9 +27,10 @@ ac_add_options --enable-i2p-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
+ac_add_options --disable-strip
+ac_add_options --disable-install-strip
 ac_add_options --disable-tests
 ac_add_options --disable-debug
-ac_add_options --disable-debug-symbols
 ac_add_options --disable-maintenance-service
 ac_add_options --disable-crashreporter
 ac_add_options --disable-webrtc

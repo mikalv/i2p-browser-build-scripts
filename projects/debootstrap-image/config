@@ -1,6 +1,6 @@
 # vim: filetype=yaml sw=2
 filename: 'container-image_[% c("var/container/suite") %]-[% c("var/container/arch") %]-[% c("version") %].tar.gz'
-version: 1
+version: 2
 pkg_type: build
 
 var:
@@ -14,6 +14,7 @@ var:
 pre: |
   #!/bin/sh
   set -e
+  export DEBIAN_FRONTEND=noninteractive
   # Bug 29158: install fixed packages for apt vulnerability (CVE-2019-3462)
   dpkg -i ./apt_1.6.6ubuntu0.1_amd64.deb ./libapt-pkg5.0_1.6.6ubuntu0.1_amd64.deb
   apt-get update -y
@@ -55,14 +56,7 @@ targets:
       container:
         suite: wheezy
         arch: amd64
-
-  wheezy-i386:
-    var:
-      # Missing apt packages for i386:
-      # http://deb.freexian.com/extended-lts/pool/main/a/apt/
-      container:
-        suite: wheezy
-        arch: i386
+        debootstrap_mirror: "http://archive.debian.org/debian/"
 
   jessie-amd64:
     var:
@@ -101,19 +95,19 @@ targets:
         arch: i386
 
   # Still needed to fix faketime issues in tor-browser for Android, see: #29453
-  buster-amd64:
-    var:
-      minimal_apt_version: '1.8.0~alpha3.1'
-      container:
-        suite: buster
-        arch: amd64
-
   stretch-amd64:
     var:
       minimal_apt_version: 1.4.9
       container:
         suite: stretch
         arch: amd64
+
+  stretch-i386:
+    var:
+      minimal_apt_version: 1.4.9
+      container:
+        suite: stretch
+        arch: i386
 
 input_files:
   - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'

@@ -1,0 +1,17 @@
+# vim: filetype=yaml sw=2
+git_url: https://git.schwanenlied.me/yawning/bsaes.git
+version: '[% c("abbrev") %]'
+git_hash: 26d1add596b6d800bdeeb3bc3b2c7b316c056b6d
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+build: '[% c("projects/go/var/build_go_lib") %]'
+
+var:
+  container:
+    use_container: 1
+  go_lib: git.schwanenlied.me/yawning/bsaes.git
+
+input_files:
+  - project: container-image
+  - name: go
+    project: go

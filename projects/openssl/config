@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 1.0.2q
+version: 1.0.2r
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 var:
@@ -26,4 +26,4 @@ input_files:
   - name: '[% c("var/compiler") %]'
     project: '[% c("var/compiler") %]'
   - URL: 'https://www.openssl.org/source/openssl-[% c("version") %].tar.gz'
-    sha256sum: 5744cfcbcec2b1b48629f7354203bc1e5e9b5466998bbccc5b5fcde3b18eb684
+    sha256sum: ae51d08bba8a83958e894946f15303ff894d75c2b8bbd44a852b64e3fe11d0d6
