@@ -67,8 +67,8 @@ input_files:
   - project: fonts
     name: fonts
     enable: '[% ! c("var/android") %]'
-  - filename: Bundle-Data
-    enable: '[% ! c("var/android") %]'
+#  - filename: Bundle-Data
+#    enable: '[% ! c("var/android") %]'
 #  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.2.1-fx.xpi
 #    name: noscript
 #    sha256sum: 3c16519f834863e74711950db386f326501a4bed79b55c24cc731df130443877
@@ -92,5 +92,5 @@ input_files:
     sha256sum: 675c35ee0e1677db9e80d2f48d8a7ff2cf38e6207e8cd5e2a2c6d126db025854
     enable: '[% c("var/windows") %]'
   # To generate a new keystore, see how-to-generate-keystore.txt
-  - filename: android-qa.keystore
-    enable: '[% c("var/android") %]'
+  #- filename: android-qa.keystore
+  #  enable: '[% c("var/android") %]'
