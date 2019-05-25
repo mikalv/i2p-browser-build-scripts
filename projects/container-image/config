@@ -30,8 +30,8 @@ pre: |
   [% IF pc(c('origin_project'), 'var/pre_pkginst') -%]
   [% pc(c('origin_project'), 'var/pre_pkginst') %]
   [% END -%]
-  apt-get update -y
-  DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq
+  apt-get -o Acquire::Check-Valid-Until=false update -y -q
+  apt-get upgrade -y -q
   [%
      deps = [];
      IF pc(c('origin_project'), 'var/deps');
@@ -71,3 +71,4 @@ input_files:
   - project: debootstrap-image
     target:
       - '[% c("var/container/suite") %]-[% c("var/container/arch") %]'
+
