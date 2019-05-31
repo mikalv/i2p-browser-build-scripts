@@ -30,6 +30,10 @@ targets:
     var:
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=i686-linux-android --set=target.i686-linux-android.cc=$ANDROID_NDK_HOME/x86/bin/i686-linux-android-gcc
 
+  android-aarch64:
+    var:
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=aarch64-linux-android --set=target.aarch64-linux-android.cc=$ANDROID_NDK_HOME/arm64/bin/aarch64-linux-android-gcc
+
   linux:
     var:
       rust_arch: x86_64

@@ -18,11 +18,9 @@ cd $NDK_HOME
 mv android-ndk-r15c/* .
 rm -fR android-ndk-r15c
 
-# The architectures we support
-archs="arm x86"
-for arch in $archs; do
-  ./build/tools/make_standalone_toolchain.py --api [% c("var/android_min_api") %] --arch $arch --install-dir=./$arch
-done
+./build/tools/make_standalone_toolchain.py --api [% c("var/android_min_api_armv7") %] --arch arm --install-dir=./arm
+./build/tools/make_standalone_toolchain.py --api [% c("var/android_min_api_x86") %] --arch x86 --install-dir=./x86
+./build/tools/make_standalone_toolchain.py --api [% c("var/android_min_api_aarch64") %] --arch arm64 --install-dir=./arm64
 
 # Tool Archives
 cd $SDK_HOME
