@@ -13,4 +13,3 @@ AvoidDiskWrites 1
 Log notice stdout
 CookieAuthentication 1
 DormantCanceledByStartup 1
-ClientAutoIPv6ORPort 1
