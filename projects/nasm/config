@@ -1,0 +1,17 @@
+# vim: filetype=yaml sw=2
+version: 2.14.02
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+var:
+  container:
+    use_container: 1
+
+input_files:
+  - project: container-image
+  - project: binutils
+    name: binutils
+    enable: '[% c("var/linux") %]'
+  - project: '[% c("var/compiler") %]'
+    name: '[% c("var/compiler") %]'
+    enable: '[% c("var/linux") %]'
+  - URL: 'https://www.nasm.us/pub/nasm/releasebuilds/[% c("version") %]/nasm-[% c("version") %].tar.xz'
+    sha256sum: e24ade3e928f7253aa8c14aa44726d1edf3f98643f87c9d72ec1df44b26be8f5

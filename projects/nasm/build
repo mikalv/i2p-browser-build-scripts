@@ -1,0 +1,24 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+[% IF c("var/linux") %]
+  # We need a link to our GCC, otherwise the system cc gets used which points to
+  # /usr/bin/gcc.
+  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc'),
+                              hardened_gcc => 0 }) %]
+  ln -s gcc /var/tmp/dist/gcc/bin/cc
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
+  export PATH="/var/tmp/dist/binutils/bin:$PATH"
+[% END -%]
+distdir=/var/tmp/dist/[% project %]
+tar -xf [% project %]-[% c('version') %].tar.xz
+cd [% project %]-[% c('version') %]
+
+./configure --prefix=$distdir
+make -j[% c("buildconf/num_procs") %]
+make install
+
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]
