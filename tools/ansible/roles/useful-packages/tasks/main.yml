@@ -11,3 +11,4 @@
       - tor
       - torsocks
       - screen
+      - fail2ban
