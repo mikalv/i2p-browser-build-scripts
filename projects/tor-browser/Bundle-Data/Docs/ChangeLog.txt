@@ -1,3 +1,36 @@
+Tor Browser 9.0a2 -- June 7 2019
+ * All platforms
+   * Update Torbutton to 2.2
+     * Bug 30565: Sync nocertdb with privatebrowsing.autostart at startup
+     * Bug 30469: Add ro translation
+     * Translations update
+   * Update NoScript to 10.6.2
+     * Bug 29969: Remove workaround for Mozilla's bug 1532530
+   * Update HTTPS Everywhere to 2019.5.13
+   * Bug 30541: Disable WebGL readPixel() for web content
+   * Bug 30712: Backport fix for Mozilla's bug 1552993
+   * Bug 30469: Add locale ro
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.1.1-alpha
+   * Update OpenSSL to 1.1.1c
+   * Update Tor Launcher to 0.2.19.1
+     * Bug 30469: Add locale ro
+     * Translations update
+   * Bug 30639: Revert IPv6 support test
+   * Bug 30560: Better match actual toolbar in onboarding toolbar graphic
+   * Bug 30571: Correct more information URL for security settings
+ * Linux
+   * Bug 30451: Compile go-webrtc with a non executable stack
+ * Android
+   * Bug 24920: Only create Private tabs in permanent Private Browsing Mode
+   * Bug 30635: Sync mobile default bridges list with desktop one
+ * Build System
+   * All platforms
+     * Bug 30480: Check that signed tag contains expected tag name
+     * Bug 30536: Update Go to 1.12.5
+   * OS X
+     * Bug 30491: Move our macOS builds to Debian Stretch
+
 Tor Browser 9.0a1 -- May 21 2019
  * All platforms
    * Update Firefox to 60.7.0esr
