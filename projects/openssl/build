@@ -13,6 +13,7 @@ export CC='gcc -m32'
   ln -s $clangdir/bin/clang $clangdir/bin/x86_64-apple-darwin11-cc
   export CC="cc [% c("var/FLAGS") %]"
 [% END -%]
+export SOURCE_DATE_EPOCH='[% c("timestamp") %]'
 ./Configure --prefix=$distdir [% c('var/configure_opts') %]
 make
 make install
