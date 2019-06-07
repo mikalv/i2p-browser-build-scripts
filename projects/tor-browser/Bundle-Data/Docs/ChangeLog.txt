@@ -1,4 +1,4 @@
-Tor Browser 9.0a2 -- June 7 2019
+Tor Browser 9.0a2 -- June 11 2019
  * All platforms
    * Update Torbutton to 2.2
      * Bug 30565: Sync nocertdb with privatebrowsing.autostart at startup
@@ -11,7 +11,7 @@ Tor Browser 9.0a2 -- June 7 2019
    * Bug 30712: Backport fix for Mozilla's bug 1552993
    * Bug 30469: Add locale ro
  * Windows + OS X + Linux
-   * Update Tor to 0.4.1.1-alpha
+   * Update Tor to 0.4.1.2-alpha
    * Update OpenSSL to 1.1.1c
    * Update Tor Launcher to 0.2.19.1
      * Bug 30469: Add locale ro
@@ -30,6 +30,8 @@ Tor Browser 9.0a2 -- June 7 2019
      * Bug 30536: Update Go to 1.12.5
    * OS X
      * Bug 30491: Move our macOS builds to Debian Stretch
+   * Linux
+     * Bug 25930: Update GCC to 8.3.0 for our Linux builds
 
 Tor Browser 9.0a1 -- May 21 2019
  * All platforms
