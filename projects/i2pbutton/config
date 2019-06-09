@@ -1,5 +1,5 @@
 # vim: filetype=yaml sw=2
-version: 0.1
+version: 0.2
 git_url: https://github.com/mikalv/i2pbutton.git
 git_hash: '[% c("version") %]'
 filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"

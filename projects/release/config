@@ -103,11 +103,11 @@ input_files:
 
  - name: android-x86
    project: tor-browser
-   enable: '[% c("var/torbrowser-android-x86") %]'
+   enable: '[% c("var/i2pbrowser-android-x86") %]'
    target:
      - '[% c("var/containers_target") %]'
      - '[% c("var/build_target") %]'
-     - torbrowser-android-x86
+     - i2pbrowser-android-x86
 
  - name: linux-x86_64
    project: i2p-browser
