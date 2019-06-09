@@ -1,0 +1,24 @@
+# vim: filetype=yaml sw=2
+version: 0.1
+git_url: https://github.com/mikalv/i2pbutton.git
+git_hash: '[% c("version") %]'
+filename: "[% project %]-[% c('version') %]-[% c('var/build_id') %].xpi"
+var:
+  container:
+    use_container: 1
+input_files:
+  - project: container-image
+
+steps:
+  src-tarballs:
+    filename: 'src-[% project %]-[% c("version") %].tar.xz'
+    input_files: []
+    var:
+      container:
+        use_container: 0
+
+targets:
+  nightly:
+    version: '[% c("abbrev") %]'
+    git_hash: master
+
