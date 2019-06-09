@@ -68,6 +68,8 @@ input_files:
   - project: firefox-langpacks
     name: firefox-langpacks
     enable: '[% ! c("var/testbuild") && ! c("var/android") %]'
+  - project: i2pbutton
+    name: i2pbutton
 #  - project: https-everywhere
 #    name: https-everywhere
   - project: fonts
