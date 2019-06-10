@@ -1,0 +1,25 @@
+# vim: filetype=yaml sw=2
+version: 1.70.0
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+  build_libraries: 'date_time,filesystem,program_options,system'
+  build_toolset: 'gcc'
+  configure_options: 'variant=release address-model=64'
+
+
+input_files:
+  - project: container-image
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/windows") || c("var/osx") %]'
+  - URL: 'https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2'
+    name: boost
+    sha256sum: 430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778
+  - project: gcc
+    name: gcc
+    enable: '[% c("var/windows") %]'
+
+

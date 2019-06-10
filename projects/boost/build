@@ -1,0 +1,48 @@
+#!/bin/bash
+set -x
+[% c("var/set_default_env") -%]
+
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/build $distdir
+tar -C /var/tmp/build -xf boost_1_70_0.tar.bz2
+cd /var/tmp/build/boost_1_70_0
+
+# We need native tools to build
+./bootstrap.sh \
+  --with-libraries=[% c("var/build_libraries") %] \
+  --with-toolset=gcc \
+  --libdir=$distdir/lib \
+  --includedir=$distdir/include
+
+[% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
+[% IF c("var/osx") %]
+  export TOOLCHAIN_DIR=/var/tmp/dist/macosx-toolchain
+  export TARGET=x86_64-apple-darwin
+  export BUILD_PREFIX=x86_64-apple-darwin11-
+  export B2_ARGS="toolset=clang threading=multi threadapi=pthread runtime-link=shared link=static"
+[% END %]
+
+[% IF c("var/windows") %]
+  export B2_ARGS="binary-format=pe target-os=windows threadapi=win32 runtime-link=static --user-config=user-config.jam"
+  export PATH=/var/tmp/dist/mingw-w64/bin:$PATH
+  echo 'using gcc : : x86_64-w64-mingw32-g++ ;' > user-config.jam
+[% END %]
+
+[% IF c("var/windows") %]
+  export B2_ARGS="toolset=gcc threading=multi threadapi=pthread runtime-link=shared link=static"
+[% END %]
+
+./b2 [% c("var/configure_options") %] \
+  -j[% c("buildconf/num_procs") %] \
+  -sNO_BZIP2=1 \
+  -sNO_ZLIB=1 \
+  --layout=tagged \
+  --build-type=complete \
+  $B2_ARGS \
+  install
+
+cd /var/tmp/dist
+[% c('tar', {
+    tar_src => [ project ],
+    tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+}) %]
