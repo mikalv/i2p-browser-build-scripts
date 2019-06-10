@@ -5,7 +5,7 @@ output_dir: release
 var:
   signed_status: unsigned
   today: '[% USE date; date.format(format = "%Y-%m-%d") %]'
-  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/torbrowser_build") %]'
+  publish_dir: '[% c("var/signed_status") %]/[% c("version") %]-[% c("var/i2pbrowser_build") %]'
   containers_target: with_containers
 
 targets:

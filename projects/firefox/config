@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 filename: 'firefox-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %]'
-git_hash: 'i2p-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1-build3'
+git_hash: 'i2p-browser-[% c("var/firefox_version") %]-[% c("var/i2pbrowser_branch") %]-1-build3'
 #tag_gpg_id: 1
 git_url: "https://github.com/mikalv/test-i2p-browser.git"
 git_submodule: 1
@@ -11,8 +11,8 @@ var:
   firefox_platform_version: 60.7.0
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   i2pbrowser_version: 2.0
-  torbrowser_branch: 9.0
-  torbrowser_update_channel: alpha
+  i2pbrowser_branch: 9.0
+  i2pbrowser_update_channel: alpha
   branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/alpha'
   copyright_year: '[% exec("git show -s --format=%ci").remove("-.*") %]'
   deps:
@@ -44,14 +44,14 @@ steps:
 targets:
   release:
     var:
-      torbrowser_update_channel: release
+      i2pbrowser_update_channel: release
       branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/official'
 
   nightly:
     git_hash: 'i2p-browser-[% c("var/firefox_version") %]-[% c("var/i2pbrowser_branch") %]-1'
     tag_gpg_id: 0
     var:
-      torbrowser_update_channel: default
+      i2pbrowser_update_channel: default
       branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/nightly'
 
   android:
