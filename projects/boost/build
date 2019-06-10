@@ -28,7 +28,7 @@ cd /var/tmp/build/boost_1_70_0
   echo 'using gcc : : x86_64-w64-mingw32-g++ ;' > user-config.jam
 [% END %]
 
-[% IF c("var/windows") %]
+[% IF c("var/linux") %]
   export B2_ARGS="toolset=gcc threading=multi threadapi=pthread runtime-link=shared link=static"
 [% END %]
 
@@ -40,6 +40,11 @@ cd /var/tmp/build/boost_1_70_0
   --build-type=complete \
   $B2_ARGS \
   install
+
+[% IF c("var/windows") %]
+  cd /var/tmp/dist/boost/lib
+  for i in libboost*; do x86_64-w64-mingw32-ranlib $i; done
+[% END %]
 
 cd /var/tmp/dist
 [% c('tar', {
