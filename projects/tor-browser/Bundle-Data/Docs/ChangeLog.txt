@@ -33,6 +33,25 @@ Tor Browser 9.0a2 -- June 11 2019
    * Linux
      * Bug 25930: Update GCC to 8.3.0 for our Linux builds
 
+Tor Browser 8.5.1 -- June 4 2019
+ * All platforms
+   * Update Torbutton to 2.1.10
+     * Bug 30565: Sync nocertdb with privatebrowsing.autostart at startup
+     * Bug 30464: Add WebGL to safer descriptions
+     * Translations update
+   * Update NoScript to 10.6.2
+     * Bug 29969: Remove workaround for Mozilla's bug 1532530
+   * Update HTTPS Everywhere to 2019.5.13
+   * Bug 30541: Disable WebGL readPixel() for web content
+ * Windows + OS X + Linux
+   * Bug 30560: Better match actual toolbar in onboarding toolbar graphic
+   * Bug 30571: Correct more information URL for security settings
+ * Android
+   * Bug 30635: Sync mobile default bridges list with desktop one
+ * Build System
+   * All platforms
+     * Bug 30480: Check that signed tag contains expected tag name
+
 Tor Browser 9.0a1 -- May 21 2019
  * All platforms
    * Update Firefox to 60.7.0esr
