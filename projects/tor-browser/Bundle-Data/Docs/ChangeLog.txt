@@ -1,6 +1,6 @@
-Tor Browser 9.0a3 -- June 20 2019
+Tor Browser 9.0a3 -- June 24 2019
  * All platforms
-   * Pick up fix for Mozilla's bug 1544386
+   * Pick up fixes for Mozilla's bug 1544386 and 1560192
    * Update NoScript to 10.6.3
      * Bug 29904: NoScript blocks MP4 on higher security levels
      * Bug 30624+29043+29647: Prevent XSS protection from freezing the browser
