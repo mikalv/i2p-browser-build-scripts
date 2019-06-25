@@ -77,9 +77,9 @@ input_files:
     enable: 1 # '[% ! c("var/android") %]'
   - filename: Bundle-Data
     enable: 1 # '[% ! c("var/android") %]'
-  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.6.2-an+fx.xpi
+  - URL: https://addons.cdn.mozilla.net/user-media/addons/722/noscript_security_suite-10.6.3-an+fx.xpi
     name: noscript
-    sha256sum: 040bc6eaf5bdb72d5851c1f7cdc3be39302859f53dbd479757a2723e639a995f
+    sha256sum: 2f9e10d2512263fbf56cb225c1622576037f01305e09e0e7757e23d13eb3f97d
   - filename: 'RelativeLink/start-i2p-browser.desktop'
     enable: '[% c("var/linux") %]'
   - filename: 'RelativeLink/execdesktop'
