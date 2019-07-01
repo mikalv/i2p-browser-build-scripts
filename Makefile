@@ -11,6 +11,9 @@ release-android-armv7: submodule-update
 release-android-x86: submodule-update
 	$(rbm) build release --target release --target torbrowser-android-x86
 
+release-android-aarch64: submodule-update
+	$(rbm) build release --target release --target torbrowser-android-aarch64
+
 release-linux-x86_64: submodule-update
 	$(rbm) build release --target release --target torbrowser-linux-x86_64
 
@@ -40,6 +43,9 @@ alpha-android-armv7: submodule-update
 
 alpha-android-x86: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-android-x86
+
+alpha-android-aarch64: submodule-update
+	$(rbm) build release --target alpha --target torbrowser-android-aarch64
 
 alpha-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha --target torbrowser-linux-x86_64
@@ -71,6 +77,9 @@ nightly-android-armv7: submodule-update
 nightly-android-x86: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-android-x86
 
+nightly-android-aarch64: submodule-update
+	$(rbm) build release --target nightly --target torbrowser-android-aarch64
+
 nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target nightly --target torbrowser-linux-x86_64
 
@@ -101,6 +110,9 @@ alpha_nightly-android-armv7: submodule-update
 alpha_nightly-android-x86: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-android-x86
 
+alpha_nightly-android-aarch64: submodule-update
+	$(rbm) build release --target alpha_nightly --target torbrowser-android-aarch64
+
 alpha_nightly-linux-x86_64: submodule-update
 	$(rbm) build release --target alpha_nightly --target torbrowser-linux-x86_64
 
@@ -127,6 +139,9 @@ testbuild-android-armv7: submodule-update
 
 testbuild-android-x86: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-android-x86
+
+testbuild-android-aarch64: submodule-update
+	$(rbm) build release --target testbuild --target torbrowser-android-aarch64
 
 testbuild-linux-x86_64: submodule-update
 	$(rbm) build release --target testbuild --target torbrowser-linux-x86_64

@@ -10,6 +10,9 @@ mkdir -p "$destdir"
 [% IF c("var/torbrowser-android-x86") -%]
   mv [% c('input_files_by_name/android-x86') %]/* "$destdir"/
 [% END -%]
+[% IF c("var/torbrowser-android-aarch64") -%]
+  mv [% c('input_files_by_name/android-aarch64') %]/* "$destdir"/
+[% END -%]
 [% IF c("var/torbrowser-windows-i686") -%]
   mv [% c('input_files_by_name/windows-i686') %]/* "$destdir"/
   mv [% c('input_files_by_name/windows-expert-bundle') %]/* "$destdir"/

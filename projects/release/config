@@ -24,6 +24,9 @@ targets:
   torbrowser-android-x86:
     var:
       torbrowser-android-x86: 1
+  torbrowser-android-aarch64:
+    var:
+      torbrowser-android-aarch64: 1
   torbrowser-linux-x86_64:
     var:
       torbrowser-linux-x86_64: 1
@@ -116,6 +119,13 @@ input_files:
      - '[% c("var/containers_target") %]'
      - '[% c("var/build_target") %]'
      - torbrowser-android-x86
+
+ - name: android-aarch64
+   project: tor-browser
+   enable: '[% c("var/torbrowser-android-aarch64") %]'
+   target:
+     - '[% c("var/build_target") %]'
+     - torbrowser-android-aarch64
 
  - name: linux-x86_64
    project: tor-browser
