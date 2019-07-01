@@ -1,0 +1,29 @@
+The keyring/ directory contains some gpg keyring files that we use
+during the build to verify gpg signatures on downloaded files, or git
+tags. In order to be able to continue to use a git tag even after the
+key or sub-key that signed it expired (which is common when one is
+rotating sub-keys frequently), we configured gpg to ignore key expirations
+when verifying git tag signatures. However this also means that we should
+make sure that our keyring files do not contain expired keys or subkeys
+that are not supposed to be used anymore.
+
+This directory contains some scripts that can help clean the keyring
+files.
+
+The complete process for cleaning keyring files starts with:
+
+ - Run `list-all-keyrings` to see if we include any expired key or sub-key.
+
+Then for each expired key or sub-key:
+
+ - Check if the expiration is expected, and do nothing in that case.
+
+ - Check if the owner of that key or sub-key extended it, and in that
+   case add the updated key or sub-key.
+
+ - If a key is not needed anymore (but other keys in the keyring are
+   still needed), remove it with `gpg --delete-keys <key>`.
+
+ - If a sub-key is not needed anymore, but the main key still contains
+   at least one other valid sub-key, use `drop-expired-sub-keys` to
+   remove the expired sub-key.

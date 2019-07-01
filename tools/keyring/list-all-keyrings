@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# List all keys included in our keyring files, including expired sub-keys.
+
+set -e
+cd $(dirname "$0")/../..
+for keyring in ./keyring/*.gpg
+do
+    gpg --no-auto-check-trustdb --list-options show-unusable-subkeys,show-keyring --no-default-keyring --list-keys --keyring "$keyring"
+done

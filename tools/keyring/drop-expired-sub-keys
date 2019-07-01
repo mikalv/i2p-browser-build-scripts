@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Drop expired and revoked sub-keys from a keyring file
+#
+# usage: drop-expired-sub-keys <keyring-file>
+#
+# Note: this script only handles the case where all expired and revoked
+# sub-keys should be removed, so it cannot be used in the cases where
+# some of the expired sub-keys need to be kept. It is also only handling
+# one small part of the process to clean the keyring files and is not
+# supposed to be run on all keyring files.
+#
+# See the README file for the complete process for cleaning keyring files.
+
+set -e
+keyring="$1"
+test -f "$keyring"
+tmpfile=$(mktemp)
+gpg --no-auto-check-trustdb --no-default-keyring --keyring "$keyring" --armor --export-options export-clean --export-filter 'drop-subkey=expired -t || revoked -t' --export > "$tmpfile"
+rm -f "$keyring"
+gpg --no-auto-check-trustdb --trust-model always --no-default-keyring --keyring "$keyring" --import "$tmpfile"
+rm -f "$tmpfile"
