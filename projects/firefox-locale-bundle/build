@@ -13,6 +13,8 @@ tmpdir=$(mktemp -d)
 
 [% FOREACH lang = c('var/locales') %]
   [% SET lang = tmpl(lang);
+     # mk is unavailable on mobile.
+     NEXT IF lang == 'mk';
      SET hgurl = "https://hg.mozilla.org/l10n-central/" _ lang %]
   if test -d [% lang %]
   then
