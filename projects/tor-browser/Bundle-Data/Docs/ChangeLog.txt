@@ -1,3 +1,30 @@
+Tor Browser 9.0a4 -- July 9 2019
+ * All platforms
+   * Update Firefox to 60.8.0esr
+   * Update Torbutton to 2.2.1
+     * Bug 30577: Add Fundraising Banner
+     * Bug 31041: Stop syncing network.cookie.lifetimePolicy
+     * Bug 30468: Add mk locale
+     * Translations update
+   * Update Tor Launcher to 0.2.19.2
+     * Bug 30468: Add mk locale
+     * Translations update
+   * Update HTTPS Everywhere to 2019.6.27
+   * Bug 31055+31058: Remove four default bridges
+   * Bug 30849: Backport fixes for Mozilla's bug 1552627 and 1549833
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.1.3-alpha
+   * Bug 30468: Add mk locale
+   * Bug 31059: Enable Letterboxing
+ * Windows
+   * Bug 27503: Provide full support for accessibility tools
+   * Bug 30575: Don't allow enterprise policies in Tor Browser
+ * OS X
+   * Bug 30631: Blurry Tor Browser icon on macOS app switcher
+ * Android
+   * Bug 28119: Tor Browser for aarch64
+   * Bug 30573: Sanitize old tabs and wait for tor before opening new tabs
+
 Tor Browser 9.0a3 -- June 24 2019
  * All platforms
    * Pick up fixes for Mozilla's bug 1544386 and 1560192
