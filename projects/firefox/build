@@ -164,8 +164,10 @@ rm -f js/src/configure
 
 [% IF c("var/android") %]
   # Building a multi-locale .apk
-  [% FOREACH lang = c('var/locales') %]
-    [% SET lang = tmpl(lang) %]
+  [% FOREACH lang = c('var/locales');
+     SET lang = tmpl(lang);
+     # mk is unavailable on mobile.
+     NEXT IF lang == 'mk'; %]
     # Copy our torbrowser_strings.dtd at the right place
     cp /var/tmp/dist/tba-translation/[% lang %]/torbrowser_strings.dtd /var/tmp/dist/locales/[% lang %]/mobile/android/base/
     ./mach build chrome-[% lang %];
