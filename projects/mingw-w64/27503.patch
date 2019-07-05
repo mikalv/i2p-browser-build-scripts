@@ -1161,7 +1161,7 @@ index 0d44b403..0e62f77c 100644
              return 1;
      return 0;
 diff --git a/mingw-w64-tools/widl/src/parser.tab.c b/mingw-w64-tools/widl/src/parser.tab.c
-index 6266e054..d7053e79 100644
+index 6266e054..8cd1605a 100644
 --- a/mingw-w64-tools/widl/src/parser.tab.c
 +++ b/mingw-w64-tools/widl/src/parser.tab.c
 @@ -1,8 +1,8 @@
@@ -4829,7 +4829,7 @@ index 6266e054..d7053e79 100644
                         int top)
  {
    var_t *v = decl->var;
-@@ -5638,58 +5685,80 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5638,58 +5685,74 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    expr_t *dim;
    type_t **ptype;
    type_t *func_type = decl ? decl->func_type : NULL;
@@ -4912,12 +4912,6 @@ index 6266e054..d7053e79 100644
 -      if (!ptr_attr && top && (*pt)->details.pointer.def_fc != FC_RP)
 +      if (!ptr_attr && top && type_pointer_get_default_fc(*pt) != FC_RP)
        {
-+      	printf("dup_pointer_type!\n");
-+      	printf("type : %p name : %s\n", *pt, (*pt)->name);
-+      	/* ptr_attr is ref,unique or full (FC_RP, FC_UP, FC_FP) */
-+      	/* *pt could be the var's declspec's type OR a type on a typedef */
-+      	/* not an array */
-+
          /* FIXME: this is a horrible hack to cope with the issue that we
           * store an offset to the typeformat string in the type object, but
           * two typeformat strings may be written depending on whether the
@@ -4927,7 +4921,7 @@ index 6266e054..d7053e79 100644
        }
      }
      else if (ptr_attr)
-@@ -5700,16 +5769,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5700,16 +5763,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    {
      type_t *t = type;
  
@@ -4947,7 +4941,7 @@ index 6266e054..d7053e79 100644
          else
              break;
      }
-@@ -5726,15 +5795,15 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5726,15 +5789,15 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
  
    if (is_attr(v->attrs, ATTR_V1ENUM))
    {
@@ -4966,7 +4960,7 @@ index 6266e054..d7053e79 100644
    if (sizes) LIST_FOR_EACH_ENTRY(dim, sizes, expr_t, entry)
    {
      if (dim->type != EXPR_VOID)
-@@ -5747,7 +5816,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5747,7 +5810,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          else
            *ptype = type_new_array((*ptype)->name,
                                    type_array_get_element(*ptype), FALSE,
@@ -4975,7 +4969,7 @@ index 6266e054..d7053e79 100644
        }
        else if (is_ptr(*ptype))
          *ptype = type_new_array((*ptype)->name, type_pointer_get_ref(*ptype), TRUE,
-@@ -5756,15 +5825,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5756,15 +5819,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          error_loc("%s: size_is attribute applied to illegal type\n", v->name);
      }
  
@@ -4995,7 +4989,7 @@ index 6266e054..d7053e79 100644
    if (lengs) LIST_FOR_EACH_ENTRY(dim, lengs, expr_t, entry)
    {
      if (dim->type != EXPR_VOID)
-@@ -5782,10 +5852,11 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5782,10 +5846,11 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          error_loc("%s: length_is attribute applied to illegal type\n", v->name);
      }
  
@@ -5009,7 +5003,7 @@ index 6266e054..d7053e79 100644
      else
        error_loc("%s: too many expressions in length_is attribute\n", v->name);
    }
-@@ -5796,29 +5867,31 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -5796,29 +5861,31 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    if (func_type)
    {
      type_t *ft, *t;
@@ -5050,7 +5044,7 @@ index 6266e054..d7053e79 100644
    return v;
  }
  
-@@ -5866,6 +5939,10 @@ var_list_t *append_var(var_list_t *list, var_t *var)
+@@ -5866,6 +5933,10 @@ var_list_t *append_var(var_list_t *list, var_t *var)
          list_init( list );
      }
      list_add_tail( list, &var->entry );
@@ -5061,7 +5055,7 @@ index 6266e054..d7053e79 100644
      return list;
  }
  
-@@ -5885,11 +5962,11 @@ var_t *make_var(char *name)
+@@ -5885,11 +5956,11 @@ var_t *make_var(char *name)
  {
    var_t *v = xmalloc(sizeof(var_t));
    v->name = name;
@@ -5075,7 +5069,7 @@ index 6266e054..d7053e79 100644
    return v;
  }
  
-@@ -5897,10 +5974,9 @@ static var_t *copy_var(var_t *src, char *name, map_attrs_filter_t attr_filter)
+@@ -5897,10 +5968,9 @@ static var_t *copy_var(var_t *src, char *name, map_attrs_filter_t attr_filter)
  {
    var_t *v = xmalloc(sizeof(var_t));
    v->name = name;
@@ -5087,7 +5081,7 @@ index 6266e054..d7053e79 100644
    v->loc_info = src->loc_info;
    return v;
  }
-@@ -5920,7 +5996,7 @@ static declarator_t *make_declarator(var_t *var)
+@@ -5920,7 +5990,7 @@ static declarator_t *make_declarator(var_t *var)
  {
    declarator_t *d = xmalloc(sizeof(*d));
    d->var = var ? var : make_var(NULL);
@@ -5096,7 +5090,7 @@ index 6266e054..d7053e79 100644
    d->func_type = NULL;
    d->bits = NULL;
    return d;
-@@ -5928,7 +6004,15 @@ static declarator_t *make_declarator(var_t *var)
+@@ -5928,7 +5998,15 @@ static declarator_t *make_declarator(var_t *var)
  
  static type_t *make_safearray(type_t *type)
  {
@@ -5113,16 +5107,7 @@ index 6266e054..d7053e79 100644
                          NULL, NULL, FC_RP);
  }
  
-@@ -6007,6 +6091,8 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
-   }
-   if (!namespace)
-     namespace = &global_namespace;
-+  printf("reg_type { name : %s, namespace : %s, type : %s, ptr : %p}\n", name, namespace->name, ts_to_str(t), type);
-+
-   hash = hash_ident(name);
-   nt = xmalloc(sizeof(struct rtype));
-   nt->name = name;
-@@ -6018,15 +6104,16 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
+@@ -6018,15 +6096,16 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
    nt->t = t;
    nt->next = namespace->type_hash[hash];
    namespace->type_hash[hash] = nt;
@@ -5142,7 +5127,7 @@ index 6266e054..d7053e79 100644
       type_get_type_detect_alias(t) == TYPE_UNION ||
       type_get_type_detect_alias(t) == TYPE_ENCAPSULATED_UNION);
  }
-@@ -6034,19 +6121,16 @@ static int is_incomplete(const type_t *t)
+@@ -6034,19 +6113,16 @@ static int is_incomplete(const type_t *t)
  void add_incomplete(type_t *t)
  {
    struct typenode *tn = xmalloc(sizeof *tn);
@@ -5166,7 +5151,7 @@ index 6266e054..d7053e79 100644
      t->defined = ot->defined;
    }
  }
-@@ -6070,7 +6154,7 @@ static void fix_incomplete_types(type_t *complete_type)
+@@ -6070,7 +6146,7 @@ static void fix_incomplete_types(type_t *complete_type)
    {
      if (type_is_equal(complete_type, tn->type))
      {
@@ -5175,7 +5160,7 @@ index 6266e054..d7053e79 100644
        list_remove(&tn->entry);
        free(tn);
      }
-@@ -6094,7 +6178,13 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
+@@ -6094,7 +6170,13 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
        type_get_type_detect_alias(type) == TYPE_ENCAPSULATED_UNION)
    {
      if (!type->name)
@@ -5189,13 +5174,7 @@ index 6266e054..d7053e79 100644
  
      /* replace existing attributes when generating a typelib */
      if (do_typelib)
-@@ -6120,12 +6210,12 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
-        *        for cleaner solution.
-        */
-       if (cur && input_name == cur->loc_info.input_name)
--          error_loc("%s: redefinition error; original definition was at %s:%d\n",
-+          error_loc("FOO %s: redefinition error; original definition was at %s:%d\n",
-                     cur->name, cur->loc_info.input_name,
+@@ -6125,7 +6207,7 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
                      cur->loc_info.line_number);
  
        name = declare_var(attrs, decl_spec, decl, 0);
@@ -5204,16 +5183,7 @@ index 6266e054..d7053e79 100644
        cur->attrs = attrs;
  
        if (is_incomplete(cur))
-@@ -6140,6 +6230,8 @@ type_t *find_type(const char *name, struct namespace *namespace, int t)
- {
-   struct rtype *cur;
- 
-+  printf("find_type { name : %s, namespace %s, type : %s }\n", name, namespace ? namespace->name : NULL, ts_to_str(t));
-+
-   if(namespace && namespace != &global_namespace) {
-     for(cur = namespace->type_hash[hash_ident(name)]; cur; cur = cur->next) {
-       if(cur->t == t && !strcmp(cur->name, name))
-@@ -6293,7 +6385,6 @@ struct allowed_attr allowed_attr[] =
+@@ -6293,7 +6375,6 @@ struct allowed_attr allowed_attr[] =
      /* ATTR_CASE */                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, "case" },
      /* ATTR_CODE */                { 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "code" },
      /* ATTR_COMMSTATUS */          { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "comm_status" },
@@ -5221,7 +5191,7 @@ index 6266e054..d7053e79 100644
      /* ATTR_CONTEXTHANDLE */       { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, "context_handle" },
      /* ATTR_CONTROL */             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, "control" },
      /* ATTR_DECODE */              { 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, "decode" },
-@@ -6328,7 +6419,6 @@ struct allowed_attr allowed_attr[] =
+@@ -6328,7 +6409,6 @@ struct allowed_attr allowed_attr[] =
      /* ATTR_IMMEDIATEBIND */       { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "immediatebind" },
      /* ATTR_IMPLICIT_HANDLE */     { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "implicit_handle" },
      /* ATTR_IN */                  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "in" },
@@ -5229,7 +5199,7 @@ index 6266e054..d7053e79 100644
      /* ATTR_INPUTSYNC */           { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "inputsync" },
      /* ATTR_LENGTHIS */            { 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, "length_is" },
      /* ATTR_LIBLCID */             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, "lcid" },
-@@ -6400,10 +6490,10 @@ static attr_list_t *check_iface_attrs(const char *name, attr_list_t *attrs)
+@@ -6400,10 +6480,10 @@ static attr_list_t *check_iface_attrs(const char *name, attr_list_t *attrs)
      if (attr->type == ATTR_IMPLICIT_HANDLE)
      {
          const var_t *var = attr->u.pval;
@@ -5243,7 +5213,7 @@ index 6266e054..d7053e79 100644
              continue;
        error_loc("attribute %s requires a handle type in interface %s\n",
                  allowed_attr[attr->type].display_name, name);
-@@ -6608,7 +6698,7 @@ static int is_ptr_guid_type(const type_t *type)
+@@ -6608,7 +6688,7 @@ static int is_ptr_guid_type(const type_t *type)
  
      /* second, make sure it is a pointer to something of size sizeof(GUID),
       * i.e. 16 bytes */
@@ -5252,7 +5222,7 @@ index 6266e054..d7053e79 100644
  }
  
  static void check_conformance_expr_list(const char *attr_name, const var_t *arg, const type_t *container_type, expr_list_t *expr_list)
-@@ -6635,7 +6725,7 @@ static void check_remoting_fields(const var_t *var, type_t *type);
+@@ -6635,7 +6715,7 @@ static void check_remoting_fields(const var_t *var, type_t *type);
  static void check_field_common(const type_t *container_type,
                                 const char *container_name, const var_t *arg)
  {
@@ -5261,7 +5231,7 @@ index 6266e054..d7053e79 100644
      int more_to_do;
      const char *container_type_name;
      const char *var_type;
-@@ -6665,7 +6755,7 @@ static void check_field_common(const type_t *container_type,
+@@ -6665,7 +6745,7 @@ static void check_field_common(const type_t *container_type,
      }
  
      if (is_attr(arg->attrs, ATTR_LENGTHIS) &&
@@ -5270,7 +5240,7 @@ index 6266e054..d7053e79 100644
          error_loc_info(&arg->loc_info,
                         "string and length_is specified for argument %s are mutually exclusive attributes\n",
                         arg->name);
-@@ -6762,23 +6852,28 @@ static void check_field_common(const type_t *container_type,
+@@ -6762,23 +6842,28 @@ static void check_field_common(const type_t *container_type,
          {
              const type_t *t = type;
              while (is_ptr(t))
@@ -5303,7 +5273,7 @@ index 6266e054..d7053e79 100644
          case TGT_RANGE:
              /* nothing to do */
              break;
-@@ -6803,13 +6898,18 @@ static void check_remoting_fields(const var_t *var, type_t *type)
+@@ -6803,13 +6888,18 @@ static void check_remoting_fields(const var_t *var, type_t *type)
          if (type_is_complete(type))
              fields = type_struct_get_fields(type);
          else
@@ -5325,7 +5295,7 @@ index 6266e054..d7053e79 100644
  }
  
  /* checks that arguments for a function make sense for marshalling and unmarshalling */
-@@ -6818,9 +6918,10 @@ static void check_remoting_args(const var_t *func)
+@@ -6818,9 +6908,10 @@ static void check_remoting_args(const var_t *func)
      const char *funcname = func->name;
      const var_t *arg;
  
@@ -5338,7 +5308,7 @@ index 6266e054..d7053e79 100644
  
          /* check that [out] parameters have enough pointer levels */
          if (is_attr(arg->attrs, ATTR_OUT))
-@@ -6860,16 +6961,16 @@ static void check_remoting_args(const var_t *func)
+@@ -6860,16 +6951,16 @@ static void check_remoting_args(const var_t *func)
              }
          }
  
@@ -5359,7 +5329,7 @@ index 6266e054..d7053e79 100644
          free(var.name);
      }
  }
-@@ -6886,8 +6987,8 @@ static void add_explicit_handle_if_necessary(const type_t *iface, var_t *func)
+@@ -6886,8 +6977,8 @@ static void add_explicit_handle_if_necessary(const type_t *iface, var_t *func)
           * function */
          var_t *idl_handle = make_var(xstrdup("IDL_handle"));
          idl_handle->attrs = append_attr(NULL, make_attr(ATTR_IN));
@@ -5370,7 +5340,7 @@ index 6266e054..d7053e79 100644
      }
  }
  
-@@ -6952,6 +7053,7 @@ static void check_async_uuid(type_t *iface)
+@@ -6952,6 +7043,7 @@ static void check_async_uuid(type_t *iface)
      type_t *async_iface;
      type_t *inherit;
  
@@ -5378,7 +5348,7 @@ index 6266e054..d7053e79 100644
      if (!is_attr(iface->attrs, ATTR_ASYNCUUID)) return;
  
      inherit = iface->details.iface->inherit;
-@@ -6968,7 +7070,8 @@ static void check_async_uuid(type_t *iface)
+@@ -6968,7 +7060,8 @@ static void check_async_uuid(type_t *iface)
          var_t *begin_func, *finish_func, *func = stmt->u.var, *arg;
          var_list_t *begin_args = NULL, *finish_args = NULL, *args;
  
@@ -5388,7 +5358,7 @@ index 6266e054..d7053e79 100644
          if (args) LIST_FOR_EACH_ENTRY(arg, args, var_t, entry)
          {
              if (is_attr(arg->attrs, ATTR_IN) || !is_attr(arg->attrs, ATTR_OUT))
-@@ -6978,15 +7081,15 @@ static void check_async_uuid(type_t *iface)
+@@ -6978,15 +7071,15 @@ static void check_async_uuid(type_t *iface)
          }
  
          begin_func = copy_var(func, concat_str("Begin_", func->name), NULL);
@@ -5410,7 +5380,7 @@ index 6266e054..d7053e79 100644
          stmts = append_statement(stmts, make_statement_declaration(finish_func));
      }
  
-@@ -7026,6 +7129,7 @@ static void check_statements(const statement_list_t *stmts, int is_inside_librar
+@@ -7026,6 +7119,7 @@ static void check_statements(const statement_list_t *stmts, int is_inside_librar
  static void check_all_user_types(const statement_list_t *stmts)
  {
    const statement_t *stmt;
@@ -5418,7 +5388,7 @@ index 6266e054..d7053e79 100644
  
    if (stmts) LIST_FOR_EACH_ENTRY(stmt, stmts, const statement_t, entry)
    {
-@@ -7037,7 +7141,11 @@ static void check_all_user_types(const statement_list_t *stmts)
+@@ -7037,7 +7131,11 @@ static void check_all_user_types(const statement_list_t *stmts)
        const statement_t *stmt_func;
        STATEMENTS_FOR_EACH_FUNC(stmt_func, type_iface_get_stmts(stmt->u.type)) {
          const var_t *func = stmt_func->u.var;
@@ -5431,7 +5401,7 @@ index 6266e054..d7053e79 100644
        }
      }
    }
-@@ -7071,6 +7179,10 @@ static statement_t *make_statement_type_decl(type_t *type)
+@@ -7071,6 +7169,10 @@ static statement_t *make_statement_type_decl(type_t *type)
  {
      statement_t *stmt = make_statement(STMT_TYPE);
      stmt->u.type = type;
@@ -5442,7 +5412,7 @@ index 6266e054..d7053e79 100644
      return stmt;
  }
  
-@@ -7085,16 +7197,16 @@ static statement_t *make_statement_declaration(var_t *var)
+@@ -7085,16 +7187,16 @@ static statement_t *make_statement_declaration(var_t *var)
  {
      statement_t *stmt = make_statement(STMT_DECLARATION);
      stmt->u.var = var;
@@ -5462,7 +5432,7 @@ index 6266e054..d7053e79 100644
          error_loc("instantiation of data is illegal\n");
      return stmt;
  }
-@@ -7146,6 +7258,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -7146,6 +7248,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
      declarator_t *decl, *next;
      statement_t *stmt;
      type_list_t **type_list;
@@ -5470,7 +5440,7 @@ index 6266e054..d7053e79 100644
  
      if (!decls) return NULL;
  
-@@ -7157,6 +7270,18 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -7157,6 +7260,18 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
      {
          var_t *var = decl->var;
          type_t *type = find_type_or_error(var->name, 0);
@@ -5489,7 +5459,7 @@ index 6266e054..d7053e79 100644
          *type_list = xmalloc(sizeof(type_list_t));
          (*type_list)->type = type;
          (*type_list)->next = NULL;
-@@ -7166,6 +7291,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -7166,6 +7281,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
          free(var);
      }
  
@@ -5497,14 +5467,13 @@ index 6266e054..d7053e79 100644
      return stmt;
  }
  
-@@ -7206,7 +7332,7 @@ void init_loc_info(loc_info_t *i)
+@@ -7206,7 +7322,7 @@ void init_loc_info(loc_info_t *i)
  
  static void check_def(const type_t *t)
  {
 -    if (t->defined)
--        error_loc("%s: redefinition error; original definition was at %s:%d\n",
 +    if (type_is_defined(t))
-+        error_loc("BAR %s: redefinition error; original definition was at %s:%d\n",
+         error_loc("%s: redefinition error; original definition was at %s:%d\n",
                    t->name, t->loc_info.input_name, t->loc_info.line_number);
  }
 diff --git a/mingw-w64-tools/widl/src/parser.tab.h b/mingw-w64-tools/widl/src/parser.tab.h
@@ -5544,7 +5513,7 @@ index 09874726..fc7a8f4d 100644
  
  typedef union YYSTYPE YYSTYPE;
 diff --git a/mingw-w64-tools/widl/src/parser.y b/mingw-w64-tools/widl/src/parser.y
-index d9793941..bb14bf76 100644
+index d9793941..64503ac1 100644
 --- a/mingw-w64-tools/widl/src/parser.y
 +++ b/mingw-w64-tools/widl/src/parser.y
 @@ -52,13 +52,6 @@ struct _import_t
@@ -6008,7 +5977,7 @@ index d9793941..bb14bf76 100644
                         int top)
  {
    var_t *v = decl->var;
-@@ -1523,58 +1573,80 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1523,58 +1573,74 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    expr_t *dim;
    type_t **ptype;
    type_t *func_type = decl ? decl->func_type : NULL;
@@ -6091,12 +6060,6 @@ index d9793941..bb14bf76 100644
 -      if (!ptr_attr && top && (*pt)->details.pointer.def_fc != FC_RP)
 +      if (!ptr_attr && top && type_pointer_get_default_fc(*pt) != FC_RP)
        {
-+      	printf("dup_pointer_type!\n");
-+      	printf("type : %p name : %s\n", *pt, (*pt)->name);
-+      	/* ptr_attr is ref,unique or full (FC_RP, FC_UP, FC_FP) */
-+      	/* *pt could be the var's declspec's type OR a type on a typedef */
-+      	/* not an array */
-+
          /* FIXME: this is a horrible hack to cope with the issue that we
           * store an offset to the typeformat string in the type object, but
           * two typeformat strings may be written depending on whether the
@@ -6106,7 +6069,7 @@ index d9793941..bb14bf76 100644
        }
      }
      else if (ptr_attr)
-@@ -1585,16 +1657,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1585,16 +1651,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    {
      type_t *t = type;
  
@@ -6126,7 +6089,7 @@ index d9793941..bb14bf76 100644
          else
              break;
      }
-@@ -1611,15 +1683,15 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1611,15 +1677,15 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
  
    if (is_attr(v->attrs, ATTR_V1ENUM))
    {
@@ -6145,7 +6108,7 @@ index d9793941..bb14bf76 100644
    if (sizes) LIST_FOR_EACH_ENTRY(dim, sizes, expr_t, entry)
    {
      if (dim->type != EXPR_VOID)
-@@ -1632,7 +1704,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1632,7 +1698,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          else
            *ptype = type_new_array((*ptype)->name,
                                    type_array_get_element(*ptype), FALSE,
@@ -6154,7 +6117,7 @@ index d9793941..bb14bf76 100644
        }
        else if (is_ptr(*ptype))
          *ptype = type_new_array((*ptype)->name, type_pointer_get_ref(*ptype), TRUE,
-@@ -1641,15 +1713,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1641,15 +1707,16 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          error_loc("%s: size_is attribute applied to illegal type\n", v->name);
      }
  
@@ -6174,7 +6137,7 @@ index d9793941..bb14bf76 100644
    if (lengs) LIST_FOR_EACH_ENTRY(dim, lengs, expr_t, entry)
    {
      if (dim->type != EXPR_VOID)
-@@ -1667,10 +1740,11 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1667,10 +1734,11 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
          error_loc("%s: length_is attribute applied to illegal type\n", v->name);
      }
  
@@ -6188,7 +6151,7 @@ index d9793941..bb14bf76 100644
      else
        error_loc("%s: too many expressions in length_is attribute\n", v->name);
    }
-@@ -1681,29 +1755,31 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
+@@ -1681,29 +1749,31 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, const decl
    if (func_type)
    {
      type_t *ft, *t;
@@ -6229,7 +6192,7 @@ index d9793941..bb14bf76 100644
    return v;
  }
  
-@@ -1751,6 +1827,10 @@ var_list_t *append_var(var_list_t *list, var_t *var)
+@@ -1751,6 +1821,10 @@ var_list_t *append_var(var_list_t *list, var_t *var)
          list_init( list );
      }
      list_add_tail( list, &var->entry );
@@ -6240,7 +6203,7 @@ index d9793941..bb14bf76 100644
      return list;
  }
  
-@@ -1770,11 +1850,11 @@ var_t *make_var(char *name)
+@@ -1770,11 +1844,11 @@ var_t *make_var(char *name)
  {
    var_t *v = xmalloc(sizeof(var_t));
    v->name = name;
@@ -6254,7 +6217,7 @@ index d9793941..bb14bf76 100644
    return v;
  }
  
-@@ -1782,10 +1862,9 @@ static var_t *copy_var(var_t *src, char *name, map_attrs_filter_t attr_filter)
+@@ -1782,10 +1856,9 @@ static var_t *copy_var(var_t *src, char *name, map_attrs_filter_t attr_filter)
  {
    var_t *v = xmalloc(sizeof(var_t));
    v->name = name;
@@ -6266,7 +6229,7 @@ index d9793941..bb14bf76 100644
    v->loc_info = src->loc_info;
    return v;
  }
-@@ -1805,7 +1884,7 @@ static declarator_t *make_declarator(var_t *var)
+@@ -1805,7 +1878,7 @@ static declarator_t *make_declarator(var_t *var)
  {
    declarator_t *d = xmalloc(sizeof(*d));
    d->var = var ? var : make_var(NULL);
@@ -6275,7 +6238,7 @@ index d9793941..bb14bf76 100644
    d->func_type = NULL;
    d->bits = NULL;
    return d;
-@@ -1813,7 +1892,15 @@ static declarator_t *make_declarator(var_t *var)
+@@ -1813,7 +1886,15 @@ static declarator_t *make_declarator(var_t *var)
  
  static type_t *make_safearray(type_t *type)
  {
@@ -6292,16 +6255,7 @@ index d9793941..bb14bf76 100644
                          NULL, NULL, FC_RP);
  }
  
-@@ -1892,6 +1979,8 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
-   }
-   if (!namespace)
-     namespace = &global_namespace;
-+  printf("reg_type { name : %s, namespace : %s, type : %s, ptr : %p}\n", name, namespace->name, ts_to_str(t), type);
-+
-   hash = hash_ident(name);
-   nt = xmalloc(sizeof(struct rtype));
-   nt->name = name;
-@@ -1903,15 +1992,16 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
+@@ -1903,15 +1984,16 @@ type_t *reg_type(type_t *type, const char *name, struct namespace *namespace, in
    nt->t = t;
    nt->next = namespace->type_hash[hash];
    namespace->type_hash[hash] = nt;
@@ -6321,7 +6275,7 @@ index d9793941..bb14bf76 100644
       type_get_type_detect_alias(t) == TYPE_UNION ||
       type_get_type_detect_alias(t) == TYPE_ENCAPSULATED_UNION);
  }
-@@ -1919,19 +2009,16 @@ static int is_incomplete(const type_t *t)
+@@ -1919,19 +2001,16 @@ static int is_incomplete(const type_t *t)
  void add_incomplete(type_t *t)
  {
    struct typenode *tn = xmalloc(sizeof *tn);
@@ -6345,7 +6299,7 @@ index d9793941..bb14bf76 100644
      t->defined = ot->defined;
    }
  }
-@@ -1955,7 +2042,7 @@ static void fix_incomplete_types(type_t *complete_type)
+@@ -1955,7 +2034,7 @@ static void fix_incomplete_types(type_t *complete_type)
    {
      if (type_is_equal(complete_type, tn->type))
      {
@@ -6354,7 +6308,7 @@ index d9793941..bb14bf76 100644
        list_remove(&tn->entry);
        free(tn);
      }
-@@ -1979,7 +2066,13 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
+@@ -1979,7 +2058,13 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
        type_get_type_detect_alias(type) == TYPE_ENCAPSULATED_UNION)
    {
      if (!type->name)
@@ -6368,13 +6322,7 @@ index d9793941..bb14bf76 100644
  
      /* replace existing attributes when generating a typelib */
      if (do_typelib)
-@@ -2005,12 +2098,12 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
-        *        for cleaner solution.
-        */
-       if (cur && input_name == cur->loc_info.input_name)
--          error_loc("%s: redefinition error; original definition was at %s:%d\n",
-+          error_loc("FOO %s: redefinition error; original definition was at %s:%d\n",
-                     cur->name, cur->loc_info.input_name,
+@@ -2010,7 +2095,7 @@ static type_t *reg_typedefs(decl_spec_t *decl_spec, declarator_list_t *decls, at
                      cur->loc_info.line_number);
  
        name = declare_var(attrs, decl_spec, decl, 0);
@@ -6383,16 +6331,7 @@ index d9793941..bb14bf76 100644
        cur->attrs = attrs;
  
        if (is_incomplete(cur))
-@@ -2025,6 +2118,8 @@ type_t *find_type(const char *name, struct namespace *namespace, int t)
- {
-   struct rtype *cur;
- 
-+  printf("find_type { name : %s, namespace %s, type : %s }\n", name, namespace ? namespace->name : NULL, ts_to_str(t));
-+
-   if(namespace && namespace != &global_namespace) {
-     for(cur = namespace->type_hash[hash_ident(name)]; cur; cur = cur->next) {
-       if(cur->t == t && !strcmp(cur->name, name))
-@@ -2178,7 +2273,6 @@ struct allowed_attr allowed_attr[] =
+@@ -2178,7 +2263,6 @@ struct allowed_attr allowed_attr[] =
      /* ATTR_CASE */                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, "case" },
      /* ATTR_CODE */                { 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "code" },
      /* ATTR_COMMSTATUS */          { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "comm_status" },
@@ -6400,7 +6339,7 @@ index d9793941..bb14bf76 100644
      /* ATTR_CONTEXTHANDLE */       { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, "context_handle" },
      /* ATTR_CONTROL */             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, "control" },
      /* ATTR_DECODE */              { 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, "decode" },
-@@ -2213,7 +2307,6 @@ struct allowed_attr allowed_attr[] =
+@@ -2213,7 +2297,6 @@ struct allowed_attr allowed_attr[] =
      /* ATTR_IMMEDIATEBIND */       { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "immediatebind" },
      /* ATTR_IMPLICIT_HANDLE */     { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "implicit_handle" },
      /* ATTR_IN */                  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "in" },
@@ -6408,7 +6347,7 @@ index d9793941..bb14bf76 100644
      /* ATTR_INPUTSYNC */           { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "inputsync" },
      /* ATTR_LENGTHIS */            { 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, "length_is" },
      /* ATTR_LIBLCID */             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, "lcid" },
-@@ -2285,10 +2378,10 @@ static attr_list_t *check_iface_attrs(const char *name, attr_list_t *attrs)
+@@ -2285,10 +2368,10 @@ static attr_list_t *check_iface_attrs(const char *name, attr_list_t *attrs)
      if (attr->type == ATTR_IMPLICIT_HANDLE)
      {
          const var_t *var = attr->u.pval;
@@ -6422,7 +6361,7 @@ index d9793941..bb14bf76 100644
              continue;
        error_loc("attribute %s requires a handle type in interface %s\n",
                  allowed_attr[attr->type].display_name, name);
-@@ -2493,7 +2586,7 @@ static int is_ptr_guid_type(const type_t *type)
+@@ -2493,7 +2576,7 @@ static int is_ptr_guid_type(const type_t *type)
  
      /* second, make sure it is a pointer to something of size sizeof(GUID),
       * i.e. 16 bytes */
@@ -6431,7 +6370,7 @@ index d9793941..bb14bf76 100644
  }
  
  static void check_conformance_expr_list(const char *attr_name, const var_t *arg, const type_t *container_type, expr_list_t *expr_list)
-@@ -2520,7 +2613,7 @@ static void check_remoting_fields(const var_t *var, type_t *type);
+@@ -2520,7 +2603,7 @@ static void check_remoting_fields(const var_t *var, type_t *type);
  static void check_field_common(const type_t *container_type,
                                 const char *container_name, const var_t *arg)
  {
@@ -6440,7 +6379,7 @@ index d9793941..bb14bf76 100644
      int more_to_do;
      const char *container_type_name;
      const char *var_type;
-@@ -2550,7 +2643,7 @@ static void check_field_common(const type_t *container_type,
+@@ -2550,7 +2633,7 @@ static void check_field_common(const type_t *container_type,
      }
  
      if (is_attr(arg->attrs, ATTR_LENGTHIS) &&
@@ -6449,7 +6388,7 @@ index d9793941..bb14bf76 100644
          error_loc_info(&arg->loc_info,
                         "string and length_is specified for argument %s are mutually exclusive attributes\n",
                         arg->name);
-@@ -2647,23 +2740,28 @@ static void check_field_common(const type_t *container_type,
+@@ -2647,23 +2730,28 @@ static void check_field_common(const type_t *container_type,
          {
              const type_t *t = type;
              while (is_ptr(t))
@@ -6482,7 +6421,7 @@ index d9793941..bb14bf76 100644
          case TGT_RANGE:
              /* nothing to do */
              break;
-@@ -2688,13 +2786,18 @@ static void check_remoting_fields(const var_t *var, type_t *type)
+@@ -2688,13 +2776,18 @@ static void check_remoting_fields(const var_t *var, type_t *type)
          if (type_is_complete(type))
              fields = type_struct_get_fields(type);
          else
@@ -6504,7 +6443,7 @@ index d9793941..bb14bf76 100644
  }
  
  /* checks that arguments for a function make sense for marshalling and unmarshalling */
-@@ -2703,9 +2806,10 @@ static void check_remoting_args(const var_t *func)
+@@ -2703,9 +2796,10 @@ static void check_remoting_args(const var_t *func)
      const char *funcname = func->name;
      const var_t *arg;
  
@@ -6517,7 +6456,7 @@ index d9793941..bb14bf76 100644
  
          /* check that [out] parameters have enough pointer levels */
          if (is_attr(arg->attrs, ATTR_OUT))
-@@ -2745,16 +2849,16 @@ static void check_remoting_args(const var_t *func)
+@@ -2745,16 +2839,16 @@ static void check_remoting_args(const var_t *func)
              }
          }
  
@@ -6538,7 +6477,7 @@ index d9793941..bb14bf76 100644
          free(var.name);
      }
  }
-@@ -2771,8 +2875,8 @@ static void add_explicit_handle_if_necessary(const type_t *iface, var_t *func)
+@@ -2771,8 +2865,8 @@ static void add_explicit_handle_if_necessary(const type_t *iface, var_t *func)
           * function */
          var_t *idl_handle = make_var(xstrdup("IDL_handle"));
          idl_handle->attrs = append_attr(NULL, make_attr(ATTR_IN));
@@ -6549,7 +6488,7 @@ index d9793941..bb14bf76 100644
      }
  }
  
-@@ -2837,6 +2941,7 @@ static void check_async_uuid(type_t *iface)
+@@ -2837,6 +2931,7 @@ static void check_async_uuid(type_t *iface)
      type_t *async_iface;
      type_t *inherit;
  
@@ -6557,7 +6496,7 @@ index d9793941..bb14bf76 100644
      if (!is_attr(iface->attrs, ATTR_ASYNCUUID)) return;
  
      inherit = iface->details.iface->inherit;
-@@ -2853,7 +2958,8 @@ static void check_async_uuid(type_t *iface)
+@@ -2853,7 +2948,8 @@ static void check_async_uuid(type_t *iface)
          var_t *begin_func, *finish_func, *func = stmt->u.var, *arg;
          var_list_t *begin_args = NULL, *finish_args = NULL, *args;
  
@@ -6567,7 +6506,7 @@ index d9793941..bb14bf76 100644
          if (args) LIST_FOR_EACH_ENTRY(arg, args, var_t, entry)
          {
              if (is_attr(arg->attrs, ATTR_IN) || !is_attr(arg->attrs, ATTR_OUT))
-@@ -2863,15 +2969,15 @@ static void check_async_uuid(type_t *iface)
+@@ -2863,15 +2959,15 @@ static void check_async_uuid(type_t *iface)
          }
  
          begin_func = copy_var(func, concat_str("Begin_", func->name), NULL);
@@ -6589,7 +6528,7 @@ index d9793941..bb14bf76 100644
          stmts = append_statement(stmts, make_statement_declaration(finish_func));
      }
  
-@@ -2911,6 +3017,7 @@ static void check_statements(const statement_list_t *stmts, int is_inside_librar
+@@ -2911,6 +3007,7 @@ static void check_statements(const statement_list_t *stmts, int is_inside_librar
  static void check_all_user_types(const statement_list_t *stmts)
  {
    const statement_t *stmt;
@@ -6597,7 +6536,7 @@ index d9793941..bb14bf76 100644
  
    if (stmts) LIST_FOR_EACH_ENTRY(stmt, stmts, const statement_t, entry)
    {
-@@ -2922,7 +3029,11 @@ static void check_all_user_types(const statement_list_t *stmts)
+@@ -2922,7 +3019,11 @@ static void check_all_user_types(const statement_list_t *stmts)
        const statement_t *stmt_func;
        STATEMENTS_FOR_EACH_FUNC(stmt_func, type_iface_get_stmts(stmt->u.type)) {
          const var_t *func = stmt_func->u.var;
@@ -6610,7 +6549,7 @@ index d9793941..bb14bf76 100644
        }
      }
    }
-@@ -2956,6 +3067,10 @@ static statement_t *make_statement_type_decl(type_t *type)
+@@ -2956,6 +3057,10 @@ static statement_t *make_statement_type_decl(type_t *type)
  {
      statement_t *stmt = make_statement(STMT_TYPE);
      stmt->u.type = type;
@@ -6621,7 +6560,7 @@ index d9793941..bb14bf76 100644
      return stmt;
  }
  
-@@ -2970,16 +3085,16 @@ static statement_t *make_statement_declaration(var_t *var)
+@@ -2970,16 +3075,16 @@ static statement_t *make_statement_declaration(var_t *var)
  {
      statement_t *stmt = make_statement(STMT_DECLARATION);
      stmt->u.var = var;
@@ -6641,7 +6580,7 @@ index d9793941..bb14bf76 100644
          error_loc("instantiation of data is illegal\n");
      return stmt;
  }
-@@ -3031,6 +3146,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -3031,6 +3136,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
      declarator_t *decl, *next;
      statement_t *stmt;
      type_list_t **type_list;
@@ -6649,7 +6588,7 @@ index d9793941..bb14bf76 100644
  
      if (!decls) return NULL;
  
-@@ -3042,6 +3158,18 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -3042,6 +3148,18 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
      {
          var_t *var = decl->var;
          type_t *type = find_type_or_error(var->name, 0);
@@ -6668,7 +6607,7 @@ index d9793941..bb14bf76 100644
          *type_list = xmalloc(sizeof(type_list_t));
          (*type_list)->type = type;
          (*type_list)->next = NULL;
-@@ -3051,6 +3179,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
+@@ -3051,6 +3169,7 @@ static statement_t *make_statement_typedef(declarator_list_t *decls)
          free(var);
      }
  
@@ -6676,14 +6615,13 @@ index d9793941..bb14bf76 100644
      return stmt;
  }
  
-@@ -3091,7 +3220,7 @@ void init_loc_info(loc_info_t *i)
+@@ -3091,7 +3210,7 @@ void init_loc_info(loc_info_t *i)
  
  static void check_def(const type_t *t)
  {
 -    if (t->defined)
--        error_loc("%s: redefinition error; original definition was at %s:%d\n",
 +    if (type_is_defined(t))
-+        error_loc("BAR %s: redefinition error; original definition was at %s:%d\n",
+         error_loc("%s: redefinition error; original definition was at %s:%d\n",
                    t->name, t->loc_info.input_name, t->loc_info.line_number);
  }
 diff --git a/mingw-w64-tools/widl/src/parser.yy.c b/mingw-w64-tools/widl/src/parser.yy.c
@@ -9337,7 +9275,7 @@ index 9b1de2c8..2c2b1276 100644
        return VT_PTR;
      }
 diff --git a/mingw-w64-tools/widl/src/typetree.c b/mingw-w64-tools/widl/src/typetree.c
-index b93806be..f52b785f 100644
+index b93806be..488f7a49 100644
 --- a/mingw-w64-tools/widl/src/typetree.c
 +++ b/mingw-w64-tools/widl/src/typetree.c
 @@ -30,12 +30,16 @@
@@ -9386,7 +9324,7 @@ index b93806be..f52b785f 100644
              error_loc("argument '%s' has void type\n", arg->name);
          if (!arg->name)
          {
-@@ -178,35 +181,29 @@ type_t *type_new_function(var_list_t *args)
+@@ -178,34 +181,28 @@ type_t *type_new_function(var_list_t *args)
      return t;
  }
  
@@ -9423,23 +9361,20 @@ index b93806be..f52b785f 100644
  {
      type_t *type = get_type(TYPE_MODULE, name, NULL, 0);
 -    if (type->type_type != TYPE_MODULE || type->defined)
--        error_loc("%s: redefinition error; original definition was at %s:%d\n",
 +    if (type->type_type != TYPE_MODULE || type_is_defined(type))
-+        error_loc("BAZ %s: redefinition error; original definition was at %s:%d\n",
+         error_loc("%s: redefinition error; original definition was at %s:%d\n",
                    type->name, type->loc_info.input_name, type->loc_info.line_number);
      type->name = name;
-     return type;
-@@ -215,15 +212,15 @@ type_t *type_new_module(char *name)
+@@ -215,7 +212,7 @@ type_t *type_new_module(char *name)
  type_t *type_new_coclass(char *name)
  {
      type_t *type = get_type(TYPE_COCLASS, name, NULL, 0);
 -    if (type->type_type != TYPE_COCLASS || type->defined)
--        error_loc("%s: redefinition error; original definition was at %s:%d\n",
 +    if (type->type_type != TYPE_COCLASS || type_is_defined(type))
-+        error_loc("BING %s: redefinition error; original definition was at %s:%d\n",
+         error_loc("%s: redefinition error; original definition was at %s:%d\n",
                    type->name, type->loc_info.input_name, type->loc_info.line_number);
      type->name = name;
-     return type;
+@@ -223,7 +220,7 @@ type_t *type_new_coclass(char *name)
  }
  
  
@@ -10078,7 +10013,7 @@ index 118e2245..4f4252e3 100644
  {
      MODE_Os,  /* inline stubs */
 diff --git a/mingw-w64-tools/widl/src/widltypes.h b/mingw-w64-tools/widl/src/widltypes.h
-index 08584de5..b9c5a07d 100644
+index 08584de5..cd71e9af 100644
 --- a/mingw-w64-tools/widl/src/widltypes.h
 +++ b/mingw-w64-tools/widl/src/widltypes.h
 @@ -40,6 +40,7 @@ typedef struct _attr_t attr_t;
@@ -10279,20 +10214,7 @@ index 08584de5..b9c5a07d 100644
  
  void init_types(void);
  type_t *alloc_type(void);
-@@ -568,6 +607,12 @@ void clear_all_offsets(void);
- #define tsSTRUCT 2
- #define tsUNION  3
- 
-+static inline const char* ts_to_str(int t)
-+{
-+  static const char* strings[] = {"tsNULL", "tsENUM", "tsSTRUCT", "tsUNION"};
-+  return strings[t];
-+}
-+
- var_t *find_const(const char *name, int f);
- type_t *find_type(const char *name, struct namespace *namespace, int t);
- type_t *make_type(enum type_type type);
-@@ -582,38 +627,18 @@ void init_loc_info(loc_info_t *);
+@@ -582,38 +621,18 @@ void init_loc_info(loc_info_t *);
  
  char *format_namespace(struct namespace *namespace, const char *prefix, const char *separator, const char *suffix);
  
