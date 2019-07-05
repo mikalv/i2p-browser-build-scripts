@@ -16,7 +16,5 @@ set -e
 keyring="$1"
 test -f "$keyring"
 tmpfile=$(mktemp)
-gpg --no-auto-check-trustdb --no-default-keyring --keyring "$keyring" --armor --export-options export-clean --export-filter 'drop-subkey=expired -t || revoked -t' --export > "$tmpfile"
-rm -f "$keyring"
-gpg --no-auto-check-trustdb --trust-model always --no-default-keyring --keyring "$keyring" --import "$tmpfile"
-rm -f "$tmpfile"
+gpg --no-auto-check-trustdb --no-default-keyring --keyring "$keyring" --export-options export-clean --export-filter 'drop-subkey=expired -t || revoked -t' --export > "$tmpfile"
+mv -f "$tmpfile" "$keyring"
