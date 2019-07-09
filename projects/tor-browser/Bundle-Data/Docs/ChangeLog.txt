@@ -23,7 +23,6 @@ Tor Browser 9.0a4 -- July 9 2019
    * Bug 30631: Blurry Tor Browser icon on macOS app switcher
  * Android
    * Bug 28119: Tor Browser for aarch64
-   * Bug 30573: Sanitize old tabs and wait for tor before opening new tabs
 
 Tor Browser 9.0a3 -- June 24 2019
  * All platforms
