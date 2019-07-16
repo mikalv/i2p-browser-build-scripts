@@ -35,3 +35,4 @@ input_files:
   - name: binutils
     project: binutils
   - filename: libtool-sort.patch
+  - filename: 27503.patch
