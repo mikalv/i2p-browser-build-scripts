@@ -1,0 +1,23 @@
+diff --git a/build.gradle b/build.gradle
+index 671edab..c7870e6 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -5,6 +5,7 @@ buildscript {
+     repositories {
+         google()
+         mavenCentral()
++        mavenLocal()
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:${androidplugin}"
+@@ -18,7 +19,8 @@ allprojects {
+     repositories {
+         google()
+         mavenCentral()
++        mavenLocal()
+         maven { url "https://repo.spring.io/plugins-release" }
+         maven { url "https://raw.githubusercontent.com/guardianproject/gpmaven/master" }
+     }
+-}
+\ No newline at end of file
++}

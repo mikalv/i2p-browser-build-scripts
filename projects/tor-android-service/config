@@ -11,7 +11,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 2
+  gradle_dependencies_version: 3
 
 targets:
   android:
@@ -26,7 +26,9 @@ input_files:
   - filename: 'gradle-dependencies-[% c("var/gradle_dependencies_version") %]'
     name: gradle-dependencies
     exec: '[% INCLUDE "fetch-gradle-dependencies" %]'
-  - filename: gradle.patch
-  - filename: require-api.patch
   - project: tor-onion-proxy-library
     name: topl
+  - filename: require-api.patch
+  - filename: remove-native-build.patch
+  - filename: disable-daemon.patch
+  - filename: maven-local.patch

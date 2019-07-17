@@ -1,0 +1,17 @@
+diff --git a/service/build.gradle b/service/build.gradle
+index b414557..ae3e203 100644
+--- a/service/build.gradle
++++ b/service/build.gradle
+@@ -16,12 +16,6 @@ android {
+         }
+     }
+ 
+-    externalNativeBuild {
+-        ndkBuild {
+-            path "src/main/jni/Android.mk"
+-            buildStagingDirectory "./outputs/ndk-build"
+-        }
+-    }
+ 
+     lintOptions {
+         abortOnError false
