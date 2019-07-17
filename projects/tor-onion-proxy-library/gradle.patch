@@ -1,0 +1,25 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index a8d9bdc..e8faf8c 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -15,7 +15,7 @@ buildscript {
+ 
+ android {
+     compileSdkVersion 28
+-
++    buildToolsVersion "27.0.3"
+     defaultConfig {
+         minSdkVersion 16
+         targetSdkVersion 28
+diff --git a/android_tor_installer/build.gradle b/android_tor_installer/build.gradle
+index 554fd49..4059748 100644
+--- a/android_tor_installer/build.gradle
++++ b/android_tor_installer/build.gradle
+@@ -15,6 +15,7 @@ buildscript {
+ 
+ android {
+     compileSdkVersion 28
++    buildToolsVersion "27.0.3"
+ 
+     defaultConfig {
+         minSdkVersion 16

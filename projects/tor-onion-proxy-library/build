@@ -2,7 +2,6 @@
 [% c("var/set_default_env") -%]
 output_dir=[% dest_dir %]/[% c('filename') %]
 gradle_repo=$rootdir/[% c('input_files_by_name/gradle-dependencies') %]
-export GRADLE_MAVEN_REPO="file://$gradle_repo"
 
 # The download script assumes artifact package name is the complete URL path.
 # In some cases this is incorrect, so copy those artifacts to correct location
@@ -18,12 +17,10 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 
 # Patch projects
 cd /var/tmp/build/[% project %]-[% c('version') %]
-patch -p1 < $rootdir/maven-repo.patch
-patch -p1 < $rootdir/add_socks_port_flags.patch
-patch -p1 < $rootdir/30284.patch
+patch -p1 < $rootdir/gradle.patch
 
 # Build Android Libraries and Apps
-$GRADLE_HOME/gradle-4.1/bin/gradle --offline -P androidplugin=3.0.1 assembleRelease -x lint
+$GRADLE_HOME/gradle-4.10.2/bin/gradle --offline --no-daemon -P androidplugin=3.1.0 -Dmaven.repo.local=$gradle_repo assembleRelease -x lint
 
 # Package
 cp universal/build/libs/* android/build/outputs/aar/* $output_dir
