@@ -24,6 +24,24 @@ Tor Browser 9.0a4 -- July 9 2019
  * Android
    * Bug 28119: Tor Browser for aarch64
 
+Tor Browser 8.5.4 -- July 9 2019
+ * All platforms
+   * Update Firefox to 60.8.0esr
+   * Update Torbutton to 2.1.12
+     * Bug 30577: Add Fundraising Banner
+     * Bug 31041: Stop syncing network.cookie.lifetimePolicy
+     * Translations update
+   * Update HTTPS Everywhere to 2019.6.27
+   * Bug 31055+31058: Remove four default bridges
+   * Bug 30712: Backport fix for Mozilla's bug 1552993
+   * Bug 30849: Backport fixes for Mozilla's bug 1552627 and 1549833
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.0.5
+   * Update OpenSSL to 1.0.2s
+   * Bug 29045: Ensure that tor does not start up in dormant mode
+ * OS X
+   * Bug 30631: Blurry Tor Browser icon on macOS app switcher
+
 Tor Browser 9.0a3 -- June 24 2019
  * All platforms
    * Pick up fixes for Mozilla's bug 1544386 and 1560192
