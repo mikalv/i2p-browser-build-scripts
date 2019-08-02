@@ -1,0 +1,45 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+distdir=/var/tmp/dist/[% project %]
+mkdir -p /var/tmp/dist
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
+export PATH="/var/tmp/dist/cmake/bin:$PATH"
+[% IF c("var/linux") %]
+  # We need a link to our GCC, otherwise the system cc gets used which points to
+  # /usr/bin/gcc.
+  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc'),
+                              hardened_gcc => 0 }) %]
+  ln -s gcc /var/tmp/dist/gcc/bin/cc
+[% END -%]
+mkdir -p /var/tmp/build
+cd /var/tmp/build
+tar -xf $rootdir/[% c('input_files_by_name/llvm') %]
+tar -xf $rootdir/[% c('input_files_by_name/cfe') %]
+tar -xf $rootdir/[% c('input_files_by_name/libcxx') %]
+tar -xf $rootdir/[% c('input_files_by_name/libcxxabi') %]
+tar -xf $rootdir/[% c('input_files_by_name/lld') %]
+tar -xf $rootdir/[% c('input_files_by_name/compiler-rt') %]
+mv llvm-* llvm
+mv cfe-* llvm/tools/clang
+mv libcxx-* llvm/projects/libcxx
+mv libcxxabi-* llvm/projects/libcxxabi
+mv lld-* llvm/tools/lld
+mv compiler-rt-* llvm/projects/compiler-rt
+[% IF c("var/windows") -%]
+  # Patch order is important here
+  for i in {1..12}
+    do git apply $rootdir/win-patches/llvm-objcopy-$i.patch
+  done
+[% END %]
+cd llvm
+export LLVM_HOME=$(pwd)
+mkdir build
+cd build
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$distdir -DCMAKE_BUILD_TYPE:STRING=Release $LLVM_HOME
+make -j[% c("buildconf/num_procs") %]
+make install
+cd /var/tmp/dist
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

@@ -1,0 +1,47 @@
+# vim: filetype=yaml sw=2
+version: 8.0.0
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+gpg_keyring: clang.gpg
+sig_ext: sig
+
+var:
+  container:
+    use_container: 1
+
+targets:
+  windows:
+    var:
+      arch_deps:
+        # We use git to apply patches
+        - git
+
+
+input_files:
+  - project: container-image
+  - name: '[% c("var/compiler") %]'
+    project: '[% c("var/compiler") %]'
+    enable: '[% c("var/linux") %]'
+  - project: cmake
+    name: cmake
+  - URL: 'https://releases.llvm.org/[% c("version") %]/llvm-[% c("version") %].src.tar.xz'
+    name: llvm
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("version") %]/cfe-[% c("version") %].src.tar.xz'
+    name: cfe
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("version") %]/libcxx-[% c("version") %].src.tar.xz'
+    name: libcxx
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("version") %]/libcxxabi-[% c("version") %].src.tar.xz'
+    name: libcxxabi
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("version") %]/lld-[% c("version") %].src.tar.xz'
+    name: lld
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("version") %]/compiler-rt-[% c("version") %].src.tar.xz'
+    name: compiler-rt
+    file_gpg_id: 1
+  - filename: win-patches
+    enable: '[% c("var/windows") %]'
+
+
