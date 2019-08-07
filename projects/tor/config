@@ -59,10 +59,4 @@ input_files:
     project: '[% c("var/compiler") %]'
   - name: rust
     project: rust
-    # Tor needs rust >= 1.28.0
-    # See bug 28260
-    input_file_var:
-      rust_version: 1.28.0
-      prev_version: 1.27.2
-      unwind_128: '[% c("var/windows-i686") %]'
     enable: '[% !c("var/android") && c("var/nightly") %]'
