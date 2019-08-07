@@ -1,0 +1,15 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_url: https://github.com/eqrion/cbindgen
+git_hash: 23a991a5b21e89aa1dcdc70f1371be20c93ece8e #v0.8.7
+filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
+
+var:
+  container:
+    use_container: 1
+input_files:
+  - project: container-image
+  - name: rust
+    project: rust
+  - URL: https://people.torproject.org/~boklm/mirrors/sources/cbindgen-vendor.tar.bz2
+    sha256sum: f4cde3d56df893b543b35b7e4a6e295a275dbb3cee8e8eae549efe679db50ab9
