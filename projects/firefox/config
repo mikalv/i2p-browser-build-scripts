@@ -20,7 +20,9 @@ var:
     - zip
     - autoconf2.13
     - yasm
+      # XXX: for mach
     - python
+    - pkg-config
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
@@ -78,12 +80,8 @@ targets:
         - hardening-wrapper
         # To pass configure since ESR 31.
         - libpulse-dev
-        # To pass configure since ESR 45.
-        - libgconf2-dev
         # To pass configure since ESR 52
         - libx11-xcb-dev
-        # We built GCC but not the libmpc2, thus we need to install it
-        - libmpc2
 
   linux-i686:
     var:
@@ -94,15 +92,11 @@ targets:
         - libgtk-3-dev:i386
         - libdbus-glib-1-dev:i386
         - libxt-dev:i386
+        - hardening-wrapper
         # To pass configure since ESR 31.
         - libpulse-dev:i386
-        # To pass configure since ESR 45.
-        - libgconf2-dev:i386
         # To pass configure since ESR 52
         - libx11-xcb-dev:i386
-        # We built GCC but not the libmpc2, thus we need to install it
-        - libmpc2
-        - hardening-wrapper
 
   osx-x86_64:
     var:
@@ -148,8 +142,16 @@ input_files:
     enable: '[% c("var/windows") %]'
   - project: rust
     name: rust
-  - project: llvm
-    name: llvm
+  - project: cbindgen
+    name: cbindgen
+  - project: node
+    name: node
+  - project: nasm
+    name: nasm
+  - project: python
+    name: python
+  - project: clang
+    name: clang
     enable: '[% c("var/linux") %]'
   - project: fxc2
     name: fxc2

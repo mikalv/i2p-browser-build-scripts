@@ -55,18 +55,20 @@ EOF
 [% IF c("var/linux") %]
   mkdir -p /var/tmp/dist
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
-  export PATH="/var/tmp/dist/binutils/bin:$PATH"
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/python') %]
+  tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/node') %]
+  export PATH="/var/tmp/dist/binutils/bin:/var/tmp/dist/python/bin:/var/tmp/dist/node/bin:$PATH"
+  # Use clang for everything on Linux now.
+  tar -C /var/tmp/dist -xf [% c('input_files_by_name/clang') %]
+  export LLVM_CONFIG="/var/tmp/dist/clang/bin/llvm-config"
+  export PATH="/var/tmp/dist/clang/bin:$PATH"
 [% END -%]
 
 mkdir -p /var/tmp/dist
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
-export PATH="/var/tmp/dist/rust/bin:$PATH"
-
-[% IF c("var/linux") %]
-  # Add llvm so stylo can build
-  tar -C /var/tmp/dist -xf [% c('input_files_by_name/llvm') %]
-  export LLVM_CONFIG="/var/tmp/dist/llvm/bin/llvm-config"
-[% END -%]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/cbindgen') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/nasm') %]
+export PATH="/var/tmp/dist/rust/bin:/var/tmp/dist/cbindgen:/var/tmp/dist/nasm/bin:$PATH"
 
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 
@@ -135,12 +137,6 @@ fi
   export WIDL_TIME_OVERRIDE="0"
 [% END %]
 
-[% IF c("var/osname") == "linux-i686" -%]
-  export LDFLAGS=-m32
-  export CFLAGS=-m32
-  export CC='gcc -m32'
-[% END -%]
-
 [% IF c("var/windows") %]
   patch -p1 < $rootdir/nsis-uninstall.patch
 [% END -%]
@@ -159,8 +155,10 @@ fi
 rm -f configure
 rm -f js/src/configure
 
-./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
-./mach build --verbose
+./mach configure --with-distribution-id=org.torproject --enable-bundled-fonts
+# Don't build with --verbose anymore or otherwise Stylo compilation breaks on
+# Linux. See: #30321 for details.
+./mach build
 
 [% IF c("var/android") %]
   # Building a multi-locale .apk
@@ -229,11 +227,11 @@ cp -p tools/update-packaging/*.sh $MARTOOLS/
 cp -p obj-*/dist/host/bin/mar $MARTOOLS/
 cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
 [% IF c("var/linux") %]
-  cp -p obj-*/modules/libmar/tool/signmar $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/modutil/modutil_modutil/modutil $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/pk12util/pk12util_pk12util/pk12util $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/shlibsign/shlibsign_shlibsign/shlibsign $MARTOOLS/
+  cp -p obj-*/dist/bin/signmar $MARTOOLS/
+  cp -p obj-*/dist/bin/certutil $MARTOOLS/
+  cp -p obj-*/dist/bin/modutil $MARTOOLS/
+  cp -p obj-*/dist/bin/pk12util $MARTOOLS/
+  cp -p obj-*/dist/bin/shlibsign $MARTOOLS/
   NSS_LIBS="libfreeblpriv3.so libmozsqlite3.so libnss3.so libnssckbi.so libnssdbm3.so libnssutil3.so libsmime3.so libsoftokn3.so libssl3.so"
   NSPR_LIBS="libnspr4.so libplc4.so libplds4.so"
   for LIB in $NSS_LIBS $NSPR_LIBS; do
