@@ -60,9 +60,6 @@ input_files:
   - project: firefox-langpacks
     name: firefox-langpacks
     enable: '[% ! c("var/testbuild") && ! c("var/android") %]'
-  - project: torbutton
-    name: torbutton
-    enable: '[% ! c("var/android") %]'
   - project: https-everywhere
     name: https-everywhere
   - project: fonts
