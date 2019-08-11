@@ -18,7 +18,7 @@ targets:
         - zlib1g-dev
   android-armv7:
     var:
-      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=armv7-linux-androideabi --set=target.armv7-linux-androideabi.cc=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-gcc
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=thumbv7neon-linux-androideabi --set=target.thumbv7neon-linux-androideabi.cc=$ANDROID_NDK_HOME/arm/bin/arm-linux-androideabi-gcc
 
   android-x86:
     var:
@@ -105,7 +105,3 @@ input_files:
     gpg_keyring: rust.gpg
   - filename: unwind.patch
     enable: '[% c("var/windows-i686") %]'
-  - filename: replace_pagesize_in_mmap.patch
-    enable: '[% c("var/android") %]'
-  - filename: 0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
-    enable: '[% c("var/android-armv7") %]'

@@ -62,14 +62,6 @@ cd /var/tmp/build/rustc-[% c('version') %]-src
   patch -p1 < $rootdir/unwind.patch
 [% END %]
 
-[% IF c("var/android") %]
-  patch -p1 < $rootdir/replace_pagesize_in_mmap.patch
-  # The additional Rust patch is not necessary for x86.
-  [% IF c("var/android-armv7") %]
-    patch -p1 < $rootdir/0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
-  [% END %]
-[% END %]
-
 mkdir build
 cd build
 ../configure --prefix=$distdir [% c("var/configure_opt") %]
