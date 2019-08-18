@@ -1,15 +1,9 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
-version: '[% c("input_file_var/rust_version") %]'
-
-# those values can be changed from the input_files section of other
-# projects. See projects/tor/config and bug 28260.
-input_file_var:
-  rust_version: 1.26.1
-  prev_version: 1.25.0
+version: 1.34.2
 
 var:
-  prev_version: '[% c("input_file_var/prev_version") %]'
+  prev_version: 1.33.0
   rust_arch: '[% c("arch") %]'
   container:
     use_container: 1
@@ -29,6 +23,10 @@ targets:
   android-x86:
     var:
       configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=i686-linux-android --set=target.i686-linux-android.cc=$ANDROID_NDK_HOME/x86/bin/i686-linux-android-gcc
+
+  android-aarch64:
+    var:
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=aarch64-linux-android --set=target.aarch64-linux-android.cc=$ANDROID_NDK_HOME/arm64/bin/aarch64-linux-android-gcc
 
   linux:
     var:
@@ -51,6 +49,9 @@ targets:
       #
       # `--enable-extended` to build not only rustc but cargo as well
       #
+      # `--enable-llvm-static-stdccp` to take a libstdc++ on Wheezy into account
+      # which is too old and if used gives undefined reference errors
+      #
       # `--release-channel=stable` to just include stable features in the
       # compiler
       #
@@ -68,7 +69,7 @@ targets:
       # version mismatch. We avoid that with this configure option. We need to
       # build our own GCC in the first place as 4.7.2 is too old to get all the
       # Rust pieces compiled.
-      configure_opt: --enable-local-rust --enable-vendor --enable-extended --release-channel=stable --sysconfdir=etc --target=x86_64-unknown-linux-gnu,i686-unknown-linux-gnu --set=target.x86_64-unknown-linux-gnu.cc=gcc --set=target.i686-unknown-linux-gnu.cc=gcc
+      configure_opt: --enable-local-rust --enable-vendor --enable-extended --enable-llvm-static-stdcpp --release-channel=stable --sysconfdir=etc --target=x86_64-unknown-linux-gnu,i686-unknown-linux-gnu --set=target.x86_64-unknown-linux-gnu.cc=gcc --set=target.i686-unknown-linux-gnu.cc=gcc
 
   osx-x86_64:
     var:
@@ -103,10 +104,9 @@ input_files:
     file_gpg_id: 1
     gpg_keyring: rust.gpg
   - filename: unwind.patch
-    enable: '[% c("var/windows-i686") && !c("input_file_var/unwind_128") %]'
-  - filename: unwind_128.patch
-    enable: '[% c("input_file_var/unwind_128") %]'
+    enable: '[% c("var/windows-i686") %]'
   - filename: replace_pagesize_in_mmap.patch
     enable: '[% c("var/android") %]'
   - filename: 0001-Make-sure-dl_iterate_phdr-is-undefined-on-Android.patch
     enable: '[% c("var/android-armv7") %]'
+
