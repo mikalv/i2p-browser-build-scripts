@@ -1,0 +1,34 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+distdir=/var/tmp/dist
+builddir=/var/tmp/build/[% project %]
+mkdir -p $distdir/[% project %]
+tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/rust') %]
+export PATH="/var/tmp/dist/rust/bin:$PATH"
+mkdir -p /var/tmp/build
+tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
+
+# Now prepare the offline build
+# Move the directory for hardcoding the path in .cargo/config
+mv /var/tmp/build/[% project %]-[% c('version') %] $builddir
+tar -C $builddir -xjf cbindgen-vendor.tar.bz2
+cd $builddir
+mkdir .cargo
+cat > .cargo/config << 'EOF'
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "/var/tmp/build/cbindgen/vendor"
+EOF
+
+cargo build --release --frozen --target x86_64-unknown-linux-gnu
+mv target/x86_64-unknown-linux-gnu/release/cbindgen $distdir/[% project %]
+
+cd $distdir
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]
+
+
