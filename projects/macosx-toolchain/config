@@ -17,8 +17,8 @@ var:
 
 input_files:
   - project: container-image
-  - name: llvm
-    project: llvm
+  - name: clang
+    project: clang
   - name: cctools
     project: cctools
   - name: SDK

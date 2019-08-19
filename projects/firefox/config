@@ -152,7 +152,6 @@ input_files:
     name: python
   - project: clang
     name: clang
-    enable: '[% c("var/linux") %]'
   - project: fxc2
     name: fxc2
     enable: '[% c("var/windows") %]'

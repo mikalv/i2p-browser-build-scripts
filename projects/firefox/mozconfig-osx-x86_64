@@ -11,21 +11,18 @@ FLAGS="-target x86_64-apple-darwin11 -B $CROSS_CCTOOLS_PATH/bin -isysroot $CROSS
 
 export CC="$TOOLCHAIN_DIR/clang/bin/clang $FLAGS"
 export CXX="$TOOLCHAIN_DIR/clang/bin/clang++ $FLAGS"
-export CPP="$TOOLCHAIN_DIR/clang/bin/clang $FLAGS -E"
 export LLVMCONFIG=$TOOLCHAIN_DIR/clang/bin/llvm-config
-export LDFLAGS="-Wl,-syslibroot,$CROSS_SYSROOT -Wl,-dead_strip -Wl,-pie"
+export LDFLAGS="-Wl,-syslibroot,$CROSS_SYSROOT -Wl,-pie"
 export BINDGEN_CFLAGS="$FLAGS"
 export TOOLCHAIN_PREFIX=$CROSS_CCTOOLS_PATH/bin/x86_64-apple-darwin11-
-export DSYMUTIL="$TOOLCHAIN_DIR/clang/bin/llvm-dsymutil"
+export DSYMUTIL="$TOOLCHAIN_DIR/clang/bin/dsymutil"
 
-export HOST_CC="$TOOLCHAIN_DIR/clang/bin/clang"
-export HOST_CXX="$TOOLCHAIN_DIR/clang/bin/clang++"
-export HOST_CPP="$TOOLCHAIN_DIR/clang/bin/clang -E"
 export HOST_CFLAGS="-g"
 export HOST_CXXFLAGS="-g"
 export HOST_LDFLAGS="-g"
 
-ac_add_options --target=x86_64-apple-darwin
+ac_add_options --target=x86_64-apple-darwin11
+ac_add_options --with-macos-sdk=$CROSS_SYSROOT
 ac_add_options --with-macos-private-frameworks=$CROSS_PRIVATE_FRAMEWORKS
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-macos
@@ -41,14 +38,14 @@ ac_add_options --enable-optimize
 ac_add_options --disable-debug
 
 ac_add_options --enable-tor-browser-data-outside-app-dir
-ac_add_options --enable-tor-browser-update
+#ac_add_options --enable-tor-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
 
 ac_add_options --disable-crashreporter
-ac_add_options --disable-maintenance-service
 ac_add_options --disable-webrtc
 ac_add_options --disable-tests
 # Let's make sure no preference is enabling either Adobe's or Google's CDM.
 ac_add_options --disable-eme
+ac_add_options --enable-proxy-bypass-protection
 # ac_add_options --disable-ctypes
