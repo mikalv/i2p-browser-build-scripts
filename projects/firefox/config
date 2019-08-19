@@ -150,9 +150,16 @@ input_files:
     enable: '[% c("var/windows") %]'
   - project: rust
     name: rust
-  - project: llvm
-    name: llvm
-    enable: '[% c("var/linux") %]'
+  - project: cbindgen
+    name: cbindgen
+  - project: node
+    name: node
+  - project: nasm
+    name: nasm
+  - project: python
+    name: python
+  - project: clang
+    name: clang
   - project: fxc2
     name: fxc2
     enable: '[% c("var/windows") %]'
