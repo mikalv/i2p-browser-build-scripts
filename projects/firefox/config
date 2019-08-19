@@ -20,7 +20,9 @@ var:
     - zip
     - autoconf2.13
     - yasm
-      # XXX: for mach
+    # We are building our own version of Python 3.6, which is required
+    # for the build. However mach still requires Python 2.7, so we
+    # install this version using the package.
     - python
     - pkg-config
   container:
