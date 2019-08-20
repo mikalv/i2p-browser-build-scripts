@@ -4,7 +4,7 @@ TOOLCHAIN_DIR=/var/tmp/dist/macosx-toolchain
 mk_add_options "export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/clang/lib"
 
 CROSS_CCTOOLS_PATH=$TOOLCHAIN_DIR/cctools
-CROSS_SYSROOT=$TOOLCHAIN_DIR/SDK
+CROSS_SYSROOT=$TOOLCHAIN_DIR/MacOSX10.11.sdk
 CROSS_PRIVATE_FRAMEWORKS=$CROSS_SYSROOT/System/Library/PrivateFrameworks
 HARDENING_FLAGS="-Werror=format -Werror=format-security -fstack-protector-strong -D_FORTIFY_SOURCE=2"
 FLAGS="-target x86_64-apple-darwin11 -B $CROSS_CCTOOLS_PATH/bin -isysroot $CROSS_SYSROOT $HARDENING_FLAGS"
