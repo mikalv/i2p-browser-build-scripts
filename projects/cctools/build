@@ -2,8 +2,8 @@
 [% c("var/set_default_env") -%]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/dist
-tar -C /var/tmp/dist -xf [% c('input_files_by_name/llvm') %]
-export PATH="/var/tmp/dist/llvm/bin:$PATH"
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/clang') %]
+export PATH="/var/tmp/dist/clang/bin:$PATH"
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]/cctools
