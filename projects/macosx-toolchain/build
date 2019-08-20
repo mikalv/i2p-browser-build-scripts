@@ -3,7 +3,7 @@
 distdir="/var/tmp/dist/[% project %]"
 mkdir -p "$distdir"
 tar xjf [% c('input_files_by_name/SDK') %]
-mv MacOSX10.11.sdk "$distdir/SDK"
+mv MacOSX10.11.sdk "$distdir/"
 tar xf [% c('input_files_by_name/clang') %]
 mv clang "$distdir/clang"
 tar -C $distdir -xf [% c('input_files_by_name/cctools') %]

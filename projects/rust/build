@@ -40,7 +40,7 @@ export PATH="$distdir-rust-old/bin:$PATH"
   cat > $distdir/helper/x86_64-apple-darwin-clang << 'EOF'
 #!/bin/sh
 BASEDIR=/var/tmp/dist/macosx-toolchain
-$BASEDIR/cctools/bin/x86_64-apple-darwin-clang -target x86_64-apple-darwin -B $BASEDIR/cctools/bin -isysroot $BASEDIR/SDK/ -Wl,-syslibroot,$BASEDIR/SDK/ -Wl,-dead_strip -Wl,-pie "$@"
+$BASEDIR/cctools/bin/x86_64-apple-darwin-clang -target x86_64-apple-darwin -B $BASEDIR/cctools/bin -isysroot $BASEDIR/MacOSX10.11.sdk/ -Wl,-syslibroot,$BASEDIR/MacOSX10.11.sdk/ -Wl,-dead_strip -Wl,-pie "$@"
 EOF
 
   chmod +x $distdir/helper/x86_64-apple-darwin-clang

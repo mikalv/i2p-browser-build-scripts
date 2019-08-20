@@ -7,7 +7,7 @@ var:
   setup: |
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
-    export sysrootdir=/var/tmp/dist/[% project %]/SDK/
+    export sysrootdir=/var/tmp/dist/[% project %]/MacOSX10.11.sdk/
     export clangdir=/var/tmp/dist/[% project %]/clang
     export cctoolsdir=/var/tmp/dist/[% project %]/cctools/bin
     export PATH="$clangdir/bin:$cctoolsdir:$PATH"
