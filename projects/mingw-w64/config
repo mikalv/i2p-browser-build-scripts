@@ -1,7 +1,7 @@
 # vim: filetype=yaml sw=2
 filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
 git_url: https://git.code.sf.net/p/mingw-w64/mingw-w64
-git_hash: 2d4e517ad0c7a9f0bd7001c42e6c131b977c15d9
+git_hash: 2d52c4b3433e55b1c454f9567c0ae9adc4b83b41
 version: '[% c("abbrev") %]'
 var:
   container:
@@ -35,4 +35,3 @@ input_files:
   - name: binutils
     project: binutils
   - filename: libtool-sort.patch
-  - filename: 27503.patch
