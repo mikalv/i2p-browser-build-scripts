@@ -49,7 +49,7 @@ targets:
       branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/official'
 
   nightly:
-    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-2'
+    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-3'
     tag_gpg_id: 0
     var:
       torbrowser_update_channel: default
