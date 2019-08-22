@@ -72,6 +72,8 @@ openssldir=/var/tmp/dist/openssl
 
 [% IF c("var/osx") %]
   cp $libeventdir/lib/libevent-*.dylib $TORBINDIR/
+  # The target version needs to be set before the configure step.
+  export MACOSX_DEPLOYMENT_TARGET=[% c("var/macosx_deployment_target") %]
 [% END %]
 
 cd /var/tmp/build/[% project %]-[% c('version') %]

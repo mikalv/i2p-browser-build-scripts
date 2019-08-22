@@ -16,9 +16,9 @@ distdir=/var/tmp/dist/[% project %]
 mkdir -p $PTDIR $DOCSDIR
 [% IF c("var/osx") %]
   export CGO_ENABLED=1
-  export CGO_CFLAGS="[% c("var/FLAGS") %] -mmacosx-version-min=10.7"
-  export CGO_CXXFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=10.7"
-  export CGO_LDFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=10.7"
+  export CGO_CFLAGS="[% c("var/FLAGS") %] -mmacosx-version-min=[% c("var/macosx_deployment_target") %]"
+  export CGO_CXXFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=[% c("var/macosx_deployment_target") %]"
+  export CGO_LDFLAGS="[% c("var/FLAGS") %] -stdlib=libc++ -mmacosx-version-min=[% c("var/macosx_deployment_target") %]"
   export CC="$clangdir/bin/clang"
   export CXX="$clangdir/bin/clang++"
 [% END %]

@@ -17,15 +17,15 @@ export PATH="$distdir-rust-old/bin:$PATH"
   # (i.e. Linux).
   unset CC
   unset LDFLAGS
-  # Target 10.7 as our toolchain does. Without this explicit declaration Bad
+  # Target 10.9 as our toolchain does. Without this explicit declaration Bad
   # Things will happen, as a lot of dependent code then assumes that the
   # official macOS target, x86_64-apple-darwin, essentially means 10.4.
-  export MACOSX_DEPLOYMENT_TARGET=10.7
+  export MACOSX_DEPLOYMENT_TARGET=[% c("var/macosx_deployment_target") %]
   # The Rust target for macOS is x86_64-apple-darwin, yet our toolchain is built
   # for x86_64-apple-darwin11. We can't mix those targets as clang gets confused
   # that way. Changing the Rust target to x86_64-apple-darwin11 would require a
   # fair amount of patching, thus we create symlinks to provide Rust with the
-  # necessary tools while using our toolchain underneath, targeting 10.7.
+  # necessary tools while using our toolchain underneath, targeting 10.9.
   cd $cctoolsdir
   for f in `ls x86_64-apple-darwin11-*`; do
     ln -s $f ${f//x86_64-apple-darwin11/x86_64-apple-darwin}

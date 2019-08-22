@@ -7,6 +7,9 @@ tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 [% IF c("var/osx") -%]
   patch -p1 < $rootdir/autotools-openssl-mac.patch
+  # Setting this after `configure` but before `make` might be enough, but let's
+  # not bet on that and just set it here.
+  export MACOSX_DEPLOYMENT_TARGET=[% c("var/macosx_deployment_target") %]
 [% END -%]
 ./autogen.sh
 ./configure --disable-static [% c("var/configure_opt") %] --prefix=$distdir

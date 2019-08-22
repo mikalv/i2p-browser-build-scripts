@@ -66,7 +66,7 @@ print("$sysrootdir")
 print("10.11")
 EOF
   cat <<EOF > build/config/mac/sdk_info.py
-print("machine_os_build=\"10.7\"")
+print("machine_os_build=\"[% c("var/macosx_deployment_target") %]\"")
 print("sdk_build=\"10.11\"")
 print("sdk_path=\"$sysrootdir\"")
 print("sdk_platform_path=\"$sysrootdir\"")
@@ -115,7 +115,7 @@ GN_ARGS+=" use_custom_libcxx=false"
   #GN_ARGS+=" rtc_include_tests=false"
 [% END -%]
 [% IF c("var/osx") -%]
-  GN_ARGS+=" target_os=\"mac\" target_cpu=\"x64\" mac_deployment_target=\"10.7\""
+  GN_ARGS+=" target_os=\"mac\" target_cpu=\"x64\" mac_deployment_target=\"[% c("var/macosx_deployment_target") %]\""
   GN_ARGS+=" clang_use_chrome_plugins=false"
   GN_ARGS+=" clang_base_path=\"$clangdir\""
   # No lld in our toolchain currently.
