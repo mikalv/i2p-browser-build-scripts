@@ -32,7 +32,6 @@ mkdir -p "$destdir"
 [% END -%]
 [% IF c("var/torbrowser-src") -%]
   mv  [% c('input_files_by_name/src-firefox') %]      \
-      [% c('input_files_by_name/src-torbutton') %]    \
       [% c('input_files_by_name/src-tor-launcher') %] \
       "$destdir"/
 [% END -%]

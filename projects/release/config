@@ -188,14 +188,6 @@ input_files:
      - '[% c("var/build_target") %]'
      - torbrowser-src
 
- - name: src-torbutton
-   project: torbutton
-   enable: '[% c("var/torbrowser-src") %]'
-   pkg_type: src-tarballs
-   target:
-     - '[% c("var/build_target") %]'
-     - torbrowser-src
-
  - name: src-tor-launcher
    project: tor-launcher
    enable: '[% c("var/torbrowser-src") %]'
