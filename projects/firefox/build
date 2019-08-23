@@ -154,7 +154,7 @@ fi
 rm -f configure
 rm -f js/src/configure
 
-./mach configure --with-distribution-id=org.torproject --enable-bundled-fonts
+./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
 # Don't build with --verbose anymore or otherwise Stylo compilation breaks on
 # Linux. See: #30321 for details.
 ./mach build
