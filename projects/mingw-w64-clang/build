@@ -1,0 +1,233 @@
+#!/bin/bash
+[% c("var/set_default_env") -%]
+builddir=/var/tmp/build
+distdir=/var/tmp/dist/mingw-w64-clang
+mkdir -p $distdir
+cd /var/tmp/dist
+tar -xf $rootdir/[% c('input_files_by_name/clang') %]
+mv clang/* mingw-w64-clang/
+tar -xf $rootdir/[% c('input_files_by_name/cmake') %]
+mkdir -p $builddir
+cd $builddir
+tar -xf $rootdir/mingw-w64-clang-[% c('version') %].tar.gz
+mv mingw-w64-clang-[% c('version') %] mingw-w64-clang
+tar -xf $rootdir/[% c('input_files_by_name/libcxx') %]
+mv libcxx-* libcxx
+tar -xf $rootdir/[% c('input_files_by_name/libcxxabi') %]
+mv libcxxabi-* libcxxabi
+tar -xf $rootdir/[% c('input_files_by_name/libunwind') %]
+mv libunwind-* libunwind
+tar -xf $rootdir/[% c('input_files_by_name/compiler-rt') %]
+mv compiler-rt-* compiler-rt
+tar -xf $rootdir/[% c('input_files_by_name/llvm-mingw') %]
+
+# Adding the wrappers and symlinks we need
+cd $distdir/bin
+exception_flags=""
+target=""
+[% IF c("var/windows-i686") %]
+  target="--target=i686-linux-gnu"
+  exception_flags="-fsjlj-exceptions"
+[% END -%]
+compiler_flags="--sysroot \$DIR/../[% c("arch") %]-w64-mingw32 -rtlib=compiler-rt -stdlib=libc++ -fuse-ld=lld $exception_flags -fuse-cxa-atexit -Qunused-arguments"
+
+cat <<EOF >[% c("arch") %]-w64-mingw32-clang
+#!/bin/sh
+DIR="\$(cd "\$(dirname "\$0")" && pwd)"
+\$DIR/clang -target [% c("arch") %]-w64-mingw32 $compiler_flags "\$@"
+EOF
+chmod +x [% c("arch") %]-w64-mingw32-clang
+
+cat <<EOF >[% c("arch") %]-w64-mingw32-clang++
+#!/bin/sh
+DIR="\$(cd "\$(dirname "\$0")" && pwd)"
+\$DIR/clang -target [% c("arch") %]-w64-mingw32 --driver-mode=g++ $compiler_flags "\$@"
+EOF
+chmod +x [% c("arch") %]-w64-mingw32-clang++
+
+ln -s llvm-nm [% c("arch") %]-w64-mingw32-nm
+ln -s llvm-strip [% c("arch") %]-w64-mingw32-strip
+ln -s llvm-readobj [% c("arch") %]-w64-mingw32-readobj
+ln -s llvm-objcopy [% c("arch") %]-w64-mingw32-objcopy
+./clang $builddir/llvm-mingw/wrappers/windres-wrapper.c $target -O2 -Wl,-s -o [% c("arch") %]-w64-mingw32-windres
+
+# Building mingw-w64
+export PATH="$distdir/bin:/var/tmp/dist/cmake/bin:$PATH"
+CC="[% c("arch") %]-w64-mingw32-clang"
+CXX="[% c("arch") %]-w64-mingw32-clang++"
+# This is the default value of _WIN32_WINNT. Gecko configure script explicitly
+# sets this, so this is not used to build Gecko itself. We default to 0x601,
+# which is Windows 7.
+default_win32_winnt=0x601
+[% IF c("var/windows-i686") %]
+  crt_flags="--enable-lib32 --disable-lib64"
+  compiler_rt_machine="i386"
+[% ELSE -%]
+  crt_flags="--disable-lib32 --enable-lib64"
+  compiler_rt_machine="x86_64"
+[% END -%]
+
+cd $builddir/mingw-w64-clang
+patch -p1 < $rootdir/mingw-winrt.patch
+cd mingw-w64-headers
+mkdir build && cd build
+../configure --host=[% c("arch") %]-w64-mingw32 \
+             --enable-sdk=all \
+             --enable-secure-api \
+             --enable-idl \
+             --with-default-msvcrt=ucrt \
+             --with-default-win32-winnt=$default_win32_winnt \
+             --prefix=$distdir/[% c("arch") %]-w64-mingw32
+make -j[% c("buildconf/num_procs") %] install
+
+cd $builddir/mingw-w64-clang/mingw-w64-crt
+mkdir build && cd build
+../configure --host=[% c("arch") %]-w64-mingw32 \
+             $crt_flags \
+             --with-default-msvcrt=ucrt \
+             CC="$CC" \
+             AR=llvm-ar \
+             RANLIB=llvm-ranlib \
+             DLLTOOL=llvm-dlltool \
+             --prefix=$distdir/[% c("arch") %]-w64-mingw32
+make -j[% c("buildconf/num_procs") %]
+make -j[% c("buildconf/num_procs") %] install
+
+cd $builddir/mingw-w64-clang/mingw-w64-tools/widl
+mkdir build && cd build
+../configure --target=[% c("arch") %]-w64-mingw32 --prefix=$distdir
+make -j[% c("buildconf/num_procs") %]
+make -j[% c("buildconf/num_procs") %] install
+
+# compiler-rt
+cd $builddir/compiler-rt
+mkdir build && cd build
+CLANG_VERSION=$(basename $(dirname $(dirname $(dirname $($CC --print-libgcc-file-name -rtlib=compiler-rt)))))
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_AR=$distdir/bin/llvm-ar \
+      -DCMAKE_RANLIB=$distdir/bin/llvm-ranlib \
+      -DCMAKE_C_COMPILER_WORKS=1 \
+      -DCMAKE_C_COMPILER_TARGET=$compiler_rt_machine-windows-gnu \
+      -DCOMPILER_RT_DEFAULT_TARGET_ONLY=TRUE \
+      $builddir/compiler-rt/lib/builtins
+  make -j[% c("buildconf/num_procs") %]
+  mkdir -p $distdir/lib/clang/$CLANG_VERSION/lib/windows
+  cp lib/windows/libclang_rt.builtins-$compiler_rt_machine.a $distdir/lib/clang/$CLANG_VERSION/lib/windows/
+
+# libunwind
+cd $builddir/libunwind
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$distdir/[% c("arch") %]-w64-mingw32 \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_CXX_COMPILER=$CXX \
+      -DCMAKE_CROSSCOMPILING=TRUE \
+      -DCMAKE_SYSROOT=$distdir/[% c("arch") %]-w64-mingw32 \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_C_COMPILER_WORKS=TRUE \
+      -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+      -DLLVM_COMPILER_CHECKED=True \
+      -DCMAKE_AR=$distdir/bin/llvm-ar \
+      -DCMAKE_RANLIB=$distdir/bin/llvm-ranlib \
+      -DLLVM_NO_OLD_LIBSTDCXX=TRUE \
+      -DCXX_SUPPORTS_CXX11=TRUE \
+      -DCXX_SUPPORTS_CXX_STD=True \
+      -DLIBUNWIND_USE_COMPILER_RT=TRUE \
+      -DLIBUNWIND_ENABLE_THREADS=TRUE \
+      -DLIBUNWIND_ENABLE_SHARED=FALSE \
+      -DLIBUNWIND_ENABLE_CROSS_UNWINDING=FALSE \
+      -DCMAKE_CXX_FLAGS="-Wno-dll-attribute-on-redeclaration -nostdinc++ -I$builddir/libcxx/include -DPSAPI_VERSION=2" \
+      -DCMAKE_C_FLAGS="-Wno-dll-attribute-on-redeclaration" \
+      $builddir/libunwind
+make -j[% c("buildconf/num_procs") %]
+make -j[% c("buildconf/num_procs") %] install
+
+# libcxxabi
+cd $builddir/libcxxabi
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$distdir/[% c("arch") %]-w64-mingw32 \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_CXX_COMPILER=$CXX \
+      -DCMAKE_CROSSCOMPILING=TRUE \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_C_COMPILER_WORKS=TRUE \
+      -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+      -DCMAKE_SYSROOT=$distdir/[% c("arch") %]-w64-mingw32 \
+      -DLLVM_COMPILER_CHECKED=True \
+      -DCMAKE_AR=$distdir/bin/llvm-ar \
+      -DCMAKE_RANLIB=$distdir/bin/llvm-ranlib \
+      -DLIBCXXABI_USE_COMPILER_RT=ON \
+      -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
+      -DLIBCXXABI_ENABLE_THREADS=ON \
+      -DLIBCXXABI_TARGET_TRIPLE=[% c("arch") %]-w64-mingw32 \
+      -DLIBCXXABI_ENABLE_SHARED=OFF \
+      -DLIBCXXABI_LIBCXX_INCLUDES=$builddir/libcxx/include \
+      -DLLVM_NO_OLD_LIBSTDCXX=TRUE \
+      -DCXX_SUPPORTS_CXX11=TRUE \
+      -DCXX_SUPPORTS_CXX_STD=True \
+      -DCMAKE_CXX_FLAGS="-D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCPP_HAS_THREAD_API_WIN32" \
+      $builddir/libcxxabi
+make -j[% c("buildconf/num_procs") %] VERBOSE=1
+
+# libcxx
+cd $builddir/libcxx
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$distdir/[% c("arch") %]-w64-mingw32 \
+      -DCMAKE_C_COMPILER=$CC \
+      -DCMAKE_CXX_COMPILER=$CXX \
+      -DCMAKE_CROSSCOMPILING=TRUE \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_C_COMPILER_WORKS=TRUE \
+      -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+      -DLLVM_COMPILER_CHECKED=True \
+      -DCMAKE_AR=$distdir/bin/llvm-ar \
+      -DCMAKE_RANLIB=$distdir/bin/llvm-ranlib \
+      -DLIBCXX_USE_COMPILER_RT=ON \
+      -DLIBCXX_INSTALL_HEADERS=ON \
+      -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+      -DLIBCXX_ENABLE_THREADS=ON \
+      -DLIBCXX_HAS_WIN32_THREAD_API=ON \
+      -DLIBCXX_ENABLE_MONOTONIC_CLOCK=ON \
+      -DLIBCXX_ENABLE_SHARED=OFF \
+      -DLIBCXX_SUPPORTS_STD_EQ_CXX11_FLAG=TRUE \
+      -DLIBCXX_HAVE_CXX_ATOMICS_WITHOUT_LIB=TRUE \
+      -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=OFF \
+      -DLIBCXX_ENABLE_FILESYSTEM=OFF \
+      -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=TRUE \
+      -DLIBCXX_CXX_ABI=libcxxabi \
+      -DLIBCXX_CXX_ABI_INCLUDE_PATHS=$builddir/libcxxabi/include \
+      -DLIBCXX_CXX_ABI_LIBRARY_PATH=$builddir/libcxxabi/build/lib \
+      -DCMAKE_CXX_FLAGS="-D_LIBCXXABI_DISABLE_VISIBILITY_ANNOTATIONS" \
+      $builddir/libcxx
+make -j[% c("buildconf/num_procs") %] VERBOSE=1
+make -j[% c("buildconf/num_procs") %] install
+
+# libc++.a depends on libunwind.a. While the linker will automatically link to
+# libc++.a in C++ mode, it won't pick libunwind.a, requiring the caller to
+# explicitly pass -lunwind. To work around that, we merge libunwind.a into
+# libc++.a.
+merge_libs() {
+  cat <<EOF |llvm-ar -M
+CREATE tmp.a
+ADDLIB $1
+ADDLIB $2
+SAVE
+END
+EOF
+  llvm-ranlib tmp.a
+  mv tmp.a $1
+}
+
+merge_libs $distdir/[% c("arch") %]-w64-mingw32/lib/libc++.a $distdir/[% c("arch") %]-w64-mingw32/lib/libunwind.a
+
+# Packaging up everything
+cd $distdir
+cd ..
+[% c('tar', {
+        tar_src => [ project ],
+        tar_args => '-czf ' _ dest_dir _ '/' _ c('filename'),
+    }) %]

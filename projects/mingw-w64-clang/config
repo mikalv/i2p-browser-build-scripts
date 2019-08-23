@@ -1,0 +1,38 @@
+# vim: filetype=yaml sw=2
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
+git_url: https://git.code.sf.net/p/mingw-w64/mingw-w64
+git_hash: 2d52c4b3433e55b1c454f9567c0ae9adc4b83b41
+version: '[% c("abbrev") %]'
+llvm_version: 8.0.0
+gpg_keyring: clang.gpg
+sig_ext: sig
+
+var:
+  container:
+    use_container: 1
+  setup: |
+    mkdir -p /var/tmp/dist
+    tar -C /var/tmp/dist -xf $rootdir/[% c("compiler_tarfile") %]
+    export PATH="/var/tmp/dist/mingw-w64-clang/bin:$PATH"
+
+input_files:
+  - project: container-image
+  - project: clang
+    name: clang
+  - project: cmake
+    name: cmake
+  - URL: 'https://releases.llvm.org/[% c("llvm_version") %]/libcxx-[% c("llvm_version") %].src.tar.xz'
+    name: libcxx
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("llvm_version") %]/libcxxabi-[% c("llvm_version") %].src.tar.xz'
+    name: libcxxabi
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("llvm_version") %]/libunwind-[% c("llvm_version") %].src.tar.xz'
+    name: libunwind
+    file_gpg_id: 1
+  - URL: 'https://releases.llvm.org/[% c("llvm_version") %]/compiler-rt-[% c("llvm_version") %].src.tar.xz'
+    name: compiler-rt
+    file_gpg_id: 1
+  - project: llvm-mingw
+    name: llvm-mingw
+  - filename: mingw-winrt.patch

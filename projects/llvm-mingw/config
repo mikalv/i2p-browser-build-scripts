@@ -1,0 +1,5 @@
+# vim: filetype=yaml sw=2
+version: '[% c("abbrev") %]'
+git_hash: c3a16814bd26aa6702e1e5b482a3d9044bb0f725
+git_url: https://github.com/mstorsjo/llvm-mingw.git
+filename: '[% project %]-[% c("version") %]-[% c("var/build_id") %].tar.gz'
