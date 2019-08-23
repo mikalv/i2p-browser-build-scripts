@@ -27,3 +27,5 @@ input_files:
     project: gocompress
   - name: gobsaes
     project: gobsaes
+  - filename: sessionid.patch
+    enable: '[% c("var/nightly") || c("var/alpha") %]'
