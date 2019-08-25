@@ -30,6 +30,7 @@ mv compiler-rt-* llvm/projects/compiler-rt
   for i in {1..12}
     do git apply $rootdir/win-patches/llvm-objcopy-$i.patch
   done
+  patch -p1 -d llvm/tools/lld < $rootdir/timestamp.patch
 [% END %]
 cd llvm
 export LLVM_HOME=$(pwd)

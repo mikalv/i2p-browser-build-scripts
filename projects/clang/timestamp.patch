@@ -1,0 +1,54 @@
+From f4743f40894d1dcd4ba131af3ad86a34c6d54598 Mon Sep 17 00:00:00 2001
+From: Martin Storsjo <martin@martin.st>
+Date: Tue, 5 Feb 2019 08:16:06 +0000
+Subject: [PATCH] Hook up the --no-insert-timestamp option
+
+This fixes PR40582.
+
+Patch by Georg Koppen!
+
+Differential Revision: https://reviews.llvm.org/D57679
+
+git-svn-id: https://llvm.org/svn/llvm-project/lld/trunk@353145 91177308-0d34-0410-b5e6-96231b3b80d8
+
+diff --git a/MinGW/Driver.cpp b/MinGW/Driver.cpp
+index 27a5550ec..d79ebe82e 100644
+--- a/MinGW/Driver.cpp
++++ b/MinGW/Driver.cpp
+@@ -170,6 +170,9 @@ bool mingw::link(ArrayRef<const char *> ArgsArr, raw_ostream &Diag) {
+       Args.getLastArgValue(OPT_m) != "arm64pe" && !Args.hasArg(OPT_dynamicbase))
+     Add("-dynamicbase:no");
+ 
++  if (Args.hasArg(OPT_no_insert_timestamp))
++    Add("-timestamp:0");
++
+   if (Args.hasFlag(OPT_gc_sections, OPT_no_gc_sections, false))
+     Add("-opt:ref");
+   else
+diff --git a/MinGW/Options.td b/MinGW/Options.td
+index ad699f711..5cc339a4a 100644
+--- a/MinGW/Options.td
++++ b/MinGW/Options.td
+@@ -20,6 +20,8 @@ def l: JoinedOrSeparate<["-"], "l">, MetaVarName<"<libName>">,
+ def m: JoinedOrSeparate<["-"], "m">, HelpText<"Set target emulation">;
+ def map: S<"Map">, HelpText<"Output a linker map">;
+ def map_eq: J<"Map=">, Alias<map>;
++def no_insert_timestamp: F<"no-insert-timestamp">,
++    HelpText<"Don't include PE header timestamp">;
+ def no_whole_archive: F<"no-whole-archive">,
+     HelpText<"No longer include all object files for following archives">;
+ def large_address_aware: Flag<["--"], "large-address-aware">,
+diff --git a/test/MinGW/driver.test b/test/MinGW/driver.test
+index 3222bb111..b853527a0 100644
+--- a/test/MinGW/driver.test
++++ b/test/MinGW/driver.test
+@@ -151,3 +151,6 @@ REQUIRE-DEFINED: -include:_foo -include:_bar -include:_baz -include:_foo2
+ 
+ RUN: ld.lld -### -m i386pep foo.o -Llibpath | FileCheck -check-prefix LIBPATH %s
+ LIBPATH: -libpath:libpath
++
++RUN: ld.lld -### -m i386pep foo.o --no-insert-timestamp | FileCheck -check-prefix NOTIMESTAMP %s
++NOTIMESTAMP: -timestamp:0
+-- 
+2.23.0.rc1
+

@@ -43,3 +43,5 @@ input_files:
     file_gpg_id: 1
   - filename: win-patches
     enable: '[% c("var/windows") %]'
+  - filename: timestamp.patch
+    enable: '[% c("var/windows") %]'
