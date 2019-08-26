@@ -1,12 +1,13 @@
 # vim: filetype=yaml sw=2
 version: '[% c("abbrev") %]'
 git_url: https://github.com/mozilla/fxc2.git
-git_hash: 0b800f3e41ed087df6f51f120165f3ccc71cc27c
+git_hash: 5ace4c25b63cb5a83b58a3eae3d36256a6022cde
 filename: '[% project %]-[% c("version") %]-[% c("var/osname") %]-[% c("var/build_id") %].tar.gz'
 
 var:
   container:
     use_container: 1
+  compiler: mingw-w64-clang
 
 input_files:
   - project: container-image
