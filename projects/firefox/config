@@ -110,6 +110,13 @@ targets:
     var:
       arch_deps:
         - wine
+      pre_pkginst: |
+        echo 'deb http://ftp.debian.org/debian stretch-backports main' >> /etc/apt/sources.list
+      post_pkginst: |
+        # We need to have at least 3.0.3 which Mozilla is using in the
+        # mingw-w64/clang build process
+        apt-get -y -t stretch-backports install wine
+      compiler: mingw-w64-clang
 
   windows-i686:
     var:
@@ -131,15 +138,6 @@ input_files:
     enable: '[% c("var/linux") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
-  - URL: https://people.torproject.org/~gk/mirrors/sources/msvcr100.dll
-    sha256sum: 8793353461826fbd48f25ea8b835be204b758ce7510db2af631b28850355bd18
-    enable: '[% c("var/windows-i686") %]'
-  - URL: https://people.torproject.org/~boklm/mirrors/sources/msvcr100-x86_64.dll
-    sha256sum: ae3cb6c6afba9a4aa5c85f66023c35338ca579b30326dd02918f9d55259503d5
-    enable: '[% c("var/windows-x86_64") %]'
-  - project: gcc
-    name: gcc
-    enable: '[% c("var/windows") %]'
   - filename: nsis-uninstall.patch
     enable: '[% c("var/windows") %]'
   - project: rust

@@ -1,46 +1,15 @@
 #!/bin/bash
 [% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
-[% IF c("var/windows") -%]
-  [% pc('gcc', 'var/setup', { compiler_tarfile => c('input_files_by_name/gcc') }) %]
-  # We need a link to our GCC, otherwise the system cc gets used which points to
-  # /usr/bin/gcc.
-  ln -s gcc /var/tmp/dist/gcc/bin/cc
-[% END -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p /var/tmp/build
 mkdir -p [% dest_dir _ '/' _ c('filename') %]
 
-[% IF c("var/windows") -%]
-  mingwdir=/var/tmp/dist/mingw-w64
-  mkdir -p $mingwdir/helpers
-
-  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-g++ << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-g++ [% c("var/LDFLAGS") %] [% c("var/CFLAGS") %] "$@"
-EOF
-
-  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-gcc << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-gcc [% c("var/LDFLAGS") %] [% c("var/CFLAGS") %] "$@"
-EOF
-
-  cat > $mingwdir/helpers/[% c("arch") %]-w64-mingw32-ld << 'EOF'
-#!/bin/sh
-/var/tmp/dist/mingw-w64/bin/[% c("arch") %]-w64-mingw32-ld [% c("var/LDFLAGS") %] "$@"
-EOF
-
-  chmod +x $mingwdir/helpers/*
-  export PATH="$mingwdir/helpers:$PATH"
-[% END -%]
-
 [% IF c("var/windows") %]
-  # Unpack fxc2.
-  mkdir -p /var/tmp/dist
+  # Setting up fxc2
   tar -C /var/tmp/dist -xf [% c('input_files_by_name/fxc2') %]
-  fxcdir=/var/tmp/dist/fxc2/bin
-  export PATH="$fxcdir:$PATH"
+  export PATH="/var/tmp/dist/fxc2/bin:$PATH"
   # fxc2 requires Wine.
   [% IF c("var/windows-x86_64") %]
     export WINEARCH=win64
@@ -51,7 +20,6 @@ EOF
   wine wineboot -i
 [% END -%]
 
-mkdir -p /var/tmp/dist
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/rust') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/cbindgen') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/nasm') %]
@@ -113,30 +81,11 @@ then
 fi
 
 [% IF c("var/windows") %]
-  # FIXME
-  # Ideally, using LDFLAGS (and e.g. DLLFLAGS for NSS) would be enough to get
-  # all Firefox libraries linked against msvcr100. Alas, this does not hold for
-  # NSPR. Without patching it we get a "missing entry points for _strcmpi in
-  # msvcr100.dll". Now, this should be fixed in rev>=6179 as the def file there
-  # contains a proper patch according to the mingw-w64 developers.
-  # However, even with this patch the _strcmpi issue is still popping up,
-  # probably due to a bug in our current linking setup. The small patch below
-  # is therefore just a workaround which should get fixed but is at least
-  # justified as the signature of _strcmpi and _stricmp is the same, see:
-  # http://msdn.microsoft.com/en-us/library/k59z8dwe.aspx.
-  sed 's/strcmpi/stricmp/' -i nsprpub/pr/src/linking/prlink.c
-  export HOST_LDFLAGS=" "
-  export LDFLAGS="-specs=/var/tmp/dist/mingw-w64/msvcr100.spec"
-  # Our flags don't get passed to NSS. We need to do that manually using an
-  # obscure one.
-  export DLLFLAGS="-specs=/var/tmp/dist/mingw-w64/msvcr100.spec"
-
   # Make sure widl is not inserting random timestamps, see #21837.
   export WIDL_TIME_OVERRIDE="0"
-[% END %]
-
-[% IF c("var/windows") %]
   patch -p1 < $rootdir/nsis-uninstall.patch
+  # Make sure we link without inserting timestamps in general.
+  export LDFLAGS="-Wl,--no-insert-timestamp"
 [% END -%]
 
 # Backporting a sec-high bugfix to ESR 60, but making sure it is only applied to
@@ -203,14 +152,9 @@ rm -f js/src/configure
   chmod 755 $distdir/Browser/firefox
 [% END %]
 
-[% IF c("var/windows-x86_64") -%]
-  mv $rootdir/msvcr100-x86_64.dll $rootdir/msvcr100.dll
-[% END -%]
 [% IF c("var/windows") %]
   cp -a obj-*/dist/firefox/* $distdir/Browser/
-  cp -a $rootdir/msvcr100.dll $distdir/Browser
-  cp -a $gcclibs/libssp-0.dll $distdir/Browser
-  cp -a $fxcdir/d3dcompiler_47.dll $distdir/Browser
+  cp -a /var/tmp/dist/fxc2/bin/d3dcompiler_47.dll $distdir/Browser
 [% END %]
 
 # Make MAR-based update tools available for use during the bundle phase.
@@ -243,16 +187,15 @@ cp -p obj-*/dist/host/bin/mbsdiff $MARTOOLS/
   done
 [% END %]
 [% IF c("var/windows") %]
-  cp -p obj-*/modules/libmar/tool/signmar.exe $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/certutil/certutil_certutil/certutil.exe $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/modutil/modutil_modutil/modutil.exe $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/pk12util/pk12util_pk12util/pk12util.exe $MARTOOLS/
-  cp -p obj-*/security/nss/cmd/shlibsign/shlibsign_shlibsign/shlibsign.exe $MARTOOLS/
+  cp -p obj-*/dist/bin/signmar.exe $MARTOOLS/
+  cp -p obj-*/dist/bin/certutil.exe $MARTOOLS/
+  cp -p obj-*/dist/bin/modutil.exe $MARTOOLS/
+  cp -p obj-*/dist/bin/pk12util.exe $MARTOOLS/
+  cp -p obj-*/dist/bin/shlibsign.exe $MARTOOLS/
   NSS_LIBS="freebl3.dll mozglue.dll nss3.dll nssckbi.dll nssdbm3.dll softokn3.dll"
   for LIB in $NSS_LIBS; do
       cp -p obj-*/dist/bin/$LIB $MARTOOLS/
   done
-  cp -a $rootdir/msvcr100.dll $MARTOOLS/
 [% END %]
 
 cd $distdir

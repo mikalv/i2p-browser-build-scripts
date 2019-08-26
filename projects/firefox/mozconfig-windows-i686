@@ -1,5 +1,18 @@
 CROSS_COMPILE=1
 
+HOST_CC="clang"
+HOST_CXX="clang++"
+CC="i686-w64-mingw32-clang"
+CXX="i686-w64-mingw32-clang++"
+CXXFLAGS="-fms-extensions"
+AR=llvm-ar
+RANLIB=llvm-ranlib
+
+clang_path=/var/tmp/dist/mingw-w64-clang
+
+# For Stylo
+BINDGEN_CFLAGS="-I$clang_path/i686-w64-mingw32/include/c++/v1 -I$clang_path/i686-w64-mingw32/include"
+
 ac_add_options --enable-application=browser
 ac_add_options --target=i686-w64-mingw32
 ac_add_options --with-toolchain-prefix=i686-w64-mingw32-
@@ -11,6 +24,9 @@ export MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
 
 ac_add_options --disable-debug
+# Until we build on a 64bit host we need to hack around linker errors due to
+# memory constraints
+ac_add_options --disable-debug-symbols
 ac_add_options --enable-optimize
 ac_add_options --enable-strip
 ac_add_options --enable-official-branding
@@ -18,12 +34,14 @@ ac_add_options --enable-official-branding
 ac_add_options --enable-tor-browser-update
 ac_add_options --enable-signmar
 ac_add_options --enable-verify-mar
+ac_add_options --disable-bits-download
 
 # Let's make sure no preference is enabling either Adobe's or Google's CDM.
 ac_add_options --disable-eme
 ac_add_options --disable-crashreporter
 ac_add_options --disable-maintenance-service
-ac_add_options --disable-webrtc
+ac_add_options --enable-proxy-bypass-protection
+ac_add_options --disable-webrtc # Bug 1393901
 ac_add_options --disable-tests
-ac_add_options --disable-stylo # Bugzilla 1390583
-ac_add_options --disable-jemalloc # Bugzilla 1466192
+ac_add_options --disable-jemalloc # Bug 154751
+ac_add_options --disable-geckodriver # Bug 1489320
