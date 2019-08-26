@@ -1,0 +1,23 @@
+diff --git a/build/moz.configure/android-sdk.configure b/build/moz.configure/android-sdk.configure
+index a8ecc617850d..0a58597e2646 100644
+--- a/build/moz.configure/android-sdk.configure
++++ b/build/moz.configure/android-sdk.configure
+@@ -87,10 +87,6 @@ def android_platform_tools(sdk_root):
+         tools)
+ 
+ 
+-@depends(android_sdk_root)
+-def android_emulator_path(sdk_root):
+-    return [os.path.join(sdk_root, 'emulator')]
+-
+ 
+ @template
+ def check_android_tools(tool, tool_dir):
+@@ -108,7 +104,6 @@ def check_android_tools(tool, tool_dir):
+ 
+ check_android_tools('zipalign', android_build_tools)
+ check_android_tools('adb', android_platform_tools)
+-check_android_tools('emulator', android_emulator_path)
+ 
+ set_config('ANDROID_SDK_ROOT', android_sdk_root)
+ set_config('ANDROID_TOOLS', android_tools)

@@ -1,6 +1,8 @@
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-aarch64-linux-android
 mk_add_options MOZ_APP_DISPLAYNAME="Tor Browser"
 export MOZILLA_OFFICIAL=1
+CC="clang"
+CXX="clang++"
 
 ac_add_options --enable-optimize
 ac_add_options --enable-official-branding
@@ -9,12 +11,8 @@ ac_add_options --enable-application=mobile/android
 ac_add_options --target=aarch64-linux-android
 ac_add_options --with-android-ndk=/var/tmp/dist/android-toolchain/android-ndk
 ac_add_options --with-android-sdk=/var/tmp/dist/android-toolchain/android-sdk-linux
-ac_add_options --with-gradle=/var/tmp/dist/android-toolchain/gradle/gradle-4.1/bin/gradle
+ac_add_options --with-gradle=/var/tmp/dist/android-toolchain/gradle/gradle-4.10.2/bin/gradle
 ac_add_options --with-android-version=21
-
-# Android NDK does not contain llvm-config so set clang path in options
-ac_add_options --with-libclang-path=/var/tmp/dist/android-toolchain/android-ndk/arm64/lib64
-ac_add_options --with-clang-path=/var/tmp/dist/android-toolchain/android-ndk/arm64/bin/clang
 
 ac_add_options --with-android-distribution-directory=@TOPSRCDIR@/mobile/android/torbrowser
 ac_add_options --with-l10n-base=/var/tmp/dist/locales
@@ -40,11 +38,7 @@ ac_add_options --enable-strip
 ac_add_options --disable-tests
 ac_add_options --disable-debug
 ac_add_options --disable-rust-debug
-ac_add_options --disable-maintenance-service
 ac_add_options --disable-crashreporter
 ac_add_options --disable-webrtc
 
 ac_add_options --without-google-play-services
-
-# Let's make sure no preference is enabling either Adobe's or Google's CDM.
-ac_add_options --disable-eme

@@ -28,7 +28,7 @@ var:
   container:
     use_container: 1
   # this should be updated when the list of gradle dependencies is changed
-  gradle_dependencies_version: 5
+  gradle_dependencies_version: 6
   # used by projects/firefox-locale-bundle
   l10n-changesets.json: '[% exec("cat mobile/locales/l10n-changesets.json") %]'
 
@@ -135,7 +135,7 @@ input_files:
     name: mozconfig
   - project: binutils
     name: binutils
-    enable: '[% c("var/linux") %]'
+    enable: '[% c("var/linux") || c("var/android") %]'
   - filename: fix-info-plist.py
     enable: '[% c("var/osx") %]'
   - filename: nsis-uninstall.patch
@@ -172,7 +172,9 @@ input_files:
   - project: tor-onion-proxy-library
     name: topl
     enable: '[% c("var/android") %]'
-  - filename: android-dependencies.patch
+  - filename: android-packages.patch
+    enable: '[% c("var/android") %]'
+  - filename: android-remove-emulator.patch
     enable: '[% c("var/android") %]'
   - project: firefox-locale-bundle
     name: firefox-locale-bundle

@@ -29,7 +29,7 @@ export PATH="/var/tmp/dist/rust/bin:/var/tmp/dist/cbindgen:/var/tmp/dist/nasm/bi
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/clang') %]
 export LLVM_CONFIG="/var/tmp/dist/clang/bin/llvm-config"
 
-[% IF c("var/linux") %]
+[% IF c("var/linux") || c("var/android") %]
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/binutils') %]
   export PATH="/var/tmp/dist/binutils/bin:$PATH"
   # Use clang for everything on Linux now.
@@ -53,19 +53,24 @@ mv -f $rootdir/[% c('input_files_by_name/mozconfig') %] .mozconfig
   export ASAN_OPTIONS="detect_leaks=0"
 [% END -%]
 
+[% IF c("var/android-armv7") -%]
+  cp /var/tmp/dist/android-toolchain/android-ndk/arm/lib64/libclang.so.6 /var/tmp/dist/android-toolchain/android-ndk/arm/lib64/libclang.so
+[% END -%]
+
 [% IF c("var/android") %]
   gradle_repo=/var/tmp/dist/gradle-dependencies
   export GRADLE_MAVEN_REPOSITORIES="file://$gradle_repo"
+  export GRADLE_FLAGS="--no-daemon --offline"
   # Move Gradle Repo to hard-coded location. This location is embedded in the file
   # chrome/toolkit/content/global/buildconfig.html so needs to be standard for reproducibility
   mv $rootdir/[% c('input_files_by_name/gradle-dependencies') %] $gradle_repo
-  cp -r $gradle_repo/plugins-release/* $gradle_repo
-  cp -r $gradle_repo/maven2/* $gradle_repo
+  cp -r $gradle_repo/m2/* $gradle_repo
   # Move Android library dependencies so they will be included in the apk during the build
   cp $rootdir/[% c('input_files_by_name/topl') %]/* mobile/android/app
   cp $rootdir/[% c('input_files_by_name/tor-android-service') %]/* mobile/android/app
   # Apply patches
-  patch -p1 < $rootdir/android-dependencies.patch
+  patch -p1 < $rootdir/android-packages.patch
+  patch -p1 < $rootdir/android-remove-emulator.patch
 
   # Prepare building the multi-locale .apk including our own strings
   mkdir -p /var/tmp/dist/locales
@@ -88,12 +93,6 @@ fi
   export LDFLAGS="-Wl,--no-insert-timestamp"
 [% END -%]
 
-# Backporting a sec-high bugfix to ESR 60, but making sure it is only applied to
-# mobile, as desktop ESR has not seen any testing with this mobile-related patch
-[% IF c("var/android") %]
-  patch -p1 < $rootdir/1527534.patch
-[% END -%]
-
 [% IF ! c("var/android") %]
   # Place a copy of the Tor Launcher sources under browser/extensions
   tar -C browser/extensions -xf $rootdir/[% c('input_files_by_name/tor-launcher') %]
@@ -102,7 +101,9 @@ fi
 rm -f configure
 rm -f js/src/configure
 
-./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] --enable-bundled-fonts --with-branding=[% c("var/branding_directory") %]
+# Android does not support --enable-bundled-fonts option
+./mach configure --with-tor-browser-version=[% c("var/torbrowser_version") %] --with-distribution-id=org.torproject --enable-update-channel=[% c("var/torbrowser_update_channel") %] [% IF ! c("var/android") %]--enable-bundled-fonts[% END -%] --with-branding=[% c("var/branding_directory") %]
+
 # Don't build with --verbose anymore or otherwise Stylo compilation breaks on
 # Linux. See: #30321 for details.
 ./mach build
