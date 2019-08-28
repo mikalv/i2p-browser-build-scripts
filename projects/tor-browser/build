@@ -26,7 +26,6 @@ touch "$GENERATEDPREFSPATH"
   EXTSPATH=Contents/Resources/distribution/extensions
   TORBINPATH=Contents/MacOS/Tor
   TORCONFIGPATH=Contents/Resources/TorBrowser/Tor
-  MEEKPROFILEPATH=Contents/Resources/TorBrowser/Tor/PluggableTransports/template-profile.meek-http-helper
 
   tar -C /var/tmp/dist -xf $rootdir/[% c('input_files_by_name/libdmg') %]
   export PATH=/var/tmp/dist/libdmg-hfsplus:$PATH
@@ -36,14 +35,11 @@ touch "$GENERATEDPREFSPATH"
   DOCSPATH=TorBrowser/Docs
   EXTSPATH=TorBrowser/Data/Browser/profile.default/extensions
   TORCONFIGPATH=TorBrowser/Data/Tor
-  MEEKPROFILEPATH=TorBrowser/Data/Browser/profile.meek-http-helper
-  MOATPROFILEPATH=TorBrowser/Data/Browser/profile.moat-http-helper
 
   mkdir -p "$TBDIR/TorBrowser/Data/Browser/Caches"
 [% END %]
 
 mkdir -p "$TBDIR/$EXTSPATH"
-mkdir -p "$TBDIR/$MEEKPROFILEPATH/extensions"
 
 # Extract the MAR tools.
 unzip -d $rootdir $rootdir/[% c('input_files_by_name/firefox') %]/mar-tools-*.zip
@@ -53,8 +49,6 @@ mv [% c('input_files_by_name/https-everywhere') %] "$TBDIR/$EXTSPATH/https-every
 mv [% c('input_files_by_name/noscript') %] "$TBDIR/$EXTSPATH/{73a6fe31-595d-460b-a920-fcc0f8843232}.xpi"
 
 tar -C "$TBDIR" -xf [% c('input_files_by_name/obfs4') %]
-tar -C "$TBDIR" -xf [% c('input_files_by_name/meek') %]
-mv "$TBDIR/meek-http-helper@bamsoftware.com.xpi" "$TBDIR/$MEEKPROFILEPATH/extensions/"
 [% IF c("var/snowflake") %]
   tar -C "$TBDIR" -xf [% c('input_files_by_name/snowflake') -%]
 [% END -%]
@@ -127,23 +121,6 @@ cat Bundle-Data/PTConfigs/[% bundledata_osname %]/torrc-defaults-appendix >> "$T
   grep -v 'default_bridge\.snowflake' Bundle-Data/PTConfigs/bridge_prefs.js \
     >> "$GENERATEDPREFSPATH"
 [% END -%]
-cat Bundle-Data/PTConfigs/meek-http-helper-user.js >> "$TBDIR/$MEEKPROFILEPATH/user.js"
-
-[% IF c("var/osx") %]
-  pushd "$TBDIR"
-  # Create the meek-template-sha256sum.txt file by generating a list
-  # of hashes (one for each file within the meek-http-helper profile) and
-  # and then generating one final hash from the contents of the list.
-  sha256sum `find $MEEKPROFILEPATH -type f | sort` | sha256sum | sed -e 's/ *-$//' > $MEEKPROFILEPATH/meek-template-sha256sum.txt
-  popd
-[% END %]
-
-# For platforms for which we need to ship a Moat helper profile in addition
-# to a meek one, create it by duplicating the meek one that we just finished
-# creating.
-if [ ! -z "$MOATPROFILEPATH" ]; then
-  cp -pR $TBDIR/$MEEKPROFILEPATH $TBDIR/$MOATPROFILEPATH
-fi
 
 [% IF ! c("var/multi_lingual") %]
   echo 'pref("extensions.torlauncher.prompt_for_locale", false);' >> "$GENERATEDPREFSPATH"

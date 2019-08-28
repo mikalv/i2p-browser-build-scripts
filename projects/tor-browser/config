@@ -65,9 +65,6 @@ input_files:
   - project: fonts
     name: fonts
     enable: '[% ! c("var/android") %]'
-  - project: meek
-    name: meek
-    enable: '[% ! c("var/android") %]'
   - project: obfs4
     name: obfs4
     enable: '[% ! c("var/android") %]'
