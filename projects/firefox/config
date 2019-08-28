@@ -8,7 +8,7 @@ git_submodule: 1
 gpg_keyring: torbutton.gpg
 
 var:
-  firefox_platform_version: 68.0
+  firefox_platform_version: 68.1.0
   firefox_version: '[% c("var/firefox_platform_version") %]esr'
   torbrowser_branch: 9.0
   torbrowser_update_channel: alpha
@@ -51,7 +51,7 @@ targets:
       branding_directory: '[% IF c("var/android") %]mobile/android[% ELSE %]browser[% END %]/branding/official'
 
   nightly:
-    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-3'
+    git_hash: 'tor-browser-[% c("var/firefox_version") %]-[% c("var/torbrowser_branch") %]-1'
     tag_gpg_id: 0
     var:
       torbrowser_update_channel: default
