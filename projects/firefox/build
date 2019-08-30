@@ -1,5 +1,4 @@
 #!/bin/bash
-[% c("var/setarch") -%]
 [% c("var/set_default_env") -%]
 [% pc(c('var/compiler'), 'var/setup', { compiler_tarfile => c('input_files_by_name/' _ c('var/compiler')) }) %]
 distdir=/var/tmp/dist/[% project %]
@@ -11,9 +10,7 @@ mkdir -p [% dest_dir _ '/' _ c('filename') %]
   tar -C /var/tmp/dist -xf [% c('input_files_by_name/fxc2') %]
   export PATH="/var/tmp/dist/fxc2/bin:$PATH"
   # fxc2 requires Wine.
-  [% IF c("var/windows-x86_64") %]
-    export WINEARCH=win64
-  [% END %]
+  export WINEARCH=[% IF c("var/windows-x86_64") %]win64[% ELSE %]win32[% END %]
   export HOME=/var/tmp/home
   mkdir -p $HOME
   WINEROOT=$HOME/.wine/drive_c

@@ -24,9 +24,6 @@ export MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
 
 ac_add_options --disable-debug
-# Until we build on a 64bit host we need to hack around linker errors due to
-# memory constraints
-ac_add_options --disable-debug-symbols
 ac_add_options --enable-optimize
 ac_add_options --enable-strip
 ac_add_options --enable-official-branding

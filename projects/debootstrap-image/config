@@ -65,13 +65,6 @@ targets:
         suite: stretch
         arch: amd64
 
-  stretch-i386:
-    var:
-      minimal_apt_version: 1.4.9
-      container:
-        suite: stretch
-        arch: i386
-
 input_files:
   - URL: 'http://cdimage.ubuntu.com/ubuntu-base/releases/[% c("var/ubuntu_version") %]/release/ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'
     filename: 'container-image_ubuntu-base-[% c("var/ubuntu_version") %]-base-amd64.tar.gz'

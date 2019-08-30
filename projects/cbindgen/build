@@ -22,13 +22,8 @@ replace-with = "vendored-sources"
 directory = "/var/tmp/build/cbindgen/vendor"
 EOF
 
-[% IF ! c("var/windows-i686") -%]
-  target=x86_64
-[% ELSE -%]
-  target=i686
-[% END -%]
-cargo build --release --frozen --target $target-unknown-linux-gnu
-mv target/$target-unknown-linux-gnu/release/cbindgen $distdir/[% project %]
+cargo build --release --frozen --target x86_64-unknown-linux-gnu
+mv target/x86_64-unknown-linux-gnu/release/cbindgen $distdir/[% project %]
 
 cd $distdir
 [% c('tar', {

@@ -8,7 +8,6 @@ var:
     use_container: 1
 
   setup: |
-    [% c("var/setarch") -%]
     mkdir -p /var/tmp/dist
     tar -C /var/tmp/dist -xf $rootdir/[% c("go_tarfile") %]
     export GOOS=[% c("var/GOOS") %]

@@ -24,9 +24,7 @@ tar -xf $rootdir/[% c('input_files_by_name/llvm-mingw') %]
 # Adding the wrappers and symlinks we need
 cd $distdir/bin
 exception_flags=""
-target=""
 [% IF c("var/windows-i686") %]
-  target="--target=i686-linux-gnu"
   exception_flags="-fsjlj-exceptions"
 [% END -%]
 compiler_flags="--sysroot \$DIR/../[% c("arch") %]-w64-mingw32 -rtlib=compiler-rt -stdlib=libc++ -fuse-ld=lld $exception_flags -fuse-cxa-atexit -Qunused-arguments"
@@ -49,7 +47,7 @@ ln -s llvm-nm [% c("arch") %]-w64-mingw32-nm
 ln -s llvm-strip [% c("arch") %]-w64-mingw32-strip
 ln -s llvm-readobj [% c("arch") %]-w64-mingw32-readobj
 ln -s llvm-objcopy [% c("arch") %]-w64-mingw32-objcopy
-./clang $builddir/llvm-mingw/wrappers/windres-wrapper.c $target -O2 -Wl,-s -o [% c("arch") %]-w64-mingw32-windres
+./clang $builddir/llvm-mingw/wrappers/windres-wrapper.c -O2 -Wl,-s -o [% c("arch") %]-w64-mingw32-windres
 
 # Building mingw-w64
 export PATH="$distdir/bin:/var/tmp/dist/cmake/bin:$PATH"

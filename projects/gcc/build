@@ -1,6 +1,5 @@
 #!/bin/sh
 [% c("var/set_default_env") -%]
-[% c("var/setarch") -%]
 [% IF c("var/linux") -%]
   # Config options for hardening-wrapper
   export DEB_BUILD_HARDENING=1

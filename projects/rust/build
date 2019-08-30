@@ -1,12 +1,11 @@
 #!/bin/bash
-[% c('var/setarch') %]
 [% c("var/set_default_env") -%]
 distdir=/var/tmp/dist/[% project %]
 mkdir -p $distdir
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/cmake') %]
 export PATH="/var/tmp/dist/cmake/bin:$PATH"
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/prev_rust') %]
-cd /var/tmp/dist/rust-[% c('var/prev_version') %]-[% c('var/rust_arch') %]-unknown-linux-gnu
+cd /var/tmp/dist/rust-[% c('var/prev_version') %]-x86_64-unknown-linux-gnu
 ./install.sh --prefix=$distdir-rust-old
 export PATH="$distdir-rust-old/bin:$PATH"
 

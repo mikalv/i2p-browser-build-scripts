@@ -4,14 +4,12 @@ version: 1.34.2
 
 var:
   prev_version: 1.33.0
-  rust_arch: '[% c("arch") %]'
   container:
     use_container: 1
 
 targets:
   android:
     var:
-      rust_arch: x86_64
       arch_deps:
         - libssl-dev
         - pkg-config
@@ -30,7 +28,6 @@ targets:
 
   linux:
     var:
-      rust_arch: x86_64
       deps:
         - libc6-dev-i386
         - lib32stdc++6
@@ -98,7 +95,7 @@ input_files:
     sig_ext: asc
     file_gpg_id: 1
     gpg_keyring: rust.gpg
-  - URL: 'https://static.rust-lang.org/dist/rust-[% c("var/prev_version") %]-[% c("var/rust_arch") %]-unknown-linux-gnu.tar.xz'
+  - URL: 'https://static.rust-lang.org/dist/rust-[% c("var/prev_version") %]-x86_64-unknown-linux-gnu.tar.xz'
     name: prev_rust
     sig_ext: asc
     file_gpg_id: 1
