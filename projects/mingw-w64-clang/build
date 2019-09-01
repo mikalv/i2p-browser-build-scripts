@@ -69,6 +69,8 @@ default_win32_winnt=0x601
 
 cd $builddir/mingw-w64-clang
 patch -p1 < $rootdir/mingw-winrt.patch
+patch -p1 < $rootdir/31567_1.patch
+patch -p1 < $rootdir/31567_2.patch
 cd mingw-w64-headers
 mkdir build && cd build
 ../configure --host=[% c("arch") %]-w64-mingw32 \

@@ -1,0 +1,33 @@
+From d9c7a5aa3ac8d29b98f28af71d862c2d3931e7d8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20Storsj=C3=B6?= <martin@martin.st>
+Date: Sun, 1 Sep 2019 06:05:40 +0000
+Subject: [PATCH 1/2] This function was moved from inline in header to a
+ statically linked one in 52a34d52d6f5f1789d329abd4e, where the use of this
+ define was dropped.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+As this function is statically linked, the caller can't control
+and change the behaviour of the function by defining
+UCRTBASE_PRINTF_DEFAULT_WIDE in the calling translation unit,
+but we should at least use the headers' default value (which currently
+is zero).
+
+Signed-off-by: Martin Storsjö <martin@martin.st>
+
+diff --git a/mingw-w64-crt/stdio/ucrt__vsnwprintf.c b/mingw-w64-crt/stdio/ucrt__vsnwprintf.c
+index bf9f4de2..c505c31e 100644
+--- a/mingw-w64-crt/stdio/ucrt__vsnwprintf.c
++++ b/mingw-w64-crt/stdio/ucrt__vsnwprintf.c
+@@ -10,6 +10,6 @@
+ 
+ int __cdecl _vsnwprintf(wchar_t * __restrict__ _Dest,size_t _Count,const wchar_t * __restrict__ _Format,va_list _Args) __MINGW_ATTRIB_DEPRECATED_SEC_WARN
+ {
+-  return __stdio_common_vswprintf(UCRTBASE_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION, _Dest, _Count, _Format, NULL, _Args);
++  return __stdio_common_vswprintf(UCRTBASE_PRINTF_DEFAULT_WIDE | UCRTBASE_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION, _Dest, _Count, _Format, NULL, _Args);
+ }
+ int __cdecl (*__MINGW_IMP_SYMBOL(_vsnwprintf))(wchar_t *__restrict__, size_t, const wchar_t *__restrict__, va_list) = _vsnwprintf;
+-- 
+2.23.0.rc1
+

@@ -1,0 +1,82 @@
+From 44d0691f6fa51d2b3a0df911652c801635424e4e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20Storsj=C3=B6?= <martin@martin.st>
+Date: Sun, 1 Sep 2019 06:08:24 +0000
+Subject: [PATCH 2/2] When __USE_MINGW_ANSI_STDIO is defined, we still call the
+ custom implementation bundled in libmingwex, which has the C99 standard
+ semantics for %s in wide format strings.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This matches how the wide stdio functions behave both when using
+msvcrt.dll, and in all versions of MSVC, even the modern ones that
+use ucrt.
+
+Signed-off-by: Martin Storsjö <martin@martin.st>
+
+diff --git a/mingw-w64-headers/crt/conio.h b/mingw-w64-headers/crt/conio.h
+index 363203c3..a92ee059 100644
+--- a/mingw-w64-headers/crt/conio.h
++++ b/mingw-w64-headers/crt/conio.h
+@@ -21,12 +21,13 @@
+ #define UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS            (0x0002)
+ #define UCRTBASE_SCANF_LEGACY_MSVCRT_COMPATIBILITY       (0x0004)
+ 
+-// Default wide printfs and scanfs to the standard mode
++// Default wide printfs and scanfs to the legacy wide mode. Only code built
++// with -D__USE_MINGW_ANSI_STDIO=1 will expect the standard behaviour.
+ #ifndef UCRTBASE_PRINTF_DEFAULT_WIDE
+-#define UCRTBASE_PRINTF_DEFAULT_WIDE 0
++#define UCRTBASE_PRINTF_DEFAULT_WIDE UCRTBASE_PRINTF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #ifndef UCRTBASE_SCANF_DEFAULT_WIDE
+-#define UCRTBASE_SCANF_DEFAULT_WIDE 0
++#define UCRTBASE_SCANF_DEFAULT_WIDE UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #endif
+ 
+diff --git a/mingw-w64-headers/crt/stdio.h b/mingw-w64-headers/crt/stdio.h
+index e183236d..e8d3c857 100644
+--- a/mingw-w64-headers/crt/stdio.h
++++ b/mingw-w64-headers/crt/stdio.h
+@@ -147,12 +147,13 @@ extern FILE (* __MINGW_IMP_SYMBOL(_iob))[];	/* A pointer to an array of FILE */
+ #define UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS            (0x0002)
+ #define UCRTBASE_SCANF_LEGACY_MSVCRT_COMPATIBILITY       (0x0004)
+ 
+-// Default wide printfs and scanfs to the standard mode
++// Default wide printfs and scanfs to the legacy wide mode. Only code built
++// with -D__USE_MINGW_ANSI_STDIO=1 will expect the standard behaviour.
+ #ifndef UCRTBASE_PRINTF_DEFAULT_WIDE
+-#define UCRTBASE_PRINTF_DEFAULT_WIDE 0
++#define UCRTBASE_PRINTF_DEFAULT_WIDE UCRTBASE_PRINTF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #ifndef UCRTBASE_SCANF_DEFAULT_WIDE
+-#define UCRTBASE_SCANF_DEFAULT_WIDE 0
++#define UCRTBASE_SCANF_DEFAULT_WIDE UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #endif
+ 
+diff --git a/mingw-w64-headers/crt/wchar.h b/mingw-w64-headers/crt/wchar.h
+index cd26e098..d1348bc2 100644
+--- a/mingw-w64-headers/crt/wchar.h
++++ b/mingw-w64-headers/crt/wchar.h
+@@ -247,12 +247,13 @@ extern FILE (* __MINGW_IMP_SYMBOL(_iob))[];	/* A pointer to an array of FILE */
+ #define UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS            (0x0002)
+ #define UCRTBASE_SCANF_LEGACY_MSVCRT_COMPATIBILITY       (0x0004)
+ 
+-// Default wide printfs and scanfs to the standard mode
++// Default wide printfs and scanfs to the legacy wide mode. Only code built
++// with -D__USE_MINGW_ANSI_STDIO=1 will expect the standard behaviour.
+ #ifndef UCRTBASE_PRINTF_DEFAULT_WIDE
+-#define UCRTBASE_PRINTF_DEFAULT_WIDE 0
++#define UCRTBASE_PRINTF_DEFAULT_WIDE UCRTBASE_PRINTF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #ifndef UCRTBASE_SCANF_DEFAULT_WIDE
+-#define UCRTBASE_SCANF_DEFAULT_WIDE 0
++#define UCRTBASE_SCANF_DEFAULT_WIDE UCRTBASE_SCANF_LEGACY_WIDE_SPECIFIERS
+ #endif
+ #endif
+ 
+-- 
+2.23.0.rc1
+

@@ -36,3 +36,5 @@ input_files:
   - project: llvm-mingw
     name: llvm-mingw
   - filename: mingw-winrt.patch
+  - filename: 31567_1.patch
+  - filename: 31567_2.patch
