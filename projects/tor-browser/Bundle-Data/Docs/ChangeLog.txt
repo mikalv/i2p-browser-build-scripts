@@ -13,11 +13,17 @@ Tor Browser 9.0a6 -- September 4 2019
    * Bug 28561: Migrate "About Tor Browser" dialog to tor-browser
    * Bug 30683: Prevent detection of locale via some *.properties
    * Bug 31298: Backport patch for #24056
+   * Bug 9336: Odd wyswig schemes without isolation for browserspy.dk
    * Bug 27601: Browser notifications are not working anymore
    * Bug 30845: Make sure internal extensions are enabled
    * Bug 28896: Enable extensions in private browsing by default
    * Bug 31563: Reload search extensions if extensions.enabledScopes has changed
    * Bug 31396: Fix communication with NoScript for security settings
+   * Bug 31142: Fix crash of tab and messing with about:newtab
+   * Bug 29049: Backport JS Poison Patch
+   * Bug 25214: Canvas data extraction on locale pdf file should be allowed
+   * Bug 30657: Locale is leaked via title of link tag on non-html page
+   * Bug 31015: Disabling SVG hides UI icons in extensions
    * Bug 31357: Retire Tom's default obfs4 bridge
  * Windows + OS X + Linux
    * Update Tor to 0.4.1.5
@@ -30,6 +36,7 @@ Tor Browser 9.0a6 -- September 4 2019
    * Bug 29430: Use obfs4proxy's meek_lite with utls instead of meek
    * Bug 31251: Security Level button UI polish
    * Bug 31344: Register SecurityLevelPreference's 'unload' callback
+   * Bug 12774: Selecting meek in the browser UI is broken
    * Build System:
      * Bug 31465: Bump Go to 1.12.9
  * Windows
