@@ -11,29 +11,18 @@ tar -C /var/tmp/dist -xf [% c('input_files_by_name/siphash') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/uniuri') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxcrypto') %]
 tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxnet') %]
-[% IF c("var/nightly") || c("var/alpha") -%]
-  tar -C /var/tmp/dist -xf [% c('input_files_by_name/goutls') %]
-  tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxtext') %]
-[% END -%]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goutls') %]
+tar -C /var/tmp/dist -xf [% c('input_files_by_name/goxtext') %]
 
 mkdir -p /var/tmp/build
 tar -C /var/tmp/build -xf [% project %]-[% c('version') %].tar.gz
 cd /var/tmp/build/[% project %]-[% c('version') %]
 
-[% IF c("var/nightly") || c("var/alpha") -%]
-  # Remove go.mod and go.sum files until we can build using Go module
-  # versioning (see bug 28325).
-  rm -f go.mod go.sum
-[% END -%]
-# Commit 70d0e90c861be34ce3c5425ef1366a0b2ceb3026 changed the canonical obfs4
-# upstream repo to gitlab.com/yawning/obfs4.git.
-[% IF c("var/nightly") || c("var/alpha") %]
-  mkdir -p "$GOPATH/src/gitlab.com/yawning"
-  ln -sf "$PWD" "$GOPATH/src/gitlab.com/yawning/obfs4.git"
-[% ELSE %]
-  mkdir -p "$GOPATH/src/git.torproject.org/pluggable-transports"
-  ln -sf "$PWD" "$GOPATH/src/git.torproject.org/pluggable-transports/obfs4.git"
-[% END %]
+# Remove go.mod and go.sum files until we can build using Go module
+# versioning (see bug 28325).
+rm -f go.mod go.sum
+mkdir -p "$GOPATH/src/gitlab.com/yawning"
+ln -sf "$PWD" "$GOPATH/src/gitlab.com/yawning/obfs4.git"
 cd obfs4proxy
 go build -ldflags '-s'
 cp -a obfs4proxy[% IF c("var/windows") %].exe[% END %] $PTDIR

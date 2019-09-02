@@ -34,7 +34,5 @@ input_files:
     project: goxnet
   - name: goutls
     project: goutls
-    enable: '[% c("var/nightly") || c("var/alpha") %]'
   - name: goxtext
     project: goxtext
-    enable: '[% c("var/nightly") || c("var/alpha") %]'

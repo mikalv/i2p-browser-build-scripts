@@ -28,4 +28,3 @@ input_files:
   - name: gobsaes
     project: gobsaes
   - filename: sessionid.patch
-    enable: '[% c("var/nightly") || c("var/alpha") %]'
