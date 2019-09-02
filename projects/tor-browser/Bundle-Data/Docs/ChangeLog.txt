@@ -1,3 +1,83 @@
+Tor Browser 9.0a6 -- September 4 2019
+ * All platforms
+   * Update Firefox to 68.1.0esr
+   * Update NoScript to 11.0.3
+     * Bug 26847: NoScript pops up a full-site window for XSS warning
+     * Bug 31287: NoScript leaks browser locale
+   * Bug 30429: Rebase patches for Firefox 68 ESR
+   * Bug 10760: Integrate Torbutton into Tor Browser directly
+   * Bug 25856: Remove XUL overlays from Torbutton
+   * Bug 31322: Fix about:tor assertion failure debug builds
+   * Bug 31520: Remove monthly giving banner from Tor Browser
+   * Bug 29430: Add support for meek_lite bridges to bridgeParser
+   * Bug 28561: Migrate "About Tor Browser" dialog to tor-browser
+   * Bug 30683: Prevent detection of locale via some *.properties
+   * Bug 31298: Backport patch for #24056
+   * Bug 27601: Browser notifications are not working anymore
+   * Bug 30845: Make sure internal extensions are enabled
+   * Bug 28896: Enable extensions in private browsing by default
+   * Bug 31563: Reload search extensions if extensions.enabledScopes has changed
+   * Bug 31396: Fix communication with NoScript for security settings
+   * Bug 31357: Retire Tom's default obfs4 bridge
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.1.5
+   * Update Tor Launcher to 0.2.19.3
+     * Bug 29197: Remove use of overlays
+     * Bug 31300: Modify Tor Launcher so it is compatible with ESR68
+     * Bug 31487: Modify moat client code so it is compatible with ESR68
+     * Bug 31488: Moat: support a comma-separated list of transports
+     * Translations update
+   * Bug 29430: Use obfs4proxy's meek_lite with utls instead of meek
+   * Bug 31251: Security Level button UI polish
+   * Bug 31344: Register SecurityLevelPreference's 'unload' callback
+   * Build System:
+     * Bug 31465: Bump Go to 1.12.9
+ * Windows
+   * Bug 31547: Back out patch for Mozilla's bug 1574980
+   * Bug 31141: Fix typo in font.system.whitelist
+   * Backport fix for bug 1572844 to fix broken build
+ * OS X
+   * Bug 29818: Adapt #13379 patch for 68esr
+   * Bug 31403: Bump snowflake commit to cd650fa009
+ * Linux
+   * Bug 31403: Bump snowflake commit to cd650fa009
+ * Android
+   * Bug 31010: Rebase mobile patches for Fennec 68
+   * Bug 31010: Don't use addTrustedTab() on mobile
+ * Build System:
+   * All Platforms:
+     * Bug 30585: Provide standalone clang 8 project across all platforms
+     * Bug 30376: Use Rust 1.34 for Tor Browser 9
+     * Bug 30490: Add cbindgen project for building Firefox 68 ESR/Fennec 68
+     * Bug 30701: Add nodejs project for building Firefox 68 ESR/Fennec 68
+     * Bug 30734: Add nasm project for building Firefox 68 ESR/Fennec 68
+   * Windows
+     * Bug 30322: Windows toolchain update for Firefox 68 ESR
+       * Bug 28716: Create mingw-w64-clang toolchain
+       * Bug 28238: Adapt firefox and fxc2 projects for Windows builds
+       * Bug 28716: Optionally omit timestamp in PE header
+       * Bug 31567: NS_tsnprintf() does not handle %s correctly on Windows
+       * Bug 31458: Revert patch for #27503 and bump mingw-w64 revision used
+     * Bug 9898: Provide clean fix for strcmpi issue in NSPR
+   * OS X
+     * Bug 30323: MacOS toolchain update for Firefox 68 ESR
+     * Bug 31467: Switch to clang for cctools project
+     * Bug 31465: Adapt tor-browser-build projects for macOS notarization
+   * Linux
+     * Bug 30321: Linux toolchain update for Firefox ESR 68
+       * Bug 30736: Install yasm from wheezy-backports
+       * Bug 31447: Don't install Python just for Mach
+     * Bug 31394: Replace "-1" with "−1" in start-tor-browser.desktop.
+   * Android
+     * Bug 30324: Android toolchain update for Fennec 68
+       * Bug 31173: Update android-toolchain project to match Firefox
+       * Bug 31389: Update Android Firefox to build with Clang
+       * Bug 31388: Update Rust project for Android
+       * Bug 30665: Get Firefox 68 ESR working with latest android toolchain
+       * Bug 30460: Update TOPL project to use Firefox 68 toolchain
+       * Bug 30461: Update tor-android-service project to use Firefox 68 toolchain
+     * Bug 28753: Use Gradle with --offline when building the browser part
+
 Tor Browser 9.0a5 -- July 31 2019
  * Android
    * Bug 31260: Backport bug 1477259 for aarch64 support on Google Play
