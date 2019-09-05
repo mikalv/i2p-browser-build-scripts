@@ -85,6 +85,30 @@ Tor Browser 9.0a6 -- September 4 2019
        * Bug 30461: Update tor-android-service project to use Firefox 68 toolchain
      * Bug 28753: Use Gradle with --offline when building the browser part
 
+Tor Browser 8.5.5 -- September 3 2019
+ * All platforms
+   * Update Firefox to 60.9.0esr
+   * Update Torbutton to 2.1.13
+     * Bug 31520: Remove monthly giving banner from Tor Browser
+     * Bug 31140: Do not enable IonMonkey on AARCH64
+     * Translations update
+   * Update NoScript to 11.0.3
+     * Bug 26847: NoScript pops up a full-site window for XSS warning
+     * Bug 31287: NoScript leaks browser locale
+   * Bug 31357: Retire Tom's default obfs4 bridge
+ * Windows + OS X + Linux
+   * Update Tor to 0.4.1.5
+ * Windows
+   * Bug 31547: Back out patch for Mozilla's bug 1574980
+   * Bug 27503: Provide full support for accessibility tools
+   * Bug 30575: Don't allow enterprise policies in Tor Browser
+   * Bug 31141: Fix typo in font.system.whitelist
+ * Android
+   * Bug 28119: Tor Browser for aarch64
+ * Build System
+   * All platforms
+     * Bug 31465: Bump Go to 1.12.9
+
 Tor Browser 9.0a5 -- July 31 2019
  * Android
    * Bug 31260: Backport bug 1477259 for aarch64 support on Google Play
