@@ -59,6 +59,16 @@ targets:
       arch_deps:
         - openjdk-8-jdk
 
+  linux:
+    var:
+    post_pkginst: |
+      # Firefox ESR68 needs Yasm >= 1.2.0 which Debian Wheezy ships in backports.
+      echo 'deb http://archive.debian.org/debian/ wheezy-backports main' >> /etc/apt/sources.list
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -t wheezy-backports -y yasm
+
+
   linux-x86_64:
     var:
       martools_filename: mar-tools-linux64.zip
