@@ -179,32 +179,31 @@ rm -rf defaults
 echo '{"version":"[% c("var/i2pbrowser_version") %]","architecture":"[% c("var/mar_osname") %]","channel":"[% c("var/channel") %]","locale":"en-US"}' > ../i2bb_version.json
 popd
 
-# Prepare our language packs for using the proper search engines and embed
-# our default bookmarks. See bugs 18915 and 21879 for more details.
-[% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
-[% FOREACH lang = locales %]
-[% SET lang = tmpl(lang);
-   SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
-   %]
-  unzip -d prep_[% lang %] [% xpi %]
-  search_plugins_path=prep_[% lang %]/browser/chrome/[% lang %]/locale/browser
-  rm -rf $search_plugins_path/searchplugins
-  cp -rf $rootdir/searchplugins $search_plugins_path
-  [% IF c("var/osx") -%]
-    cp $rootdir/bookmarks.html prep_[% lang %]/browser/chrome/[% lang %]/locale/browser/
-  [% END -%]
-  rm [% xpi %]
-  cd prep_[% lang %]
-  [% c('zip', {
-          zip_src => [ '.' ],
-          zip_args => xpi,
-      }) %]
-  # If we are building a multi-lingual package, add all of the language packs.
-  [% IF c("var/multi_lingual") %]
-    cp [% xpi %] "$TBDIR/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
+[% IF c("var/osx") || c("var/multi_lingual") -%]
+  # Prepare our language packs to embed our default bookmarks.
+  # See bug 21879 for more details.
+  [% SET locales = c("var/testbuild") ? [] : c("var/locales") -%]
+  [% FOREACH lang = locales %]
+  [% SET lang = tmpl(lang);
+     SET xpi = '$rootdir/' _ c('input_files_by_name/firefox-langpacks') _ '/' _ lang _ '.xpi';
+     %]
+    [% IF c("var/osx") -%]
+      unzip -d prep_[% lang %] [% xpi %]
+      cp $rootdir/bookmarks.html prep_[% lang %]/browser/chrome/[% lang %]/locale/browser/
+      rm [% xpi %]
+      cd prep_[% lang %]
+      [% c('zip', {
+              zip_src => [ '.' ],
+              zip_args => xpi,
+          }) %]
+    [% END -%]
+    # If we are building a multi-lingual package, add all of the language packs.
+    [% IF c("var/multi_lingual") %]
+      cp [% xpi %] "$TBDIR/$EXTSPATH/langpack-[% lang %]@firefox.mozilla.org.xpi"
+    [% END %]
+    cd ..
+    rm -rf prep_[% lang %]
   [% END %]
-  cd ..
-  rm -rf prep_[% lang %]
 [% END %]
 
 [% IF c("var/multi_lingual") %]
@@ -216,6 +215,7 @@ popd
   zip -Xm omni.ja update.locale
   popd
 [% END %]
+
 
 
 [% IF c("var/windows") %]
